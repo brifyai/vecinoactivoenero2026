@@ -31,8 +31,9 @@
 .home-center {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 6px;
   margin-top: -2px;
+}
 }
 
 @media (max-width: 1400px) {
