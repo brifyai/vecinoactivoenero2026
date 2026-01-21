@@ -1,29 +1,72 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useEvents } from '../../context/EventsContext';
+import { useAuth } from '../../context/AuthContext';
 import { showSuccessToast } from '../../utils/sweetalert';
 import './EventCard.css';
 
 const EventCard = () => {
-  const [status, setStatus] = useState(null);
+  const navigate = useNavigate();
+  const { events, attendEvent, cancelAttendance } = useEvents();
+  const { user } = useAuth();
+
+  // Obtener el próximo evento
+  const upcomingEvent = events
+    .filter(event => new Date(event.date) >= new Date())
+    .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+
+  if (!upcomingEvent) {
+    return (
+      <div className="event-card-home">
+        <div className="event-content-home no-events">
+          <h4>No hay eventos próximos</h4>
+          <p>Crea un evento para tu comunidad</p>
+          <button 
+            className="event-btn-home" 
+            onClick={() => navigate('/eventos')}
+          >
+            Ver Eventos
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const isAttending = upcomingEvent.attendees?.includes(user?.id);
+  const attendeeCount = upcomingEvent.attendees?.length || 0;
 
   const handleEventResponse = () => {
-    if (status === 'going') {
-      setStatus(null);
-      showSuccessToast('Removed from event');
+    if (isAttending) {
+      cancelAttendance(upcomingEvent.id);
+      showSuccessToast('Ya no asistirás a este evento');
     } else {
-      setStatus('going');
-      showSuccessToast('You\'re going to this event!');
+      attendEvent(upcomingEvent.id);
+      showSuccessToast('¡Confirmaste tu asistencia!');
     }
+  };
+
+  const handleViewEvent = () => {
+    navigate(`/evento/${upcomingEvent.slug || upcomingEvent.id}`);
   };
 
   return (
     <div className="event-card-home">
-      <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=200&fit=crop" alt="Christmas 2021" />
+      <img 
+        src={upcomingEvent.image || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=200&fit=crop'} 
+        alt={upcomingEvent.name}
+        onClick={handleViewEvent}
+        style={{ cursor: 'pointer' }}
+      />
       <div className="event-content-home">
-        <h4>Christmas 2021</h4>
-        <p>26 January 2021</p>
-        <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 15250 People Going</span>
+        <h4 onClick={handleViewEvent} style={{ cursor: 'pointer' }}>
+          {upcomingEvent.name}
+        </h4>
+        <p>{upcomingEvent.date} • {upcomingEvent.time}</p>
+        <span>
+          {upcomingEvent.location} • {attendeeCount} {attendeeCount === 1 ? 'persona asistirá' : 'personas asistirán'}
+        </span>
         <button className="event-btn-home" onClick={handleEventResponse}>
-          {status === 'going' ? 'Going ✓' : 'Going / Not Going'}
+          {isAttending ? 'Asistiré ✓' : 'Asistiré / No asistiré'}
         </button>
       </div>
     </div>
