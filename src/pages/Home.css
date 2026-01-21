@@ -17,7 +17,7 @@
 .home-right {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 6px;
 }
 
 .home-left {
