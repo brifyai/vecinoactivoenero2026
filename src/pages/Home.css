@@ -34,6 +34,13 @@
   gap: 6px;
   margin-top: -2px;
 }
+
+/* Eliminar márgenes de componentes dentro de home para que solo use gap */
+.home-left > *,
+.home-right > *,
+.home-center > * {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
 }
 
 @media (max-width: 1400px) {
@@ -66,16 +73,19 @@
 .category-filters {
   background: white;
   border-radius: 12px;
-  padding: 8px 12px;
-  margin-bottom: 20px;
+  padding: 8px 12px !important;
+  margin-bottom: 6px !important;
   margin-top: -39px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  display: flex;
-  gap: 4px;
+  display: flex !important;
+  gap: 6px !important;
+  column-gap: 6px !important;
   flex-wrap: nowrap;
   overflow-x: auto;
   border: 1px solid #e5e7eb;
   scrollbar-width: none;
+  align-items: center !important;
+  height: auto !important;
 }
 
 .category-filters::-webkit-scrollbar {
@@ -112,7 +122,6 @@
 .filter-toggle:hover {
   background: #f9fafb;
   border-color: #d1d5db;
-  transform: translateY(-1px);
 }
 
 .filter-toggle.active {
@@ -130,6 +139,7 @@
   max-height: 36px !important;
   line-height: 36px !important;
   padding: 0 12px !important;
+  margin: 0 !important;
   border: none !important;
   border-radius: 18px !important;
   background: transparent !important;
@@ -156,15 +166,6 @@
   max-height: 36px !important;
   line-height: 36px !important;
   padding: 0 12px !important;
-}
-
-/* Asegurar que el contenedor flex no expanda los botones */
-.category-filters {
-  display: flex !important;
-  align-items: center !important;
-  padding: 6px 12px !important;
-  gap: 4px !important;
-  height: auto !important;
 }
 
 .category-filters .category-filter-btn {

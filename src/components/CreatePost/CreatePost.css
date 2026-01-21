@@ -85,7 +85,6 @@
 .post-action-btn:hover {
   background: var(--surface-container);
   color: var(--primary);
-  transform: translateY(-2px);
 }
 
 .post-action-btn:active {

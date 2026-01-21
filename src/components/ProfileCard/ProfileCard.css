@@ -11,7 +11,6 @@
 
 .profile-card-home:hover {
   box-shadow: var(--elevation-3);
-  transform: translateY(-4px);
 }
 
 .profile-cover-small {
@@ -107,7 +106,6 @@
 
 .stat-home:hover {
   background: var(--surface-container);
-  transform: translateY(-2px);
 }
 
 .stat-home strong {
@@ -149,7 +147,6 @@
 .edit-profile-btn-home:hover {
   background: #f97316;
   color: white;
-  transform: translateY(-2px);
   box-shadow: var(--elevation-3);
 }
 

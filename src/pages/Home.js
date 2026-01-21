@@ -94,12 +94,13 @@ const Home = () => {
         )}
 
         {/* Filtros de categoría */}
-        <div className="category-filters">
+        <div className="category-filters" style={{ gap: '6px', display: 'flex', columnGap: '6px', rowGap: '6px', marginBottom: '6px !important' }}>
           {categories.map(cat => (
             <button
               key={cat.value}
               className={`category-filter-btn ${selectedCategory === cat.value ? 'active' : ''}`}
               onClick={() => setSelectedCategory(cat.value)}
+              style={{ margin: '0', marginRight: '0', marginLeft: '0' }}
             >
               <span className="cat-icon">{cat.icon}</span>
               <span>{cat.label}</span>

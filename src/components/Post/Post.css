@@ -100,7 +100,6 @@
 
 .hashtag:hover {
   background: var(--surface-container);
-  transform: translateY(-2px);
 }
 
 .post-image {
@@ -207,7 +206,6 @@
 .post-actions .action-btn:hover {
   background: var(--surface-container) !important;
   color: var(--primary);
-  transform: translateY(-2px);
 }
 
 .post-actions .action-btn:active {
@@ -400,7 +398,6 @@
 .post-actions .action-btn-wrapper .action-btn:hover {
   background: var(--surface-container) !important;
   color: var(--primary);
-  transform: translateY(-2px);
 }
 
 .post-meta {
