@@ -4,7 +4,6 @@ import { useAuth } from '../context/AuthContext';
 import { useSidebar } from '../context/SidebarContext';
 import ProfileHeader from '../components/ProfileHeader/ProfileHeader';
 import Post from '../components/Post/Post';
-import BirthdayWidget from '../components/BirthdayWidget/BirthdayWidget';
 import EventsWidget from '../components/EventsWidget/EventsWidget';
 import ActivityNewsWidget from '../components/ActivityNewsWidget/ActivityNewsWidget';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
