@@ -1,0 +1,12 @@
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+}
+
+.verified-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f97316;
+}

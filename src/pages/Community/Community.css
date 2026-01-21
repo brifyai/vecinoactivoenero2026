@@ -1,0 +1,86 @@
+.community-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  padding-right: 348px;
+  transition: padding-right 0.3s ease;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.community-page.sidebar-collapsed {
+  padding-right: 24px;
+}
+
+/* Pestañas */
+.community-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  border-bottom: 2px solid var(--outline-variant);
+  padding-bottom: 0;
+}
+
+.community-tabs .tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  bottom: -2px;
+}
+
+.community-tabs .tab-btn:hover {
+  color: var(--primary);
+  background: rgba(249, 115, 22, 0.05);
+}
+
+.community-tabs .tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.community-tabs .tab-btn svg {
+  font-size: 20px;
+}
+
+/* Contenido */
+.community-content {
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .community-page {
+    padding: 16px;
+  }
+
+  .community-tabs {
+    flex-direction: column;
+    gap: 0;
+    border-bottom: none;
+  }
+
+  .community-tabs .tab-btn {
+    width: 100%;
+    justify-content: center;
+    border-bottom: 2px solid var(--outline-variant);
+    bottom: 0;
+  }
+
+  .community-tabs .tab-btn.active {
+    border-bottom-color: var(--primary);
+  }
+}

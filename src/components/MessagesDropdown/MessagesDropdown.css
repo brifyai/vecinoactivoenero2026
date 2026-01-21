@@ -1,0 +1,147 @@
+.messages-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 360px;
+  max-height: 500px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: slideDown 0.2s ease-out;
+}
+
+.more-btn {
+  background: none;
+  border: none;
+  color: #65676b;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.more-btn:hover {
+  background: #f0f2f5;
+}
+
+.messages-search {
+  position: relative;
+  padding: 12px 20px;
+  border-bottom: 1px solid #e4e6eb;
+}
+
+.messages-search input {
+  width: 100%;
+  padding: 10px 15px 10px 40px;
+  border: 1px solid #e4e6eb;
+  border-radius: 20px;
+  font-size: 14px;
+  background: #f0f2f5;
+}
+
+.messages-search input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: white;
+}
+
+.search-icon-msg {
+  position: absolute;
+  left: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #65676b;
+  font-size: 20px;
+}
+
+.messages-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 350px;
+}
+
+.message-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+  position: relative;
+}
+
+.message-item:hover {
+  background: #f0f2f5;
+}
+
+.message-item.unread {
+  background: #fed7aa;
+}
+
+.message-item.unread:hover {
+  background: #fdba74;
+}
+
+.msg-avatar {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.msg-avatar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.online-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background: #31a24c;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.msg-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.msg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.msg-header h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1c1e21;
+}
+
+.msg-time {
+  font-size: 12px;
+  color: #65676b;
+}
+
+.msg-preview {
+  font-size: 13px;
+  color: #65676b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.message-item.unread .msg-preview {
+  color: #1c1e21;
+  font-weight: 600;
+}

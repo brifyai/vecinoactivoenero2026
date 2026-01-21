@@ -1,0 +1,60 @@
+.my-photos-widget {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.photos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.photos-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c1e21;
+}
+
+.photos-header a,
+.photos-header .view-all-link {
+  font-size: 13px;
+  color: #0e8ce4;
+  text-decoration: none;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.photos-header a:hover,
+.photos-header .view-all-link:hover {
+  text-decoration: underline;
+}
+
+.photos-grid-home {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.photo-item-home {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.photo-item-home:hover {
+  transform: scale(1.05);
+}
+
+.photo-item-home img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

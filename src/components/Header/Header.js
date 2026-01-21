@@ -1,0 +1,129 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useApp } from '../../context/AppContext';
+import { useNotifications } from '../../context/NotificationsContext';
+import HomeIcon from '@mui/icons-material/Home';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import PeopleIcon from '@mui/icons-material/People';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import NotificationsCenter from '../NotificationsCenter/NotificationsCenter';
+import MessagesDropdown from '../MessagesDropdown/MessagesDropdown';
+import ProfileDropdown from '../ProfileDropdown/ProfileDropdown';
+import SearchModal from '../SearchModal/SearchModal';
+import './Header.css';
+
+const Header = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { darkMode, toggleDarkMode, unreadMessagesCount } = useApp();
+  const { unreadCount } = useNotifications();
+  
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  
+  const notifRef = useRef(null);
+  const msgRef = useRef(null);
+  const profileRef = useRef(null);
+
+  // Cerrar dropdowns al hacer click fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setShowNotifications(false);
+      }
+      if (msgRef.current && !msgRef.current.contains(event.target)) {
+        setShowMessages(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfile(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <>
+      <header className="header">
+        <div className="header-left">
+          <div className="logo" onClick={() => navigate('/')}>
+            <PeopleIcon className="logo-icon" />
+            <span className="logo-text">Vecino Activo</span>
+          </div>
+          <div className="search-bar" onClick={() => setShowSearch(true)}>
+            <input type="text" placeholder="Buscar vecinos..." readOnly />
+          </div>
+        </div>
+        
+        <div className="header-right">
+          <button className="icon-btn" onClick={() => navigate('/')}>
+            <HomeIcon />
+          </button>
+          
+          <div className="dropdown-container" ref={notifRef}>
+            <button 
+              className="icon-btn" 
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
+              <NotificationsIcon />
+              {unreadCount > 0 && (
+                <span className="badge">{unreadCount}</span>
+              )}
+            </button>
+            <NotificationsCenter 
+              isOpen={showNotifications} 
+              onClose={() => setShowNotifications(false)} 
+            />
+          </div>
+          
+          <div className="dropdown-container" ref={msgRef}>
+            <button 
+              className="icon-btn" 
+              onClick={() => setShowMessages(!showMessages)}
+            >
+              <ChatBubbleIcon />
+              {unreadMessagesCount > 0 && (
+                <span className="badge">{unreadMessagesCount}</span>
+              )}
+            </button>
+            {showMessages && (
+              <MessagesDropdown onClose={() => setShowMessages(false)} />
+            )}
+          </div>
+          
+          <button className="icon-btn" onClick={toggleDarkMode}>
+            {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+          </button>
+          
+          <div className="dropdown-container" ref={profileRef}>
+            <div 
+              className="user-profile" 
+              onClick={() => setShowProfile(!showProfile)}
+            >
+              <img src={user?.avatar} alt="User" />
+              <div className="user-info">
+                <span className="user-name">{user?.name}</span>
+                <span className="user-status">Activo ahora</span>
+              </div>
+              <KeyboardArrowDownIcon className="dropdown-arrow" />
+            </div>
+            {showProfile && (
+              <ProfileDropdown onClose={() => setShowProfile(false)} />
+            )}
+          </div>
+        </div>
+      </header>
+
+      {showSearch && <SearchModal onClose={() => setShowSearch(false)} />}
+    </>
+  );
+};
+
+export default Header;

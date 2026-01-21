@@ -1,0 +1,102 @@
+.create-post {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--elevation-2);
+  transition: box-shadow var(--transition-base);
+  animation: fadeIn var(--transition-base);
+}
+
+.create-post:hover {
+  box-shadow: var(--elevation-3);
+}
+
+.create-post-input {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  cursor: pointer;
+}
+
+.create-post-input img {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 2px solid var(--outline-variant);
+  box-shadow: var(--elevation-1);
+  transition: all var(--transition-fast);
+}
+
+.create-post-input:hover img {
+  border-color: var(--primary);
+  transform: scale(1.05);
+}
+
+.create-post-input input {
+  flex: 1;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  background: var(--surface-container);
+  cursor: pointer;
+  color: var(--on-surface);
+  transition: all var(--transition-fast);
+  font-weight: 500;
+}
+
+.create-post-input input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.create-post-input input::placeholder {
+  color: var(--on-surface-variant);
+}
+
+.create-post-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--outline-variant);
+}
+
+.post-action-btn {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.post-action-btn:hover {
+  background: var(--surface-container);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.post-action-btn:active {
+  transform: translateY(0);
+}
+
+.post-action-btn svg {
+  font-size: 20px;
+  transition: transform var(--transition-fast);
+}
+
+.post-action-btn:hover svg {
+  transform: scale(1.1);
+}

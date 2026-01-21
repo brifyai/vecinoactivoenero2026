@@ -1,0 +1,86 @@
+.groups-widget {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.groups-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.groups-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c1e21;
+}
+
+.groups-header a {
+  font-size: 13px;
+  color: #0e8ce4;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.groups-header a:hover {
+  text-decoration: underline;
+}
+
+.groups-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.group-card-home {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.group-card-home:hover {
+  background: #f0f2f5;
+}
+
+.group-card-home img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.group-info-home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.group-info-home h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1c1e21;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.group-info-home p {
+  font-size: 12px;
+  color: #65676b;
+}
+
+.no-groups {
+  text-align: center;
+  color: #65676b;
+  font-size: 14px;
+  padding: 20px 0;
+}

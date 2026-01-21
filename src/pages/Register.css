@@ -1,0 +1,174 @@
+@import './Login.css';
+
+.register-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.register-subtitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #65676b;
+  margin-bottom: 5px;
+}
+
+.btn-register {
+  width: 100%;
+  padding: 12px;
+  background: #0e8ce4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 25px;
+}
+
+.btn-register:hover {
+  background: #0a6fb8;
+}
+
+.btn-register:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-link {
+  text-align: center;
+  font-size: 14px;
+  color: #65676b;
+  margin-top: 20px;
+}
+
+.login-link a {
+  color: #0e8ce4;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Username field styles */
+.username-preview {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #f0f2f5;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #65676b;
+}
+
+.username-preview strong {
+  color: #f97316;
+  font-weight: 600;
+}
+
+.username-status {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.username-status.available {
+  color: #059669;
+  background: #d1fae5;
+}
+
+.username-status.unavailable {
+  color: #dc2626;
+  background: #fee2e2;
+}
+
+.username-status.info {
+  color: #2563eb;
+  background: #dbeafe;
+}
+
+/* Form section title */
+.form-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e4e6eb;
+  color: #1c1e21;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.form-section-title svg {
+  color: #f97316;
+  font-size: 20px;
+}
+
+/* Form row for side-by-side inputs */
+.form-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 15px;
+}
+
+/* Distance selector */
+.distance-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.distance-option {
+  padding: 10px 16px;
+  background: #f0f2f5;
+  border: 2px solid #e4e6eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #65676b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.distance-option:hover {
+  background: #e4e6eb;
+  border-color: #d0d2d7;
+}
+
+.distance-option.active {
+  background: #f97316;
+  border-color: #f97316;
+  color: white;
+}
+
+.distance-help {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: #f0f2f5;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #65676b;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .distance-selector {
+    justify-content: center;
+  }
+  
+  .distance-option {
+    flex: 1 1 calc(50% - 5px);
+    text-align: center;
+  }
+}

@@ -1,0 +1,175 @@
+.image-uploader {
+  position: relative;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.image-uploader.dragging {
+  transform: scale(1.02);
+}
+
+.image-uploader.dragging .upload-button {
+  background: #166fe5;
+  border: 2px dashed #1877f2;
+  box-shadow: 0 0 20px rgba(24, 119, 242, 0.3);
+}
+
+.upload-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  background: #1877f2;
+  color: white;
+  border: 2px dashed transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.upload-button .drag-hint {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.upload-button:hover {
+  background: #166fe5;
+  transform: translateY(-2px);
+}
+
+.upload-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.image-preview {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-uploader.profile .image-preview img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.image-uploader.cover .image-preview img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.image-uploader.post .image-preview img {
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.remove-image-btn:hover {
+  background: rgba(255, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.change-image-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(24, 119, 242, 0.9);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.change-image-btn:hover {
+  background: rgba(22, 111, 229, 1);
+  transform: translateY(-2px);
+}
+
+.upload-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f0f2f5;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #1877f2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.upload-progress span {
+  font-size: 14px;
+  color: #65676b;
+}
+
+/* Dark mode */
+body.dark-mode .upload-button {
+  background: #3a3b3c;
+  color: #e4e6eb;
+}
+
+body.dark-mode .upload-button:hover {
+  background: #4e4f50;
+}
+
+body.dark-mode .upload-progress {
+  background: #3a3b3c;
+}
+
+body.dark-mode .upload-progress span {
+  color: #b0b3b8;
+}

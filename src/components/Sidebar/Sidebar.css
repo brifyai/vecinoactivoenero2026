@@ -1,0 +1,115 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 64px;
+  width: 75px;
+  height: calc(100vh - 64px);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--spacing-lg) 0;
+  z-index: var(--z-sticky);
+  box-shadow: var(--elevation-2);
+  border-right: 1px solid var(--outline-variant);
+  transition: all var(--transition-base);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: 0 var(--spacing-sm);
+}
+
+.sidebar-item {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.sidebar-item::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 0;
+  background: var(--primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: height var(--transition-fast);
+}
+
+.sidebar-item svg {
+  font-size: 24px;
+  transition: all var(--transition-fast);
+}
+
+.sidebar-item:hover {
+  background: var(--surface-container);
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+.sidebar-item:hover::before {
+  height: 32px;
+}
+
+.sidebar-item:hover svg {
+  transform: scale(1.1);
+}
+
+.sidebar-item.active {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--elevation-3);
+}
+
+.sidebar-item.active::before {
+  height: 40px;
+  background: var(--primary-dark);
+}
+
+.sidebar-item.active svg {
+  color: var(--on-primary);
+  transform: scale(1.15);
+}
+
+.sidebar-item.logout {
+  background: rgba(244, 67, 54, 0.1);
+  color: var(--error);
+}
+
+.sidebar-item.logout:hover {
+  background: var(--error);
+  color: white;
+  transform: scale(1.1);
+}
+
+.sidebar-item:active {
+  transform: scale(0.95);
+}
+
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: 0 var(--spacing-sm);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}
