@@ -27,9 +27,18 @@ Crear una presentación visual de 17 slides que explique qué es Vecino Activo, 
 1. **PORTADA:** Logo + "Vecino Activo - La Red Social de Tu Barrio"
 2. **EL PROBLEMA:** 5 problemas comunes (no conocer vecinos, grupos caóticos, inseguridad, etc.)
 3. **LA SOLUCIÓN:** Qué es Vecino Activo y cómo resuelve estos problemas
-4. **FUNCIONALIDADES:** 6 funciones principales (conocer vecinos, pedir ayuda, seguridad, eventos, negocios locales, chat)
-5. **VS WHATSAPP:** Tabla comparativa mostrando ventajas
-6. **VS FACEBOOK:** Tabla comparativa mostrando ventajas
+4. **FUNCIONALIDADES:** 9 funciones principales:
+   - Conocer vecinos (agregar amigos, sugerencias)
+   - Chatear (mensajería privada)
+   - Publicar y compartir (posts con fotos, reacciones, comentarios)
+   - Organizar eventos (crear, asistir, calendario)
+   - Unirte a grupos (grupos temáticos)
+   - Ver el mapa (mapa interactivo de Chile con búsqueda de dirección)
+   - Negocios locales (directorio de comercios)
+   - Pedir ayuda (solicitudes de ayuda)
+   - Verificación (sistema de verificación con badge)
+5. **VS GRUPOS DE WHATSAPP:** Tabla comparativa mostrando ventajas sobre grupos vecinales de WhatsApp
+6. **VS PÁGINAS DE FACEBOOK:** Tabla comparativa mostrando ventajas sobre páginas comunitarias de Facebook
 7. **CASOS REALES:** 4 historias de éxito (mascota perdida, plomero, fiesta, alerta)
 8. **ESTADÍSTICAS:** 5 datos de impacto (85% más conectados, 70% más seguros, etc.)
 9. **CÓMO FUNCIONA:** 4 pasos simples (registrarse, explorar, conectar, participar)
@@ -37,7 +46,7 @@ Crear una presentación visual de 17 slides que explique qué es Vecino Activo, 
 11. **PARA TODAS LAS EDADES:** 3 perfiles (adultos mayores, familias, profesionales)
 12. **TESTIMONIOS:** 3 testimonios reales con 5 estrellas
 13. **IMPACTO COMUNITARIO:** 4 beneficios (comunidad, seguridad, economía, sostenibilidad)
-14. **COMPARACIÓN FINAL:** Tabla de 3 columnas (WhatsApp, Facebook, Vecino Activo)
+14. **COMPARACIÓN FINAL:** Tabla de 3 columnas (Grupos WhatsApp, Páginas Facebook, Vecino Activo)
 15. **LLAMADO A LA ACCIÓN:** Código QR + 3 pasos para unirse
 16. **CONTACTO:** Web, email, teléfono, redes sociales
 17. **CIERRE:** "Porque un barrio unido es un barrio mejor"
@@ -66,11 +75,12 @@ Crear una presentación visual de 17 slides que explique qué es Vecino Activo, 
 Inspirador, positivo, enfocado en comunidad. No técnico, no corporativo frío. Debe transmitir calidez, confianza y sentido de pertenencia.
 
 **MENSAJES CLAVE A DESTACAR:**
-1. Es SOLO para tu barrio (no todo el mundo)
-2. Es más fácil que WhatsApp y Facebook
-3. Mejora la seguridad y la comunidad
-4. Es gratis y para todas las edades
-5. Vecinos reales verificados
+1. Es SOLO para tu barrio (no todo el mundo como Facebook)
+2. Es más organizado que grupos de WhatsApp (sin caos de mensajes)
+3. Es más relevante que páginas de Facebook (sin publicidad ni spam)
+4. Mejora la seguridad y la comunidad
+5. Es gratis y para todas las edades
+6. Vecinos reales verificados (no cuentas falsas)
 
 ¿Puedes crear esta presentación con un diseño profesional, moderno y atractivo? Si necesitas más detalles sobre algún slide específico, pregúntame.
 

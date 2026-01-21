@@ -34,59 +34,72 @@ Como Facebook + WhatsApp, pero mejor y solo con tus vecinos.
 
 ## SLIDE 4: ¿QUÉ PUEDES HACER?
 
-**Grid de 6 funciones con íconos grandes:**
+**Grid de 9 funciones con íconos grandes:**
 
 1. 👋 **CONOCER VECINOS**
    Encuentra personas cerca de ti
 
-2. 🆘 **PEDIR AYUDA**
-   ¿Necesitas algo? Tus vecinos responden
+2. 💬 **CHATEAR**
+   Mensajes privados sin compartir tu número
 
-3. 🔒 **ESTAR SEGURO**
-   Alertas y reportes en tiempo real
+3. 📰 **PUBLICAR Y COMPARTIR**
+   Comparte noticias, fotos y eventos
 
 4. 🎉 **ORGANIZAR EVENTOS**
-   Fiestas, deportes, actividades
+   Crea y asiste a actividades del barrio
 
-5. 🏪 **APOYAR LOCALES**
-   Descubre negocios de tu barrio
+5. 👥 **UNIRTE A GRUPOS**
+   Grupos de interés y temáticos
 
-6. 💬 **CHATEAR**
-   Mensajes sin compartir tu número
+6. 🗺️ **VER EL MAPA**
+   Explora tu vecindario en mapa interactivo
+
+7. 🏪 **NEGOCIOS LOCALES**
+   Descubre comercios de tu sector
+
+8. 🆘 **PEDIR AYUDA**
+   Solicita ayuda a tus vecinos
+
+9. ✅ **VERIFICACIÓN**
+   Vecinos verificados con badge
 
 **Imagen sugerida:** Capturas de pantalla de cada función
 
 ---
 
-## SLIDE 5: VECINO ACTIVO vs WHATSAPP
+## SLIDE 5: VECINO ACTIVO vs GRUPOS DE WHATSAPP
 
 **Tabla comparativa visual:**
 
-| | WhatsApp | Vecino Activo |
+| | Grupos de WhatsApp | Vecino Activo |
 |---|---|---|
 | **Organización** | ❌ Caos de mensajes | ✅ Todo ordenado |
 | **Privacidad** | ❌ Compartes tu número | ✅ Perfil protegido |
 | **Búsqueda** | ❌ Imposible encontrar info | ✅ Búsqueda fácil |
 | **Eventos** | ❌ Manual y complicado | ✅ Calendario integrado |
 | **Spam** | ❌ Cadenas molestas | ✅ Contenido relevante |
+| **Multimedia** | ❌ Fotos se pierden | ✅ Álbumes permanentes |
+| **Límite** | ❌ 1024 personas máx | ✅ Ilimitado |
 
-**Imagen sugerida:** Comparación lado a lado de interfaces
+**Imagen sugerida:** Comparación lado a lado - grupo caótico de WhatsApp vs interfaz organizada de Vecino Activo
 
 ---
 
-## SLIDE 6: VECINO ACTIVO vs FACEBOOK
+## SLIDE 6: VECINO ACTIVO vs PÁGINAS DE FACEBOOK
 
 **Tabla comparativa visual:**
 
-| | Facebook | Vecino Activo |
+| | Páginas de Facebook | Vecino Activo |
 |---|---|---|
 | **Contenido** | ❌ Todo el mundo | ✅ Solo tu barrio |
 | **Relevancia** | ❌ 90% irrelevante | ✅ 100% útil |
 | **Publicidad** | ❌ Anuncios molestos | ✅ Sin publicidad |
 | **Verificación** | ❌ Cuentas falsas | ✅ Vecinos reales |
 | **Utilidad** | ❌ Entretenimiento | ✅ Ayuda práctica |
+| **Algoritmo** | ❌ Facebook decide | ✅ Tú decides |
+| **Notificaciones** | ❌ Spam constante | ✅ Solo importante |
 
-**Imagen sugerida:** Comparación lado a lado de feeds
+**Imagen sugerida:** Comparación lado a lado - feed caótico de Facebook vs feed organizado de Vecino Activo
 
 ---
 
@@ -247,18 +260,20 @@ Compartir recursos, menos desperdicio
 
 **Tabla de 3 columnas:**
 
-| Característica | WhatsApp | Facebook | Vecino Activo |
+| Característica | Grupos WhatsApp | Páginas Facebook | Vecino Activo |
 |---|---|---|---|
-| Solo tu barrio | ❌ | ❌ | ✅ |
+| Solo tu barrio | ⚠️ | ❌ | ✅ |
 | Sin spam | ❌ | ❌ | ✅ |
 | Organizado | ❌ | ⚠️ | ✅ |
 | Privacidad | ⚠️ | ❌ | ✅ |
 | Verificación | ❌ | ❌ | ✅ |
 | Eventos | ❌ | ⚠️ | ✅ |
 | Mapa | ❌ | ❌ | ✅ |
-| Ayuda mutua | ❌ | ❌ | ✅ |
+| Ayuda mutua | ⚠️ | ❌ | ✅ |
+| Búsqueda | ❌ | ⚠️ | ✅ |
+| Sin publicidad | ✅ | ❌ | ✅ |
 
-**Imagen sugerida:** Logos de las 3 plataformas con check marks
+**Imagen sugerida:** Logos de WhatsApp y Facebook con check marks comparados con Vecino Activo
 
 ---
 
