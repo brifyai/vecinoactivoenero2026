@@ -9,7 +9,6 @@ import Stories from '../components/Stories/Stories';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import FriendSuggestions from '../components/FriendSuggestions/FriendSuggestions';
 import LikedPages from '../components/LikedPages/LikedPages';
-import BirthdayCard from '../components/BirthdayCard/BirthdayCard';
 import MyPhotos from '../components/MyPhotos/MyPhotos';
 import EventCard from '../components/EventCard/EventCard';
 import GroupsWidget from '../components/GroupsWidget/GroupsWidget';
@@ -131,7 +130,6 @@ const Home = () => {
       </div>
 
       <div className="home-right">
-        <BirthdayCard />
         <MyPhotos />
         <EventCard />
         <GroupsWidget />
