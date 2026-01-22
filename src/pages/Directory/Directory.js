@@ -345,17 +345,7 @@ const Directory = () => {
         </div>
       </div>
 
-      {/* Destacados */}
-      {searchTerm === '' && selectedCategory === 'all' && ratingFilter === 'all' && (
-        <div className="featured-section">
-          <h2><StarIcon className="section-icon" /> Mejor Valorados</h2>
-          <div className="featured-grid">
-            {topRatedServices.map(service => (
-              <ServiceCard key={service.id} service={service} featured />
-            ))}
-          </div>
-        </div>
-      )}
+
 
       {/* Lista de items */}
       <div className="services-section">
