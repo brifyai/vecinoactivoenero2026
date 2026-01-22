@@ -15,6 +15,7 @@ import logger from 'redux-logger';
 import authReducer from './slices/authSlice';
 import postsReducer from './slices/postsSlice';
 import notificationsReducer from './slices/notificationsSlice';
+import friendsReducer from './slices/friendsSlice';
 
 // Configuración de persistencia para auth
 const persistConfig = {
@@ -29,7 +30,8 @@ export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     posts: postsReducer,
-    notifications: notificationsReducer
+    notifications: notificationsReducer,
+    friends: friendsReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMessages } from '../../context/AuthContext';
 import { useMessages as useMessagesContext } from '../../context/MessagesContext';
 import storageService from '../../services/storageService';
 import SendIcon from '@mui/icons-material/Send';
