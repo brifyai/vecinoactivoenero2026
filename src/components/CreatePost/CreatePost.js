@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';

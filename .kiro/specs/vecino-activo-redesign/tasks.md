@@ -23,68 +23,67 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
 
 ## Tareas
 
-- [x] 1. Configurar estructura de proyecto y modelos de datos
+- [ ] 1. Configurar estructura de proyecto y modelos de datos
   - [x] Crear estructura de carpetas para componentes, contextos, servicios
   - [x] Implementar modelos de datos (Usuario, Necesidad, Acción, Directorio, Vecindario, Conexión, Mensaje)
   - [x] Configurar Context API para gestión de estado global
   - [x] Crear servicio de almacenamiento persistente (localStorage/base de datos)
   - _Requisitos: Todos (base para todo el sistema)_
 
-- [x] 2. Implementar sistema de autenticación y verificación
-  - [x] 2.1 Crear flujo de registro con verificación de email
+- [ ] 2. Implementar sistema de autenticación y verificación
+  - [-] 2.1 Crear flujo de registro con verificación de email
     - [x] Formulario de registro con validación
     - [x] Envío de código de verificación
     - [x] Confirmación de email
     - _Requisitos: 10.1_
   
-  - [x] 2.2 Crear flujo de verificación de ubicación
+  - [ ] 2.2 Crear flujo de verificación de ubicación
     - [x] Geolocalización por GPS/IP
     - [x] Validación de código postal
     - [x] Opción de validación manual
     - _Requisitos: 10.1_
   
-  - [x] 2.3 Crear flujo de login y sesión
+  - [ ] 2.3 Crear flujo de login y sesión
     - [x] Autenticación con email/contraseña
     - [x] Gestión de sesión persistente
     - [x] Logout seguro
     - _Requisitos: 10.1_
 
 - [ ] 3. Implementar sistema de navegación enfocado en comunidad
-  - [~] 3.1 Crear navegación principal con acciones comunitarias
+  - [ ] 3.1 Crear navegación principal con acciones comunitarias
     - Componente de navegación con: Descubrir Vecinos, Necesidades Locales, Acciones Comunitarias, Directorio, Mapa, Mensajes, Perfil
     - Navegación adaptativa para móvil (bottom navigation)
     - Indicador visual de sección actual
     - _Requisitos: 1.1, 1.2, 1.3, 1.4_
   
-  - [~] 3.2 Ocultar características genéricas de Facebook
+  - [ ] 3.2 Ocultar características genéricas de Facebook
     - Remover o deshabilitar: Stories, Pages, Games, Music, Timeline genérico
     - Mantener solo características enfocadas en comunidad
     - _Requisitos: 1.2_
-
 - [ ] 4. Implementar sistema de asignación de vecindarios
-  - [~] 4.1 Crear lógica de asignación dinámica de vecindarios
+  - [ ] 4.1 Crear lógica de asignación dinámica de vecindarios
     - Asignar usuario a vecindario basado en ubicación
     - Calcular densidad poblacional
     - _Requisitos: 17.1_
   
-  - [~] 4.2 Implementar expansión dinámica de vecindarios
+  - [ ] 4.2 Implementar expansión dinámica de vecindarios
     - Si usuarios < 500, expandir radio geográfico
     - Si usuarios > 5000, dividir en sub-vecindarios
     - _Requisitos: 17.2, 17.3_
   
-  - [~] 4.3 Implementar búsqueda multi-vecindario
+  - [ ] 4.3 Implementar búsqueda multi-vecindario
     - Permitir ver contenido de vecindarios adyacentes
     - Marcar claramente origen del contenido
     - _Requisitos: 17.5_
 
 - [ ] 5. Implementar sistema de descubrimiento de vecinos
-  - [~] 5.1 Crear página "Descubrir Vecinos"
+  - [ ] 5.1 Crear página "Descubrir Vecinos"
     - Mostrar vecinos cercanos ordenados por proximidad
     - Filtrar por intereses compartidos
     - Mostrar ubicación aproximada (100-500m)
     - _Requisitos: 2.1, 2.2, 10.3_
   
-  - [~] 5.2 Crear perfil de vecino con información relevante
+  - [ ] 5.2 Crear perfil de vecino con información relevante
     - Mostrar nombre, intereses, habilidades, distancia
     - Mostrar conexiones compartidas
     - Mostrar insignias de verificación
@@ -95,19 +94,19 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Valida: Requisitos 2.1**
 
 - [ ] 6. Implementar sistema de conexiones entre vecinos
-  - [~] 6.1 Crear flujo de solicitud de conexión
+  - [ ] 6.1 Crear flujo de solicitud de conexión
     - Botón para enviar solicitud desde perfil de vecino
     - Notificación al destinatario
     - Rastreo de estado de solicitud
     - _Requisitos: 2.3_
   
-  - [~] 6.2 Crear gestión de solicitudes de conexión
+  - [ ] 6.2 Crear gestión de solicitudes de conexión
     - Página de solicitudes pendientes
     - Botones para aceptar/rechazar
     - Establecer conexión mutua al aceptar
     - _Requisitos: 2.4, 2.6_
   
-  - [~] 6.3 Crear lista de conexiones
+  - [ ] 6.3 Crear lista de conexiones
     - Mostrar todas las conexiones aceptadas
     - Opciones para enviar mensaje o ver perfil
     - Opción para desconectar
@@ -118,12 +117,12 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Valida: Requisitos 2.3**
 
 - [ ] 7. Implementar sistema de privacidad de ubicación
-  - [~] 7.1 Implementar privacidad de ubicación sin conexión
+  - [ ] 7.1 Implementar privacidad de ubicación sin conexión
     - Mostrar ubicación aproximada (100-500m) para no conectados
     - Nunca mostrar ubicación exacta sin consentimiento
     - _Requisitos: 10.3_
   
-  - [~] 7.2 Implementar privacidad de ubicación con conexión
+  - [ ] 7.2 Implementar privacidad de ubicación con conexión
     - Permitir compartir ubicación exacta entre conectados
     - Requerir consentimiento de ambos usuarios
     - _Requisitos: 10.4_
@@ -134,24 +133,24 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Valida: Requisitos 10.3, 10.4**
 
 - [ ] 8. Implementar sistema de necesidades locales
-  - [~] 8.1 Crear página "Necesidades Locales"
+  - [ ] 8.1 Crear página "Necesidades Locales"
     - Mostrar feed de necesidades activas
     - Ordenar por proximidad e urgencia
     - Filtrar por tipo de necesidad
     - _Requisitos: 3.5, 6.1_
   
-  - [~] 8.2 Crear formulario para crear necesidad local
+  - [ ] 8.2 Crear formulario para crear necesidad local
     - Capturar tipo (Ayuda, Recurso, Habilidad)
     - Capturar descripción y urgencia
     - Capturar ubicación
     - _Requisitos: 3.1_
   
-  - [~] 8.3 Crear sistema de respuestas a necesidades
+  - [ ] 8.3 Crear sistema de respuestas a necesidades
     - Permitir responder a necesidad con mensaje directo
     - Habilitar comunicación entre solicitante y respondedor
     - _Requisitos: 3.3_
   
-  - [~] 8.4 Crear flujo de resolución de necesidad
+  - [ ] 8.4 Crear flujo de resolución de necesidad
     - Permitir marcar necesidad como resuelta
     - Permitir calificar al ayudante
     - Actualizar reputación del ayudante
@@ -165,37 +164,37 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Propiedad 4: Ordenamiento de Necesidades**
     - **Valida: Requisitos 3.5**
 
-- [~] 9. Checkpoint - Asegurar que todas las pruebas pasen
+- [ ] 9. Checkpoint - Asegurar que todas las pruebas pasen
   - Ejecutar todas las pruebas de propiedades
   - Verificar que el sistema de necesidades funciona correctamente
   - Preguntar al usuario si hay dudas
 
 - [ ] 10. Implementar sistema de acciones comunitarias
-  - [~] 10.1 Crear página "Acciones Comunitarias"
+  - [ ] 10.1 Crear página "Acciones Comunitarias"
     - Mostrar feed de acciones próximas
     - Filtrar por tipo de acción
     - Mostrar detalles de organizador
     - _Requisitos: 4.2_
   
-  - [~] 10.2 Crear formulario para crear acción comunitaria
+  - [ ] 10.2 Crear formulario para crear acción comunitaria
     - Capturar título, descripción, fecha/hora
     - Capturar ubicación y habilidades requeridas
     - Capturar límite de participantes
     - _Requisitos: 4.1_
   
-  - [~] 10.3 Crear sistema de participación en acciones
+  - [ ] 10.3 Crear sistema de participación en acciones
     - Permitir unirse a acción
     - Agregar a lista de espera si está llena
     - Enviar confirmación
     - _Requisitos: 4.3, 4.6_
   
-  - [~] 10.4 Crear gestión de participantes para organizador
+  - [ ] 10.4 Crear gestión de participantes para organizador
     - Ver lista de participantes
     - Ver lista de espera
     - Gestionar cancelaciones
     - _Requisitos: 4.4_
   
-  - [~] 10.5 Crear flujo de finalización de acción
+  - [ ] 10.5 Crear flujo de finalización de acción
     - Permitir compartir fotos
     - Permitir retroalimentación de participantes
     - Actualizar reputación de participantes
@@ -206,18 +205,18 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Valida: Requisitos 4.1**
 
 - [ ] 11. Implementar sistema de feed con priorización
-  - [~] 11.1 Crear algoritmo de priorización de feed
+  - [ ] 11.1 Crear algoritmo de priorización de feed
     - Implementar fórmula: R = (W_tipo * U) / ((D + 1)^2 * (T + 1))
     - Priorizar: Necesidades > Acciones > Actualizaciones > Directorio
     - _Requisitos: 6.1_
   
-  - [~] 11.2 Crear página de feed principal
+  - [ ] 11.2 Crear página de feed principal
     - Mostrar contenido ordenado por relevancia
     - Cargar incrementalmente sin abrumar
     - Permitir filtrado por tipo de contenido
     - _Requisitos: 6.1, 6.3, 6.4_
   
-  - [~] 11.3 Implementar aprendizaje de preferencias
+  - [ ] 11.3 Implementar aprendizaje de preferencias
     - Rastrear engagement del usuario
     - Ajustar ranking futuro basado en interacciones
     - _Requisitos: 6.5_
@@ -227,25 +226,25 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Valida: Requisitos 6.1**
 
 - [ ] 12. Implementar sistema de directorio
-  - [~] 12.1 Crear página "Directorio"
+  - [ ] 12.1 Crear página "Directorio"
     - Mostrar servicios locales
     - Filtrar por categoría
     - Ordenar por proximidad y calificación
     - _Requisitos: 5.1, 5.5_
   
-  - [~] 12.2 Crear formulario para agregar servicio
+  - [ ] 12.2 Crear formulario para agregar servicio
     - Capturar nombre, categoría, descripción
     - Capturar ubicación, contacto, horarios
     - Verificar que sea local y relevante
     - _Requisitos: 5.3_
   
-  - [~] 12.3 Crear sistema de reseñas y calificaciones
+  - [ ] 12.3 Crear sistema de reseñas y calificaciones
     - Permitir calificar servicio
     - Permitir escribir reseña
     - Actualizar calificación promedio
     - _Requisitos: 5.4_
   
-  - [~] 12.4 Crear sistema de reportes de directorio
+  - [ ] 12.4 Crear sistema de reportes de directorio
     - Permitir reportar entrada inexacta
     - Marcar para revisión
     - Notificar al remitente
@@ -256,30 +255,30 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Valida: Requisitos 18.2**
 
 - [ ] 13. Implementar sistema de mensajería directa
-  - [~] 13.1 Crear página "Mensajes"
+  - [ ] 13.1 Crear página "Mensajes"
     - Mostrar lista de conversaciones
     - Mostrar contador de no leídos
     - Permitir buscar conversaciones
     - _Requisitos: 7.1_
   
-  - [~] 13.2 Crear interfaz de conversación
+  - [ ] 13.2 Crear interfaz de conversación
     - Mostrar historial de mensajes en orden cronológico
     - Mostrar estado en línea del vecino
     - Mostrar indicador de escritura
     - _Requisitos: 7.1, 7.4_
   
-  - [~] 13.3 Crear sistema de envío de mensajes
+  - [ ] 13.3 Crear sistema de envío de mensajes
     - Permitir enviar mensaje
     - Entregar inmediatamente
     - Notificar al destinatario
     - _Requisitos: 7.2, 7.3_
   
-  - [~] 13.4 Crear flujo de inicio de conversación
+  - [ ] 13.4 Crear flujo de inicio de conversación
     - Permitir iniciar desde perfil de vecino
     - Permitir iniciar desde solicitud de conexión
     - _Requisitos: 7.5_
   
-  - [~] 13.5 Implementar bloqueo de usuarios
+  - [ ] 13.5 Implementar bloqueo de usuarios
     - Permitir bloquear usuario
     - Prevenir toda comunicación
     - Ocultar del descubrimiento
@@ -290,19 +289,19 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Valida: Requisitos 7.1**
 
 - [ ] 14. Implementar sistema de perfiles de usuario
-  - [~] 14.1 Crear página de perfil personal
+  - [ ] 14.1 Crear página de perfil personal
     - Mostrar vecindario, conexiones, actividad
     - Mostrar contribuciones y reputación
     - Permitir editar información
     - _Requisitos: 8.2, 8.5_
   
-  - [~] 14.2 Crear sistema de reputación
+  - [ ] 14.2 Crear sistema de reputación
     - Calcular puntuación basada en contribuciones
     - Mostrar insignias de confianza
     - Actualizar en tiempo real
     - _Requisitos: 8.5, 8.6_
   
-  - [~] 14.3 Crear perfil público de vecino
+  - [ ] 14.3 Crear perfil público de vecino
     - Mostrar información relevante
     - Mostrar habilidades e intereses
     - Mostrar conexiones compartidas
@@ -313,37 +312,37 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Valida: Requisitos 8.5**
 
 - [ ] 15. Implementar sistema de notificaciones
-  - [~] 15.1 Crear sistema de notificaciones
+  - [ ] 15.1 Crear sistema de notificaciones
     - Notificar cuando necesidad coincide con habilidades
     - Notificar cuando se crea acción comunitaria
     - Notificar cuando se recibe solicitud de conexión
     - _Requisitos: 9.1, 9.2, 9.3_
   
-  - [~] 15.2 Crear centro de notificaciones
+  - [ ] 15.2 Crear centro de notificaciones
     - Mostrar todas las notificaciones
     - Permitir marcar como leída
     - Permitir configurar preferencias
     - _Requisitos: 9.6_
   
-  - [~] 15.3 Implementar notificaciones de mención
+  - [ ] 15.3 Implementar notificaciones de mención
     - Notificar cuando se menciona en discusión
     - Notificar cuando se recibe respuesta a necesidad
     - _Requisitos: 9.4, 9.5_
 
 - [ ] 16. Implementar sistema de mapas
-  - [~] 16.1 Crear página de mapa del vecindario
+  - [ ] 16.1 Crear página de mapa del vecindario
     - Mostrar vecindario con marcadores
     - Mostrar vecinos cercanos, necesidades, acciones
     - Permitir filtrado por tipo de contenido
     - _Requisitos: 12.1, 12.2_
   
-  - [~] 16.2 Crear interactividad del mapa
+  - [ ] 16.2 Crear interactividad del mapa
     - Permitir hacer clic en marcadores
     - Mostrar detalles de vecino, necesidad o acción
     - Permitir zoom y navegación
     - _Requisitos: 12.3, 12.4_
   
-  - [~] 16.3 Implementar visualización de servicios
+  - [ ] 16.3 Implementar visualización de servicios
     - Mostrar entradas del directorio en mapa
     - Mostrar ubicación y distancia
     - _Requisitos: 12.5_
@@ -353,33 +352,33 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Valida: Requisitos 12.1**
 
 - [ ] 17. Implementar sistema de búsqueda
-  - [~] 17.1 Crear búsqueda de vecinos
+  - [ ] 17.1 Crear búsqueda de vecinos
     - Buscar por nombre, intereses, habilidades
     - Ordenar por proximidad y relevancia
     - _Requisitos: 14.1_
   
-  - [~] 17.2 Crear búsqueda de necesidades
+  - [ ] 17.2 Crear búsqueda de necesidades
     - Buscar por tipo, descripción, urgencia
     - Devolver solicitudes activas
     - _Requisitos: 14.2_
   
-  - [~] 17.3 Crear búsqueda de acciones
+  - [ ] 17.3 Crear búsqueda de acciones
     - Buscar por título, descripción, habilidades
     - Devolver acciones próximas
     - _Requisitos: 14.3_
   
-  - [~] 17.4 Crear búsqueda de servicios
+  - [ ] 17.4 Crear búsqueda de servicios
     - Buscar por categoría, nombre, descripción
     - Devolver entradas del directorio
     - _Requisitos: 14.4_
   
-  - [~] 17.5 Implementar filtros de búsqueda
+  - [ ] 17.5 Implementar filtros de búsqueda
     - Filtrar por tipo de contenido
     - Filtrar por distancia
     - Filtrar por fecha
     - _Requisitos: 14.5_
   
-  - [~] 17.6 Implementar historial de búsqueda
+  - [ ] 17.6 Implementar historial de búsqueda
     - Sugerir búsquedas anteriores
     - Sugerir búsquedas populares locales
     - _Requisitos: 14.6_
@@ -388,68 +387,68 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
     - **Propiedad 9: Ordenamiento de Resultados de Búsqueda**
     - **Valida: Requisitos 14.1**
 
-- [~] 18. Checkpoint - Asegurar que todas las pruebas pasen
+- [ ] 18. Checkpoint - Asegurar que todas las pruebas pasen
   - Ejecutar todas las pruebas de propiedades
   - Verificar que todos los sistemas funcionan correctamente
   - Preguntar al usuario si hay dudas
 
 - [ ] 19. Implementar sistema de moderación comunitaria
-  - [~] 19.1 Crear sistema de reportes
+  - [ ] 19.1 Crear sistema de reportes
     - Permitir reportar contenido inapropiado
     - Capturar razón y descripción
     - Enviar a moderadores
     - _Requisitos: 10.5, 16.1_
   
-  - [~] 19.2 Crear panel de moderación
+  - [ ] 19.2 Crear panel de moderación
     - Mostrar reportes pendientes
     - Mostrar contenido reportado con contexto
     - Permitir tomar acciones
     - _Requisitos: 16.2_
   
-  - [~] 19.3 Implementar acciones de moderación
+  - [ ] 19.3 Implementar acciones de moderación
     - Advertencia al usuario
     - Eliminación de contenido
     - Suspensión de cuenta
     - _Requisitos: 16.3_
   
-  - [~] 19.4 Crear sistema de apelaciones
+  - [ ] 19.4 Crear sistema de apelaciones
     - Permitir apelar acciones de moderación
     - Escalar a equipo central
     - _Requisitos: 16.4_
   
-  - [~] 19.5 Implementar reputación de moderadores
+  - [ ] 19.5 Implementar reputación de moderadores
     - Aumentar reputación por acciones justas
     - Permitir remover moderadores abusivos
     - _Requisitos: 16.5, 16.6_
 
 - [ ] 20. Implementar sistema de análisis
-  - [~] 20.1 Crear panel de análisis para organizadores
+  - [ ] 20.1 Crear panel de análisis para organizadores
     - Mostrar métricas comunitarias
     - Mostrar tendencias en el tiempo
     - _Requisitos: 15.1, 15.2_
   
-  - [~] 20.2 Implementar filtros de análisis
+  - [ ] 20.2 Implementar filtros de análisis
     - Filtrar por período de tiempo
     - Filtrar por tipo de contenido
     - Filtrar por área geográfica
     - _Requisitos: 15.3_
   
-  - [~] 20.3 Crear sugerencias de análisis
+  - [ ] 20.3 Crear sugerencias de análisis
     - Sugerir acciones basadas en tendencias
     - _Requisitos: 15.4_
   
-  - [~] 20.4 Implementar exportación de datos
+  - [ ] 20.4 Implementar exportación de datos
     - Exportar reportes en CSV/PDF
     - _Requisitos: 15.5_
 
 - [ ] 21. Implementar onboarding
-  - [~] 21.1 Crear flujo de onboarding
+  - [ ] 21.1 Crear flujo de onboarding
     - Guiar a través de selección de vecindario
     - Guiar a través de configuración de perfil
     - Mostrar vecindario, vecinos, necesidades
     - _Requisitos: 13.1, 13.2, 13.3_
   
-  - [~] 21.2 Crear sugerencias iniciales
+  - [ ] 21.2 Crear sugerencias iniciales
     - Sugerir conexiones iniciales
     - Sugerir acciones comunitarias para unirse
     - _Requisitos: 13.4_
@@ -483,8 +482,8 @@ Para lanzar una versión alfa rápidamente sin sacrificar calidad:
   - Verificar que el sistema completo funciona correctamente
   - Preguntar al usuario si hay dudas
 
-- [ ] 24. Integración y validación final
-  - [~] 24.1 Validar que todas las características funcionan juntas
+- [~] 24. Integración y validación final
+  - [ ] 24.1 Validar que todas las características funcionan juntas
     - Pruebas de integración end-to-end
     - Validar flujos completos de usuario
     - _Requisitos: Todos_

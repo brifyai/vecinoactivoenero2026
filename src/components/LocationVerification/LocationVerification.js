@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useNeighborhoods } from '../../context/NeighborhoodsContext';
 import geolocationService from '../../services/geolocationService';
 import { showSuccessToast, showErrorToast } from '../../utils/sweetalert';

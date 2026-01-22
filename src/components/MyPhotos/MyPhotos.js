@@ -1,4 +1,4 @@
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useNavigate } from 'react-router-dom';
 import './MyPhotos.css';
 

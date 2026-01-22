@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCommunityCalendar } from '../../context/CommunityCalendarContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useGamification } from '../../context/GamificationContext';
 import { formatNumber } from '../../utils/formatNumber';
 import AddIcon from '@mui/icons-material/Add';

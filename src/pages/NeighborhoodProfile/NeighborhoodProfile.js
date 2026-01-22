@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useNeighborhood } from '../../context/NeighborhoodContext';
-import { usePosts } from '../../context/PostsContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxPosts as usePosts } from '../../hooks/useReduxPosts';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import Post from '../../components/Post/Post';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PeopleIcon from '@mui/icons-material/People';

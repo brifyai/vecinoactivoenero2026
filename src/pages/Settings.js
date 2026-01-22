@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { useSidebar } from '../context/SidebarContext';
 import { showSuccessToast, showErrorToast, showInfoToast, showConfirmDialog, showInputDialog } from '../utils/sweetalert';
 import imageService from '../services/imageService';

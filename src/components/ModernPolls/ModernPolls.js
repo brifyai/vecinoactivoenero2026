@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
 import { usePolls } from '../../context/PollsContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import PeopleIcon from '@mui/icons-material/People';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';

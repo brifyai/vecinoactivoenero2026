@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useVerification } from '../../context/VerificationContext';
 import VerifiedBadge from '../VerifiedBadge/VerifiedBadge';
 import EmojiPicker from '../EmojiPicker/EmojiPicker';

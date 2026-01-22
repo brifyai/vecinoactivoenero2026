@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import StoryModal from '../StoryModal/StoryModal';
 import CreateStoryModal from '../CreateStoryModal/CreateStoryModal';
 import AddIcon from '@mui/icons-material/Add';

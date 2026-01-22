@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useVerification } from '../../context/VerificationContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { showSuccessToast, showErrorToast } from '../../utils/sweetalert';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import CloseIcon from '@mui/icons-material/Close';

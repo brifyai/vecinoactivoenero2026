@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { usePosts } from '../context/PostsContext';
+import { useReduxPosts as usePosts } from '../hooks/useReduxPosts';
 import { useSidebar } from '../context/SidebarContext';
-import { useAuth } from '../context/AuthContext';
+import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
 import CreatePost from '../components/CreatePost/CreatePost';
 import Post from '../components/Post/Post';

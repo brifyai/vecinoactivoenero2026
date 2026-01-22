@@ -12,7 +12,7 @@ import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PagesIcon from '@mui/icons-material/Pages';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { showConfirmDialog, showSuccessToast } from '../../utils/sweetalert';
 import './Sidebar.css';
 

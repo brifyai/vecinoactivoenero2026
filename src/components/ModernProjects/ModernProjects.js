@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
 import { useProjects } from '../../context/ProjectsContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import PeopleIcon from '@mui/icons-material/People';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';

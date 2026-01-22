@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useServices } from '../../context/ServicesContext';
 import { useSidebar } from '../../context/SidebarContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import SearchIcon from '@mui/icons-material/Search';
 import StarIcon from '@mui/icons-material/Star';
 import PhoneIcon from '@mui/icons-material/Phone';

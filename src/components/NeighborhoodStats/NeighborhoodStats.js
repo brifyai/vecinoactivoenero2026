@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNeighborhoodExpansion } from '../../context/NeighborhoodExpansionContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 import InfoIcon from '@mui/icons-material/Info';

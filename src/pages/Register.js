@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { showErrorToast, showSuccessToast, showInfoToast } from '../utils/sweetalert';
 import NeighborhoodSelector from '../components/NeighborhoodSelector/NeighborhoodSelector';
+import EmailVerificationModal from '../components/EmailVerificationModal/EmailVerificationModal';
+import emailVerificationService from '../services/emailVerificationService';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -28,7 +30,7 @@ const DISTANCE_OPTIONS = [
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { register, verifyUserEmail } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -53,6 +55,8 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showEmailVerification, setShowEmailVerification] = useState(false);
+  const [registrationEmail, setRegistrationEmail] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -126,8 +130,15 @@ const Register = () => {
     try {
       const result = register(formData);
       if (result.success) {
-        showSuccessToast('¡Cuenta creada exitosamente!');
-        navigate('/');
+        // Send verification code
+        const verificationResult = emailVerificationService.sendVerificationCode(formData.email);
+        if (verificationResult.success) {
+          setRegistrationEmail(formData.email);
+          setShowEmailVerification(true);
+          showSuccessToast('Cuenta creada. Por favor verifica tu email.');
+        } else {
+          showErrorToast('Error al enviar código de verificación');
+        }
       }
     } catch (err) {
       showErrorToast('Registro fallido. Por favor intenta de nuevo.');
@@ -143,12 +154,31 @@ const Register = () => {
     });
   };
 
+  const handleEmailVerificationComplete = () => {
+    // Mark email as verified in the user record
+    if (verifyUserEmail) {
+      verifyUserEmail(registrationEmail);
+    }
+    
+    setShowEmailVerification(false);
+    showSuccessToast('¡Bienvenido a Vecino Activo!');
+    navigate('/');
+  };
+
   const handleSocialSignup = (provider) => {
     showInfoToast(`Registro con ${provider} próximamente!`);
   };
 
   return (
     <div className="register-page">
+      {showEmailVerification && (
+        <EmailVerificationModal
+          email={registrationEmail}
+          onVerificationComplete={handleEmailVerificationComplete}
+          onCancel={() => setShowEmailVerification(false)}
+        />
+      )}
+      
       <div className="register-header">
         <div className="register-logo">Vecino Activo</div>
         <div className="register-nav">

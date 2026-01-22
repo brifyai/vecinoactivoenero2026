@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useProjects } from '../../context/ProjectsContext';
 import { useHelpRequests } from '../../context/HelpRequestsContext';
 import { useSharedResources } from '../../context/SharedResourcesContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useSidebar } from '../../context/SidebarContext';
 import Projects from '../Projects/Projects';
 import HelpRequests from '../HelpRequests/HelpRequests';

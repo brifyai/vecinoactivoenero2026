@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocalBusiness } from '../../context/LocalBusinessContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useSidebar } from '../../context/SidebarContext';
 import { useGamification } from '../../context/GamificationContext';
 import { formatNumber } from '../../utils/formatNumber';

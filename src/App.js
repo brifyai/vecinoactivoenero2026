@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated, selectAuthLoading } from './store/selectors/authSelectors';
 import { AppProvider } from './context/AppContext';
 import { SearchProvider } from './context/SearchContext';
 import { ChatProvider } from './context/ChatContext';
@@ -8,13 +9,11 @@ import { SidebarProvider } from './context/SidebarContext';
 import { NeighborhoodProvider } from './context/NeighborhoodContext';
 import { SecurityProvider } from './context/SecurityContext';
 import { ServicesProvider } from './context/ServicesContext';
-import { PostsProvider } from './context/PostsContext';
 import { FriendsProvider } from './context/FriendsContext';
 import { EventsProvider } from './context/EventsContext';
 import { GroupsProvider } from './context/GroupsContext';
 import { VerificationProvider } from './context/VerificationContext';
 import { ReportsProvider } from './context/ReportsContext';
-import { NotificationsProvider } from './context/NotificationsContext';
 import { ProjectsProvider } from './context/ProjectsContext';
 import { PollsProvider } from './context/PollsContext';
 import { HelpRequestsProvider } from './context/HelpRequestsContext';
@@ -32,6 +31,7 @@ import { ModerationProvider } from './context/ModerationContext';
 import { NeighborhoodExpansionProvider } from './context/NeighborhoodExpansionContext';
 import Layout from './components/Layout/Layout';
 import AppInitializer from './components/AppInitializer/AppInitializer';
+import ReduxInitializer from './components/ReduxInitializer/ReduxInitializer';
 import Home from './pages/Home';
 import Timeline from './pages/Timeline';
 import About from './pages/About';
@@ -73,7 +73,8 @@ import './App.css';
 
 // Componente para rutas protegidas
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const loading = useSelector(selectAuthLoading);
   
   if (loading) {
     return <div className="loading-screen">Loading...</div>;
@@ -86,8 +87,8 @@ function App() {
   console.log('✅ App component rendering');
   return (
     <Router>
-      <AppInitializer />
-      <AuthProvider>
+      <ReduxInitializer>
+        <AppInitializer />
         <AppProvider>
           <SearchProvider>
             <ChatProvider>
@@ -95,29 +96,27 @@ function App() {
                 <NeighborhoodProvider>
                   <SecurityProvider>
                     <ServicesProvider>
-                      <NotificationsProvider>
-                        <GamificationProvider>
-                          <VerificationProvider>
-                            <ReportsProvider>
-                              <PostsProvider>
-                                <FriendsProvider>
-                                  <EventsProvider>
-                                    <GroupsProvider>
-                                      <ProjectsProvider>
-                                        <PollsProvider>
-                                          <HelpRequestsProvider>
-                                          <CommunityCalendarProvider>
-                                            <LocalBusinessProvider>
-                                              <SharedResourcesProvider>
-                                                <PhotosProvider>
-                                                  <NeighborhoodsProvider>
-                                                    <NeighborhoodExpansionProvider>
-                                                      <ConnectionsProvider>
-                                                        <LocalNeedsProvider>
-                                                          <CommunityActionsProvider>
-                                                            <MessagesProvider>
-                                                              <ModerationProvider>
-                                                                <Routes>
+                      <GamificationProvider>
+                        <VerificationProvider>
+                          <ReportsProvider>
+                            <FriendsProvider>
+                              <EventsProvider>
+                                <GroupsProvider>
+                                  <ProjectsProvider>
+                                    <PollsProvider>
+                                      <HelpRequestsProvider>
+                                      <CommunityCalendarProvider>
+                                        <LocalBusinessProvider>
+                                          <SharedResourcesProvider>
+                                            <PhotosProvider>
+                                              <NeighborhoodsProvider>
+                                                <NeighborhoodExpansionProvider>
+                                                  <ConnectionsProvider>
+                                                    <LocalNeedsProvider>
+                                                      <CommunityActionsProvider>
+                                                        <MessagesProvider>
+                                                          <ModerationProvider>
+                                                            <Routes>
                                                   <Route path="/iniciar-sesion" element={<Login />} />
                                                   <Route path="/registrarse" element={<Register />} />
                                                   <Route path="/recuperar-contrasena" element={<ForgotPassword />} />
@@ -173,29 +172,27 @@ function App() {
                                                       </Layout>
                                                     </ProtectedRoute>
                                                   } />
-                                                </Routes>
-                                                            </ModerationProvider>
-                                                          </MessagesProvider>
-                                                        </CommunityActionsProvider>
-                                                      </LocalNeedsProvider>
-                                                    </ConnectionsProvider>
-                                                  </NeighborhoodExpansionProvider>
-                                                </NeighborhoodsProvider>
-                                              </PhotosProvider>
-                                              </SharedResourcesProvider>
-                                            </LocalBusinessProvider>
-                                          </CommunityCalendarProvider>
-                                        </HelpRequestsProvider>
-                                      </PollsProvider>
-                                    </ProjectsProvider>
-                                    </GroupsProvider>
-                                  </EventsProvider>
-                                </FriendsProvider>
-                              </PostsProvider>
-                            </ReportsProvider>
-                          </VerificationProvider>
-                        </GamificationProvider>
-                      </NotificationsProvider>
+                                            </Routes>
+                                                        </ModerationProvider>
+                                                      </MessagesProvider>
+                                                    </CommunityActionsProvider>
+                                                  </LocalNeedsProvider>
+                                                </ConnectionsProvider>
+                                              </NeighborhoodExpansionProvider>
+                                            </NeighborhoodsProvider>
+                                          </PhotosProvider>
+                                          </SharedResourcesProvider>
+                                        </LocalBusinessProvider>
+                                      </CommunityCalendarProvider>
+                                    </HelpRequestsProvider>
+                                  </PollsProvider>
+                                </ProjectsProvider>
+                                </GroupsProvider>
+                              </EventsProvider>
+                            </FriendsProvider>
+                          </ReportsProvider>
+                        </VerificationProvider>
+                      </GamificationProvider>
                     </ServicesProvider>
                   </SecurityProvider>
                 </NeighborhoodProvider>
@@ -203,7 +200,7 @@ function App() {
             </ChatProvider>
           </SearchProvider>
         </AppProvider>
-      </AuthProvider>
+      </ReduxInitializer>
     </Router>
   );
 }

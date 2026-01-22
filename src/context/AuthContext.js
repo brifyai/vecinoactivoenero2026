@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import storageService from '../services/storageService';
+import emailVerificationService from '../services/emailVerificationService';
 
 const AuthContext = createContext();
 
@@ -194,7 +195,10 @@ export const AuthProvider = ({ children }) => {
       latitude: userData.latitude || null,
       longitude: userData.longitude || null,
       // Preferencia de distancia para conocer vecinos
-      maxDistance: userData.maxDistance || 5
+      maxDistance: userData.maxDistance || 5,
+      // Email verification
+      emailVerified: false,
+      emailVerifiedAt: null
     };
     
     storageService.addUser(newUser);
@@ -224,12 +228,42 @@ export const AuthProvider = ({ children }) => {
       latitude: newUser.latitude,
       longitude: newUser.longitude,
       // Preferencia de distancia
-      maxDistance: newUser.maxDistance
+      maxDistance: newUser.maxDistance,
+      // Email verification
+      emailVerified: newUser.emailVerified,
+      emailVerifiedAt: newUser.emailVerifiedAt
     };
     
     setUser(userSession);
     storageService.setCurrentUser(userSession);
     return { success: true, user: userSession };
+  };
+
+  const verifyUserEmail = (email) => {
+    // Update user's email verification status
+    const user = storageService.getUserByEmail(email);
+    if (!user) {
+      return { success: false, error: 'Usuario no encontrado' };
+    }
+
+    const updates = {
+      emailVerified: true,
+      emailVerifiedAt: new Date().toISOString()
+    };
+
+    storageService.updateUser(user.id, updates);
+
+    // Update current user session if it's the logged-in user
+    if (user.id === user?.id) {
+      const updatedUser = { ...user, ...updates };
+      setUser(updatedUser);
+      storageService.setCurrentUser(updatedUser);
+    }
+
+    // Clear verification data
+    emailVerificationService.clearVerification(email);
+
+    return { success: true, message: 'Email verificado exitosamente' };
   };
 
   const logout = () => {
@@ -266,6 +300,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateUser,
+    verifyUserEmail,
     isAuthenticated: !!user,
     sessionExpired,
     setSessionExpired,

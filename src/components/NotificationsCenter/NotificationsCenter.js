@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNotifications } from '../../context/NotificationsContext';
+import { useReduxNotifications as useNotifications } from '../../hooks/useReduxNotifications';
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneAllIcon from '@mui/icons-material/DoneAll';

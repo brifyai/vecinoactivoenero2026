@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGroups } from '../context/GroupsContext';
 import { useSidebar } from '../context/SidebarContext';
-import { useAuth } from '../context/AuthContext';
+import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { showSuccessToast, showInputDialog } from '../utils/sweetalert';
 import GroupIcon from '@mui/icons-material/Group';
 import AddIcon from '@mui/icons-material/Add';

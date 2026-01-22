@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Circle, GeoJSON, useMap, Marker, Popup } from 'react-leaflet';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useSidebar } from '../../context/SidebarContext';
 import neighborhoodService from '../../services/neighborhoodService';
 import geocodingService from '../../services/geocodingService';

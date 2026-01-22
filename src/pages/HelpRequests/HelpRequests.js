@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useHelpRequests } from '../../context/HelpRequestsContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useSidebar } from '../../context/SidebarContext';
 import { useGamification } from '../../context/GamificationContext';
 import { formatNumber } from '../../utils/formatNumber';

@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import ReactDOM from 'react-dom';
-import { useAuth } from '../../context/AuthContext';
+import { selectUser } from '../../store/selectors/authSelectors';
+import { selectUnreadCount } from '../../store/selectors/notificationsSelectors';
 import { useApp } from '../../context/AppContext';
-import { useNotifications } from '../../context/NotificationsContext';
 import HomeIcon from '@mui/icons-material/Home';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
@@ -20,9 +21,9 @@ import './Header.css';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
+  const unreadCount = useSelector(selectUnreadCount);
   const { darkMode, toggleDarkMode, unreadMessagesCount } = useApp();
-  const { unreadCount } = useNotifications();
   
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMessages, setShowMessages] = useState(false);

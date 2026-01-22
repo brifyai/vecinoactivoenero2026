@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useSidebar } from '../../context/SidebarContext';
 import { showSuccessToast, showErrorToast, showCreatePollDialog } from '../../utils/sweetalert';
 import PollIcon from '@mui/icons-material/Poll';

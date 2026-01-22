@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSidebar } from '../context/SidebarContext';
-import { useAuth } from '../context/AuthContext';
+import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { formatNumber } from '../utils/formatNumber';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
 import ProfileHeader from '../components/ProfileHeader/ProfileHeader';

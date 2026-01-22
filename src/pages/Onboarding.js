@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { useNeighborhoods } from '../context/NeighborhoodsContext';
 import LocationVerification from '../components/LocationVerification/LocationVerification';
 import { showSuccessToast } from '../utils/sweetalert';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useCommunityActions } from '../../context/CommunityActionsContext';
 import { useNeighborhoods } from '../../context/NeighborhoodsContext';
 import CreateActionModal from '../../components/CreateActionModal/CreateActionModal';

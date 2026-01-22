@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { useChat } from '../context/ChatContext';
 import { useFriends } from '../context/FriendsContext';
 import { useSidebar } from '../context/SidebarContext';

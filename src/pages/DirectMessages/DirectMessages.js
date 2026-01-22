@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useMessages } from '../../context/MessagesContext';
 import { useConnections } from '../../context/ConnectionsContext';
 import storageService from '../../services/storageService';

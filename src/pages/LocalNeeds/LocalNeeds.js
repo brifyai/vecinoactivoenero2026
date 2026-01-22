@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useLocalNeeds } from '../../context/LocalNeedsContext';
 import { useNeighborhoods } from '../../context/NeighborhoodsContext';
 import CreateNeedModal from '../../components/CreateNeedModal/CreateNeedModal';

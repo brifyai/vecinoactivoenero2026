@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useProjects } from '../../context/ProjectsContext';
 import { useHelpRequests } from '../../context/HelpRequestsContext';
 import { useSharedResources } from '../../context/SharedResourcesContext';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useSidebar } from '../../context/SidebarContext';
 import { useGamification } from '../../context/GamificationContext';
 import { formatNumber } from '../../utils/formatNumber';

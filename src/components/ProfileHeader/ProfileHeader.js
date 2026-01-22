@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useVerification } from '../../context/VerificationContext';
 import imageService from '../../services/imageService';
 import { showSuccessToast, showErrorToast } from '../../utils/sweetalert';

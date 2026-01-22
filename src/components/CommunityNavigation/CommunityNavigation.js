@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useMessages } from '../../context/MessagesContext';
-import { useNotifications } from '../../context/NotificationsContext';
+import { useReduxNotifications as useNotifications } from '../../hooks/useReduxNotifications';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import StorefrontIcon from '@mui/icons-material/Storefront';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { usePosts } from '../../context/PostsContext';
+import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
+import { useReduxPosts as usePosts } from '../../hooks/useReduxPosts';
 import { showSuccessToast, showInfoToast } from '../../utils/sweetalert';
 import ImageUploader from '../ImageUploader/ImageUploader';
 import EmojiPicker from '../EmojiPicker/EmojiPicker';

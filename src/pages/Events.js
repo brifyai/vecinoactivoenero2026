@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEvents } from '../context/EventsContext';
 import { useCommunityCalendar } from '../context/CommunityCalendarContext';
-import { useAuth } from '../context/AuthContext';
+import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { useGamification } from '../context/GamificationContext';
 import { useSidebar } from '../context/SidebarContext';
 import { formatNumber } from '../utils/formatNumber';
