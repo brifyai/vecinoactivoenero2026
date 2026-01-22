@@ -18,6 +18,7 @@ import notificationsReducer from './slices/notificationsSlice';
 import friendsReducer from './slices/friendsSlice';
 import groupsReducer from './slices/groupsSlice';
 import eventsReducer from './slices/eventsSlice';
+import messagesReducer from './slices/messagesSlice';
 
 // Configuración de persistencia para auth
 const persistConfig = {
@@ -35,7 +36,8 @@ export const store = configureStore({
     notifications: notificationsReducer,
     friends: friendsReducer,
     groups: groupsReducer,
-    events: eventsReducer
+    events: eventsReducer,
+    messages: messagesReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
