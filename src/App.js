@@ -127,7 +127,7 @@ function App() {
                                                           <Route path="/configuracion" element={<Settings />} />
                                                           <Route path="/mensajes" element={<Messenger />} />
                                                           <Route path="/eventos" element={<Events />} />
-                                                          <Route path="/grupos" element={<Groups />} />
+                                                          {/* <Route path="/grupos" element={<Groups />} /> */}
                                                           <Route path="/grupo/:slug" element={<UserProfile />} />
                                                           <Route path="/evento/:slug" element={<UserProfile />} />
                                                           <Route path="/paginas" element={<Pages />} />

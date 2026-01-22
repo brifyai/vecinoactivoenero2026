@@ -29,7 +29,7 @@ const Sidebar = () => {
     { icon: <PollIcon />, path: '/votaciones', label: 'Votaciones' },
     { icon: <RocketLaunchIcon />, path: '/comunidad', label: 'Comunidad' },
     { icon: <PagesIcon />, path: '/paginas', label: 'Páginas' },
-    { icon: <GroupIcon />, path: '/grupos', label: 'Grupos' },
+    // { icon: <GroupIcon />, path: '/grupos', label: 'Grupos' },
     { icon: <CalendarMonthIcon />, path: '/eventos', label: 'Eventos' },
     { icon: <PersonIcon />, path: `/${user?.username || user?.name?.toLowerCase().replace(/\s+/g, '-') || 'usuario'}`, label: 'Perfil', matchPaths: ['/linea-tiempo', '/acerca-de', '/vecinos', '/fotos'] },
     { icon: <MessageIcon />, path: '/mensajes', label: 'Mensajes' },
