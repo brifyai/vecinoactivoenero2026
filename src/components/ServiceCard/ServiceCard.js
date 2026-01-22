@@ -88,7 +88,7 @@ const ServiceCard = ({ service, featured }) => {
           <div className="detail-item">
             <span className="detail-label">
               <LocationOnIcon fontSize="small" />
-              En barrio:
+              En el barrio
             </span>
             <span className="detail-value">{service.yearsInNeighborhood} años</span>
           </div>
@@ -97,7 +97,7 @@ const ServiceCard = ({ service, featured }) => {
           <div className="detail-item">
             <span className="detail-label">
               <CheckCircleIcon fontSize="small" />
-              Verificado:
+              Verificado por
             </span>
             <span className="detail-value">{service.verifiedBy} vecinos</span>
           </div>
@@ -105,16 +105,16 @@ const ServiceCard = ({ service, featured }) => {
         <div className="detail-item">
           <span className="detail-label">
             <AttachMoneyIcon fontSize="small" />
-            Precio:
+            Precio
           </span>
           <span className="detail-value">${formatPrice()}</span>
         </div>
         <div className="detail-item">
           <span className="detail-label">
             <AccessTimeIcon fontSize="small" />
-            Estado:
+            Estado
           </span>
-          <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <span className="detail-value">
             {formatAvailability().text}
           </span>
         </div>
@@ -122,7 +122,7 @@ const ServiceCard = ({ service, featured }) => {
           <div className="detail-item">
             <span className="detail-label">
               <LocationOnIcon fontSize="small" />
-              Dirección:
+              Dirección
             </span>
             <span className="detail-value">{service.address}</span>
           </div>

@@ -1,6 +1,6 @@
 .app {
   min-height: 100vh;
-  background-color: #f0f2f5;
+  background-color: transparent;
 }
 
 .loading-screen {
@@ -10,5 +10,5 @@
   min-height: 100vh;
   font-size: 24px;
   color: #0e8ce4;
-  background: #f0f2f5;
+  background: transparent;
 }

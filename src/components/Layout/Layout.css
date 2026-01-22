@@ -1,11 +1,13 @@
 .layout {
   min-height: 100vh;
-  background-color: #f0f2f5;
+  background-color: #ffffff;
 }
 
 .layout-container {
   display: flex;
   padding-top: 72px;
+  background-color: #ffffff !important;
+  min-height: 100vh;
 }
 
 .layout-container.full-width {
@@ -20,6 +22,7 @@
   margin-top: 15px;
   max-width: none;
   transition: margin-right 0.3s ease;
+  background-color: #ffffff;
 }
 
 .main-content.full-width-content {

@@ -108,35 +108,34 @@
 }
 
 .service-details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   margin-bottom: 12px;
-  padding: 0;
-  background: transparent;
-  border-radius: 0;
+  padding: 12px 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-top: 1px solid var(--outline-variant);
+  padding-top: 12px !important;
 }
 
 .detail-item {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background: rgba(249, 115, 22, 0.08);
-  border-radius: 20px;
-  border: 1px solid rgba(249, 115, 22, 0.2);
+  flex-direction: column;
+  gap: 6px;
 }
 
 .detail-label {
   font-size: 11px;
-  color: var(--primary);
+  color: var(--on-surface-variant);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: flex;
   align-items: center;
-  gap: 4px;
-  white-space: nowrap;
+  gap: 6px;
 }
 
 .detail-label svg {
@@ -145,10 +144,9 @@
 }
 
 .detail-value {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--on-surface);
   font-weight: 700;
-  white-space: nowrap;
 }
 
 .service-actions {
