@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReactDOM from 'react-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
 import { useNotifications } from '../../context/NotificationsContext';
@@ -9,6 +10,7 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import PeopleIcon from '@mui/icons-material/People';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import NotificationsCenter from '../NotificationsCenter/NotificationsCenter';
 import MessagesDropdown from '../MessagesDropdown/MessagesDropdown';
@@ -57,6 +59,14 @@ const Header = () => {
             <PeopleIcon className="logo-icon" />
             <span className="logo-text">Vecino Activo</span>
           </div>
+          
+          {user?.neighborhood && (
+            <div className="neighborhood-badge">
+              <LocationOnIcon className="neighborhood-icon" />
+              <span className="neighborhood-name">{user.neighborhood}</span>
+            </div>
+          )}
+          
           <div className="search-bar" onClick={() => setShowSearch(true)}>
             <input type="text" placeholder="Buscar vecinos..." readOnly />
           </div>
@@ -77,10 +87,6 @@ const Header = () => {
                 <span className="badge">{unreadCount}</span>
               )}
             </button>
-            <NotificationsCenter 
-              isOpen={showNotifications} 
-              onClose={() => setShowNotifications(false)} 
-            />
           </div>
           
           <div className="dropdown-container" ref={msgRef}>
@@ -93,9 +99,6 @@ const Header = () => {
                 <span className="badge">{unreadMessagesCount}</span>
               )}
             </button>
-            {showMessages && (
-              <MessagesDropdown onClose={() => setShowMessages(false)} />
-            )}
           </div>
           
           <button className="icon-btn" onClick={toggleDarkMode}>
@@ -114,12 +117,27 @@ const Header = () => {
               </div>
               <KeyboardArrowDownIcon className="dropdown-arrow" />
             </div>
-            {showProfile && (
-              <ProfileDropdown onClose={() => setShowProfile(false)} />
-            )}
           </div>
         </div>
       </header>
+
+      {showNotifications && ReactDOM.createPortal(
+        <NotificationsCenter 
+          isOpen={showNotifications} 
+          onClose={() => setShowNotifications(false)} 
+        />,
+        document.body
+      )}
+
+      {showMessages && ReactDOM.createPortal(
+        <MessagesDropdown onClose={() => setShowMessages(false)} />,
+        document.body
+      )}
+
+      {showProfile && ReactDOM.createPortal(
+        <ProfileDropdown onClose={() => setShowProfile(false)} />,
+        document.body
+      )}
 
       {showSearch && <SearchModal onClose={() => setShowSearch(false)} />}
     </>

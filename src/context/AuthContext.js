@@ -3,6 +3,10 @@ import storageService from '../services/storageService';
 
 const AuthContext = createContext();
 
+// Session management constants
+const SESSION_STORAGE_KEY = 'friendbook_session';
+const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -14,26 +18,80 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [sessionExpired, setSessionExpired] = useState(false);
 
+  // Update session timestamp to extend session
+  const updateSessionTimestamp = (userId = null) => {
+    const session = {
+      createdAt: Date.now(),
+      userId: userId || user?.id
+    };
+    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+  };
+
+  // Initialize session and restore user if session is valid
   useEffect(() => {
     // Inicializar datos mock si es necesario
     storageService.initializeMockData();
     
-    // Verificar si hay un usuario guardado
+    // Check if there's a valid session
+    const session = JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY) || 'null');
     const savedUser = storageService.getCurrentUser();
-    if (savedUser) {
-      setUser(savedUser);
-      // Asegurarse de que el usuario actual esté en la lista de usuarios
-      const users = JSON.parse(localStorage.getItem('friendbook_users') || '[]');
-      const existingUser = users.find(u => u.id === savedUser.id);
-      if (!existingUser) {
-        // Agregar el usuario actual a la lista de usuarios
-        users.push(savedUser);
-        localStorage.setItem('friendbook_users', JSON.stringify(users));
+    
+    if (session && savedUser) {
+      const sessionCreatedAt = session.createdAt;
+      const currentTime = Date.now();
+      
+      // Check if session has expired
+      if (currentTime - sessionCreatedAt > SESSION_TIMEOUT) {
+        // Session expired, clear it
+        localStorage.removeItem(SESSION_STORAGE_KEY);
+        storageService.clearCurrentUser();
+        setSessionExpired(true);
+      } else {
+        // Session is still valid, restore user
+        setUser(savedUser);
+        // Update session timestamp to extend session
+        updateSessionTimestamp(savedUser.id);
+        // Asegurarse de que el usuario actual esté en la lista de usuarios
+        const users = JSON.parse(localStorage.getItem('friendbook_users') || '[]');
+        const existingUser = users.find(u => u.id === savedUser.id);
+        if (!existingUser) {
+          users.push(savedUser);
+          localStorage.setItem('friendbook_users', JSON.stringify(users));
+        }
       }
     }
     setLoading(false);
   }, []);
+
+  // Check session validity periodically
+  useEffect(() => {
+    if (!user) return;
+
+    const sessionCheckInterval = setInterval(() => {
+      const session = JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY) || 'null');
+      
+      if (!session) {
+        // Session was cleared externally
+        setUser(null);
+        storageService.clearCurrentUser();
+        setSessionExpired(true);
+        return;
+      }
+
+      const currentTime = Date.now();
+      if (currentTime - session.createdAt > SESSION_TIMEOUT) {
+        // Session expired
+        setUser(null);
+        storageService.clearCurrentUser();
+        localStorage.removeItem(SESSION_STORAGE_KEY);
+        setSessionExpired(true);
+      }
+    }, 60000); // Check every minute
+
+    return () => clearInterval(sessionCheckInterval);
+  }, [user]);
 
   const login = (email, password) => {
     // Buscar usuario en localStorage
@@ -71,6 +129,15 @@ export const AuthProvider = ({ children }) => {
       
       setUser(userSession);
       storageService.setCurrentUser(userSession);
+      
+      // Create session
+      const session = {
+        createdAt: Date.now(),
+        userId: userSession.id
+      };
+      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+      
+      setSessionExpired(false);
       return { success: true, user: userSession };
     }
     
@@ -168,6 +235,9 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     storageService.clearCurrentUser();
+    // Clear session
+    localStorage.removeItem(SESSION_STORAGE_KEY);
+    setSessionExpired(false);
   };
 
   const updateUser = (updates) => {
@@ -196,7 +266,10 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateUser,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
+    sessionExpired,
+    setSessionExpired,
+    updateSessionTimestamp
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

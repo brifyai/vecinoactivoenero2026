@@ -13,6 +13,7 @@
   box-shadow: var(--elevation-2);
   border-bottom: 1px solid var(--outline-variant);
   transition: all var(--transition-base);
+  overflow: visible;
 }
 
 .header-left {
@@ -216,6 +217,7 @@
 
 .dropdown-container {
   position: relative;
+  z-index: 1100;
 }
 
 .dropdown-arrow {
@@ -230,10 +232,39 @@
   color: var(--primary);
 }
 
+.neighborhood-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 20px;
+  color: #667eea;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.neighborhood-icon {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}
+
+.neighborhood-name {
+  display: inline;
+}
+
 /* Modo oscuro */
 .dark-mode .header {
   background: var(--surface);
   border-bottom-color: var(--outline-variant);
+}
+
+.dark-mode .neighborhood-badge {
+  background: rgba(102, 126, 234, 0.1);
+  border-color: rgba(102, 126, 234, 0.3);
 }
 
 .dark-mode .search-bar input {

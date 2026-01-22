@@ -2,7 +2,7 @@
   background: white;
   border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 6px;
+  margin-bottom: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -16,7 +16,7 @@
 
 .profile-info-container {
   position: relative;
-  padding: 6px 24px;
+  padding: 6px 24px 12px 24px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -70,7 +70,7 @@
 
 .profile-username {
   font-size: 12px;
-  color: #f97316;
+  color: #667eea;
   font-weight: 600;
   margin: 0;
   line-height: 1.2;
@@ -86,92 +86,146 @@
 .profile-header .profile-stats {
   display: flex !important;
   flex-direction: row !important;
-  gap: 20px;
+  gap: 6px;
   margin-left: auto;
   align-items: center;
   position: relative;
-  top: 10px;
+  top: 13px;
 }
 
 .profile-header .stat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 55px;
+  justify-content: center;
+  min-width: 70px;
+  height: 42px;
+  padding: 0 16px;
+  background: linear-gradient(135deg, #f8f9ff 0%, #fef5f8 100%);
+  border: 2px solid #e8ebff;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.profile-header .stat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25);
+  border-color: #667eea;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
 }
 
 .stat-number {
-  font-size: 16px !important;
-  font-weight: 700;
-  color: #f97316;
-  line-height: 1.2;
+  font-size: 18px !important;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
 }
 
 .stat-label {
-  font-size: 11px !important;
-  color: #65676b;
-  font-weight: 500;
+  font-size: 10px !important;
+  color: #6b7280;
+  font-weight: 600;
   margin-top: 2px;
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
 }
 
 .profile-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
 }
 
 .edit-profile-btn,
 .follow-btn {
-  padding: 6px 16px;
-  background: #f97316;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.edit-profile-btn::before,
+.follow-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+
+.edit-profile-btn:hover::before,
+.follow-btn:hover::before {
+  left: 0;
 }
 
 .edit-profile-btn:hover,
 .follow-btn:hover {
-  background: #ea580c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.edit-profile-btn:active,
+.follow-btn:active {
+  transform: translateY(0);
 }
 
 .message-btn {
-  padding: 6px 16px;
+  padding: 10px 20px;
   background: white;
-  color: #f97316;
-  border: 2px solid #f97316;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  color: #667eea;
+  border: 2px solid #667eea;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .message-btn:hover {
-  background: #fff7ed;
+  background: linear-gradient(135deg, #f8f9ff 0%, #fef5f8 100%);
+  border-color: #764ba2;
+  color: #764ba2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 .verify-profile-btn {
-  padding: 6px 16px;
-  background: #10b981;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   gap: 6px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 .verify-profile-btn:hover {
-  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
 .verification-status {
@@ -187,7 +241,7 @@
 }
 
 .verification-status.pending {
-  color: #f59e0b;
+  color: #667eea;
   background: #fef3c7;
 }
 

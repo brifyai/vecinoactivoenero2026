@@ -132,18 +132,26 @@ const Events = () => {
 
   return (
     <div className={`events-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <div className="events-header">
+        <h1>Eventos</h1>
+        <p>Descubre y participa en eventos de tu comunidad</p>
+      </div>
+
       <div className="events-center">
-        {/* Header */}
-        <div className="events-header">
-          <div className="header-content">
-            <EventIcon className="header-icon" />
-            <div>
-              <h1>Eventos</h1>
-              <p>Descubre eventos sociales y comunitarios cerca de ti</p>
-            </div>
+        {/* Buscador con botón crear */}
+        <div className="search-with-button">
+          <div className="search-input-wrapper">
+            <SearchIcon className="search-icon" />
+            <input
+              type="text"
+              placeholder="Buscar eventos..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-          <button className="create-event-btn" onClick={handleCreateSocialEvent}>
-            <AddIcon /> Crear Evento
+          <button className="create-event-btn" onClick={activeTab === 'social' ? handleCreateSocialEvent : () => setShowCreateModal(true)}>
+            <AddIcon />
+            Crear Evento
           </button>
         </div>
 
@@ -166,32 +174,6 @@ const Events = () => {
         {/* Contenido de Eventos Sociales */}
         {activeTab === 'social' && (
           <>
-            {/* Buscador */}
-            <div className="search-section">
-              <div className="search-input-wrapper">
-                <SearchIcon className="search-icon" />
-                <input
-                  type="text"
-                  placeholder="Buscar eventos..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            </div>
-
-            {/* Años */}
-            <div className="years-selector">
-              {years.map(year => (
-                <button
-                  key={year}
-                  className={`year-btn ${selectedYear === year ? 'active' : ''}`}
-                  onClick={() => setSelectedYear(year)}
-                >
-                  {year}
-                </button>
-              ))}
-            </div>
-
             {/* Categorías */}
             <div className="category-buttons">
               {categories.map(cat => (

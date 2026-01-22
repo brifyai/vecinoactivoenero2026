@@ -39,7 +39,7 @@
 
 .verification-info {
   background: #fff3e0;
-  border-left: 4px solid #f97316;
+  border-left: 4px solid #667eea;
   padding: 16px;
   border-radius: var(--radius-md);
   margin-bottom: 24px;
@@ -189,7 +189,7 @@
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #ea580c;
+  background: #764ba2;
   transform: translateY(-2px);
   box-shadow: var(--elevation-2);
 }

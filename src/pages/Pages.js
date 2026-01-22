@@ -102,6 +102,11 @@ const Pages = () => {
 
   return (
     <div className={`pages-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <div className="pages-header">
+        <h1>Páginas</h1>
+        <p>Descubre y sigue páginas de tu comunidad</p>
+      </div>
+
       <div className="pages-center">
         {/* Filtro de vecindario */}
         {user?.neighborhoodId && (

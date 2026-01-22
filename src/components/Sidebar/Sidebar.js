@@ -2,14 +2,13 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MapIcon from '@mui/icons-material/Map';
-import BusinessIcon from '@mui/icons-material/Business';
-import GroupIcon from '@mui/icons-material/Group';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import PeopleIcon from '@mui/icons-material/People';
 import PersonIcon from '@mui/icons-material/Person';
 import MessageIcon from '@mui/icons-material/Message';
-import PollIcon from '@mui/icons-material/Poll';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import ExploreIcon from '@mui/icons-material/Explore';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PagesIcon from '@mui/icons-material/Pages';
@@ -24,12 +23,12 @@ const Sidebar = () => {
 
   const menuItems = [
     { icon: <DashboardIcon />, path: '/', label: 'Inicio' },
+    { icon: <ExploreIcon />, path: '/descubrir-vecinos', label: 'Descubrir' },
+    { icon: <AssignmentIcon />, path: '/necesidades-locales', label: 'Necesidades' },
+    { icon: <GroupWorkIcon />, path: '/acciones-comunitarias', label: 'Acciones' },
     { icon: <MapIcon />, path: '/mapa', label: 'Mapa del Barrio' },
-    { icon: <BusinessIcon />, path: '/directorio', label: 'Directorio' },
-    { icon: <PollIcon />, path: '/votaciones', label: 'Votaciones' },
-    { icon: <RocketLaunchIcon />, path: '/comunidad', label: 'Comunidad' },
+    { icon: <RocketLaunchIcon />, path: '/hub-comunitario', label: 'Hub Comunitario' },
     { icon: <PagesIcon />, path: '/paginas', label: 'Páginas' },
-    // { icon: <GroupIcon />, path: '/grupos', label: 'Grupos' },
     { icon: <CalendarMonthIcon />, path: '/eventos', label: 'Eventos' },
     { icon: <PersonIcon />, path: `/${user?.username || user?.name?.toLowerCase().replace(/\s+/g, '-') || 'usuario'}`, label: 'Perfil', matchPaths: ['/linea-tiempo', '/acerca-de', '/vecinos', '/fotos'] },
     { icon: <MessageIcon />, path: '/mensajes', label: 'Mensajes' },

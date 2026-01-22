@@ -4,9 +4,9 @@ import { useVerification } from '../../context/VerificationContext';
 import { formatNumber } from '../../utils/formatNumber';
 import VerifiedBadge from '../VerifiedBadge/VerifiedBadge';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ShareIcon from '@mui/icons-material/Share';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import ChatIcon from '@mui/icons-material/Chat';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import FlagIcon from '@mui/icons-material/Flag';
 import CommentsModal from '../CommentsModal/CommentsModal';
 import ShareModal from '../ShareModal/ShareModal';
@@ -14,6 +14,7 @@ import ReactionsModal from '../ReactionsModal/ReactionsModal';
 import ReportModal from '../ReportModal/ReportModal';
 import './Post.css';
 
+// Vecino Activo - Botones comunitarios: Me Uno, Opinar, Compartir
 const Post = ({ post, onShare }) => {
   const { user } = useAuth();
   const { getVerificationStatus } = useVerification();
@@ -26,7 +27,14 @@ const Post = ({ post, onShare }) => {
 
   const authorVerification = getVerificationStatus(post.authorId);
 
-  const reactions = ['👍', '❤️', '😊', '😮', '😢', '😡'];
+  // Reacciones Vecinales - Vecino Activo
+  const reactions = [
+    { emoji: '🤝', label: 'Apoyo', description: 'Solidaridad vecinal' },
+    { emoji: '❤️', label: 'Me importa', description: 'Empatía comunitaria' },
+    { emoji: '👏', label: 'Bien hecho', description: 'Reconocimiento' },
+    { emoji: '💡', label: 'Buena idea', description: 'Propuestas útiles' },
+    { emoji: '🙌', label: 'Cuenta conmigo', description: 'Compromiso de ayuda' }
+  ];
 
   const getCategoryColor = (category) => {
     const colors = {
@@ -55,7 +63,10 @@ const Post = ({ post, onShare }) => {
   };
 
   const handleReaction = (reaction) => {
-    console.log('Reacted with:', reaction);
+    // Manejar tanto objetos de reacción como strings simples
+    const reactionEmoji = typeof reaction === 'string' ? reaction : reaction.emoji;
+    const reactionLabel = typeof reaction === 'string' ? '' : reaction.label;
+    console.log('Reacted with:', reactionEmoji, reactionLabel);
     setShowReactionPicker(false);
   };
 
@@ -133,8 +144,8 @@ const Post = ({ post, onShare }) => {
             <span className="reaction-count">{formatNumber(post.likes)}</span>
           </div>
           <div className="reactions-right">
-            <span>{formatNumber(post.comments)} Comentarios</span>
-            <span>{formatNumber(post.shares)} Compartidos</span>
+            <span>💬 {formatNumber(post.comments)}</span>
+            <span>🤝 {formatNumber(post.shares)}</span>
           </div>
         </div>
 
@@ -145,7 +156,7 @@ const Post = ({ post, onShare }) => {
               onMouseEnter={() => setShowReactionPicker(true)}
               onMouseLeave={() => setShowReactionPicker(false)}
             >
-              <ThumbUpIcon /> Reaccionar
+              <HandshakeIcon /> <span>Me Uno</span>
             </button>
             {showReactionPicker && (
               <div 
@@ -158,18 +169,20 @@ const Post = ({ post, onShare }) => {
                     key={index}
                     className="reaction-picker-btn"
                     onClick={() => handleReaction(reaction)}
+                    title={`${reaction.label} - ${reaction.description}`}
                   >
-                    {reaction}
+                    <span className="reaction-emoji-large">{reaction.emoji}</span>
+                    <span className="reaction-label">{reaction.label}</span>
                   </button>
                 ))}
               </div>
             )}
           </div>
           <button className="action-btn" onClick={() => setShowCommentsModal(true)}>
-            <ChatBubbleOutlineIcon /> Comentar
+            <ChatIcon /> <span>Opinar</span>
           </button>
           <button className="action-btn" onClick={() => setShowShareModal(true)}>
-            <ShareIcon /> Compartir
+            <HomeWorkIcon /> <span>Compartir</span>
           </button>
         </div>
       </div>

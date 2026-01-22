@@ -209,7 +209,7 @@
 }
 
 .help-request-card.urgency-alta {
-  border-left-color: #f59e0b;
+  border-left-color: #667eea;
 }
 
 .help-request-card.urgency-normal {
@@ -288,7 +288,7 @@
 }
 
 .request-location svg {
-  color: #f97316;
+  color: #667eea;
 }
 
 .request-meta-info {

@@ -66,16 +66,8 @@ const ServiceCard = ({ service, featured }) => {
             )}
           </div>
           <p className="service-category">
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              {getCategoryIcon()}
-              {categoryLabels[service.category] || service.category}
-            </span>
+            {categoryLabels[service.category] || service.category}
           </p>
-          <div className="service-rating">
-            <StarIcon className="star-icon" />
-            <span className="rating-value">{(service.rating || 0).toFixed(1)}</span>
-            <span className="rating-count">({service.reviews || 0} reseñas)</span>
-          </div>
         </div>
       </div>
 
@@ -83,63 +75,23 @@ const ServiceCard = ({ service, featured }) => {
         <p className="service-description">{service.description}</p>
       )}
 
-      <div className="service-details">
-        {service.yearsInNeighborhood && (
-          <div className="detail-item">
-            <span className="detail-label">
-              <LocationOnIcon fontSize="small" />
-              En el barrio
-            </span>
-            <span className="detail-value">{service.yearsInNeighborhood} años</span>
-          </div>
-        )}
-        {service.verifiedBy && (
-          <div className="detail-item">
-            <span className="detail-label">
-              <CheckCircleIcon fontSize="small" />
-              Verificado por
-            </span>
-            <span className="detail-value">{service.verifiedBy} vecinos</span>
-          </div>
-        )}
-        <div className="detail-item">
-          <span className="detail-label">
-            <AttachMoneyIcon fontSize="small" />
-            Precio
-          </span>
-          <span className="detail-value">${formatPrice()}</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">
-            <AccessTimeIcon fontSize="small" />
-            Estado
-          </span>
-          <span className="detail-value">
-            {formatAvailability().text}
-          </span>
-        </div>
-        {service.address && (
-          <div className="detail-item">
-            <span className="detail-label">
-              <LocationOnIcon fontSize="small" />
-              Dirección
-            </span>
-            <span className="detail-value">{service.address}</span>
-          </div>
-        )}
+      <div className="service-rating-box">
+        <StarIcon className="star-icon" />
+        <span className="rating-value">{(service.rating || 0).toFixed(1)}</span>
+        <span className="rating-count">({service.reviews || 0} reseñas)</span>
       </div>
 
-      <div className="service-actions">
+      <div className="service-contact">
         {service.phone && (
-          <a href={`tel:${service.phone}`} className="action-btn phone-btn">
-            <PhoneIcon />
-            <span>Llamar</span>
+          <a href={`tel:${service.phone}`} className="contact-item">
+            <PhoneIcon className="contact-icon" />
+            <span>{service.phone}</span>
           </a>
         )}
         {service.email && (
-          <a href={`mailto:${service.email}`} className="action-btn email-btn">
-            <EmailIcon />
-            <span>Email</span>
+          <a href={`mailto:${service.email}`} className="contact-item">
+            <EmailIcon className="contact-icon" />
+            <span>{service.email}</span>
           </a>
         )}
       </div>

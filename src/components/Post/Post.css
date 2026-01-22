@@ -140,28 +140,46 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-md) 0;
-  border-bottom: 1px solid var(--outline-variant);
-  margin-bottom: var(--spacing-sm);
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #f8f9ff 0%, #fef5f8 100%);
+  border-radius: 12px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  border: 1px solid #e8ebff;
+  gap: 12px;
 }
 
 .reactions-left {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: 6px;
   cursor: pointer;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--radius-full);
-  transition: background var(--transition-fast);
+  padding: 8px 14px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  background: white;
+  border: 2px solid #e8ebff;
+  flex-shrink: 0;
 }
 
 .reactions-left:hover {
-  background: var(--surface-container);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.reactions-left:hover .reaction-emoji {
+  filter: brightness(1.2);
+}
+
+.reactions-left:hover .reaction-count {
+  color: white;
 }
 
 .reaction-emoji {
-  font-size: 18px;
-  transition: transform var(--transition-fast);
+  font-size: 20px;
+  transition: transform 0.3s ease;
 }
 
 .reactions-left:hover .reaction-emoji {
@@ -169,46 +187,86 @@
 }
 
 .reaction-count {
-  font-size: 14px;
-  color: var(--on-surface-variant);
-  margin-left: var(--spacing-xs);
-  font-weight: 600;
+  font-size: 16px;
+  color: #667eea;
+  font-weight: 700;
+  transition: color 0.3s ease;
+  margin-left: 2px;
 }
 
 .reactions-right {
   display: flex;
-  gap: var(--spacing-md);
+  gap: 20px;
   font-size: 14px;
-  color: var(--on-surface-variant);
-  font-weight: 500;
+  color: #65676b;
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+
+.reactions-right span {
+  white-space: nowrap;
 }
 
 .post-actions {
   display: flex;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-xs) 0;
+  gap: 6px;
+  padding: 8px 0;
+  margin-top: 8px;
 }
 
 .post-actions .action-btn {
   flex: 1;
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: none !important;
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--on-surface-variant);
+  padding: 12px 8px;
+  background: white !important;
+  border: 2px solid #e8ebff;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #667eea;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-sm);
+  gap: 6px;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.post-actions .action-btn span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-actions .action-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+
+.post-actions .action-btn:hover::before {
+  left: 0;
 }
 
 .post-actions .action-btn:hover {
-  background: var(--surface-container) !important;
-  color: var(--primary);
+  color: white;
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.post-actions .action-btn span,
+.post-actions .action-btn svg {
+  position: relative;
+  z-index: 1;
 }
 
 .post-actions .action-btn:active {
@@ -218,10 +276,11 @@
 .post-actions .action-btn svg {
   font-size: 20px;
   transition: transform var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .post-actions .action-btn:hover svg {
-  transform: scale(1.1);
+  transform: scale(1.15) rotate(5deg);
 }
 
 .post-comments {
@@ -346,10 +405,10 @@
   left: 0;
   background: var(--surface);
   border-radius: var(--radius-xl);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md);
   box-shadow: var(--elevation-4);
   display: flex;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
   z-index: var(--z-popover);
   animation: scaleIn var(--transition-fast) ease;
@@ -357,50 +416,54 @@
 }
 
 .reaction-picker-btn {
-  width: 44px;
-  height: 44px;
+  min-width: 80px;
+  height: auto;
+  padding: var(--spacing-sm);
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 28px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   transition: all var(--transition-fast);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 4px;
 }
 
 .reaction-picker-btn:hover {
-  transform: scale(1.3);
-  background: var(--surface-container);
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #f8f9ff 0%, #fef5f8 100%);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.reaction-emoji-large {
+  font-size: 32px;
+  display: block;
+  transition: transform var(--transition-fast);
+}
+
+.reaction-picker-btn:hover .reaction-emoji-large {
+  transform: scale(1.2);
+}
+
+.reaction-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #667eea;
+  text-align: center;
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.reaction-picker-btn:hover .reaction-label {
+  color: #764ba2;
 }
 
 .post-actions .action-btn-wrapper {
   position: relative;
   flex: 1;
   display: flex;
-}
-
-.post-actions .action-btn-wrapper .action-btn {
-  flex: 1;
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: none !important;
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--on-surface-variant);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-}
-
-.post-actions .action-btn-wrapper .action-btn:hover {
-  background: var(--surface-container) !important;
-  color: var(--primary);
 }
 
 .post-meta {

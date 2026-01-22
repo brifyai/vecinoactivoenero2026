@@ -33,7 +33,7 @@
 
 .create-project-btn {
   padding: 12px 24px;
-  background: #f97316;
+  background: #667eea;
   color: white;
   border: none;
   border-radius: 8px;
@@ -47,9 +47,9 @@
 }
 
 .create-project-btn:hover {
-  background: #ea580c;
+  background: #764ba2;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .projects-filters {
@@ -79,13 +79,13 @@
 }
 
 .filter-btn:hover {
-  border-color: #f97316;
-  color: #f97316;
+  border-color: #667eea;
+  color: #667eea;
 }
 
 .filter-btn.active {
-  background: #f97316;
-  border-color: #f97316;
+  background: #667eea;
+  border-color: #667eea;
   color: white;
 }
 
@@ -221,7 +221,7 @@
 }
 
 .meta-item svg {
-  color: #f97316;
+  color: #667eea;
 }
 
 .project-funding {
@@ -239,7 +239,7 @@
 
 .funding-progress {
   height: 100%;
-  background: linear-gradient(90deg, #f97316, #fb923c);
+  background: linear-gradient(90deg, #667eea, #fb923c);
   transition: width 0.3s;
 }
 
@@ -275,14 +275,14 @@
 
 .vote-btn:hover,
 .volunteer-btn:hover {
-  border-color: #f97316;
-  color: #f97316;
+  border-color: #667eea;
+  color: #667eea;
 }
 
 .vote-btn.voted,
 .volunteer-btn.joined {
-  background: #f97316;
-  border-color: #f97316;
+  background: #667eea;
+  border-color: #667eea;
   color: white;
 }
 
@@ -305,7 +305,7 @@
 .project-neighborhood {
   margin-left: auto;
   font-weight: 500;
-  color: #f97316;
+  color: #667eea;
 }
 
 /* Modal */
@@ -367,7 +367,7 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #f97316;
+  border-color: #667eea;
 }
 
 .form-row {
@@ -404,12 +404,12 @@
 }
 
 .submit-btn {
-  background: #f97316;
+  background: #667eea;
   color: white;
 }
 
 .submit-btn:hover {
-  background: #ea580c;
+  background: #764ba2;
 }
 
 @media (max-width: 768px) {

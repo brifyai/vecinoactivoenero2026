@@ -1,0 +1,260 @@
+.action-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.action-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+.action-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.action-title-section {
+  flex: 1;
+}
+
+.action-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 6px 0;
+}
+
+.action-description {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.action-status {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.action-status.planned {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.action-status.in_progress {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.action-status.completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.action-status.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.required-skills {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skills-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.action-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.meta-icon {
+  width: 16px;
+  height: 16px;
+  color: #d1d5db;
+}
+
+.waitlist-info {
+  padding: 8px 12px;
+  background: #fef3c7;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.waitlist-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.action-organizer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.organizer-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.organizer-info {
+  flex: 1;
+}
+
+.organizer-label {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.organizer-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 2px 0 0 0;
+}
+
+.action-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.join-btn {
+  background: #667eea;
+  color: white;
+}
+
+.join-btn:hover:not(:disabled) {
+  background: #5568d3;
+  transform: translateY(-2px);
+}
+
+.join-btn.full {
+  background: #667eea;
+}
+
+.organizer-btn {
+  background: #f3f4f6;
+  color: #6b7280;
+  cursor: default;
+}
+
+.joined-btn {
+  background: #10b981;
+  color: white;
+  cursor: pointer;
+}
+
+.joined-btn:hover {
+  background: #059669;
+}
+
+.joined-btn.waitlisted {
+  background: #667eea;
+}
+
+.joined-btn.waitlisted:hover {
+  background: #d97706;
+}
+
+.action-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .action-card {
+    padding: 16px;
+  }
+
+  .action-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-status {
+    align-self: flex-start;
+  }
+
+  .action-meta {
+    gap: 12px;
+  }
+
+  .action-organizer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .organizer-info {
+    flex: none;
+  }
+}

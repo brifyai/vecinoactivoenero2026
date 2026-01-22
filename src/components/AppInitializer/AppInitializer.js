@@ -120,6 +120,28 @@ const AppInitializer = () => {
     // Always overwrite with fresh data to ensure updates
     localStorage.setItem('friendbook_users', JSON.stringify(demoUsers));
     console.log('AppInitializer: Users data refreshed with new coordinates');
+
+    // Auto-login with first user if not already logged in
+    const currentUser = localStorage.getItem('friendbook_current_user');
+    const session = localStorage.getItem('friendbook_session');
+    
+    if (!currentUser || !session) {
+      const defaultUser = {
+        ...demoUsers[0],
+        status: 'active',
+        lastLogin: new Date().toISOString()
+      };
+      localStorage.setItem('friendbook_current_user', JSON.stringify(defaultUser));
+      
+      // Create session
+      const sessionData = {
+        createdAt: Date.now(),
+        userId: defaultUser.id
+      };
+      localStorage.setItem('friendbook_session', JSON.stringify(sessionData));
+      
+      console.log('✅ AppInitializer: Auto-logged in as', defaultUser.name);
+    }
   }, []);
 
   return null;

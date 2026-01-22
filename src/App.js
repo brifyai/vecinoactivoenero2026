@@ -16,12 +16,20 @@ import { VerificationProvider } from './context/VerificationContext';
 import { ReportsProvider } from './context/ReportsContext';
 import { NotificationsProvider } from './context/NotificationsContext';
 import { ProjectsProvider } from './context/ProjectsContext';
+import { PollsProvider } from './context/PollsContext';
 import { HelpRequestsProvider } from './context/HelpRequestsContext';
 import { CommunityCalendarProvider } from './context/CommunityCalendarContext';
 import { LocalBusinessProvider } from './context/LocalBusinessContext';
 import { SharedResourcesProvider } from './context/SharedResourcesContext';
 import { GamificationProvider } from './context/GamificationContext';
 import { PhotosProvider } from './context/PhotosContext';
+import { NeighborhoodsProvider } from './context/NeighborhoodsContext';
+import { ConnectionsProvider } from './context/ConnectionsContext';
+import { LocalNeedsProvider } from './context/LocalNeedsContext';
+import { CommunityActionsProvider } from './context/CommunityActionsContext';
+import { MessagesProvider } from './context/MessagesContext';
+import { ModerationProvider } from './context/ModerationContext';
+import { NeighborhoodExpansionProvider } from './context/NeighborhoodExpansionContext';
 import Layout from './components/Layout/Layout';
 import AppInitializer from './components/AppInitializer/AppInitializer';
 import Home from './pages/Home';
@@ -49,11 +57,18 @@ import LocalBusinesses from './pages/LocalBusinesses/LocalBusinesses';
 import CommunityCalendar from './pages/CommunityCalendar/CommunityCalendar';
 import Polls from './pages/Polls/Polls';
 import Community from './pages/Community/Community';
+import CommunityHub from './pages/CommunityHub/CommunityHub';
 import UserProfile from './pages/UserProfile';
 import Pages from './pages/Pages';
 import Calendar from './pages/Calendar';
 import Favorites from './pages/Favorites';
 import History from './pages/History';
+import Onboarding from './pages/Onboarding';
+import DiscoverNeighbors from './pages/DiscoverNeighbors/DiscoverNeighbors';
+import LocalNeeds from './pages/LocalNeeds/LocalNeeds';
+import CommunityActions from './pages/CommunityActions/CommunityActions';
+import Feed from './pages/Feed/Feed';
+import DirectMessages from './pages/DirectMessages/DirectMessages';
 import './App.css';
 
 // Componente para rutas protegidas
@@ -89,12 +104,20 @@ function App() {
                                   <EventsProvider>
                                     <GroupsProvider>
                                       <ProjectsProvider>
-                                        <HelpRequestsProvider>
+                                        <PollsProvider>
+                                          <HelpRequestsProvider>
                                           <CommunityCalendarProvider>
                                             <LocalBusinessProvider>
                                               <SharedResourcesProvider>
                                                 <PhotosProvider>
-                                                  <Routes>
+                                                  <NeighborhoodsProvider>
+                                                    <NeighborhoodExpansionProvider>
+                                                      <ConnectionsProvider>
+                                                        <LocalNeedsProvider>
+                                                          <CommunityActionsProvider>
+                                                            <MessagesProvider>
+                                                              <ModerationProvider>
+                                                                <Routes>
                                                   <Route path="/iniciar-sesion" element={<Login />} />
                                                   <Route path="/registrarse" element={<Register />} />
                                                   <Route path="/recuperar-contrasena" element={<ForgotPassword />} />
@@ -103,12 +126,19 @@ function App() {
                                                       <Layout>
                                                         <Routes>
                                                           <Route path="/" element={<Home />} />
+                                                          <Route path="/onboarding" element={<Onboarding />} />
+                                                          <Route path="/descubrir-vecinos" element={<DiscoverNeighbors />} />
+                                                          <Route path="/necesidades-locales" element={<LocalNeeds />} />
+                                                          <Route path="/acciones-comunitarias" element={<CommunityActions />} />
+                                                          <Route path="/feed" element={<Feed />} />
+                                                          <Route path="/mensajes-directos" element={<DirectMessages />} />
                                                           <Route path="/mapa" element={<NeighborhoodMap />} />
                                                           <Route path="/vecindario/:id" element={<NeighborhoodProfile />} />
-                                                          <Route path="/directorio" element={<Directory />} />
-                                                          <Route path="/votaciones" element={<Polls />} />
+                                                          <Route path="/hub-comunitario" element={<CommunityHub />} />
+                                                          <Route path="/directorio" element={<Navigate to="/hub-comunitario?tab=directorio" replace />} />
+                                                          <Route path="/votaciones" element={<Navigate to="/hub-comunitario?tab=votaciones" replace />} />
+                                                          <Route path="/proyectos" element={<Navigate to="/hub-comunitario?tab=proyectos" replace />} />
                                                           <Route path="/comunidad" element={<Community />} />
-                                                          <Route path="/proyectos" element={<Projects />} />
                                                           <Route path="/proyecto/:slug" element={<UserProfile />} />
                                                           <Route path="/solicitudes-ayuda" element={<HelpRequests />} />
                                                           <Route path="/ayuda/:slug" element={<UserProfile />} />
@@ -144,12 +174,20 @@ function App() {
                                                     </ProtectedRoute>
                                                   } />
                                                 </Routes>
-                                                </PhotosProvider>
+                                                            </ModerationProvider>
+                                                          </MessagesProvider>
+                                                        </CommunityActionsProvider>
+                                                      </LocalNeedsProvider>
+                                                    </ConnectionsProvider>
+                                                  </NeighborhoodExpansionProvider>
+                                                </NeighborhoodsProvider>
+                                              </PhotosProvider>
                                               </SharedResourcesProvider>
                                             </LocalBusinessProvider>
                                           </CommunityCalendarProvider>
                                         </HelpRequestsProvider>
-                                      </ProjectsProvider>
+                                      </PollsProvider>
+                                    </ProjectsProvider>
                                     </GroupsProvider>
                                   </EventsProvider>
                                 </FriendsProvider>

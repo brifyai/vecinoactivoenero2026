@@ -247,6 +247,7 @@ const UserProfile = () => {
     {
       id: 1,
       author: profileUser?.name || 'Usuario',
+      authorId: profileUser?.id || 1,
       time: 'hace 30 min',
       avatar: profileUser?.avatar || 'https://i.pravatar.cc/50?img=1',
       content: '¡Hoy es el cumpleaños de nuestros tres lindos cachorros!',
@@ -255,11 +256,12 @@ const UserProfile = () => {
       likes: 175,
       comments: 4368,
       shares: 936,
-      reactions: ['😊', '😍', '😮', '👍']
+      reactions: ['🤝', '❤️', '👏', '💡']
     },
     {
       id: 2,
       author: profileUser?.name || 'Usuario',
+      authorId: profileUser?.id || 1,
       time: 'hace 1 hora',
       avatar: profileUser?.avatar || 'https://i.pravatar.cc/50?img=16',
       content: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.',
@@ -268,7 +270,7 @@ const UserProfile = () => {
       likes: 234,
       comments: 89,
       shares: 45,
-      reactions: ['😊', '❤️', '👍']
+      reactions: ['🤝', '❤️', '🙌']
     }
   ];
 
@@ -333,12 +335,6 @@ const UserProfile = () => {
           onClick={() => setActiveTab('timeline')}
         >
           <AccessTimeIcon fontSize="small" /> Línea de tiempo
-        </button>
-        <button 
-          className={`tab ${activeTab === 'about' ? 'active' : ''}`}
-          onClick={() => setActiveTab('about')}
-        >
-          <InfoIcon fontSize="small" /> Acerca de
         </button>
         <button 
           className={`tab ${activeTab === 'friends' ? 'active' : ''}`}
@@ -414,42 +410,6 @@ const UserProfile = () => {
                 </div>
               )}
             </>
-          )}
-
-          {activeTab === 'about' && (
-            <div className="profile-info-card">
-              <h3>Información Personal</h3>
-              {profileUser.bio && (
-                <div className="info-item">
-                  <strong>Biografía:</strong>
-                  <p>{profileUser.bio}</p>
-                </div>
-              )}
-              {profileUser.email && (
-                <div className="info-item">
-                  <strong>Email:</strong>
-                  <p>{profileUser.email}</p>
-                </div>
-              )}
-              {profileUser.location && (
-                <div className="info-item">
-                  <strong>Ubicación:</strong>
-                  <p>{profileUser.location}</p>
-                </div>
-              )}
-              {profileUser.neighborhood && (
-                <div className="info-item">
-                  <strong>Barrio:</strong>
-                  <p>{profileUser.neighborhood}</p>
-                </div>
-              )}
-              {profileUser.address && (
-                <div className="info-item">
-                  <strong>Dirección:</strong>
-                  <p>{profileUser.address}</p>
-                </div>
-              )}
-            </div>
           )}
 
           {activeTab === 'friends' && (

@@ -10,7 +10,7 @@
 }
 
 .help-hero {
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 60px 40px;
   border-radius: 16px;
   text-align: center;
@@ -94,7 +94,7 @@
 
 .category-icon svg {
   font-size: 30px;
-  color: #f97316;
+  color: #667eea;
 }
 
 .help-category-card h3 {
@@ -149,7 +149,7 @@
 }
 
 .faq-item:hover {
-  border-color: #f97316;
+  border-color: #667eea;
 }
 
 .faq-question {
@@ -173,7 +173,7 @@
 }
 
 .faq-question svg {
-  color: #f97316;
+  color: #667eea;
   font-size: 24px;
 }
 
@@ -216,7 +216,7 @@
 
 .contact-icon {
   font-size: 48px;
-  color: #f97316;
+  color: #667eea;
   margin-bottom: 16px;
 }
 
@@ -236,7 +236,7 @@
 .contact-btn {
   width: 100%;
   padding: 12px 24px;
-  background: #f97316;
+  background: #667eea;
   color: white;
   border: none;
   border-radius: 8px;
@@ -247,12 +247,12 @@
 }
 
 .contact-btn:hover {
-  background: #ea580c;
+  background: #764ba2;
 }
 
 .contact-btn.secondary {
   background: #fff7ed;
-  color: #f97316;
+  color: #667eea;
 }
 
 .contact-btn.secondary:hover {

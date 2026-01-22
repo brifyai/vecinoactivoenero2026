@@ -65,7 +65,7 @@
 }
 
 .username-preview strong {
-  color: #f97316;
+  color: #667eea;
   font-weight: 600;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .form-section-title svg {
-  color: #f97316;
+  color: #667eea;
   font-size: 20px;
 }
 
@@ -143,8 +143,8 @@
 }
 
 .distance-option.active {
-  background: #f97316;
-  border-color: #f97316;
+  background: #667eea;
+  border-color: #667eea;
   color: white;
 }
 

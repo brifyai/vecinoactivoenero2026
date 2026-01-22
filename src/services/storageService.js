@@ -17,6 +17,15 @@ const STORAGE_KEYS = {
   GROUPS: 'friendbook_groups',
   FAVORITES: 'friendbook_favorites',
   SEARCH_HISTORY: 'friendbook_search_history',
+  // Neighborhood connection keys
+  NEIGHBORHOODS: 'vecino_neighborhoods',
+  CONNECTIONS: 'vecino_connections',
+  LOCAL_NEEDS: 'vecino_local_needs',
+  COMMUNITY_ACTIONS: 'vecino_community_actions',
+  // Messaging and moderation keys
+  DIRECT_MESSAGES: 'vecino_direct_messages',
+  REPORTS: 'vecino_reports',
+  MODERATORS: 'vecino_moderators',
 };
 
 class StorageService {
@@ -395,6 +404,75 @@ class StorageService {
     return this.set(STORAGE_KEYS.GROUPS, groups);
   }
 
+  // Neighborhoods
+  getNeighborhoods() {
+    return this.get(STORAGE_KEYS.NEIGHBORHOODS) || [];
+  }
+
+  saveNeighborhoods(neighborhoods) {
+    return this.set(STORAGE_KEYS.NEIGHBORHOODS, neighborhoods);
+  }
+
+  // Connections
+  getConnections() {
+    return this.get(STORAGE_KEYS.CONNECTIONS) || [];
+  }
+
+  saveConnections(connections) {
+    return this.set(STORAGE_KEYS.CONNECTIONS, connections);
+  }
+
+  // Local Needs
+  getLocalNeeds() {
+    return this.get(STORAGE_KEYS.LOCAL_NEEDS) || [];
+  }
+
+  saveLocalNeeds(needs) {
+    return this.set(STORAGE_KEYS.LOCAL_NEEDS, needs);
+  }
+
+  // Community Actions
+  getCommunityActions() {
+    return this.get(STORAGE_KEYS.COMMUNITY_ACTIONS) || [];
+  }
+
+  saveCommunityActions(actions) {
+    return this.set(STORAGE_KEYS.COMMUNITY_ACTIONS, actions);
+  }
+
+  // Direct Messages
+  getMessages() {
+    return this.get(STORAGE_KEYS.DIRECT_MESSAGES) || [];
+  }
+
+  saveMessages(messages) {
+    return this.set(STORAGE_KEYS.DIRECT_MESSAGES, messages);
+  }
+
+  // Reports
+  getReports() {
+    return this.get(STORAGE_KEYS.REPORTS) || [];
+  }
+
+  saveReports(reports) {
+    return this.set(STORAGE_KEYS.REPORTS, reports);
+  }
+
+  // Moderators
+  getModerators() {
+    return this.get(STORAGE_KEYS.MODERATORS) || [];
+  }
+
+  saveModerators(moderators) {
+    return this.set(STORAGE_KEYS.MODERATORS, moderators);
+  }
+
+  // Get user by ID
+  getUser(userId) {
+    const users = this.getUsers();
+    return users.find(u => u.id === userId);
+  }
+
   // Inicializar datos de ejemplo
   initializeMockData() {
     // Migrar páginas existentes para agregar slugs
@@ -449,6 +527,38 @@ class StorageService {
     if (!allLikedPages[101]) {
       allLikedPages[101] = [1, 3, 6];
       this.set(STORAGE_KEYS.LIKED_PAGES, allLikedPages);
+    }
+    
+    // Migrar reacciones antiguas a reacciones vecinales
+    this.migrateReactionsToVecinal();
+  }
+  
+  // Migrar reacciones antiguas a reacciones vecinales
+  migrateReactionsToVecinal() {
+    const posts = this.getPosts();
+    const oldReactions = ['😊', '😍', '😮', '👍', '👎', '😢', '😡'];
+    const newReactions = ['🤝', '❤️', '👏', '💡', '🙌'];
+    
+    let updated = false;
+    const updatedPosts = posts.map(post => {
+      if (post.reactions && post.reactions.some(r => oldReactions.includes(r))) {
+        // Reemplazar reacciones antiguas con nuevas reacciones vecinales
+        const migratedReactions = post.reactions.map(reaction => {
+          if (oldReactions.includes(reaction)) {
+            // Mapear aleatoriamente a una reacción vecinal
+            return newReactions[Math.floor(Math.random() * newReactions.length)];
+          }
+          return reaction;
+        });
+        updated = true;
+        return { ...post, reactions: migratedReactions };
+      }
+      return post;
+    });
+    
+    if (updated) {
+      this.savePosts(updatedPosts);
+      console.log('✅ Reacciones migradas a formato vecinal');
     }
   }
 }
