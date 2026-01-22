@@ -108,33 +108,47 @@
 }
 
 .service-details {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 12px;
-  padding: 12px;
-  background: var(--surface-container);
-  border-radius: 10px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
 }
 
 .detail-item {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(249, 115, 22, 0.08);
+  border-radius: 20px;
+  border: 1px solid rgba(249, 115, 22, 0.2);
 }
 
 .detail-label {
   font-size: 11px;
-  color: var(--on-surface-variant);
-  font-weight: 600;
+  color: var(--primary);
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.detail-label svg {
+  font-size: 14px !important;
+  color: var(--primary);
 }
 
 .detail-value {
   font-size: 13px;
   color: var(--on-surface);
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .service-actions {

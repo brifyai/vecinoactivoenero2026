@@ -87,8 +87,8 @@ const ServiceCard = ({ service, featured }) => {
         {service.yearsInNeighborhood && (
           <div className="detail-item">
             <span className="detail-label">
-              <LocationOnIcon fontSize="small" style={{ marginRight: '4px' }} />
-              En el barrio:
+              <LocationOnIcon fontSize="small" />
+              En barrio:
             </span>
             <span className="detail-value">{service.yearsInNeighborhood} años</span>
           </div>
@@ -96,33 +96,32 @@ const ServiceCard = ({ service, featured }) => {
         {service.verifiedBy && (
           <div className="detail-item">
             <span className="detail-label">
-              <CheckCircleIcon fontSize="small" style={{ marginRight: '4px' }} />
-              Verificado por:
+              <CheckCircleIcon fontSize="small" />
+              Verificado:
             </span>
             <span className="detail-value">{service.verifiedBy} vecinos</span>
           </div>
         )}
         <div className="detail-item">
           <span className="detail-label">
-            <AttachMoneyIcon fontSize="small" style={{ marginRight: '4px' }} />
+            <AttachMoneyIcon fontSize="small" />
             Precio:
           </span>
           <span className="detail-value">${formatPrice()}</span>
         </div>
         <div className="detail-item">
           <span className="detail-label">
-            <AccessTimeIcon fontSize="small" style={{ marginRight: '4px' }} />
+            <AccessTimeIcon fontSize="small" />
             Estado:
           </span>
           <span className="detail-value" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            {formatAvailability().icon}
             {formatAvailability().text}
           </span>
         </div>
         {service.address && (
           <div className="detail-item">
             <span className="detail-label">
-              <LocationOnIcon fontSize="small" style={{ marginRight: '4px' }} />
+              <LocationOnIcon fontSize="small" />
               Dirección:
             </span>
             <span className="detail-value">{service.address}</span>
