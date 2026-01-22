@@ -5,7 +5,7 @@
 
 .layout-container {
   display: flex;
-  padding-top: 102px;
+  padding-top: 72px;
 }
 
 .layout-container.full-width {
@@ -17,6 +17,7 @@
   padding: 0;
   margin-left: 75px;
   margin-right: 0;
+  margin-top: 15px;
   max-width: none;
   transition: margin-right 0.3s ease;
 }
