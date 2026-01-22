@@ -30,6 +30,19 @@
   letter-spacing: -0.5px;
 }
 
+.header-title-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-title-section h1 {
+  margin-bottom: 8px;
+}
+
+.header-title-section p {
+  margin: 0;
+}
+
 .page-title-icon {
   font-size: 32px !important;
   color: var(--primary);

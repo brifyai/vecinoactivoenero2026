@@ -227,19 +227,21 @@ const Directory = () => {
     <div className={`directory-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
       <div className="directory-header">
         <div className="header-content">
-          <h1>
-            {activeTab === 'services' ? (
-              <><WorkIcon className="page-title-icon" /> Directorio de Servicios</>
-            ) : (
-              <><StorefrontIcon className="page-title-icon" /> Negocios Locales</>
-            )}
-          </h1>
-          <p>
-            {activeTab === 'services' 
-              ? 'Encuentra profesionales verificados por tus vecinos'
-              : 'Apoya la economía de tu barrio'
-            }
-          </p>
+          <div className="header-title-section">
+            <h1>
+              {activeTab === 'services' ? (
+                <><WorkIcon className="page-title-icon" /> Directorio de Servicios</>
+              ) : (
+                <><StorefrontIcon className="page-title-icon" /> Negocios Locales</>
+              )}
+            </h1>
+            <p>
+              {activeTab === 'services' 
+                ? 'Encuentra profesionales verificados por tus vecinos'
+                : 'Apoya la economía de tu barrio'
+              }
+            </p>
+          </div>
         </div>
         <button className="add-service-btn" onClick={() => setShowAddModal(true)}>
           <AddIcon />
