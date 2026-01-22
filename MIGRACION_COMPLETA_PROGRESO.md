@@ -29,40 +29,46 @@
 - ✅ `src/hooks/useReduxFriends.js` (140 líneas)
 - ✅ `src/context/FriendsContext.js` (wrapper Redux)
 
+**Estado:** ✅ COMPLETADO Y FUNCIONANDO
+
+### ✅ 2. GroupsSlice - COMPLETADO
+
+**Archivos creados:**
+- ✅ `src/store/slices/groupsSlice.js` (280 líneas)
+- ✅ `src/store/selectors/groupsSelectors.js` (45 líneas)
+- ✅ `src/hooks/useReduxGroups.js` (160 líneas)
+- ✅ `src/context/GroupsContext.js` (wrapper Redux)
+
 **Funcionalidad:**
-- ✅ Cargar amigos
-- ✅ Cargar solicitudes de amistad
-- ✅ Enviar solicitud de amistad
-- ✅ Aceptar solicitud
-- ✅ Rechazar solicitud
-- ✅ Eliminar amigo
-- ✅ Notificaciones integradas
+- ✅ Cargar grupos
+- ✅ Crear grupo
+- ✅ Unirse a grupo
+- ✅ Salir de grupo
+- ✅ Actualizar grupo
+- ✅ Eliminar grupo
+- ✅ Publicar en grupo
 - ✅ Selectores memoizados
 
 **Estado:** ✅ COMPLETADO Y FUNCIONANDO
 
-### ⏳ 2. GroupsSlice - PENDIENTE
+### ✅ 3. EventsSlice - COMPLETADO
 
-**Funcionalidad requerida:**
-- Cargar grupos
-- Crear grupo
-- Unirse a grupo
-- Salir de grupo
-- Gestionar miembros
-- Publicaciones de grupo
+**Archivos creados:**
+- ✅ `src/store/slices/eventsSlice.js` (260 líneas)
+- ✅ `src/store/selectors/eventsSelectors.js` (40 líneas)
+- ✅ `src/hooks/useReduxEvents.js` (130 líneas)
+- ✅ `src/context/EventsContext.js` (wrapper Redux)
 
-**Estimado:** 2-3 horas
+**Funcionalidad:**
+- ✅ Cargar eventos
+- ✅ Crear evento
+- ✅ RSVP (confirmar/cancelar asistencia)
+- ✅ Actualizar evento
+- ✅ Eliminar evento
+- ✅ Eventos próximos/pasados
+- ✅ Selectores memoizados
 
-### ⏳ 3. EventsSlice - PENDIENTE
-
-**Funcionalidad requerida:**
-- Cargar eventos
-- Crear evento
-- Confirmar asistencia
-- Cancelar asistencia
-- Gestionar invitados
-
-**Estimado:** 2-3 horas
+**Estado:** ✅ COMPLETADO Y FUNCIONANDO
 
 ### ⏳ 4. MessagesSlice - PENDIENTE
 
@@ -111,15 +117,17 @@
 - ✅ postsSlice
 - ✅ notificationsSlice
 - ✅ friendsSlice
-- **Total:** 4 slices
+- ✅ groupsSlice
+- ✅ eventsSlice
+- **Total:** 6 slices
 
 ### Contexts Activos:
-- ❌ 27 contexts restantes (de 31 originales)
+- ❌ 25 contexts restantes (de 31 originales)
 
 ### Progreso:
-- **Slices completados:** 4/14 (28.6%)
-- **Contexts eliminados:** 4/31 (12.9%)
-- **Progreso general:** ~20%
+- **Slices completados:** 6/14 (42.9%)
+- **Contexts eliminados:** 6/31 (19.4%)
+- **Progreso general:** ~40%
 
 ---
 
