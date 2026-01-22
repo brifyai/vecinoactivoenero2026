@@ -1,13 +1,20 @@
 .timeline {
-  width: 100%;
+  max-width: 1400px;
+  margin: -42px auto 0;
   padding: 24px;
-  margin-top: -42px;
-  padding-right: 324px;
+  padding-right: 348px;
   transition: padding-right 0.3s ease;
 }
 
 .timeline.sidebar-collapsed {
   padding-right: 24px;
+}
+
+/* ProfileHeader y tabs ocupan todo el ancho disponible */
+.timeline > .profile-header,
+.timeline > .timeline-tabs {
+  width: 100%;
+  max-width: 100%;
 }
 
 .timeline-tabs {
@@ -17,7 +24,7 @@
   background: white;
   padding: 15px 20px;
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -80,22 +87,11 @@
 }
 
 .timeline-content {
-  display: grid;
-  grid-template-columns: 300px minmax(0, 1fr) 300px;
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   width: 100%;
-  align-items: start;
-}
-
-/* Cuando no hay activity-feed (perfiles de otros usuarios) */
-.timeline-content:not(:has(.activity-feed)) {
-  grid-template-columns: minmax(0, 1fr) 300px;
-}
-
-/* Para pestañas que no son timeline */
-.timeline-content:has(.profile-info-card:only-child) {
-  grid-template-columns: 1fr;
-  max-width: 800px;
+  max-width: 100%;
 }
 
 .profile-info-card {
@@ -222,19 +218,10 @@
 .posts-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  min-width: 0;
+  gap: 6px;
+  width: 100%;
   max-width: 100%;
-}
-
-@media (max-width: 968px) {
-  .timeline-content {
-    grid-template-columns: 1fr;
-  }
-  
-  .activity-feed {
-    display: none;
-  }
+  min-width: 0;
 }
 
 .widgets-sidebar {
@@ -267,20 +254,12 @@
 }
 
 @media (max-width: 1400px) {
-  .timeline-content {
-    grid-template-columns: 300px 1fr;
-  }
-  
   .widgets-sidebar {
     display: none;
   }
 }
 
 @media (max-width: 968px) {
-  .timeline-content {
-    grid-template-columns: 1fr;
-  }
-  
   .activity-feed {
     display: none;
   }

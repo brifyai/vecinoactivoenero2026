@@ -27,7 +27,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import CancelIcon from '@mui/icons-material/Cancel';
 import './HelpRequests.css';
 
-const HelpRequests = () => {
+const HelpRequests = ({ hideHeader = false, hideStats = false }) => {
   const { user } = useAuth();
   const { isRightSidebarCollapsed } = useSidebar();
   const {
@@ -169,59 +169,65 @@ const HelpRequests = () => {
 
   return (
     <div className={`help-requests-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-      <div className="help-header">
-        <div className="help-title">
-          <h1><HandshakeIcon className="page-title-icon" /> Ayuda Mutua</h1>
-          <p>Red de apoyo entre vecinos - Juntos somos más fuertes</p>
+      {!hideHeader && (
+        <div className="help-header">
+          <div className="help-title">
+            <h1><HandshakeIcon className="page-title-icon" /> Ayuda Mutua</h1>
+            <p>Red de apoyo entre vecinos - Juntos somos más fuertes</p>
+          </div>
+          <button className="create-help-btn" onClick={() => setShowCreateModal(true)}>
+            <AddIcon /> Solicitar Ayuda
+          </button>
         </div>
-        <button className="create-help-btn" onClick={() => setShowCreateModal(true)}>
-          <AddIcon /> Solicitar Ayuda
-        </button>
-      </div>
+      )}
 
       <div className="help-stats">
-        <div className="stat-card">
-          <div className="stat-icon" style={{ background: '#dbeafe' }}>
-            <BarChartIcon style={{ fontSize: '28px', color: '#3b82f6' }} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">{formatNumber(helpRequests.length)}</span>
-            <span className="stat-label">Solicitudes Totales</span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon" style={{ background: '#dcfce7' }}>
-            <CheckCircleIcon style={{ fontSize: '28px', color: '#10b981' }} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">
-              {formatNumber(helpRequests.filter(r => r.status === 'resuelta').length)}
-            </span>
-            <span className="stat-label">Ayudas Completadas</span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon" style={{ background: '#fef3c7' }}>
-            <LoopIcon style={{ fontSize: '28px', color: '#f59e0b' }} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">
-              {formatNumber(helpRequests.filter(r => r.status === 'abierta').length)}
-            </span>
-            <span className="stat-label">Necesitan Ayuda</span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon" style={{ background: '#fee2e2' }}>
-            <WarningIcon style={{ fontSize: '28px', color: '#ef4444' }} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">
-              {formatNumber(helpRequests.filter(r => r.urgency === 'emergencia').length)}
-            </span>
-            <span className="stat-label">Emergencias</span>
-          </div>
-        </div>
+        {!hideStats && (
+          <>
+            <div className="stat-card">
+              <div className="stat-icon" style={{ background: '#dbeafe' }}>
+                <BarChartIcon style={{ fontSize: '28px', color: '#3b82f6' }} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-value">{formatNumber(helpRequests.length)}</span>
+                <span className="stat-label">Solicitudes Totales</span>
+              </div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon" style={{ background: '#dcfce7' }}>
+                <CheckCircleIcon style={{ fontSize: '28px', color: '#10b981' }} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-value">
+                  {formatNumber(helpRequests.filter(r => r.status === 'resuelta').length)}
+                </span>
+                <span className="stat-label">Ayudas Completadas</span>
+              </div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon" style={{ background: '#fef3c7' }}>
+                <LoopIcon style={{ fontSize: '28px', color: '#f59e0b' }} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-value">
+                  {formatNumber(helpRequests.filter(r => r.status === 'abierta').length)}
+                </span>
+                <span className="stat-label">Necesitan Ayuda</span>
+              </div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon" style={{ background: '#fee2e2' }}>
+                <WarningIcon style={{ fontSize: '28px', color: '#ef4444' }} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-value">
+                  {formatNumber(helpRequests.filter(r => r.urgency === 'emergencia').length)}
+                </span>
+                <span className="stat-label">Emergencias</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       <div className="help-filters">

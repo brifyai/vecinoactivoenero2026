@@ -57,6 +57,7 @@ const Directory = () => {
   const [ratingFilter, setRatingFilter] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   
   const [newService, setNewService] = useState({
     name: '',
@@ -267,125 +268,80 @@ const Directory = () => {
       {/* Info adicional - ¿Cómo funciona? */}
       {activeTab === 'services' && (
         <div className="info-banner">
-          <h3><LightbulbIcon style={{ marginRight: '8px', verticalAlign: 'middle', fontSize: '20px' }} /> ¿Cómo funciona?</h3>
+          <h3><LightbulbIcon /> ¿Cómo funciona?</h3>
           <div className="info-grid">
             <div className="info-item">
-              <span className="info-icon"><CheckCircleIcon style={{ fontSize: '20px' }} /></span>
+              <span className="info-icon"><CheckCircleIcon /></span>
               <p>Todos los servicios son verificados por vecinos del barrio</p>
             </div>
             <div className="info-item">
-              <span className="info-icon"><StarIcon style={{ fontSize: '20px' }} /></span>
+              <span className="info-icon"><StarIcon /></span>
               <p>Las calificaciones son reales de trabajos realizados</p>
             </div>
             <div className="info-item">
-              <span className="info-icon"><LockIcon style={{ fontSize: '20px' }} /></span>
+              <span className="info-icon"><LockIcon /></span>
               <p>Contacta directamente con el profesional</p>
             </div>
             <div className="info-item">
-              <span className="info-icon"><RateReviewIcon style={{ fontSize: '20px' }} /></span>
+              <span className="info-icon"><RateReviewIcon /></span>
               <p>Deja tu reseña después de contratar un servicio</p>
             </div>
           </div>
         </div>
       )}
 
-      {/* Estadísticas */}
-      <div className="directory-stats">
-        {activeTab === 'services' ? (
-          <>
-            <div className="stat-card">
-              <StoreIcon style={{ color: '#3b82f6', fontSize: '18px' }} />
-              <div className="stat-info">
-                <span className="stat-value">{formatNumber(totalServices)}</span>
-                <span className="stat-label">Servicios Totales</span>
-              </div>
-            </div>
-            <div className="stat-card">
-              <StarIcon style={{ color: '#f59e0b', fontSize: '18px' }} />
-              <div className="stat-info">
-                <span className="stat-value">{averageRating}</span>
-                <span className="stat-label">Calificación Promedio</span>
-              </div>
-            </div>
-            <div className="stat-card">
-              <VerifiedIcon style={{ color: '#10b981', fontSize: '18px' }} />
-              <div className="stat-info">
-                <span className="stat-value">{formatNumber(verifiedServices)}</span>
-                <span className="stat-label">Verificados</span>
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="stat-card">
-              <BarChartIcon style={{ color: '#3b82f6', fontSize: '18px' }} />
-              <div className="stat-info">
-                <span className="stat-value">{formatNumber(totalBusinesses)}</span>
-                <span className="stat-label">Negocios Registrados</span>
-              </div>
-            </div>
-            <div className="stat-card">
-              <StarIcon style={{ color: '#f59e0b', fontSize: '18px' }} />
-              <div className="stat-info">
-                <span className="stat-value">{averageBusinessRating}</span>
-                <span className="stat-label">Calificación Promedio</span>
-              </div>
-            </div>
-            <div className="stat-card">
-              <ChatBubbleIcon style={{ color: '#10b981', fontSize: '18px' }} />
-              <div className="stat-info">
-                <span className="stat-value">{formatNumber(totalBusinessReviews)}</span>
-                <span className="stat-label">Reseñas Totales</span>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* Barra de búsqueda y filtros */}
+      {/* Barra de búsqueda y selector */}
       <div className="search-filter-bar">
-        <div className="search-bar">
+        <div style={{ position: 'relative', flex: 1 }}>
+          <SearchIcon className="search-icon" />
           <input
             type="text"
             placeholder="Buscar por nombre o servicio..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-input"
           />
         </div>
-        <button 
-          className={`filter-toggle-btn ${showFilters ? 'active' : ''}`}
-          onClick={() => setShowFilters(!showFilters)}
-        >
-          <FilterListIcon />
-          Filtros
-        </button>
-      </div>
-
-      {/* Panel de filtros */}
-      {showFilters && (
-        <div className="filters-panel">
-          <div className="filter-group">
-            <label>Calificación Mínima</label>
-            <div className="rating-filters">
-              <button 
-                className={ratingFilter === 'all' ? 'active' : ''}
-                onClick={() => setRatingFilter('all')}
-              >
-                Todas
-              </button>
-              {[5, 4, 3].map(rating => (
-                <button
-                  key={rating}
-                  className={ratingFilter === rating.toString() ? 'active' : ''}
-                  onClick={() => setRatingFilter(rating.toString())}
-                >
-                  <StarIcon fontSize="small" /> {rating}+
-                </button>
-              ))}
+        
+        {/* Dropdown personalizado */}
+        <div className="category-dropdown-wrapper">
+          <button 
+            className="category-dropdown-btn"
+            onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+          >
+            <span className="category-label">
+              {categories.find(c => c.value === selectedCategory)?.label}
+            </span>
+            <span className="category-count">
+              {selectedCategory === 'all' ? (activeTab === 'services' ? totalServices : totalBusinesses) : getCategoryCount(selectedCategory)}
+            </span>
+          </button>
+          
+          {showCategoryDropdown && (
+            <div className="category-dropdown-menu">
+              {categories.map(category => {
+                const count = category.value === 'all' ? (activeTab === 'services' ? totalServices : totalBusinesses) : getCategoryCount(category.value);
+                const isSelected = selectedCategory === category.value;
+                
+                return (
+                  <button
+                    key={category.value}
+                    className={`category-dropdown-item ${isSelected ? 'active' : ''}`}
+                    onClick={() => {
+                      setSelectedCategory(category.value);
+                      setShowCategoryDropdown(false);
+                    }}
+                  >
+                    <span className="item-icon">{category.icon}</span>
+                    <span className="item-label">{category.label}</span>
+                    <span className="item-count">{count}</span>
+                  </button>
+                );
+              })}
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Destacados */}
       {searchTerm === '' && selectedCategory === 'all' && ratingFilter === 'all' && (
@@ -398,33 +354,6 @@ const Directory = () => {
           </div>
         </div>
       )}
-
-      {/* Filtros por categoría */}
-      <div className="categories-section">
-        <h3>Categorías</h3>
-        <div className="categories-grid">
-          {categories.map(category => {
-            const count = category.value === 'all' ? totalServices : getCategoryCount(category.value);
-            return (
-              <button
-                key={category.value}
-                className={`category-btn ${selectedCategory === category.value ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(category.value)}
-                style={selectedCategory === category.value ? {
-                  borderColor: category.color,
-                  background: `${category.color}15`
-                } : {}}
-              >
-                <span className="category-icon" style={{ color: category.color }}>{category.icon}</span>
-                <div className="category-info">
-                  <span className="category-label">{category.label}</span>
-                  <span className="category-count">{count}</span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </div>
 
       {/* Lista de items */}
       <div className="services-section">

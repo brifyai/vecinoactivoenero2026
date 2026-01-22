@@ -7,6 +7,7 @@ import ProfileHeader from '../components/ProfileHeader/ProfileHeader';
 import Post from '../components/Post/Post';
 import EventsWidget from '../components/EventsWidget/EventsWidget';
 import ActivityNewsWidget from '../components/ActivityNewsWidget/ActivityNewsWidget';
+import PhotoLightbox from '../components/PhotoLightbox/PhotoLightbox';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import InfoIcon from '@mui/icons-material/Info';
 import GroupIcon from '@mui/icons-material/Group';
@@ -32,6 +33,8 @@ const UserProfile = () => {
   const [activeTab, setActiveTab] = useState(location.state?.activeTab || 'timeline');
   const [userFriends, setUserFriends] = useState([]);
   const [userPhotos, setUserPhotos] = useState([]);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   // Determinar tipo de ruta
   const isPage = location.pathname.startsWith('/pagina/') || location.pathname.startsWith('/paginas/');
@@ -226,15 +229,15 @@ const UserProfile = () => {
 
       // Generar fotos de ejemplo del usuario
       const photos = [
-        { id: 1, url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop', likes: 45 },
-        { id: 2, url: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=400&h=400&fit=crop', likes: 32 },
-        { id: 3, url: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=400&h=400&fit=crop', likes: 28 },
-        { id: 4, url: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop', likes: 56 },
-        { id: 5, url: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=400&h=400&fit=crop', likes: 41 },
-        { id: 6, url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&h=400&fit=crop', likes: 38 },
-        { id: 7, url: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=400&h=400&fit=crop', likes: 52 },
-        { id: 8, url: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop', likes: 29 },
-        { id: 9, url: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400&h=400&fit=crop', likes: 47 }
+        { id: 1, url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&h=800&fit=crop', likes: 45, title: 'Foto 1', description: 'Hermosa foto' },
+        { id: 2, url: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=1200&h=800&fit=crop', likes: 32, title: 'Foto 2', description: 'Momento especial' },
+        { id: 3, url: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=1200&h=800&fit=crop', likes: 28, title: 'Foto 3', description: 'Recuerdo inolvidable' },
+        { id: 4, url: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=1200&h=800&fit=crop', likes: 56, title: 'Foto 4', description: 'Gran momento' },
+        { id: 5, url: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=1200&h=800&fit=crop', likes: 41, title: 'Foto 5', description: 'Día perfecto' },
+        { id: 6, url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=1200&h=800&fit=crop', likes: 38, title: 'Foto 6', description: 'Aventura' },
+        { id: 7, url: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=1200&h=800&fit=crop', likes: 52, title: 'Foto 7', description: 'Diversión' },
+        { id: 8, url: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1200&h=800&fit=crop', likes: 29, title: 'Foto 8', description: 'Alegría' },
+        { id: 9, url: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=1200&h=800&fit=crop', likes: 47, title: 'Foto 9', description: 'Felicidad' }
       ];
       setUserPhotos(photos);
     }
@@ -273,6 +276,11 @@ const UserProfile = () => {
 
   const loadMore = () => {
     setVisiblePosts(prev => Math.min(prev + 3, allPosts.length));
+  };
+
+  const handlePhotoClick = (index) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
   };
 
   if (loading) {
@@ -468,8 +476,8 @@ const UserProfile = () => {
             <div className="photos-grid-container">
               <h3 style={{ marginBottom: '20px' }}>Fotos ({userPhotos.length})</h3>
               <div className="photos-grid">
-                {userPhotos.map(photo => (
-                  <div key={photo.id} className="photo-card">
+                {userPhotos.map((photo, index) => (
+                  <div key={photo.id} className="photo-card" onClick={() => handlePhotoClick(index)} style={{ cursor: 'pointer' }}>
                     <img src={photo.url} alt={`Foto ${photo.id}`} />
                     <div className="photo-overlay">
                       <span>❤️ {photo.likes}</span>
@@ -645,6 +653,14 @@ const UserProfile = () => {
           </div>
         )}
       </div>
+
+      {lightboxOpen && (
+        <PhotoLightbox
+          photos={userPhotos}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
     </div>
   );
 };

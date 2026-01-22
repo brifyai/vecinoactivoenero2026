@@ -30,7 +30,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import MailIcon from '@mui/icons-material/Mail';
 import './SharedResources.css';
 
-const SharedResources = () => {
+const SharedResources = ({ hideHeader = false, hideStats = false }) => {
   const { user } = useAuth();
   const { isRightSidebarCollapsed } = useSidebar();
   const {
@@ -181,59 +181,65 @@ const SharedResources = () => {
 
   return (
     <div className={`shared-resources-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-      <div className="resources-header">
-        <div className="resources-title">
-          <h1><ShareIcon className="page-title-icon" /> Recursos Compartidos</h1>
-          <p>Comparte y pide prestado entre vecinos - Economía colaborativa</p>
+      {!hideHeader && (
+        <div className="resources-header">
+          <div className="resources-title">
+            <h1><ShareIcon className="page-title-icon" /> Recursos Compartidos</h1>
+            <p>Comparte y pide prestado entre vecinos - Economía colaborativa</p>
+          </div>
+          <button className="add-resource-btn" onClick={() => setShowAddModal(true)}>
+            <AddIcon /> Agregar Recurso
+          </button>
         </div>
-        <button className="add-resource-btn" onClick={() => setShowAddModal(true)}>
-          <AddIcon /> Agregar Recurso
-        </button>
-      </div>
+      )}
 
       <div className="resources-stats">
-        <div className="stat-card">
-          <div className="stat-icon" style={{ background: '#dbeafe' }}>
-            <Inventory2Icon style={{ fontSize: '28px', color: '#3b82f6' }} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">{formatNumber(resources.length)}</span>
-            <span className="stat-label">Recursos Disponibles</span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon" style={{ background: '#dcfce7' }}>
-            <CheckCircleIcon style={{ fontSize: '28px', color: '#10b981' }} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">
-              {formatNumber(reservations.filter(r => r.status === 'completada').length)}
-            </span>
-            <span className="stat-label">Préstamos Completados</span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon" style={{ background: '#fef3c7' }}>
-            <LoopIcon style={{ fontSize: '28px', color: '#f59e0b' }} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">
-              {formatNumber(reservations.filter(r => r.status === 'activa').length)}
-            </span>
-            <span className="stat-label">Préstamos Activos</span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon" style={{ background: '#fce7f3' }}>
-            <HourglassEmptyIcon style={{ fontSize: '28px', color: '#ec4899' }} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">
-              {formatNumber(getPendingRequests().length)}
-            </span>
-            <span className="stat-label">Solicitudes Pendientes</span>
-          </div>
-        </div>
+        {!hideStats && (
+          <>
+            <div className="stat-card">
+              <div className="stat-icon" style={{ background: '#dbeafe' }}>
+                <Inventory2Icon style={{ fontSize: '28px', color: '#3b82f6' }} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-value">{formatNumber(resources.length)}</span>
+                <span className="stat-label">Recursos Disponibles</span>
+              </div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon" style={{ background: '#dcfce7' }}>
+                <CheckCircleIcon style={{ fontSize: '28px', color: '#10b981' }} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-value">
+                  {formatNumber(reservations.filter(r => r.status === 'completada').length)}
+                </span>
+                <span className="stat-label">Préstamos Completados</span>
+              </div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon" style={{ background: '#fef3c7' }}>
+                <LoopIcon style={{ fontSize: '28px', color: '#f59e0b' }} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-value">
+                  {formatNumber(reservations.filter(r => r.status === 'activa').length)}
+                </span>
+                <span className="stat-label">Préstamos Activos</span>
+              </div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon" style={{ background: '#fce7f3' }}>
+                <HourglassEmptyIcon style={{ fontSize: '28px', color: '#ec4899' }} />
+              </div>
+              <div className="stat-info">
+                <span className="stat-value">
+                  {formatNumber(getPendingRequests().length)}
+                </span>
+                <span className="stat-label">Solicitudes Pendientes</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       <div className="resources-controls">
@@ -277,18 +283,20 @@ const SharedResources = () => {
         </div>
       </div>
 
-      <div className="category-filters">
-        {categories.map(cat => (
-          <button
-            key={cat.value}
-            className={`category-btn ${categoryFilter === cat.value ? 'active' : ''}`}
-            onClick={() => setCategoryFilter(cat.value)}
-          >
-            <span className="cat-icon">{cat.icon}</span>
-            {cat.label}
-          </button>
-        ))}
-      </div>
+      {(view === 'all' || view === 'my-resources') && (
+        <div className="category-filters">
+          {categories.map(cat => (
+            <button
+              key={cat.value}
+              className={`category-btn ${categoryFilter === cat.value ? 'active' : ''}`}
+              onClick={() => setCategoryFilter(cat.value)}
+            >
+              <span className="cat-icon">{cat.icon}</span>
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="resources-grid">
         {view === 'my-reservations' || view === 'pending' ? (

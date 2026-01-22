@@ -184,6 +184,11 @@ code {
   border-radius: var(--radius-xs);
 }
 
+/* Excepción para inputs de búsqueda */
+.search-input:focus-visible {
+  outline: none !important;
+}
+
 /* Selección de texto */
 ::selection {
   background: var(--primary-light);

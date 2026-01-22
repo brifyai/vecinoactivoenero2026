@@ -5,6 +5,9 @@
   box-shadow: var(--elevation-2);
   transition: box-shadow var(--transition-base);
   animation: fadeIn var(--transition-base);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .post:hover {

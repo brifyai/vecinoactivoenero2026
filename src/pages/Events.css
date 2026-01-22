@@ -1,22 +1,19 @@
 .events-page {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-  padding: 20px;
-  padding-right: 320px;
-  max-width: none;
+  max-width: 1400px;
   margin: 0 auto;
+  padding: 24px;
+  padding-right: 348px;
   transition: padding-right 0.3s ease;
 }
 
 .events-page.sidebar-collapsed {
-  padding-right: 20px;
+  padding-right: 24px;
 }
 
 .events-center {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 6px;
   width: 100%;
 }
 
@@ -24,7 +21,7 @@
   background: white;
   padding: 20px;
   border-radius: 12px;
-  margin-bottom: 15px;
+  margin-bottom: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
@@ -75,7 +72,7 @@
 }
 
 .search-section {
-  margin-bottom: 15px;
+  margin-bottom: 6px;
 }
 
 .search-input-wrapper {
@@ -111,7 +108,7 @@
   background: white;
   padding: 10px 15px;
   border-radius: 12px;
-  margin-bottom: 15px;
+  margin-bottom: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   overflow-x: auto;
 }
@@ -150,7 +147,7 @@
 .years-selector {
   display: flex;
   gap: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 6px;
 }
 
 .year-btn {
@@ -179,7 +176,7 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 15px;
+  margin-bottom: 6px;
 }
 
 .category-btn {
@@ -350,7 +347,7 @@
 .community-header {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 15px;
+  margin-bottom: 6px;
 }
 
 .calendar-stats {

@@ -23,31 +23,6 @@ const Community = () => {
 
   return (
     <div className={`community-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-      {/* Pestañas */}
-      <div className="community-tabs">
-        <button 
-          className={`tab-btn ${activeTab === 'projects' ? 'active' : ''}`}
-          onClick={() => handleTabChange('projects')}
-        >
-          <RocketLaunchIcon />
-          Proyectos Comunitarios
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'help' ? 'active' : ''}`}
-          onClick={() => handleTabChange('help')}
-        >
-          <HandshakeIcon />
-          Ayuda Mutua
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'resources' ? 'active' : ''}`}
-          onClick={() => handleTabChange('resources')}
-        >
-          <ShareIcon />
-          Recursos Compartidos
-        </button>
-      </div>
-
       {/* Contenido según pestaña activa */}
       <div className="community-content">
         {activeTab === 'projects' && <Projects />}

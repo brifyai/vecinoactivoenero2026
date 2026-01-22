@@ -16,40 +16,54 @@
   padding-right: 24px;
 }
 
+/* Header */
+.community-header {
+  margin-bottom: 24px;
+}
+
+.community-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin: 0;
+}
+
 /* Pestañas */
 .community-tabs {
   display: flex;
   gap: 12px;
-  margin-bottom: 32px;
-  border-bottom: 2px solid var(--outline-variant);
+  margin-bottom: 6px;
+  border-bottom: none;
   padding-bottom: 0;
 }
 
 .community-tabs .tab-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 14px 24px;
-  background: transparent;
+  padding: 12px 24px;
+  background: white;
   border: none;
-  border-bottom: 3px solid transparent;
+  border-radius: 20px;
   font-size: 15px;
   font-weight: 600;
   color: var(--on-surface-variant);
   cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  bottom: -2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .community-tabs .tab-btn:hover {
-  color: var(--primary);
-  background: rgba(249, 115, 22, 0.05);
+  background: white;
+  color: var(--on-surface-variant);
 }
 
 .community-tabs .tab-btn.active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);
 }
 
 .community-tabs .tab-btn svg {
@@ -84,3 +98,5 @@
     border-bottom-color: var(--primary);
   }
 }
+
+/* Espaciado 6px aplicado */

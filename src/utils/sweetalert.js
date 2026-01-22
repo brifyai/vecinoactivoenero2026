@@ -250,15 +250,15 @@ export const showCreatePollDialog = () => {
     html: `
       <div class="create-poll-form">
         <div class="form-group">
-          <label for="pollTitle">Título de la Encuesta</label>
-          <input type="text" id="pollTitle" class="swal2-input" placeholder="Ej: ¿Deberíamos cambiar el horario de la reunión?" />
+          <label for="pollTitle">Título</label>
+          <input type="text" id="pollTitle" class="swal2-input" placeholder="Ej: ¿Deberíamos cambiar el horario?" />
         </div>
         <div class="form-group">
           <label for="pollDescription">Descripción</label>
-          <textarea id="pollDescription" class="swal2-textarea" placeholder="Describe el propósito de la encuesta..." rows="3"></textarea>
+          <textarea id="pollDescription" class="swal2-textarea" placeholder="Describe el propósito..." rows="2"></textarea>
         </div>
         <div class="form-group">
-          <label for="pollOptions">Opciones de respuesta</label>
+          <label for="pollOptions">Opciones</label>
           <div class="poll-options-input">
             <input type="text" id="pollOption1" class="swal2-input" placeholder="Opción 1" />
             <input type="text" id="pollOption2" class="swal2-input" placeholder="Opción 2" />
@@ -270,7 +270,6 @@ export const showCreatePollDialog = () => {
           <select id="pollDuration" class="swal2-input">
             <option value="1">1 día</option>
             <option value="3" selected>3 días</option>
-            <option value="5">5 días</option>
             <option value="7">7 días</option>
             <option value="14">14 días</option>
           </select>
@@ -283,33 +282,66 @@ export const showCreatePollDialog = () => {
     confirmButtonText: 'Crear Encuesta',
     cancelButtonText: 'Cancelar',
     focusConfirm: false,
-    width: '550px',
+    width: '480px',
+    padding: '16px',
+    heightAuto: false,
+    customClass: {
+      popup: 'compact-poll-modal',
+      htmlContainer: 'compact-poll-content',
+      title: 'compact-poll-title',
+      actions: 'compact-poll-actions'
+    },
     didOpen: () => {
       const style = document.createElement('style');
       style.textContent = `
+        .compact-poll-modal {
+          border-radius: 16px !important;
+          padding: 16px !important;
+          max-height: 90vh !important;
+          overflow: visible !important;
+        }
+        .compact-poll-title {
+          font-size: 20px !important;
+          padding: 0 0 12px 0 !important;
+          margin: 0 !important;
+        }
+        .compact-poll-content {
+          margin: 0 !important;
+          padding: 0 !important;
+          max-height: none !important;
+          overflow: visible !important;
+        }
+        .compact-poll-actions {
+          margin-top: 12px !important;
+        }
         .create-poll-form {
           text-align: left;
         }
         .create-poll-form .form-group {
-          margin-bottom: 15px;
+          margin-bottom: 10px;
+        }
+        .create-poll-form .form-group:last-child {
+          margin-bottom: 0;
         }
         .create-poll-form label {
           display: block;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 600;
           color: #374151;
-          margin-bottom: 6px;
+          margin-bottom: 4px;
         }
         .create-poll-form input,
         .create-poll-form select,
         .create-poll-form textarea {
           width: 100%;
-          padding: 12px 15px;
+          padding: 8px 10px;
           border: 2px solid #e5e7eb;
-          border-radius: 10px;
-          font-size: 14px;
-          transition: all 0.3s ease;
+          border-radius: 8px;
+          font-size: 13px;
+          transition: all 0.2s ease;
           background: #f9fafb;
+          box-sizing: border-box;
+          margin: 0 !important;
         }
         .create-poll-form input:focus,
         .create-poll-form select:focus,
@@ -320,19 +352,16 @@ export const showCreatePollDialog = () => {
           box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
         }
         .create-poll-form textarea {
-          resize: vertical;
-          min-height: 80px;
+          resize: none;
+          height: 50px;
+          min-height: 50px;
+          max-height: 50px;
+          font-family: inherit;
         }
         .poll-options-input {
           display: flex;
           flex-direction: column;
-          gap: 10px;
-        }
-        .swal2-popup {
-          border-radius: 16px;
-        }
-        .swal2-title {
-          color: #111827;
+          gap: 6px;
         }
       `;
       document.head.appendChild(style);

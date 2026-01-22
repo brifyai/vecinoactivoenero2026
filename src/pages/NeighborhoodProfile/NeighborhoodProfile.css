@@ -122,21 +122,21 @@
 
 .profile-tabs {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   margin-bottom: 30px;
   background: var(--surface);
-  padding: 12px;
-  border-radius: 16px;
+  padding: 6px;
+  border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .tab {
   flex: 1;
-  padding: 12px 24px;
+  padding: 8px 20px;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   background: transparent;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--on-surface-variant);
   cursor: pointer;

@@ -94,7 +94,7 @@ const Home = () => {
         )}
 
         {/* Filtros de categoría */}
-        <div className="category-filters" style={{ gap: '6px', display: 'flex', columnGap: '6px', rowGap: '6px', marginBottom: '6px !important' }}>
+        <div className="category-filters" style={{ gap: '6px', display: 'flex', columnGap: '6px', rowGap: '6px' }}>
           {categories.map(cat => (
             <button
               key={cat.value}

@@ -80,7 +80,7 @@ const ProfileHeader = ({ user: propUser, isOwnProfile = true }) => {
             <span className="verified-badge">✓</span>
           </div>
           
-          <div className="profile-details">
+          <div className="profile-info">
             <h2>
               {displayUser?.name || 'Usuario'} 
               {verificationStatus?.verified && <VerifiedBadge />}
@@ -99,19 +99,20 @@ const ProfileHeader = ({ user: propUser, isOwnProfile = true }) => {
             {verificationStatus?.status === 'rejected' && (
               <p className="verification-status rejected">✗ Verificación rechazada</p>
             )}
-            <div className="profile-stats">
-              <div className="stat">
-                <span className="stat-number">{formatNumber(displayUser?.following || 0)}</span>
-                <span className="stat-label">Siguiendo</span>
-              </div>
-              <div className="stat">
-                <span className="stat-number">{formatNumber(displayUser?.likes || 0)}</span>
-                <span className="stat-label">Me gusta</span>
-              </div>
-              <div className="stat">
-                <span className="stat-number">{formatNumber(displayUser?.followers || 0)}</span>
-                <span className="stat-label">Seguidores</span>
-              </div>
+          </div>
+
+          <div className="profile-stats">
+            <div className="stat">
+              <span className="stat-number">{formatNumber(displayUser?.following || 0)}</span>
+              <span className="stat-label">Siguiendo</span>
+            </div>
+            <div className="stat">
+              <span className="stat-number">{formatNumber(displayUser?.likes || 0)}</span>
+              <span className="stat-label">Me gusta</span>
+            </div>
+            <div className="stat">
+              <span className="stat-number">{formatNumber(displayUser?.followers || 0)}</span>
+              <span className="stat-label">Seguidores</span>
             </div>
           </div>
           
