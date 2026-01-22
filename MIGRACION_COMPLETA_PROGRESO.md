@@ -105,17 +105,83 @@
 
 ---
 
-## 📊 FASE 2: FEATURES COMUNITARIAS (Pendiente)
+## 📊 FASE 2: FEATURES COMUNITARIAS - ✅ 50% COMPLETADA
 
-### Slices a crear:
-1. ⏳ ProjectsSlice
-2. ⏳ PollsSlice
-3. ⏳ HelpRequestsSlice
-4. ⏳ SharedResourcesSlice
-5. ⏳ LocalBusinessSlice
-6. ⏳ CommunityCalendarSlice
+### ✅ 1. ProjectsSlice - COMPLETADO
 
-**Estimado total:** 1 semana
+**Archivos creados:**
+- ✅ `src/store/slices/projectsSlice.js` (320 líneas)
+- ✅ `src/store/selectors/projectsSelectors.js` (30 líneas)
+
+**Funcionalidad:**
+- ✅ Crear proyectos comunitarios
+- ✅ Votar por proyectos
+- ✅ Unirse como voluntario
+- ✅ Agregar actualizaciones
+- ✅ Cambiar estado del proyecto
+- ✅ Filtros por vecindario, estado, categoría
+
+**Estado:** ✅ COMPLETADO Y FUNCIONANDO
+
+### ✅ 2. PollsSlice - COMPLETADO
+
+**Archivos creados:**
+- ✅ `src/store/slices/pollsSlice.js` (180 líneas)
+- ✅ `src/store/selectors/pollsSelectors.js` (35 líneas)
+
+**Funcionalidad:**
+- ✅ Crear votaciones/encuestas
+- ✅ Votar en encuestas
+- ✅ Cerrar votaciones
+- ✅ Verificar voto de usuario
+- ✅ Filtros por estado
+
+**Estado:** ✅ COMPLETADO Y FUNCIONANDO
+
+### ✅ 3. HelpRequestsSlice - COMPLETADO
+
+**Archivos creados:**
+- ✅ `src/store/slices/helpRequestsSlice.js` (280 líneas)
+- ✅ `src/store/selectors/helpRequestsSelectors.js` (40 líneas)
+
+**Funcionalidad:**
+- ✅ Crear solicitudes de ayuda
+- ✅ Ofrecer ayuda
+- ✅ Aceptar ofertas
+- ✅ Resolver/cancelar solicitudes
+- ✅ Filtros múltiples
+
+**Estado:** ✅ COMPLETADO Y FUNCIONANDO
+
+### ⏳ 4. SharedResourcesSlice - PENDIENTE
+
+**Funcionalidad requerida:**
+- Agregar recursos compartidos
+- Reservar recursos
+- Aprobar/completar reservas
+- Sistema de calificaciones
+
+**Estimado:** 2 horas
+
+### ⏳ 5. LocalBusinessSlice - PENDIENTE
+
+**Funcionalidad requerida:**
+- Registrar negocios locales
+- Agregar reseñas
+- Crear ofertas
+- Búsqueda y filtros
+
+**Estimado:** 2 horas
+
+### ⏳ 6. CommunityCalendarSlice - PENDIENTE
+
+**Funcionalidad requerida:**
+- Crear eventos de calendario
+- Confirmar asistencia
+- Eventos recurrentes
+- Filtros por fecha/tipo
+
+**Estimado:** 2 horas
 
 ---
 
@@ -142,16 +208,23 @@
 - ✅ groupsSlice
 - ✅ eventsSlice
 - ✅ messagesSlice
-- **Total:** 7 slices
+- ✅ projectsSlice
+- ✅ pollsSlice
+- ✅ helpRequestsSlice
+- ⏳ sharedResourcesSlice
+- ⏳ localBusinessSlice
+- ⏳ communityCalendarSlice
+- **Total:** 10/13 slices
 
 ### Contexts Activos:
-- ❌ 24 contexts restantes (de 31 originales)
+- ❌ 21 contexts restantes (de 31 originales)
 
 ### Progreso:
-- **Slices completados:** 7/14 (50%)
-- **Contexts eliminados:** 7/31 (22.6%)
+- **Slices completados:** 10/13 (76.9%)
+- **Contexts eliminados/migrados:** 10/31 (32.3%)
 - **FASE 1:** ✅ 100% COMPLETADA
-- **Progreso general:** ~50%
+- **FASE 2:** ✅ 50% COMPLETADA (3/6 slices)
+- **Progreso general:** ~75%
 
 ---
 

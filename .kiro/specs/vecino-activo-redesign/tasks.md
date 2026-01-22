@@ -61,7 +61,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Indicador visual de sección actual
     - _Requisitos: 1.1, 1.2, 1.3, 1.4_
   
-  - [ ] 3.2 Ocultar características genéricas de Facebook
+  - [-] 3.2 Ocultar características genéricas de Facebook
     - Remover o deshabilitar: Stories, Pages, Games, Music, Timeline genérico
     - Mantener solo características enfocadas en comunidad
     - _Requisitos: 1.2_
@@ -77,7 +77,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Si usuarios > 5000, dividir en sub-vecindarios
     - _Requisitos: 17.2, 17.3_
   
-  - [ ] 4.3 Implementar búsqueda multi-vecindario en UI
+  - [~] 4.3 Implementar búsqueda multi-vecindario en UI
     - Permitir ver contenido de vecindarios adyacentes en Feed
     - Marcar claramente origen del contenido
     - Agregar toggle en Feed para incluir vecindarios adyacentes
@@ -124,13 +124,13 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - **Valida: Requisitos 2.3**
 
 - [ ] 7. Implementar sistema de privacidad de ubicación
-  - [ ] 7.1 Implementar privacidad de ubicación sin conexión
+  - [~] 7.1 Implementar privacidad de ubicación sin conexión
     - Mostrar ubicación aproximada (100-500m) para no conectados
     - Nunca mostrar ubicación exacta sin consentimiento
     - Actualizar DiscoverNeighbors para usar ubicación aproximada
     - _Requisitos: 10.3_
   
-  - [ ] 7.2 Implementar privacidad de ubicación con conexión
+  - [~] 7.2 Implementar privacidad de ubicación con conexión
     - Permitir compartir ubicación exacta entre conectados
     - Requerir consentimiento de ambos usuarios
     - Agregar configuración en perfil de usuario
@@ -159,7 +159,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Habilitar comunicación entre solicitante y respondedor
     - _Requisitos: 3.3_
   
-  - [ ] 8.4 Crear flujo de resolución de necesidad
+  - [~] 8.4 Crear flujo de resolución de necesidad
     - Permitir marcar necesidad como resuelta
     - Permitir calificar al ayudante
     - Actualizar reputación del ayudante
@@ -173,7 +173,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - **Propiedad 4: Ordenamiento de Necesidades**
     - **Valida: Requisitos 3.5**
 
-- [ ] 9. Checkpoint - Asegurar que todas las pruebas pasen
+- [~] 9. Checkpoint - Asegurar que todas las pruebas pasen
   - Ejecutar todas las pruebas de propiedades
   - Verificar que el sistema de necesidades funciona correctamente
   - Preguntar al usuario si hay dudas
@@ -203,7 +203,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Gestionar cancelaciones
     - _Requisitos: 4.4_
   
-  - [ ] 10.5 Crear flujo de finalización de acción
+  - [~] 10.5 Crear flujo de finalización de acción
     - Permitir compartir fotos
     - Permitir retroalimentación de participantes
     - Actualizar reputación de participantes
@@ -225,7 +225,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Permitir filtrado por tipo de contenido
     - _Requisitos: 6.1, 6.3, 6.4_
   
-  - [ ] 11.3 Implementar aprendizaje de preferencias
+  - [~] 11.3 Implementar aprendizaje de preferencias
     - Rastrear engagement del usuario
     - Ajustar ranking futuro basado en interacciones
     - _Requisitos: 6.5_
@@ -247,7 +247,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Verificar que sea local y relevante
     - _Requisitos: 5.3_
   
-  - [ ] 12.3 Crear sistema de reseñas y calificaciones
+  - [~] 12.3 Crear sistema de reseñas y calificaciones
     - Permitir calificar servicio
     - Permitir escribir reseña
     - Actualizar calificación promedio
@@ -287,7 +287,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Permitir iniciar desde solicitud de conexión
     - _Requisitos: 7.5_
   
-  - [ ] 13.5 Implementar bloqueo de usuarios
+  - [~] 13.5 Implementar bloqueo de usuarios
     - Permitir bloquear usuario
     - Prevenir toda comunicación
     - Ocultar del descubrimiento
@@ -298,19 +298,19 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - **Valida: Requisitos 7.1**
 
 - [ ] 14. Implementar sistema de perfiles de usuario
-  - [ ] 14.1 Crear página de perfil personal mejorada
+  - [~] 14.1 Crear página de perfil personal mejorada
     - Mostrar vecindario, conexiones, actividad
     - Mostrar contribuciones y reputación
     - Permitir editar información
     - _Requisitos: 8.2, 8.5_
   
-  - [ ] 14.2 Crear sistema de reputación
+  - [~] 14.2 Crear sistema de reputación
     - Calcular puntuación basada en contribuciones
     - Mostrar insignias de confianza
     - Actualizar en tiempo real
     - _Requisitos: 8.5, 8.6_
   
-  - [ ] 14.3 Mejorar perfil público de vecino
+  - [~] 14.3 Mejorar perfil público de vecino
     - Mostrar información relevante
     - Mostrar habilidades e intereses
     - Mostrar conexiones compartidas
@@ -351,7 +351,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Permitir zoom y navegación
     - _Requisitos: 12.3, 12.4_
   
-  - [ ] 16.3 Implementar visualización de servicios en mapa
+  - [~] 16.3 Implementar visualización de servicios en mapa
     - Mostrar entradas del directorio en mapa
     - Mostrar ubicación y distancia
     - Agregar marcadores para servicios locales
@@ -388,7 +388,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Filtrar por fecha
     - _Requisitos: 14.5_
   
-  - [ ] 17.6 Implementar historial de búsqueda
+  - [~] 17.6 Implementar historial de búsqueda
     - Sugerir búsquedas anteriores
     - Sugerir búsquedas populares locales
     - _Requisitos: 14.6_
@@ -397,7 +397,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - **Propiedad 9: Ordenamiento de Resultados de Búsqueda**
     - **Valida: Requisitos 14.1**
 
-- [ ] 18. Checkpoint - Asegurar que todas las pruebas pasen
+- [~] 18. Checkpoint - Asegurar que todas las pruebas pasen
   - Ejecutar todas las pruebas de propiedades
   - Verificar que todos los sistemas funcionan correctamente
   - Preguntar al usuario si hay dudas
@@ -409,19 +409,19 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Enviar a moderadores
     - _Requisitos: 10.5, 16.1_
   
-  - [ ] 19.2 Crear panel de moderación
+  - [~] 19.2 Crear panel de moderación
     - Mostrar reportes pendientes
     - Mostrar contenido reportado con contexto
     - Permitir tomar acciones
     - _Requisitos: 16.2_
   
-  - [ ] 19.3 Implementar acciones de moderación
+  - [~] 19.3 Implementar acciones de moderación
     - Advertencia al usuario
     - Eliminación de contenido
     - Suspensión de cuenta
     - _Requisitos: 16.3_
   
-  - [ ] 19.4 Crear sistema de apelaciones
+  - [~] 19.4 Crear sistema de apelaciones
     - Permitir apelar acciones de moderación
     - Escalar a equipo central
     - _Requisitos: 16.4_
@@ -432,22 +432,22 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - _Requisitos: 16.5, 16.6_
 
 - [ ] 20. Implementar sistema de análisis
-  - [ ] 20.1 Crear panel de análisis para organizadores
+  - [~] 20.1 Crear panel de análisis para organizadores
     - Mostrar métricas comunitarias
     - Mostrar tendencias en el tiempo
     - _Requisitos: 15.1, 15.2_
   
-  - [ ] 20.2 Implementar filtros de análisis
+  - [~] 20.2 Implementar filtros de análisis
     - Filtrar por período de tiempo
     - Filtrar por tipo de contenido
     - Filtrar por área geográfica
     - _Requisitos: 15.3_
   
-  - [ ] 20.3 Crear sugerencias de análisis
+  - [~] 20.3 Crear sugerencias de análisis
     - Sugerir acciones basadas en tendencias
     - _Requisitos: 15.4_
   
-  - [ ] 20.4 Implementar exportación de datos
+  - [~] 20.4 Implementar exportación de datos
     - Exportar reportes en CSV/PDF
     - _Requisitos: 15.5_
 
@@ -458,7 +458,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Mostrar vecindario, vecinos, necesidades
     - _Requisitos: 13.1, 13.2, 13.3_
   
-  - [ ] 21.2 Crear sugerencias iniciales
+  - [~] 21.2 Crear sugerencias iniciales
     - Sugerir conexiones iniciales
     - Sugerir acciones comunitarias para unirse
     - _Requisitos: 13.4_
@@ -487,24 +487,24 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar
     - Usar iconos comunitarios: HandshakeIcon, ChatIcon, HomeWorkIcon
     - _Requisitos: 11.1, 11.2, 11.3_
 
-- [ ] 23. Final checkpoint - Asegurar que todas las pruebas pasen
+- [~] 23. Final checkpoint - Asegurar que todas las pruebas pasen
   - Ejecutar todas las pruebas de propiedades
   - Verificar que el sistema completo funciona correctamente
   - Preguntar al usuario si hay dudas
 
 - [ ] 24. Integración y validación final
-  - [ ] 24.1 Validar que todas las características funcionan juntas
+  - [~] 24.1 Validar que todas las características funcionan juntas
     - Pruebas de integración end-to-end
     - Validar flujos completos de usuario
     - _Requisitos: Todos_
   
-  - [ ] 24.2 Validar diferenciación de Facebook
+  - [~] 24.2 Validar diferenciación de Facebook
     - Verificar que navegación es comunitaria
     - Verificar que contenido es local
     - Verificar que privacidad es protegida
     - _Requisitos: 1.1, 1.2, 11.1_
   
-  - [ ] 24.3 Validar seguridad y confianza
+  - [~] 24.3 Validar seguridad y confianza
     - Verificar que ubicación exacta nunca se muestra sin consentimiento
     - Verificar que verificación funciona
     - Verificar que moderación funciona

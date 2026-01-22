@@ -59,7 +59,8 @@ import Polls from './pages/Polls/Polls';
 import Community from './pages/Community/Community';
 import CommunityHub from './pages/CommunityHub/CommunityHub';
 import UserProfile from './pages/UserProfile';
-import Pages from './pages/Pages';
+// Pages removed - generic Facebook feature
+// import Pages from './pages/Pages';
 import Calendar from './pages/Calendar';
 import Favorites from './pages/Favorites';
 import History from './pages/History';
@@ -159,9 +160,10 @@ function App() {
                                                           {/* <Route path="/grupos" element={<Groups />} /> */}
                                                           <Route path="/grupo/:slug" element={<UserProfile />} />
                                                           <Route path="/evento/:slug" element={<UserProfile />} />
-                                                          <Route path="/paginas" element={<Pages />} />
-                                                          <Route path="/pagina/:slug" element={<UserProfile />} />
-                                                          <Route path="/paginas/:slug" element={<UserProfile />} />
+                                                          {/* Pages routes removed - generic Facebook feature */}
+                                                          {/* <Route path="/paginas" element={<Pages />} /> */}
+                                                          {/* <Route path="/pagina/:slug" element={<UserProfile />} /> */}
+                                                          {/* <Route path="/paginas/:slug" element={<UserProfile />} /> */}
                                                           <Route path="/calendario" element={<Calendar />} />
                                                           <Route path="/favoritos" element={<Favorites />} />
                                                           <Route path="/historial" element={<History />} />

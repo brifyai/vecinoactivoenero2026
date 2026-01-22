@@ -11,7 +11,8 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import PagesIcon from '@mui/icons-material/Pages';
+// PagesIcon removed - generic Facebook feature
+// import PagesIcon from '@mui/icons-material/Pages';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { showConfirmDialog, showSuccessToast } from '../../utils/sweetalert';
 import './Sidebar.css';
@@ -28,7 +29,8 @@ const Sidebar = () => {
     { icon: <GroupWorkIcon />, path: '/acciones-comunitarias', label: 'Acciones' },
     { icon: <MapIcon />, path: '/mapa', label: 'Mapa del Barrio' },
     { icon: <RocketLaunchIcon />, path: '/hub-comunitario', label: 'Hub Comunitario' },
-    { icon: <PagesIcon />, path: '/paginas', label: 'Páginas' },
+    // Pages removed - generic Facebook feature
+    // { icon: <PagesIcon />, path: '/paginas', label: 'Páginas' },
     { icon: <CalendarMonthIcon />, path: '/eventos', label: 'Eventos' },
     { icon: <PersonIcon />, path: `/${user?.username || user?.name?.toLowerCase().replace(/\s+/g, '-') || 'usuario'}`, label: 'Perfil', matchPaths: ['/linea-tiempo', '/acerca-de', '/vecinos', '/fotos'] },
     { icon: <MessageIcon />, path: '/mensajes', label: 'Mensajes' },

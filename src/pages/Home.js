@@ -5,13 +5,17 @@ import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
 import CreatePost from '../components/CreatePost/CreatePost';
 import Post from '../components/Post/Post';
-import Stories from '../components/Stories/Stories';
+// Stories removed - generic Facebook feature
+// import Stories from '../components/Stories/Stories';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import FriendSuggestions from '../components/FriendSuggestions/FriendSuggestions';
-import LikedPages from '../components/LikedPages/LikedPages';
+// LikedPages removed - generic Facebook feature
+// import LikedPages from '../components/LikedPages/LikedPages';
 import MyPhotos from '../components/MyPhotos/MyPhotos';
-import EventCard from '../components/EventCard/EventCard';
-import GroupsWidget from '../components/GroupsWidget/GroupsWidget';
+// EventCard removed - generic Facebook feature
+// import EventCard from '../components/EventCard/EventCard';
+// GroupsWidget removed - generic Facebook feature
+// import GroupsWidget from '../components/GroupsWidget/GroupsWidget';
 import SkeletonLoader from '../components/SkeletonLoader/SkeletonLoader';
 import PublicIcon from '@mui/icons-material/Public';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
@@ -60,7 +64,7 @@ const Home = () => {
   return (
     <div className={`home-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
       <div className="home-left">
-        <Stories />
+        {/* Stories removed - generic Facebook feature */}
         <ProfileCard />
         {/* Sugerencias de amigos por distancia */}
         {user?.latitude && user?.longitude && (
@@ -69,7 +73,7 @@ const Home = () => {
             limit={5} 
           />
         )}
-        <LikedPages />
+        {/* LikedPages removed - generic Facebook feature */}
       </div>
 
       <div className="home-center">
@@ -132,8 +136,8 @@ const Home = () => {
 
       <div className="home-right">
         <MyPhotos />
-        <EventCard />
-        <GroupsWidget />
+        {/* EventCard removed - generic Facebook feature */}
+        {/* GroupsWidget removed - generic Facebook feature */}
       </div>
     </div>
   );
