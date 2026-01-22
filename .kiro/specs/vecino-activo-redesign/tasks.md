@@ -7,53 +7,55 @@ Este plan convierte el diseño de Vecino Activo en una serie de tareas de implem
 ## Estado Actual del Proyecto
 
 La mayoría de la infraestructura base y características principales ya están implementadas:
-- ✅ Sistema de autenticación y verificación de ubicación
+- ✅ Sistema de autenticación y verificación de ubicación (LocationVerification)
 - ✅ Navegación comunitaria (CommunityNavigation)
 - ✅ Descubrimiento de vecinos (DiscoverNeighbors)
-- ✅ Sistema de necesidades locales (LocalNeeds)
-- ✅ Sistema de acciones comunitarias (CommunityActions)
+- ✅ Sistema de conexiones entre vecinos (ConnectionsContext)
+- ✅ Sistema de necesidades locales (LocalNeeds + LocalNeedsContext)
+- ✅ Sistema de acciones comunitarias (CommunityActions + CommunityActionsContext)
 - ✅ Feed con priorización (Feed + feedService)
 - ✅ Directorio de servicios y negocios (Directory)
 - ✅ Mapa de vecindarios (NeighborhoodMap)
-- ✅ Mensajería directa (DirectMessages)
+- ✅ Mensajería directa (DirectMessages + MessagesContext)
 - ✅ Sistema de notificaciones (NotificationsCenter)
 - ✅ Sistema de búsqueda (SearchModal + SearchContext)
 - ✅ Sistema de moderación (ModerationContext + ReportModal)
-- ✅ Onboarding básico
+- ✅ Onboarding básico (Onboarding + LocationVerification)
 - ✅ Identidad visual comunitaria (Post rediseñado)
+- ✅ Expansión dinámica de vecindarios (neighborhoodExpansionService)
 
 ## Tareas Pendientes
 
-Las siguientes tareas se enfocan en completar funcionalidades faltantes y agregar pruebas de propiedades:
+Las siguientes tareas se enfocan en completar funcionalidades faltantes, mejorar características existentes y agregar pruebas de propiedades:
 
-- [ ] 1. Configurar estructura de proyecto y modelos de datos
+- [x] 1. Configurar estructura de proyecto y modelos de datos
   - [x] Crear estructura de carpetas para componentes, contextos, servicios
   - [x] Implementar modelos de datos (Usuario, Necesidad, Acción, Directorio, Vecindario, Conexión, Mensaje)
   - [x] Configurar Context API para gestión de estado global
   - [x] Crear servicio de almacenamiento persistente (localStorage/base de datos)
   - _Requisitos: Todos (base para todo el sistema)_
 
-- [ ] 2. Implementar sistema de autenticación y verificación
-  - [ ] 2.1 Crear flujo de registro con verificación de email
+- [x] 2. Implementar sistema de autenticación y verificación
+  - [x] 2.1 Crear flujo de registro con verificación de email
     - [x] Formulario de registro con validación
     - [x] Envío de código de verificación
     - [x] Confirmación de email
     - _Requisitos: 10.1_
   
-  - [ ] 2.2 Crear flujo de verificación de ubicación
+  - [x] 2.2 Crear flujo de verificación de ubicación
     - [x] Geolocalización por GPS/IP
     - [x] Validación de código postal
     - [x] Opción de validación manual
     - _Requisitos: 10.1_
   
-  - [ ] 2.3 Crear flujo de login y sesión
+  - [x] 2.3 Crear flujo de login y sesión
     - [x] Autenticación con email/contraseña
     - [x] Gestión de sesión persistente
     - [x] Logout seguro
     - _Requisitos: 10.1_
 
-- [ ] 3. Implementar sistema de navegación enfocado en comunidad
-  - [ ] 3.1 Crear navegación principal con acciones comunitarias
+- [x] 3. Implementar sistema de navegación enfocado en comunidad
+  - [x] 3.1 Crear navegación principal con acciones comunitarias
     - Componente de navegación con: Descubrir Vecinos, Necesidades Locales, Acciones Comunitarias, Directorio, Mapa, Mensajes, Perfil
     - Navegación adaptativa para móvil (bottom navigation)
     - Indicador visual de sección actual
@@ -63,30 +65,32 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - Remover o deshabilitar: Stories, Pages, Games, Music, Timeline genérico
     - Mantener solo características enfocadas en comunidad
     - _Requisitos: 1.2_
+
 - [ ] 4. Implementar sistema de asignación de vecindarios
-  - [ ] 4.1 Crear lógica de asignación dinámica de vecindarios
+  - [x] 4.1 Crear lógica de asignación dinámica de vecindarios
     - Asignar usuario a vecindario basado en ubicación
     - Calcular densidad poblacional
     - _Requisitos: 17.1_
   
-  - [ ] 4.2 Implementar expansión dinámica de vecindarios
+  - [x] 4.2 Implementar expansión dinámica de vecindarios
     - Si usuarios < 500, expandir radio geográfico
     - Si usuarios > 5000, dividir en sub-vecindarios
     - _Requisitos: 17.2, 17.3_
   
-  - [ ] 4.3 Implementar búsqueda multi-vecindario
-    - Permitir ver contenido de vecindarios adyacentes
+  - [ ] 4.3 Implementar búsqueda multi-vecindario en UI
+    - Permitir ver contenido de vecindarios adyacentes en Feed
     - Marcar claramente origen del contenido
+    - Agregar toggle en Feed para incluir vecindarios adyacentes
     - _Requisitos: 17.5_
 
-- [ ] 5. Implementar sistema de descubrimiento de vecinos
-  - [ ] 5.1 Crear página "Descubrir Vecinos"
+- [x] 5. Implementar sistema de descubrimiento de vecinos
+  - [x] 5.1 Crear página "Descubrir Vecinos"
     - Mostrar vecinos cercanos ordenados por proximidad
     - Filtrar por intereses compartidos
     - Mostrar ubicación aproximada (100-500m)
     - _Requisitos: 2.1, 2.2, 10.3_
   
-  - [ ] 5.2 Crear perfil de vecino con información relevante
+  - [x] 5.2 Crear perfil de vecino con información relevante
     - Mostrar nombre, intereses, habilidades, distancia
     - Mostrar conexiones compartidas
     - Mostrar insignias de verificación
@@ -96,20 +100,20 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - **Propiedad 2: Ordenamiento de Vecinos por Proximidad**
     - **Valida: Requisitos 2.1**
 
-- [ ] 6. Implementar sistema de conexiones entre vecinos
-  - [ ] 6.1 Crear flujo de solicitud de conexión
+- [x] 6. Implementar sistema de conexiones entre vecinos
+  - [x] 6.1 Crear flujo de solicitud de conexión
     - Botón para enviar solicitud desde perfil de vecino
     - Notificación al destinatario
     - Rastreo de estado de solicitud
     - _Requisitos: 2.3_
   
-  - [ ] 6.2 Crear gestión de solicitudes de conexión
+  - [x] 6.2 Crear gestión de solicitudes de conexión
     - Página de solicitudes pendientes
     - Botones para aceptar/rechazar
     - Establecer conexión mutua al aceptar
     - _Requisitos: 2.4, 2.6_
   
-  - [ ] 6.3 Crear lista de conexiones
+  - [x] 6.3 Crear lista de conexiones
     - Mostrar todas las conexiones aceptadas
     - Opciones para enviar mensaje o ver perfil
     - Opción para desconectar
@@ -123,11 +127,13 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
   - [ ] 7.1 Implementar privacidad de ubicación sin conexión
     - Mostrar ubicación aproximada (100-500m) para no conectados
     - Nunca mostrar ubicación exacta sin consentimiento
+    - Actualizar DiscoverNeighbors para usar ubicación aproximada
     - _Requisitos: 10.3_
   
   - [ ] 7.2 Implementar privacidad de ubicación con conexión
     - Permitir compartir ubicación exacta entre conectados
     - Requerir consentimiento de ambos usuarios
+    - Agregar configuración en perfil de usuario
     - _Requisitos: 10.4_
   
   - [ ]* 7.3 Escribir prueba de propiedad para privacidad de ubicación
@@ -135,20 +141,20 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - **Propiedad 7: Privacidad de Ubicación Con Conexión**
     - **Valida: Requisitos 10.3, 10.4**
 
-- [ ] 8. Implementar sistema de necesidades locales
-  - [ ] 8.1 Crear página "Necesidades Locales"
+- [x] 8. Implementar sistema de necesidades locales
+  - [x] 8.1 Crear página "Necesidades Locales"
     - Mostrar feed de necesidades activas
     - Ordenar por proximidad e urgencia
     - Filtrar por tipo de necesidad
     - _Requisitos: 3.5, 6.1_
   
-  - [ ] 8.2 Crear formulario para crear necesidad local
+  - [x] 8.2 Crear formulario para crear necesidad local
     - Capturar tipo (Ayuda, Recurso, Habilidad)
     - Capturar descripción y urgencia
     - Capturar ubicación
     - _Requisitos: 3.1_
   
-  - [ ] 8.3 Crear sistema de respuestas a necesidades
+  - [x] 8.3 Crear sistema de respuestas a necesidades
     - Permitir responder a necesidad con mensaje directo
     - Habilitar comunicación entre solicitante y respondedor
     - _Requisitos: 3.3_
@@ -172,26 +178,26 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
   - Verificar que el sistema de necesidades funciona correctamente
   - Preguntar al usuario si hay dudas
 
-- [ ] 10. Implementar sistema de acciones comunitarias
-  - [ ] 10.1 Crear página "Acciones Comunitarias"
+- [x] 10. Implementar sistema de acciones comunitarias
+  - [x] 10.1 Crear página "Acciones Comunitarias"
     - Mostrar feed de acciones próximas
     - Filtrar por tipo de acción
     - Mostrar detalles de organizador
     - _Requisitos: 4.2_
   
-  - [ ] 10.2 Crear formulario para crear acción comunitaria
+  - [x] 10.2 Crear formulario para crear acción comunitaria
     - Capturar título, descripción, fecha/hora
     - Capturar ubicación y habilidades requeridas
     - Capturar límite de participantes
     - _Requisitos: 4.1_
   
-  - [ ] 10.3 Crear sistema de participación en acciones
+  - [x] 10.3 Crear sistema de participación en acciones
     - Permitir unirse a acción
     - Agregar a lista de espera si está llena
     - Enviar confirmación
     - _Requisitos: 4.3, 4.6_
   
-  - [ ] 10.4 Crear gestión de participantes para organizador
+  - [x] 10.4 Crear gestión de participantes para organizador
     - Ver lista de participantes
     - Ver lista de espera
     - Gestionar cancelaciones
@@ -207,13 +213,13 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - **Propiedad 5: Captura de Campos de Acción**
     - **Valida: Requisitos 4.1**
 
-- [ ] 11. Implementar sistema de feed con priorización
-  - [ ] 11.1 Crear algoritmo de priorización de feed
+- [x] 11. Implementar sistema de feed con priorización
+  - [x] 11.1 Crear algoritmo de priorización de feed
     - Implementar fórmula: R = (W_tipo * U) / ((D + 1)^2 * (T + 1))
     - Priorizar: Necesidades > Acciones > Actualizaciones > Directorio
     - _Requisitos: 6.1_
   
-  - [ ] 11.2 Crear página de feed principal
+  - [x] 11.2 Crear página de feed principal
     - Mostrar contenido ordenado por relevancia
     - Cargar incrementalmente sin abrumar
     - Permitir filtrado por tipo de contenido
@@ -228,14 +234,14 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - **Propiedad 1: Priorización de Feed**
     - **Valida: Requisitos 6.1**
 
-- [ ] 12. Implementar sistema de directorio
-  - [ ] 12.1 Crear página "Directorio"
+- [x] 12. Implementar sistema de directorio
+  - [x] 12.1 Crear página "Directorio"
     - Mostrar servicios locales
     - Filtrar por categoría
     - Ordenar por proximidad y calificación
     - _Requisitos: 5.1, 5.5_
   
-  - [ ] 12.2 Crear formulario para agregar servicio
+  - [x] 12.2 Crear formulario para agregar servicio
     - Capturar nombre, categoría, descripción
     - Capturar ubicación, contacto, horarios
     - Verificar que sea local y relevante
@@ -247,7 +253,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - Actualizar calificación promedio
     - _Requisitos: 5.4_
   
-  - [ ] 12.4 Crear sistema de reportes de directorio
+  - [x] 12.4 Crear sistema de reportes de directorio
     - Permitir reportar entrada inexacta
     - Marcar para revisión
     - Notificar al remitente
@@ -257,26 +263,26 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - **Propiedad 11: Directorio Sin Opciones Premium**
     - **Valida: Requisitos 18.2**
 
-- [ ] 13. Implementar sistema de mensajería directa
-  - [ ] 13.1 Crear página "Mensajes"
+- [x] 13. Implementar sistema de mensajería directa
+  - [x] 13.1 Crear página "Mensajes"
     - Mostrar lista de conversaciones
     - Mostrar contador de no leídos
     - Permitir buscar conversaciones
     - _Requisitos: 7.1_
   
-  - [ ] 13.2 Crear interfaz de conversación
+  - [x] 13.2 Crear interfaz de conversación
     - Mostrar historial de mensajes en orden cronológico
     - Mostrar estado en línea del vecino
     - Mostrar indicador de escritura
     - _Requisitos: 7.1, 7.4_
   
-  - [ ] 13.3 Crear sistema de envío de mensajes
+  - [x] 13.3 Crear sistema de envío de mensajes
     - Permitir enviar mensaje
     - Entregar inmediatamente
     - Notificar al destinatario
     - _Requisitos: 7.2, 7.3_
   
-  - [ ] 13.4 Crear flujo de inicio de conversación
+  - [x] 13.4 Crear flujo de inicio de conversación
     - Permitir iniciar desde perfil de vecino
     - Permitir iniciar desde solicitud de conexión
     - _Requisitos: 7.5_
@@ -292,7 +298,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - **Valida: Requisitos 7.1**
 
 - [ ] 14. Implementar sistema de perfiles de usuario
-  - [ ] 14.1 Crear página de perfil personal
+  - [ ] 14.1 Crear página de perfil personal mejorada
     - Mostrar vecindario, conexiones, actividad
     - Mostrar contribuciones y reputación
     - Permitir editar información
@@ -304,7 +310,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - Actualizar en tiempo real
     - _Requisitos: 8.5, 8.6_
   
-  - [ ] 14.3 Crear perfil público de vecino
+  - [ ] 14.3 Mejorar perfil público de vecino
     - Mostrar información relevante
     - Mostrar habilidades e intereses
     - Mostrar conexiones compartidas
@@ -314,68 +320,69 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - **Propiedad 12: Rastreo de Contribuciones**
     - **Valida: Requisitos 8.5**
 
-- [ ] 15. Implementar sistema de notificaciones
-  - [ ] 15.1 Crear sistema de notificaciones
+- [x] 15. Implementar sistema de notificaciones
+  - [x] 15.1 Crear sistema de notificaciones
     - Notificar cuando necesidad coincide con habilidades
     - Notificar cuando se crea acción comunitaria
     - Notificar cuando se recibe solicitud de conexión
     - _Requisitos: 9.1, 9.2, 9.3_
   
-  - [ ] 15.2 Crear centro de notificaciones
+  - [x] 15.2 Crear centro de notificaciones
     - Mostrar todas las notificaciones
     - Permitir marcar como leída
     - Permitir configurar preferencias
     - _Requisitos: 9.6_
   
-  - [ ] 15.3 Implementar notificaciones de mención
+  - [x] 15.3 Implementar notificaciones de mención
     - Notificar cuando se menciona en discusión
     - Notificar cuando se recibe respuesta a necesidad
     - _Requisitos: 9.4, 9.5_
 
-- [ ] 16. Implementar sistema de mapas
-  - [ ] 16.1 Crear página de mapa del vecindario
+- [x] 16. Implementar sistema de mapas
+  - [x] 16.1 Crear página de mapa del vecindario
     - Mostrar vecindario con marcadores
     - Mostrar vecinos cercanos, necesidades, acciones
     - Permitir filtrado por tipo de contenido
     - _Requisitos: 12.1, 12.2_
   
-  - [ ] 16.2 Crear interactividad del mapa
+  - [x] 16.2 Crear interactividad del mapa
     - Permitir hacer clic en marcadores
     - Mostrar detalles de vecino, necesidad o acción
     - Permitir zoom y navegación
     - _Requisitos: 12.3, 12.4_
   
-  - [ ] 16.3 Implementar visualización de servicios
+  - [ ] 16.3 Implementar visualización de servicios en mapa
     - Mostrar entradas del directorio en mapa
     - Mostrar ubicación y distancia
+    - Agregar marcadores para servicios locales
     - _Requisitos: 12.5_
   
   - [ ]* 16.4 Escribir prueba de propiedad para visualización
     - **Propiedad 8: Visualización de Contenido en Mapa**
     - **Valida: Requisitos 12.1**
 
-- [ ] 17. Implementar sistema de búsqueda
-  - [ ] 17.1 Crear búsqueda de vecinos
+- [x] 17. Implementar sistema de búsqueda
+  - [x] 17.1 Crear búsqueda de vecinos
     - Buscar por nombre, intereses, habilidades
     - Ordenar por proximidad y relevancia
     - _Requisitos: 14.1_
   
-  - [ ] 17.2 Crear búsqueda de necesidades
+  - [x] 17.2 Crear búsqueda de necesidades
     - Buscar por tipo, descripción, urgencia
     - Devolver solicitudes activas
     - _Requisitos: 14.2_
   
-  - [ ] 17.3 Crear búsqueda de acciones
+  - [x] 17.3 Crear búsqueda de acciones
     - Buscar por título, descripción, habilidades
     - Devolver acciones próximas
     - _Requisitos: 14.3_
   
-  - [ ] 17.4 Crear búsqueda de servicios
+  - [x] 17.4 Crear búsqueda de servicios
     - Buscar por categoría, nombre, descripción
     - Devolver entradas del directorio
     - _Requisitos: 14.4_
   
-  - [ ] 17.5 Implementar filtros de búsqueda
+  - [x] 17.5 Implementar filtros de búsqueda
     - Filtrar por tipo de contenido
     - Filtrar por distancia
     - Filtrar por fecha
@@ -395,8 +402,8 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
   - Verificar que todos los sistemas funcionan correctamente
   - Preguntar al usuario si hay dudas
 
-- [ ] 19. Implementar sistema de moderación comunitaria
-  - [ ] 19.1 Crear sistema de reportes
+- [x] 19. Implementar sistema de moderación comunitaria
+  - [x] 19.1 Crear sistema de reportes
     - Permitir reportar contenido inapropiado
     - Capturar razón y descripción
     - Enviar a moderadores
@@ -419,7 +426,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - Escalar a equipo central
     - _Requisitos: 16.4_
   
-  - [ ] 19.5 Implementar reputación de moderadores
+  - [x] 19.5 Implementar reputación de moderadores
     - Aumentar reputación por acciones justas
     - Permitir remover moderadores abusivos
     - _Requisitos: 16.5, 16.6_
@@ -444,8 +451,8 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
     - Exportar reportes en CSV/PDF
     - _Requisitos: 15.5_
 
-- [ ] 21. Implementar onboarding
-  - [ ] 21.1 Crear flujo de onboarding
+- [x] 21. Implementar onboarding
+  - [x] 21.1 Crear flujo de onboarding
     - Guiar a través de selección de vecindario
     - Guiar a través de configuración de perfil
     - Mostrar vecindario, vecinos, necesidades
@@ -516,7 +523,7 @@ Las siguientes tareas se enfocan en completar funcionalidades faltantes y agrega
 
 Para cualquier consulta de ubicación, la lógica debe garantizar:
 
-$$L_{visible} = \begin{cases} L_{exacta} & \text{si } C(u_1, u_2) = \text{Aceptada} \\ L_{approx}(r) & \text{si } C(u_1, u_2) \neq \text{Aceptada} \end{cases}$$
+$L_{visible} = \begin{cases} L_{exacta} & \text{si } C(u_1, u_2) = \text{Aceptada} \\ L_{approx}(r) & \text{si } C(u_1, u_2) \neq \text{Aceptada} \end{cases}$
 
 Donde:
 - $L_{visible}$: Ubicación visible al usuario

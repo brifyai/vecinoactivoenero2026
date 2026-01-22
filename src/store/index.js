@@ -19,6 +19,9 @@ import friendsReducer from './slices/friendsSlice';
 import groupsReducer from './slices/groupsSlice';
 import eventsReducer from './slices/eventsSlice';
 import messagesReducer from './slices/messagesSlice';
+import projectsReducer from './slices/projectsSlice';
+import pollsReducer from './slices/pollsSlice';
+import helpRequestsReducer from './slices/helpRequestsSlice';
 
 // Configuración de persistencia para auth
 const persistConfig = {
@@ -37,7 +40,10 @@ export const store = configureStore({
     friends: friendsReducer,
     groups: groupsReducer,
     events: eventsReducer,
-    messages: messagesReducer
+    messages: messagesReducer,
+    projects: projectsReducer,
+    polls: pollsReducer,
+    helpRequests: helpRequestsReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
