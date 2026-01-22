@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/selectors/authSelectors';
+import { useReduxAuth } from '../hooks/useReduxAuth';
 import { useNotifications } from './NotificationsContext';
 
 const VerificationContext = createContext();
@@ -14,7 +15,8 @@ export const useVerification = () => {
 };
 
 export const VerificationProvider = ({ children }) => {
-  const { user, updateUser } = useAuth();
+  const user = useSelector(selectUser);
+  const { updateUser } = useReduxAuth();
   const { addNotification } = useNotifications();
   const [verificationRequests, setVerificationRequests] = useState([]);
   const [loading, setLoading] = useState(false);
