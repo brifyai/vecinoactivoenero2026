@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 import storageService from '../services/storageService';
-import { useAuth } from './AuthContext';
 
 const AppContext = createContext();
 
@@ -13,7 +14,7 @@ export const useApp = () => {
 };
 
 export const AppProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('friendbook_darkMode');
     return saved === 'true';

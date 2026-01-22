@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 import { showSuccessToast } from '../utils/sweetalert';
 
 const GamificationContext = createContext();
@@ -13,7 +14,7 @@ export const useGamification = () => {
 };
 
 export const GamificationProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const [userStats, setUserStats] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);

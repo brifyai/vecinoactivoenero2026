@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 import { useNotifications } from './NotificationsContext';
 
 const VerificationContext = createContext();

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 
 const SecurityContext = createContext();
 
@@ -12,7 +13,7 @@ export const useSecurity = () => {
 };
 
 export const SecurityProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const [reports, setReports] = useState([]);
 
   useEffect(() => {

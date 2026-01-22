@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import storageService from '../services/storageService';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 import { useNotifications } from './NotificationsContext';
 
 const PostsContext = createContext();
@@ -14,7 +15,7 @@ export const usePosts = () => {
 };
 
 export const PostsProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const { addNotification } = useNotifications();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);

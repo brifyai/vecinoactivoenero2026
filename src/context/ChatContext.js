@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 
 const ChatContext = createContext();
 
@@ -12,7 +13,7 @@ export const useChat = () => {
 };
 
 export const ChatProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const [conversations, setConversations] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
 

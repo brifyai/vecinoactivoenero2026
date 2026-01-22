@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 import { useNotifications } from './NotificationsContext';
 import { showSuccessToast } from '../utils/sweetalert';
 
@@ -14,7 +15,7 @@ export const useCommunityCalendar = () => {
 };
 
 export const CommunityCalendarProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const { addNotification } = useNotifications();
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [loading, setLoading] = useState(true);

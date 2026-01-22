@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 import storageService from '../services/storageService';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 
 const SearchContext = createContext();
 
@@ -13,7 +14,7 @@ export const useSearch = () => {
 };
 
 export const SearchProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const [searchResults, setSearchResults] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
   const [loading, setLoading] = useState(false);

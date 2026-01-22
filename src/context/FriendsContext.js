@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import storageService from '../services/storageService';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 import { useNotifications } from './NotificationsContext';
 import { showSuccessToast, showInfoToast } from '../utils/sweetalert';
 
@@ -15,7 +16,7 @@ export const useFriends = () => {
 };
 
 export const FriendsProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const { addNotification } = useNotifications();
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);

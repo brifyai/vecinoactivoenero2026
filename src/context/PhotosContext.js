@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 
 const PhotosContext = createContext();
 
@@ -12,7 +13,7 @@ export const usePhotos = () => {
 };
 
 export const PhotosProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const [albums, setAlbums] = useState([]);
   const [photos, setPhotos] = useState([]);
 

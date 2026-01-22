@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 import { useNotifications } from './NotificationsContext';
 import { showSuccessToast } from '../utils/sweetalert';
 
@@ -14,7 +15,7 @@ export const useProjects = () => {
 };
 
 export const ProjectsProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const { addNotification } = useNotifications();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 
 const EventsContext = createContext();
 
@@ -12,7 +13,7 @@ export const useEvents = () => {
 };
 
 export const EventsProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const [events, setEvents] = useState([]);
   const [myEvents, setMyEvents] = useState([]);
 

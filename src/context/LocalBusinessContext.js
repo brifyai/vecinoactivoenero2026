@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/selectors/authSelectors';
 import { showSuccessToast } from '../utils/sweetalert';
 
 const LocalBusinessContext = createContext();
@@ -13,7 +14,7 @@ export const useLocalBusiness = () => {
 };
 
 export const LocalBusinessProvider = ({ children }) => {
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
 
