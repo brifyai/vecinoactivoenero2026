@@ -22,6 +22,9 @@ import messagesReducer from './slices/messagesSlice';
 import projectsReducer from './slices/projectsSlice';
 import pollsReducer from './slices/pollsSlice';
 import helpRequestsReducer from './slices/helpRequestsSlice';
+import sharedResourcesReducer from './slices/sharedResourcesSlice';
+import localBusinessReducer from './slices/localBusinessSlice';
+import communityCalendarReducer from './slices/communityCalendarSlice';
 
 // Configuración de persistencia para auth
 const persistConfig = {
@@ -43,7 +46,10 @@ export const store = configureStore({
     messages: messagesReducer,
     projects: projectsReducer,
     polls: pollsReducer,
-    helpRequests: helpRequestsReducer
+    helpRequests: helpRequestsReducer,
+    sharedResources: sharedResourcesReducer,
+    localBusiness: localBusinessReducer,
+    communityCalendar: communityCalendarReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
