@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from '../store/selectors/authSelectors';
 import { useReduxAuth } from '../hooks/useReduxAuth';
-import { useNotifications } from './NotificationsContext';
+import { createNotification } from '../store/slices/notificationsSlice';
 
 const VerificationContext = createContext();
 
@@ -16,8 +16,8 @@ export const useVerification = () => {
 
 export const VerificationProvider = ({ children }) => {
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const { updateUser } = useReduxAuth();
-  const { addNotification } = useNotifications();
   const [verificationRequests, setVerificationRequests] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -110,11 +110,12 @@ export const VerificationProvider = ({ children }) => {
         localStorage.setItem('users', JSON.stringify(users));
         
         // Crear notificación para el usuario
-        addNotification(request.userId, {
+        dispatch(createNotification({
+          userId: request.userId,
           type: 'verification_approved',
           message: '¡Tu verificación ha sido aprobada! Ahora eres un Vecino Verificado',
           read: false
-        });
+        }));
       }
     }
 
@@ -147,11 +148,12 @@ export const VerificationProvider = ({ children }) => {
         localStorage.setItem('users', JSON.stringify(users));
         
         // Crear notificación para el usuario
-        addNotification(request.userId, {
+        dispatch(createNotification({
+          userId: request.userId,
           type: 'verification_rejected',
           message: `Tu solicitud de verificación fue rechazada. Motivo: ${reviewNotes || 'No especificado'}`,
           read: false
-        });
+        }));
       }
     }
 

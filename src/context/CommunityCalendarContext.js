@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/selectors/authSelectors';
-import { useNotifications } from './NotificationsContext';
+import { useDispatch } from 'react-redux';
+import { createNotification } from '../store/slices/notificationsSlice';
 import { showSuccessToast } from '../utils/sweetalert';
 
 const CommunityCalendarContext = createContext();
@@ -16,7 +17,7 @@ export const useCommunityCalendar = () => {
 
 export const CommunityCalendarProvider = ({ children }) => {
   const user = useSelector(selectUser);
-  const { addNotification } = useNotifications();
+  const dispatch = useDispatch();
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -97,7 +98,8 @@ export const CommunityCalendarProvider = ({ children }) => {
 
           // Notificar al organizador
           if (event.organizerId !== user.id) {
-            addNotification(event.organizerId, {
+            dispatch(createNotification({
+              userId: event.organizerId,
               type: 'event_attendance',
               from: user.id,
               fromName: user.name,
@@ -105,7 +107,7 @@ export const CommunityCalendarProvider = ({ children }) => {
               eventId: eventId,
               message: `${user.name} confirmó asistencia a "${event.title}"`,
               read: false
-            });
+            }));
           }
           
           return {

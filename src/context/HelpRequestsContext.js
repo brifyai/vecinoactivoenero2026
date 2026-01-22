@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/selectors/authSelectors';
-import { useNotifications } from './NotificationsContext';
+import { useDispatch } from 'react-redux';
+import { createNotification } from '../store/slices/notificationsSlice';
 import { showSuccessToast } from '../utils/sweetalert';
 
 const HelpRequestsContext = createContext();
@@ -16,7 +17,7 @@ export const useHelpRequests = () => {
 
 export const HelpRequestsProvider = ({ children }) => {
   const user = useSelector(selectUser);
-  const { addNotification } = useNotifications();
+  const dispatch = useDispatch();
   const [helpRequests, setHelpRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -111,7 +112,8 @@ export const HelpRequestsProvider = ({ children }) => {
         };
 
         // Notificar al solicitante
-        addNotification(request.requesterId, {
+        dispatch(createNotification({
+          userId: request.requesterId,
           type: 'help_offer',
           from: user.id,
           fromName: user.name,
@@ -119,7 +121,7 @@ export const HelpRequestsProvider = ({ children }) => {
           requestId: requestId,
           message: `${user.name} ofreció ayuda para "${request.title}"`,
           read: false
-        });
+        }));
 
         return {
           ...request,
@@ -145,7 +147,8 @@ export const HelpRequestsProvider = ({ children }) => {
         
         if (offer) {
           // Notificar al ayudante
-          addNotification(offer.helperId, {
+          dispatch(createNotification({
+            userId: offer.helperId,
             type: 'help_accepted',
             from: user.id,
             fromName: user.name,
@@ -153,7 +156,7 @@ export const HelpRequestsProvider = ({ children }) => {
             requestId: requestId,
             message: `${user.name} aceptó tu oferta de ayuda`,
             read: false
-          });
+          }));
         }
 
         return {

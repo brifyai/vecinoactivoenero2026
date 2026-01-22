@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/selectors/authSelectors';
-import { useNotifications } from './NotificationsContext';
+import { useDispatch } from 'react-redux';
+import { createNotification } from '../store/slices/notificationsSlice';
 import { showSuccessToast } from '../utils/sweetalert';
 
 const SharedResourcesContext = createContext();
@@ -16,7 +17,7 @@ export const useSharedResources = () => {
 
 export const SharedResourcesProvider = ({ children }) => {
   const user = useSelector(selectUser);
-  const { addNotification } = useNotifications();
+  const dispatch = useDispatch();
   const [resources, setResources] = useState([]);
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -159,7 +160,8 @@ export const SharedResourcesProvider = ({ children }) => {
     saveReservations(updatedReservations);
 
     // Notificar al dueño
-    addNotification(resource.ownerId, {
+    dispatch(createNotification({
+      userId: resource.ownerId,
       type: 'resource_request',
       from: user.id,
       fromName: user.name,
@@ -168,7 +170,7 @@ export const SharedResourcesProvider = ({ children }) => {
       reservationId: newReservation.id,
       message: `${user.name} solicitó prestado "${resource.name}"`,
       read: false
-    });
+    }));
 
     showSuccessToast('¡Solicitud de préstamo enviada!');
     return { success: true, reservation: newReservation };
@@ -181,7 +183,8 @@ export const SharedResourcesProvider = ({ children }) => {
     const updated = reservations.map(res => {
       if (res.id === reservationId && res.ownerId === user.id) {
         // Notificar al solicitante
-        addNotification(res.borrowerId, {
+        dispatch(createNotification({
+          userId: res.borrowerId,
           type: 'resource_approved',
           from: user.id,
           fromName: user.name,
@@ -189,7 +192,7 @@ export const SharedResourcesProvider = ({ children }) => {
           resourceId: res.resourceId,
           message: `${user.name} aprobó tu solicitud de préstamo`,
           read: false
-        });
+        }));
 
         return {
           ...res,

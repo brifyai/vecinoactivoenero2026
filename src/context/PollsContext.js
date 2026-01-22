@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/selectors/authSelectors';
-import { useNotifications } from './NotificationsContext';
+import { useDispatch } from 'react-redux';
+import { createNotification } from '../store/slices/notificationsSlice';
 import { showSuccessToast } from '../utils/sweetalert';
 
 const PollsContext = createContext();
@@ -16,7 +17,7 @@ export const usePolls = () => {
 
 export const PollsProvider = ({ children }) => {
   const user = useSelector(selectUser);
-  const { addNotification } = useNotifications();
+  const dispatch = useDispatch();
   const [polls, setPolls] = useState([]);
   const [loading, setLoading] = useState(true);
 

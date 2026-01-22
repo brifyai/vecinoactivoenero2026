@@ -2,7 +2,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import storageService from '../services/storageService';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/selectors/authSelectors';
-import { useNotifications } from './NotificationsContext';
+import { useDispatch } from 'react-redux';
+import { createNotification } from '../store/slices/notificationsSlice';
 import { showSuccessToast, showInfoToast } from '../utils/sweetalert';
 
 const FriendsContext = createContext();
@@ -17,7 +18,7 @@ export const useFriends = () => {
 
 export const FriendsProvider = ({ children }) => {
   const user = useSelector(selectUser);
-  const { addNotification } = useNotifications();
+  const dispatch = useDispatch();
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,14 +80,15 @@ export const FriendsProvider = ({ children }) => {
     showSuccessToast(`¡Solicitud de amistad enviada a ${toUserName}!`);
     
     // Agregar notificación al otro usuario
-    addNotification(toUserId, {
+    dispatch(createNotification({
+      userId: toUserId,
       type: 'friend_request',
       from: user.id,
       fromName: user.name,
       fromAvatar: user.avatar,
       message: `${user.name} te envió una solicitud de amistad`,
       read: false
-    });
+    }));
     
     return { success: true };
   };
@@ -102,14 +104,15 @@ export const FriendsProvider = ({ children }) => {
       showSuccessToast(`¡Ahora eres amigo de ${fromUserName}!`);
       
       // Agregar notificación al otro usuario
-      addNotification(fromUserId, {
+      dispatch(createNotification({
+        userId: fromUserId,
         type: 'friend_accept',
         from: user.id,
         fromName: user.name,
         fromAvatar: user.avatar,
         message: `${user.name} aceptó tu solicitud de amistad`,
         read: false
-      });
+      }));
       
       return { success: true };
     }

@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/selectors/authSelectors';
-import { useNotifications } from './NotificationsContext';
+import { useDispatch } from 'react-redux';
+import { createNotification } from '../store/slices/notificationsSlice';
 import { showSuccessToast } from '../utils/sweetalert';
 
 const ProjectsContext = createContext();
@@ -16,7 +17,7 @@ export const useProjects = () => {
 
 export const ProjectsProvider = ({ children }) => {
   const user = useSelector(selectUser);
-  const { addNotification } = useNotifications();
+  const dispatch = useDispatch();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -114,7 +115,8 @@ export const ProjectsProvider = ({ children }) => {
         } else {
           // Notificar al creador
           if (project.creatorId !== user.id) {
-            addNotification(project.creatorId, {
+            dispatch(createNotification({
+              userId: project.creatorId,
               type: 'project_vote',
               from: user.id,
               fromName: user.name,
@@ -122,7 +124,7 @@ export const ProjectsProvider = ({ children }) => {
               projectId: projectId,
               message: `${user.name} votó por tu proyecto "${project.title}"`,
               read: false
-            });
+            }));
           }
           
           return {
@@ -155,7 +157,8 @@ export const ProjectsProvider = ({ children }) => {
         } else {
           // Notificar al creador
           if (project.creatorId !== user.id) {
-            addNotification(project.creatorId, {
+            dispatch(createNotification({
+              userId: project.creatorId,
               type: 'project_volunteer',
               from: user.id,
               fromName: user.name,
@@ -163,7 +166,7 @@ export const ProjectsProvider = ({ children }) => {
               projectId: projectId,
               message: `${user.name} se unió como voluntario a "${project.title}"`,
               read: false
-            });
+            }));
           }
           
           return {

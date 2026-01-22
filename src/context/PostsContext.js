@@ -2,7 +2,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import storageService from '../services/storageService';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/selectors/authSelectors';
-import { useNotifications } from './NotificationsContext';
+import { useDispatch } from 'react-redux';
+import { createNotification } from '../store/slices/notificationsSlice';
 
 const PostsContext = createContext();
 
@@ -16,7 +17,7 @@ export const usePosts = () => {
 
 export const PostsProvider = ({ children }) => {
   const user = useSelector(selectUser);
-  const { addNotification } = useNotifications();
+  const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -117,7 +118,8 @@ export const PostsProvider = ({ children }) => {
     
     // Crear notificación para el autor del post (si no es el mismo usuario)
     if (post.authorId !== user.id) {
-      addNotification(post.authorId, {
+      dispatch(createNotification({
+        userId: post.authorId,
         type: 'like',
         from: user.id,
         fromName: user.name,
@@ -125,7 +127,8 @@ export const PostsProvider = ({ children }) => {
         postId: postId,
         message: `A ${user.name} le gustó tu publicación`,
         read: false
-      });
+      }));
+    }
     }
     
     // Actualizar el post
@@ -189,7 +192,8 @@ export const PostsProvider = ({ children }) => {
     
     // Crear notificación para el autor del post (si no es el mismo usuario)
     if (post.authorId !== user.id) {
-      addNotification(post.authorId, {
+      dispatch(createNotification({
+        userId: post.authorId,
         type: 'comment',
         from: user.id,
         fromName: user.name,
@@ -197,7 +201,7 @@ export const PostsProvider = ({ children }) => {
         postId: postId,
         message: `${user.name} comentó tu publicación`,
         read: false
-      });
+      }));
     }
     
     // Actualizar contador de comentarios
