@@ -1,16 +1,23 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PeopleIcon from '@mui/icons-material/People';
-import GroupsIcon from '@mui/icons-material/Groups';
-import EventIcon from '@mui/icons-material/Event';
-import SecurityIcon from '@mui/icons-material/Security';
-import BusinessIcon from '@mui/icons-material/Business';
-import ChatIcon from '@mui/icons-material/Chat';
-import MapIcon from '@mui/icons-material/Map';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+// Iconos modernos
+import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
+import CelebrationIcon from '@mui/icons-material/Celebration';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import ForumIcon from '@mui/icons-material/Forum';
+import ExploreIcon from '@mui/icons-material/Explore';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+// Para las burbujas flotantes
+import EventIcon from '@mui/icons-material/Event';
+import SecurityIcon from '@mui/icons-material/Security';
 import LandingMap from '../components/LandingMap/LandingMap';
 import './Landing.css';
 
@@ -146,32 +153,32 @@ const Landing = () => {
 
   const features = [
     {
-      icon: <GroupsIcon />,
+      icon: <ConnectWithoutContactIcon />,
       title: 'Conecta con Vecinos',
       description: 'Conoce a las personas que viven cerca de ti y construye relaciones duraderas.'
     },
     {
-      icon: <EventIcon />,
+      icon: <CelebrationIcon />,
       title: 'Eventos Comunitarios',
       description: 'Participa en actividades locales y organiza eventos para tu vecindario.'
     },
     {
-      icon: <SecurityIcon />,
+      icon: <VerifiedUserIcon />,
       title: 'Seguridad Vecinal',
       description: 'Mantente informado sobre la seguridad de tu zona y colabora con tus vecinos.'
     },
     {
-      icon: <BusinessIcon />,
+      icon: <StorefrontIcon />,
       title: 'Negocios Locales',
       description: 'Descubre y apoya los negocios de tu comunidad.'
     },
     {
-      icon: <ChatIcon />,
+      icon: <ForumIcon />,
       title: 'Comunicación Directa',
       description: 'Chatea con tus vecinos y mantente al día con las noticias locales.'
     },
     {
-      icon: <MapIcon />,
+      icon: <ExploreIcon />,
       title: 'Mapa Interactivo',
       description: 'Explora tu vecindario y descubre lugares de interés cercanos.'
     }
@@ -196,7 +203,6 @@ const Landing = () => {
           </div>
           <nav className="header-nav">
             <div className="nav-menu">
-              <a href="#what-is" className="nav-link">Somos</a>
               <a href="#what-is" className="nav-link">¿Qué es?</a>
               <a href="#features" className="nav-link">¿Por qué elegir Vecino Activo?</a>
               <a href="#contact" className="nav-link">Contacto</a>
@@ -447,21 +453,27 @@ const Landing = () => {
               
               <div className="what-is-stats">
                 <div className="stat-item">
-                  <span className="stat-icon">🏘️</span>
+                  <div className="stat-icon">
+                    <HomeWorkIcon />
+                  </div>
                   <div className="stat-info">
                     <span className="stat-value">50+</span>
                     <span className="stat-label">Comunidades Activas</span>
                   </div>
                 </div>
                 <div className="stat-item">
-                  <span className="stat-icon">👥</span>
+                  <div className="stat-icon">
+                    <PeopleAltIcon />
+                  </div>
                   <div className="stat-info">
                     <span className="stat-value">1,000+</span>
                     <span className="stat-label">Vecinos Conectados</span>
                   </div>
                 </div>
                 <div className="stat-item">
-                  <span className="stat-icon">🎯</span>
+                  <div className="stat-icon">
+                    <EmojiEventsIcon />
+                  </div>
                   <div className="stat-info">
                     <span className="stat-value">200+</span>
                     <span className="stat-label">Eventos Realizados</span>
