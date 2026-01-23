@@ -113,10 +113,7 @@ const Settings = () => {
     );
     if (result.isConfirmed) {
       logout();
-      setTimeout(() => {
-        navigate('/iniciar-sesion', { replace: true });
-        window.location.reload();
-      }, 500);
+      navigate('/iniciar-sesion', { replace: true });
     }
   };
 

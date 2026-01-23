@@ -14,11 +14,8 @@ const ProfileDropdown = ({ onClose }) => {
   const handleLogout = () => {
     logout();
     onClose();
-    // Pequeño delay para asegurar que el estado se limpie antes de navegar
-    setTimeout(() => {
-      navigate('/iniciar-sesion', { replace: true });
-      window.location.reload(); // Forzar recarga para limpiar todo el estado
-    }, 100);
+    // Navegar inmediatamente sin reload
+    navigate('/iniciar-sesion', { replace: true });
   };
 
   const handleNavigation = (path) => {
