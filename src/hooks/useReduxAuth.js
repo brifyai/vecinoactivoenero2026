@@ -48,9 +48,10 @@ export const useReduxAuth = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logout());
-    // Limpiar cualquier otro estado persistido
+    // Primero limpiar Redux Persist
     localStorage.removeItem('persist:vecino-activo-root');
+    // Luego hacer logout en Redux
+    dispatch(logout());
   };
 
   const handleUpdateUser = (updates) => {

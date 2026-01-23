@@ -105,12 +105,14 @@ const authSlice = createSlice({
   },
   reducers: {
     logout: (state) => {
+      console.log('🔴 LOGOUT EJECUTADO - Limpiando estado');
       state.user = null;
       state.isAuthenticated = false;
       state.sessionExpired = false;
       localStorage.removeItem(SESSION_STORAGE_KEY);
       localStorage.removeItem('persist:vecino-activo-root'); // Limpiar Redux Persist
       storageService.clearCurrentUser();
+      console.log('✅ Estado limpiado - isAuthenticated:', state.isAuthenticated);
     },
     updateUser: (state, action) => {
       state.user = { ...state.user, ...action.payload };
