@@ -54,7 +54,10 @@ const Sidebar = () => {
     if (result.isConfirmed) {
       logout();
       showSuccessToast('¡Sesión cerrada exitosamente!');
-      navigate('/iniciar-sesion');
+      setTimeout(() => {
+        navigate('/iniciar-sesion', { replace: true });
+        window.location.reload();
+      }, 500);
     }
   };
 

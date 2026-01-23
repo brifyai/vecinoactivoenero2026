@@ -13,8 +13,12 @@ const ProfileDropdown = ({ onClose }) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/iniciar-sesion');
     onClose();
+    // Pequeño delay para asegurar que el estado se limpie antes de navegar
+    setTimeout(() => {
+      navigate('/iniciar-sesion', { replace: true });
+      window.location.reload(); // Forzar recarga para limpiar todo el estado
+    }, 100);
   };
 
   const handleNavigation = (path) => {
