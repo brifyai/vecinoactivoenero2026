@@ -25,6 +25,20 @@ import helpRequestsReducer from './slices/helpRequestsSlice';
 import sharedResourcesReducer from './slices/sharedResourcesSlice';
 import localBusinessReducer from './slices/localBusinessSlice';
 import communityCalendarReducer from './slices/communityCalendarSlice';
+import neighborhoodReducer from './slices/neighborhoodSlice';
+import neighborhoodsReducer from './slices/neighborhoodsSlice';
+import neighborhoodExpansionReducer from './slices/neighborhoodExpansionSlice';
+import photosReducer from './slices/photosSlice';
+import reportsReducer from './slices/reportsSlice';
+import securityReducer from './slices/securitySlice';
+import moderationReducer from './slices/moderationSlice';
+import verificationReducer from './slices/verificationSlice';
+import communityActionsReducer from './slices/communityActionsSlice';
+import localNeedsReducer from './slices/localNeedsSlice';
+import servicesReducer from './slices/servicesSlice';
+import gamificationReducer from './slices/gamificationSlice';
+import connectionsReducer from './slices/connectionsSlice';
+import appReducer from './slices/appSlice';
 
 // Configuración de persistencia para auth
 const persistConfig = {
@@ -49,7 +63,21 @@ export const store = configureStore({
     helpRequests: helpRequestsReducer,
     sharedResources: sharedResourcesReducer,
     localBusiness: localBusinessReducer,
-    communityCalendar: communityCalendarReducer
+    communityCalendar: communityCalendarReducer,
+    neighborhood: neighborhoodReducer,
+    neighborhoods: neighborhoodsReducer,
+    neighborhoodExpansion: neighborhoodExpansionReducer,
+    photos: photosReducer,
+    reports: reportsReducer,
+    security: securityReducer,
+    moderation: moderationReducer,
+    verification: verificationReducer,
+    communityActions: communityActionsReducer,
+    localNeeds: localNeedsReducer,
+    services: servicesReducer,
+    gamification: gamificationReducer,
+    connections: connectionsReducer,
+    app: appReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
