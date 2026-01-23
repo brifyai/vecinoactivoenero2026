@@ -109,6 +109,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.sessionExpired = false;
       localStorage.removeItem(SESSION_STORAGE_KEY);
+      localStorage.removeItem('persist:vecino-activo-root'); // Limpiar Redux Persist
       storageService.clearCurrentUser();
     },
     updateUser: (state, action) => {
