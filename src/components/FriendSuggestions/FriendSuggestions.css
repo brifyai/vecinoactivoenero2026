@@ -72,8 +72,8 @@
 }
 
 .suggestions-count {
-  background: var(--primary);
-  color: white;
+  background: var(--primary) !important;
+  color: white !important;
   font-size: 12px;
   font-weight: 600;
   padding: 4px 10px;
@@ -120,8 +120,8 @@
   position: absolute;
   bottom: -4px;
   right: -4px;
-  background: var(--primary);
-  color: white;
+  background: var(--primary) !important;
+  color: white !important;
   font-size: 10px;
   font-weight: 600;
   padding: 2px 6px;
@@ -172,12 +172,12 @@
 }
 
 .suggestion-actions .btn-add {
-  background: var(--primary);
-  color: white;
+  background: var(--primary) !important;
+  color: white !important;
 }
 
 .suggestion-actions .btn-add:hover {
-  background: var(--primary-dark);
+  background: var(--primary-dark) !important;
   transform: scale(1.1);
 }
 
@@ -218,4 +218,47 @@
   .suggestion-info h4 {
     font-size: 14px;
   }
+}
+/* Reglas super específicas para forzar colores en FriendSuggestions */
+.friend-suggestions .suggestions-header .suggestions-count,
+.suggestions-header .suggestions-count {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
+.friend-suggestions .suggestion-card .distance-badge,
+.suggestion-card .distance-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
+.friend-suggestions .suggestion-actions .btn-add,
+.suggestion-actions .btn-add {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
+.friend-suggestions .suggestion-actions .btn-add:hover,
+.suggestion-actions .btn-add:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+  transform: scale(1.1);
+}
+
+/* Forzar en el contexto del Home */
+.home-page .friend-suggestions .suggestions-count,
+.home-left .friend-suggestions .suggestions-count {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
+.home-page .friend-suggestions .distance-badge,
+.home-left .friend-suggestions .distance-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
+.home-page .friend-suggestions .btn-add,
+.home-left .friend-suggestions .btn-add {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
 }

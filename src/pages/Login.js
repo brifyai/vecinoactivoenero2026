@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { showErrorToast, showSuccessToast, showInfoToast } from '../utils/sweetalert';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -13,6 +13,7 @@ import './Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login, isAuthenticated } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
@@ -23,12 +24,12 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Si el usuario ya está autenticado, redirigir a home
+  // Si el usuario ya está autenticado y está en la página de login, redirigir a home
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && location.pathname === '/iniciar-sesion') {
       navigate('/');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, location.pathname]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

@@ -1,6 +1,8 @@
 .layout {
   min-height: 100vh;
   background-color: #ffffff;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .layout-container {
@@ -8,6 +10,10 @@
   padding-top: 64px;
   background-color: #ffffff !important;
   min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .layout-container.full-width {
@@ -20,9 +26,14 @@
   margin-left: 80px;
   margin-right: 0;
   margin-top: 15px;
-  max-width: none;
   transition: margin-right 0.3s ease, margin-left 0.3s ease;
   background-color: #ffffff;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  overflow: visible;
+  min-width: 0;
+  width: 100%;
 }
 
 .main-content.full-width-content {

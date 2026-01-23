@@ -44,7 +44,7 @@ const About = () => {
       <div className="about-tabs">
         <button className="tab" onClick={() => navigate('/linea-tiempo')}><AccessTimeIcon fontSize="small" /> Línea de tiempo</button>
         <button className="tab active"><InfoIcon fontSize="small" /> Acerca de</button>
-        <button className="tab" onClick={() => navigate('/vecinos')}><GroupIcon fontSize="small" /> Vecinos</button>
+        <button className="tab" onClick={() => navigate('/descubrir-vecinos')}><GroupIcon fontSize="small" /> Vecinos</button>
         <button className="tab" onClick={() => navigate('/fotos')}><PhotoLibraryIcon fontSize="small" /> Fotos</button>
         <div className="tab-right">
           <input type="text" placeholder="Buscar aquí..." />
@@ -196,7 +196,7 @@ const About = () => {
                 </div>
               ))}
             </div>
-            <button className="see-all-btn" onClick={() => navigate('/vecinos')}>Ver todo</button>
+            <button className="see-all-btn" onClick={() => navigate('/descubrir-vecinos')}>Ver todo</button>
           </div>
         </div>
       </div>

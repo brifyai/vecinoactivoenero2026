@@ -77,7 +77,7 @@
   outline: none;
   border-color: var(--primary);
   background: var(--surface);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .search-icon {
@@ -240,7 +240,7 @@
   background: #eff6ff;
   border: 1px solid #bfdbfe;
   border-radius: 20px;
-  color: #667eea;
+  color: var(--primary);
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
@@ -304,4 +304,29 @@
   .header-right {
     gap: var(--spacing-xs);
   }
+}
+/* Reglas super específicas para forzar el color del neighborhood badge */
+.header .header-left .neighborhood-badge,
+.header-left .neighborhood-badge {
+  background: #eff6ff !important;
+  border: 1px solid #bfdbfe !important;
+  color: #667eea !important;
+}
+
+.header .header-left .neighborhood-badge .neighborhood-icon,
+.header-left .neighborhood-badge .neighborhood-icon {
+  color: #667eea !important;
+}
+
+.header .header-left .neighborhood-badge .neighborhood-name,
+.header-left .neighborhood-badge .neighborhood-name {
+  color: #667eea !important;
+}
+
+/* Modo oscuro específico */
+.dark-mode .header .header-left .neighborhood-badge,
+.dark-mode .header-left .neighborhood-badge {
+  background: rgba(102, 126, 234, 0.1) !important;
+  border-color: rgba(102, 126, 234, 0.3) !important;
+  color: #667eea !important;
 }

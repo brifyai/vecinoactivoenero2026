@@ -71,6 +71,14 @@ class PersistenceManager {
   // Verificar y recuperar datos si es necesario
   checkAndRecover() {
     try {
+      // NO recuperar si fue un logout intencional
+      const wasIntentionalLogout = localStorage.getItem('friendbook_intentional_logout');
+      if (wasIntentionalLogout) {
+        console.log('🚪 Logout intencional detectado - NO se recuperarán datos');
+        localStorage.removeItem('friendbook_intentional_logout');
+        return;
+      }
+
       const currentUser = localStorage.getItem('currentUser');
       const users = localStorage.getItem('users');
 

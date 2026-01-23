@@ -77,11 +77,18 @@ const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const loading = useSelector(selectAuthLoading);
   
+  // Durante la carga inicial, mostrar loading
   if (loading) {
     return <div className="loading-screen">Loading...</div>;
   }
   
-  return isAuthenticated ? children : <Navigate to="/iniciar-sesion" replace />;
+  // Si no está autenticado, redirigir a login
+  if (!isAuthenticated) {
+    return <Navigate to="/iniciar-sesion" replace />;
+  }
+  
+  // Si está autenticado, mostrar el contenido
+  return children;
 };
 
 function App() {
@@ -128,8 +135,6 @@ function App() {
                                                           <Route path="/" element={<Home />} />
                                                           <Route path="/onboarding" element={<Onboarding />} />
                                                           <Route path="/descubrir-vecinos" element={<DiscoverNeighbors />} />
-                                                          <Route path="/necesidades-locales" element={<LocalNeeds />} />
-                                                          <Route path="/acciones-comunitarias" element={<CommunityActions />} />
                                                           <Route path="/feed" element={<Feed />} />
                                                           <Route path="/mensajes-directos" element={<DirectMessages />} />
                                                           <Route path="/mapa" element={<NeighborhoodMap />} />

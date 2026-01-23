@@ -37,6 +37,11 @@ const Header = () => {
   // Cerrar dropdowns al hacer click fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // No cerrar si el clic es en un botón dentro del dropdown
+      if (event.target.closest('.dropdown-menu-item')) {
+        return;
+      }
+      
       if (notifRef.current && !notifRef.current.contains(event.target)) {
         setShowNotifications(false);
       }

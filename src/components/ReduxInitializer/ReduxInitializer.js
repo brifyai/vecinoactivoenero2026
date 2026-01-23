@@ -9,17 +9,19 @@ const ReduxInitializer = ({ children }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Inicializar datos mock si es necesario
-    storageService.initializeMockData();
-    
-    // Restaurar sesión
-    dispatch(restoreSession());
-    
-    // Cargar posts
-    dispatch(loadPosts());
-    
-    // Cargar notificaciones
-    dispatch(loadNotifications());
+    const initializeApp = async () => {
+      // Inicializar datos mock si es necesario
+      storageService.initializeMockData();
+      
+      // Restaurar sesión primero
+      await dispatch(restoreSession());
+      
+      // Luego cargar otros datos
+      dispatch(loadPosts());
+      dispatch(loadNotifications());
+    };
+
+    initializeApp();
   }, [dispatch]);
 
   return children;

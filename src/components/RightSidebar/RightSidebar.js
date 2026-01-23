@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSidebar } from '../../context/SidebarContext';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -31,11 +31,21 @@ const formatDistance = (km) => {
 
 const RightSidebar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isRightSidebarCollapsed, toggleRightSidebar } = useSidebar();
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [closeFriendsExpanded, setCloseFriendsExpanded] = useState(true);
   const [recentChatsExpanded, setRecentChatsExpanded] = useState(true);
+
+  // Páginas que no necesitan el chat lateral derecho
+  const noRightSidebarPages = ['/contacto', '/descubrir-vecinos', '/fotos'];
+  const hideRightSidebar = noRightSidebarPages.includes(location.pathname);
+
+  // No renderizar nada si está en una página que no debería tener sidebar
+  if (hideRightSidebar) {
+    return null;
+  }
 
   // Ubicación del usuario actual
   const userLat = user?.latitude || -33.2000;
@@ -66,6 +76,12 @@ const RightSidebar = () => {
     distance: calculateDistance(userLat, userLon, chat.lat, chat.lon)
   })).sort((a, b) => a.distance - b.distance);
 
+  const handleProfileClick = (friend) => {
+    // Navegar al perfil del usuario
+    const username = friend.name.toLowerCase().replace(/\s+/g, '');
+    navigate(`/${username}`);
+  };
+
   const handleChatClick = (friend) => {
     navigate('/mensajes', { state: { selectedFriend: friend } });
   };
@@ -85,12 +101,13 @@ const RightSidebar = () => {
         className={`collapse-toggle-btn ${isRightSidebarCollapsed ? 'collapsed' : ''}`}
         onClick={toggleRightSidebar}
         title={isRightSidebarCollapsed ? 'Expandir chat' : 'Ocultar chat'}
+        style={{ pointerEvents: 'auto' }}
       >
         {isRightSidebarCollapsed ? <ChevronLeftIcon /> : <ChevronRightIcon />}
       </button>
 
-      <aside className={`right-sidebar ${isRightSidebarCollapsed ? 'collapsed' : ''}`}>
       {!isRightSidebarCollapsed && (
+      <aside className={`right-sidebar ${isRightSidebarCollapsed ? 'collapsed' : ''}`}>
         <>
           <div className="sidebar-section">
         <div className="section-header">
@@ -120,7 +137,7 @@ const RightSidebar = () => {
             <div 
               key={friend.id} 
               className="friend-item"
-              onClick={() => handleChatClick(friend)}
+              onClick={() => handleProfileClick(friend)}
               style={{ cursor: 'pointer' }}
             >
               <img src={friend.avatar} alt={friend.name} />
@@ -172,8 +189,8 @@ const RightSidebar = () => {
         )}
       </div>
         </>
+      </aside>
       )}
-    </aside>
     </>
   );
 };

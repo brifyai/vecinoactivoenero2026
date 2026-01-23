@@ -79,13 +79,13 @@ const Photos = () => {
   );
 
   return (
-    <div className={`photos-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+    <>
       <ProfileHeader />
-      
-      <div className="photos-tabs">
+      <div className={`photos-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+        <div className="photos-tabs">
         <button className="tab" onClick={() => navigate('/linea-tiempo')}><AccessTimeIcon fontSize="small" /> Línea de Tiempo</button>
         <button className="tab" onClick={() => navigate('/acerca-de')}><InfoIcon fontSize="small" /> Acerca de</button>
-        <button className="tab" onClick={() => navigate('/vecinos')}><GroupIcon fontSize="small" /> Vecinos</button>
+        <button className="tab" onClick={() => navigate('/descubrir-vecinos')}><GroupIcon fontSize="small" /> Vecinos</button>
         <button className="tab active"><PhotoLibraryIcon fontSize="small" /> Fotos</button>
         <div className="tab-right">
           <input 
@@ -128,14 +128,14 @@ const Photos = () => {
       <div className="albums-grid">
         {activeTab === 'albums' ? (
           <>
-            <div className="create-album-card" onClick={handleCreateAlbum} style={{ cursor: 'pointer' }}>
+            <div className="create-album-card" onClick={handleCreateAlbum}>
               <div className="create-icon"><AddCircleOutlineIcon style={{ fontSize: 60 }} /></div>
               <h3>Crear Álbum</h3>
               <p>crea un álbum para ordenar las imágenes</p>
             </div>
             
             {filteredAlbums.map((album) => (
-              <div key={album.id} className="album-card" style={{ cursor: 'pointer' }}>
+              <div key={album.id} className="album-card">
                 <div className="album-image">
                   <img src={album.image} alt={album.title} />
                   <div className="album-overlay">
@@ -172,7 +172,8 @@ const Photos = () => {
           onClose={() => setShowLightbox(false)}
         />
       )}
-    </div>
+      </div>
+    </>
   );
 };
 

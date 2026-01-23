@@ -61,9 +61,9 @@
 }
 
 .tab.active {
-  color: #667eea;
-  background: #f5f3ff;
-  border-bottom-color: #667eea;
+  color: #667eea !important;
+  background: #f5f3ff !important;
+  border-bottom-color: #667eea !important;
 }
 
 .tab-right {
@@ -136,7 +136,7 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 900px) {
   .timeline-content {
     grid-template-columns: 1fr;
   }
@@ -276,6 +276,20 @@
   width: 100%;
 }
 
+/* Permitir que el grid de fotos funcione correctamente */
+.posts-container .photos-grid-container {
+  display: block !important;
+  width: 100% !important;
+  grid-column: 1 / -1 !important;
+}
+
+.posts-container .photos-grid-container .photos-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, 100px) !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
 .widgets-sidebar {
   display: flex;
   flex-direction: column;
@@ -353,4 +367,100 @@
   border-color: transparent;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+/* Media queries para el grid de fotos responsive */
+@media (max-width: 1200px) {
+  .posts-container .photos-grid-container .photos-grid,
+  .timeline .timeline-content .posts-container .photos-grid-container .photos-grid {
+    grid-template-columns: repeat(auto-fit, 90px) !important;
+  }
+  
+  .posts-container .photos-grid-container .photo-card,
+  .timeline .timeline-content .posts-container .photos-grid-container .photo-card,
+  .posts-container .photos-grid-container .photo-card img,
+  .timeline .timeline-content .posts-container .photos-grid-container .photo-card img {
+    width: 90px !important;
+    height: 90px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .posts-container .photos-grid-container .photos-grid,
+  .timeline .timeline-content .posts-container .photos-grid-container .photos-grid {
+    grid-template-columns: repeat(auto-fit, 80px) !important;
+  }
+  
+  .posts-container .photos-grid-container .photo-card,
+  .timeline .timeline-content .posts-container .photos-grid-container .photo-card,
+  .posts-container .photos-grid-container .photo-card img,
+  .timeline .timeline-content .posts-container .photos-grid-container .photo-card img {
+    width: 80px !important;
+    height: 80px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .posts-container .photos-grid-container .photos-grid,
+  .timeline .timeline-content .posts-container .photos-grid-container .photos-grid {
+    grid-template-columns: repeat(auto-fit, 70px) !important;
+    gap: 6px !important;
+  }
+  
+  .posts-container .photos-grid-container .photo-card,
+  .timeline .timeline-content .posts-container .photos-grid-container .photo-card,
+  .posts-container .photos-grid-container .photo-card img,
+  .timeline .timeline-content .posts-container .photos-grid-container .photo-card img {
+    width: 70px !important;
+    height: 70px !important;
+  }
+}
+/* REGLA SUPER ESPECÍFICA PARA FORZAR EL GRID */
+.timeline .timeline-content .posts-container .photos-grid-container .photos-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, 100px) !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.timeline .timeline-content .posts-container .photos-grid-container {
+  display: block !important;
+  width: 100% !important;
+  grid-column: 1 / -1 !important;
+}
+/* Tamaño fijo para las fotos */
+.posts-container .photos-grid-container .photo-card,
+.timeline .timeline-content .posts-container .photos-grid-container .photo-card {
+  width: 100px !important;
+  height: 100px !important;
+  flex: none !important;
+}
+
+.posts-container .photos-grid-container .photo-card img,
+.timeline .timeline-content .posts-container .photos-grid-container .photo-card img {
+  width: 100px !important;
+  height: 100px !important;
+  object-fit: cover !important;
+}
+/* Reglas super específicas para forzar colores en Timeline tabs */
+.timeline .timeline-tabs .tab.active,
+.timeline-tabs .tab.active {
+  color: #667eea !important;
+  background: #f5f3ff !important;
+  border-bottom-color: #667eea !important;
+}
+
+.timeline .timeline-tabs .tab:hover,
+.timeline-tabs .tab:hover {
+  background: #f9fafb !important;
+  color: #374151 !important;
+}
+
+/* También para otras páginas que usan estos tabs */
+.photos-page .photos-tabs .tab.active,
+.photos-tabs .tab.active,
+.about-tabs .tab.active,
+.friends-tabs .tab.active {
+  color: #667eea !important;
+  background: #f5f3ff !important;
+  border-bottom-color: #667eea !important;
 }

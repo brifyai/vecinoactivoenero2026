@@ -186,7 +186,6 @@
   margin: 0;
 }
 
-/* Photos Grid */
 .photos-grid-container {
   background: white;
   border-radius: 16px;
@@ -200,15 +199,20 @@
   color: #1a1a1a;
 }
 
+/* Sobrescribir el flex del posts-container cuando mostramos fotos */
+.posts-container .photos-grid-container {
+  display: block !important;
+}
+
 .photos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+  gap: 12px !important;
+  width: 100% !important;
 }
 
 .photo-card {
   position: relative;
-  aspect-ratio: 1;
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;

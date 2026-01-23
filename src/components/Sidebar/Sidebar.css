@@ -82,6 +82,16 @@
   z-index: 1;
 }
 
+.sidebar-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  object-fit: cover;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+}
+
 .sidebar-item:hover {
   background: rgba(102, 126, 234, 0.08);
   color: #667eea;

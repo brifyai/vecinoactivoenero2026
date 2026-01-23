@@ -12,13 +12,8 @@ const ProfileDropdown = ({ onClose }) => {
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    console.log('🔵 ProfileDropdown - Iniciando logout');
-    logout();
-    console.log('🔵 ProfileDropdown - Logout ejecutado, cerrando dropdown');
     onClose();
-    console.log('🔵 ProfileDropdown - Navegando a /iniciar-sesion');
-    // Navegar inmediatamente sin reload
-    navigate('/iniciar-sesion', { replace: true });
+    logout(); // El hook maneja la navegación automáticamente
   };
 
   const handleNavigation = (path) => {

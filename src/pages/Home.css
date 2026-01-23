@@ -119,11 +119,11 @@
 }
 
 .filter-toggle.active {
-  background: #667eea;
-  color: white;
-  border-color: #667eea;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-color: transparent !important;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
 }
 
 .category-filter-btn {
@@ -216,10 +216,24 @@
 }
 
 .category-filter-btn.active {
-  background: #0e8ce4;
-  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(14, 140, 228, 0.3);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+}
+
+/* Reglas más específicas para forzar el cambio */
+.home-page .category-filters .category-filter-btn.active,
+.category-filters .category-filter-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
+.home-page .neighborhood-filter .filter-toggle.active,
+.neighborhood-filter .filter-toggle.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-color: transparent !important;
 }
 
 .category-filter-btn .cat-icon {

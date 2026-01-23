@@ -3,8 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useMessages } from '../../context/MessagesContext';
 import { useReduxNotifications as useNotifications } from '../../hooks/useReduxNotifications';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import MapIcon from '@mui/icons-material/Map';
 import MailIcon from '@mui/icons-material/Mail';
@@ -26,18 +24,6 @@ const CommunityNavigation = () => {
       path: '/',
       label: 'Inicio',
       icon: <HomeIcon />,
-      badge: null
-    },
-    {
-      path: '/necesidades-locales',
-      label: 'Necesidades',
-      icon: <AssignmentIcon />,
-      badge: null
-    },
-    {
-      path: '/acciones-comunitarias',
-      label: 'Acciones',
-      icon: <GroupWorkIcon />,
       badge: null
     },
     {

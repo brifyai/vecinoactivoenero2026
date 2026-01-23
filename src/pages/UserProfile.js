@@ -9,11 +9,7 @@ import EventsWidget from '../components/EventsWidget/EventsWidget';
 import ActivityNewsWidget from '../components/ActivityNewsWidget/ActivityNewsWidget';
 import PhotoLightbox from '../components/PhotoLightbox/PhotoLightbox';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import InfoIcon from '@mui/icons-material/Info';
-import GroupIcon from '@mui/icons-material/Group';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
-import SearchIcon from '@mui/icons-material/Search';
-import FeedIcon from '@mui/icons-material/Feed';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { showErrorToast, showSuccessToast } from '../utils/sweetalert';
@@ -31,7 +27,6 @@ const UserProfile = () => {
   const [visiblePosts, setVisiblePosts] = useState(3);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(location.state?.activeTab || 'timeline');
-  const [userFriends, setUserFriends] = useState([]);
   const [userPhotos, setUserPhotos] = useState([]);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -206,7 +201,7 @@ const UserProfile = () => {
       // Buscar por username exacto o por nombre convertido a slug
       const foundUser = users.find(u => 
         u.username === identifier || 
-        u.name.toLowerCase().replace(/\s+/g, '-') === identifier
+        u.name.toLowerCase().replace(/\s+/g, '') === identifier
       );
 
       if (foundUser) {
@@ -219,14 +214,9 @@ const UserProfile = () => {
     setLoading(false);
   }, [identifier, currentUser, navigate, isPage, isGroup, isEvent, isProject, isHelp, isResource]);
 
-  // Cargar amigos y fotos del usuario
+  // Cargar fotos del usuario
   useEffect(() => {
     if (profileUser?.id) {
-      // Obtener amigos del usuario
-      const allUsers = storageService.getUsers();
-      const friends = allUsers.filter(u => u.id !== profileUser.id).slice(0, 9); // Primeros 9 amigos
-      setUserFriends(friends);
-
       // Generar fotos de ejemplo del usuario
       const photos = [
         { id: 1, url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&h=800&fit=crop', likes: 45, title: 'Foto 1', description: 'Hermosa foto' },
@@ -299,7 +289,7 @@ const UserProfile = () => {
         <div className="user-not-found">
           <h2>Usuario no encontrado</h2>
           <p>El usuario "{identifier}" no existe o ha sido eliminado.</p>
-          <button onClick={() => navigate('/vecinos')}>Volver a Vecinos</button>
+          <button onClick={() => navigate('/descubrir-vecinos')}>Volver a Descubrir Vecinos</button>
         </div>
       </div>
     );
@@ -335,12 +325,6 @@ const UserProfile = () => {
           onClick={() => setActiveTab('timeline')}
         >
           <AccessTimeIcon fontSize="small" /> Línea de tiempo
-        </button>
-        <button 
-          className={`tab ${activeTab === 'friends' ? 'active' : ''}`}
-          onClick={() => setActiveTab('friends')}
-        >
-          <GroupIcon fontSize="small" /> Vecinos
         </button>
         <button 
           className={`tab ${activeTab === 'photos' ? 'active' : ''}`}
@@ -410,47 +394,6 @@ const UserProfile = () => {
                 </div>
               )}
             </>
-          )}
-
-          {activeTab === 'friends' && (
-            <div className="friends-grid-container">
-              <h3 style={{ marginBottom: '20px' }}>Vecinos ({userFriends.length})</h3>
-              <div className="friends-grid">
-                {userFriends.map(friend => (
-                  <div key={friend.id} className="friend-card-small" onClick={() => navigate(`/${friend.username}`)}>
-                    <img src={friend.avatar} alt={friend.name} />
-                    <h4>{friend.name}</h4>
-                    <p>{friend.neighborhood || 'Vecino'}</p>
-                  </div>
-                ))}
-              </div>
-              {userFriends.length === 0 && (
-                <p style={{ textAlign: 'center', padding: '40px 20px', color: '#65676b' }}>
-                  No hay vecinos para mostrar
-                </p>
-              )}
-            </div>
-          )}
-
-          {activeTab === 'photos' && (
-            <div className="photos-grid-container">
-              <h3 style={{ marginBottom: '20px' }}>Fotos ({userPhotos.length})</h3>
-              <div className="photos-grid">
-                {userPhotos.map((photo, index) => (
-                  <div key={photo.id} className="photo-card" onClick={() => handlePhotoClick(index)} style={{ cursor: 'pointer' }}>
-                    <img src={photo.url} alt={`Foto ${photo.id}`} />
-                    <div className="photo-overlay">
-                      <span>❤️ {photo.likes}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              {userPhotos.length === 0 && (
-                <p style={{ textAlign: 'center', padding: '40px 20px', color: '#65676b' }}>
-                  No hay fotos para mostrar
-                </p>
-              )}
-            </div>
           )}
         </div>
         
@@ -613,6 +556,64 @@ const UserProfile = () => {
           </div>
         )}
       </div>
+
+      {/* Sección de fotos FUERA del timeline-content para ancho completo */}
+      {activeTab === 'photos' && (
+        <div style={{ 
+          width: '100%', 
+          padding: '20px',
+          background: '#f8f9fa'
+        }}>
+          <div style={{ 
+            maxWidth: '1400px', 
+            margin: '0 auto',
+            background: 'white',
+            borderRadius: '16px',
+            padding: '24px'
+          }}>
+            <h3 style={{ marginBottom: '20px' }}>Fotos ({userPhotos.length})</h3>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+              gap: '12px',
+              width: '100%'
+            }}>
+              {userPhotos.map((photo, index) => (
+                <div 
+                  key={photo.id} 
+                  onClick={() => handlePhotoClick(index)} 
+                  style={{ 
+                    cursor: 'pointer',
+                    aspectRatio: '1',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                  }}
+                >
+                  <img 
+                    src={photo.url} 
+                    alt={`Foto ${photo.id}`} 
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                  />
+                  <div className="photo-overlay">
+                    <span>❤️ {photo.likes}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {userPhotos.length === 0 && (
+              <p style={{ textAlign: 'center', padding: '40px 20px', color: '#65676b' }}>
+                No hay fotos para mostrar
+              </p>
+            )}
+          </div>
+        </div>
+      )}
 
       {lightboxOpen && (
         <PhotoLightbox

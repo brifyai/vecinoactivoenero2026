@@ -7,8 +7,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import MessageIcon from '@mui/icons-material/Message';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import ExploreIcon from '@mui/icons-material/Explore';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 // PagesIcon removed - generic Facebook feature
@@ -25,14 +23,12 @@ const Sidebar = () => {
   const menuItems = [
     { icon: <DashboardIcon />, path: '/', label: 'Inicio' },
     { icon: <ExploreIcon />, path: '/descubrir-vecinos', label: 'Descubrir' },
-    { icon: <AssignmentIcon />, path: '/necesidades-locales', label: 'Necesidades' },
-    { icon: <GroupWorkIcon />, path: '/acciones-comunitarias', label: 'Acciones' },
     { icon: <MapIcon />, path: '/mapa', label: 'Mapa del Barrio' },
     { icon: <RocketLaunchIcon />, path: '/hub-comunitario', label: 'Hub Comunitario' },
     // Pages removed - generic Facebook feature
     // { icon: <PagesIcon />, path: '/paginas', label: 'Páginas' },
     { icon: <CalendarMonthIcon />, path: '/eventos', label: 'Eventos' },
-    { icon: <PersonIcon />, path: `/${user?.username || user?.name?.toLowerCase().replace(/\s+/g, '-') || 'usuario'}`, label: 'Perfil', matchPaths: ['/linea-tiempo', '/acerca-de', '/vecinos', '/fotos'] },
+    { icon: null, avatar: user?.avatar, path: `/${user?.username || user?.name?.toLowerCase().replace(/\s+/g, '-') || 'usuario'}`, label: 'Perfil', matchPaths: ['/linea-tiempo', '/acerca-de', '/fotos'] },
     { icon: <MessageIcon />, path: '/mensajes', label: 'Mensajes' },
   ];
 
@@ -68,7 +64,11 @@ const Sidebar = () => {
             onClick={() => navigate(item.path)}
             title={item.label}
           >
-            {item.icon}
+            {item.avatar ? (
+              <img src={item.avatar} alt={item.label} className="sidebar-avatar" />
+            ) : (
+              item.icon
+            )}
           </button>
         ))}
       </nav>

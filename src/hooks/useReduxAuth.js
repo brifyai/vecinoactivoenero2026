@@ -48,10 +48,19 @@ export const useReduxAuth = () => {
   };
 
   const handleLogout = () => {
-    // Primero limpiar Redux Persist
+    // Limpiar Redux Persist
     localStorage.removeItem('persist:vecino-activo-root');
-    // Luego hacer logout en Redux
+    
+    // Marcar como logout intencional para evitar restauración automática
+    localStorage.setItem('friendbook_intentional_logout', 'true');
+    
+    // Hacer logout en Redux
     dispatch(logout());
+    
+    // Forzar navegación después de un breve delay
+    setTimeout(() => {
+      window.location.href = '/iniciar-sesion';
+    }, 100);
   };
 
   const handleUpdateUser = (updates) => {

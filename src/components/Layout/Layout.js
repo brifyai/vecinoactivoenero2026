@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
   const isFullWidth = fullWidthPages.includes(location.pathname);
   
   // Páginas que no necesitan el chat lateral derecho
-  const noRightSidebarPages = ['/contacto'];
+  const noRightSidebarPages = ['/contacto', '/descubrir-vecinos', '/fotos'];
   const hideRightSidebar = noRightSidebarPages.includes(location.pathname);
 
   return (

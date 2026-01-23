@@ -98,7 +98,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: null,
-    loading: false,
+    loading: true, // Comenzar con loading true para evitar redirecciones prematuras
     error: null,
     sessionExpired: false,
     isAuthenticated: false

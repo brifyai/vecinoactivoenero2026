@@ -75,16 +75,10 @@ const ProfileHeader = ({ user: propUser, isOwnProfile = true }) => {
         </div>
         
         <div className="profile-info-container">
-          <div className="profile-avatar">
-            <img src={displayUser?.avatar || 'https://i.pravatar.cc/150?img=8'} alt="Profile" />
-            <span className="verified-badge">✓</span>
-          </div>
-          
           <div className="profile-info">
             <h2>
               {displayUser?.name || 'Usuario'} 
               {verificationStatus?.verified && <VerifiedBadge />}
-              {' ❤️'}
             </h2>
             {displayUser?.username && (
               <p className="profile-username">@{displayUser.username}</p>

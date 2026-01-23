@@ -126,8 +126,8 @@
 }
 
 .map-search-clear:hover {
-  background: var(--primary);
-  color: var(--on-primary);
+  background: #667eea !important;
+  color: white !important;
   transform: scale(1.1);
 }
 
@@ -168,8 +168,8 @@
 }
 
 .search-result-code {
-  background: var(--primary);
-  color: var(--on-primary);
+  background: #667eea !important;
+  color: white !important;
   padding: 2px 8px;
   border-radius: var(--radius-sm);
   font-size: 12px;
@@ -217,7 +217,7 @@
 .stat-number {
   font-size: 32px;
   font-weight: 700;
-  color: var(--primary);
+  color: #667eea !important;
 }
 
 .stat-label {
@@ -643,10 +643,10 @@
 }
 
 .mode-btn.active {
-  background: var(--primary);
-  color: var(--on-primary);
-  border-color: var(--primary);
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-color: #667eea !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
 }
 
 /* Botón de toggle vecindarios en el selector */
@@ -658,7 +658,7 @@
 .map-search-btn {
   position: absolute;
   right: 12px;
-  background: var(--primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
   border: none;
   border-radius: 50%;
   width: 36px;
@@ -668,7 +668,7 @@
   justify-content: center;
   cursor: pointer;
   font-size: 18px;
-  color: var(--on-primary);
+  color: white !important;
   transition: all var(--transition-fast);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -836,4 +836,29 @@
   vertical-align: middle;
   margin-right: 4px;
   font-size: 16px;
+}
+
+/* Reglas super específicas para forzar colores en el mapa */
+.neighborhood-map-page .search-mode-selector .mode-btn.active,
+.search-mode-selector .mode-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-color: #667eea !important;
+}
+
+.neighborhood-map-page .map-search-wrapper .map-search-btn,
+.map-search-wrapper .map-search-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
+.neighborhood-map-page .map-stats .stat-number,
+.map-stats .stat-number {
+  color: #667eea !important;
+}
+
+.neighborhood-map-page .map-search-results .search-result-code,
+.map-search-results .search-result-code {
+  background: #667eea !important;
+  color: white !important;
 }
