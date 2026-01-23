@@ -291,7 +291,60 @@
 /* Responsive */
 @media (max-width: 768px) {
   .modern-directory {
-    padding: 20px;
+    padding: 16px;
+  }
+
+  .directory-controls {
+    margin-bottom: 20px;
+  }
+
+  .controls-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+    margin-bottom: 16px;
+  }
+
+  .search-box-modern {
+    order: 1;
+  }
+
+  .btn-create {
+    order: 2;
+    padding: 14px 20px;
+    font-size: 14px;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .search-box-modern input {
+    padding: 14px 14px 14px 48px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .search-box-modern .search-icon {
+    left: 16px;
+    font-size: 20px;
+  }
+
+  .category-pills {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    gap: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .category-pill {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    font-size: 13px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    min-width: fit-content;
   }
 
   .services-grid-modern {
@@ -301,17 +354,184 @@
 
   .service-card-modern {
     padding: 20px;
+    border-radius: 12px;
   }
 
-  .category-pills {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 8px;
-    scrollbar-width: thin;
+  .service-header {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .service-avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .avatar-placeholder {
+    font-size: 20px;
+  }
+
+  .service-name {
+    font-size: 16px;
+  }
+
+  .service-category {
+    font-size: 12px;
+  }
+
+  .service-description {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .service-rating {
+    margin-bottom: 12px;
+    padding: 6px 10px;
+  }
+
+  .rating-value {
+    font-size: 14px;
+  }
+
+  .rating-count {
+    font-size: 12px;
+  }
+
+  .service-details {
+    padding: 12px;
+    margin-bottom: 16px;
+    gap: 8px;
+  }
+
+  .detail-item {
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .detail-item svg {
+    font-size: 16px;
+  }
+
+  .service-actions {
+    gap: 8px;
+  }
+
+  .btn-contact,
+  .btn-details {
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 8px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .empty-state {
+    padding: 40px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .modern-directory {
+    padding: 12px;
+  }
+
+  .controls-header {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .btn-create {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .search-box-modern input {
+    padding: 12px 12px 12px 44px;
+    font-size: 13px;
+  }
+
+  .search-box-modern .search-icon {
+    left: 14px;
+    font-size: 18px;
   }
 
   .category-pill {
-    flex-shrink: 0;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .service-card-modern {
+    padding: 16px;
+  }
+
+  .service-header {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .service-avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .avatar-placeholder {
+    font-size: 18px;
+  }
+
+  .service-name {
+    font-size: 15px;
+  }
+
+  .service-category {
+    font-size: 11px;
+  }
+
+  .service-description {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .service-rating {
+    padding: 5px 8px;
+    margin-bottom: 10px;
+  }
+
+  .star-icon {
+    font-size: 16px;
+  }
+
+  .rating-value {
+    font-size: 13px;
+  }
+
+  .rating-count {
+    font-size: 11px;
+  }
+
+  .service-details {
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+
+  .detail-item {
+    font-size: 11px;
+  }
+
+  .detail-item svg {
+    font-size: 14px;
+  }
+
+  .btn-contact,
+  .btn-details {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .empty-state {
+    padding: 30px 15px;
+    font-size: 13px;
   }
 }
 
@@ -328,6 +548,7 @@
   justify-content: center;
   z-index: 2000;
   padding: 20px;
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   animation: fadeIn 0.2s ease;
 }
@@ -343,6 +564,7 @@
 
 .modal-content {
   background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border-radius: 28px;
   width: 100%;

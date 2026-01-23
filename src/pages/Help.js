@@ -17,7 +17,7 @@ const Help = () => {
   const [expandedFaq, setExpandedFaq] = useState(null);
 
   const handleContactSupport = () => {
-    navigate('/contacto');
+    navigate('/app/contacto');
   };
 
   const handleReportProblem = async () => {

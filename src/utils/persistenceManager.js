@@ -71,15 +71,13 @@ class PersistenceManager {
   // Verificar y recuperar datos si es necesario
   checkAndRecover() {
     try {
-      // NO recuperar si fue un logout intencional
-      const wasIntentionalLogout = localStorage.getItem('friendbook_intentional_logout');
-      if (wasIntentionalLogout) {
-        console.log('🚪 Logout intencional detectado - NO se recuperarán datos');
-        localStorage.removeItem('friendbook_intentional_logout');
+      // NO recuperar NUNCA después de logout
+      const currentUser = localStorage.getItem('currentUser');
+      if (!currentUser) {
+        console.log('🚪 No hay currentUser - probablemente logout, NO recuperar');
         return;
       }
 
-      const currentUser = localStorage.getItem('currentUser');
       const users = localStorage.getItem('users');
 
       // Si no hay datos pero hay backup, recuperar
@@ -181,6 +179,15 @@ class PersistenceManager {
   cleanOldBackups() {
     // En localStorage solo mantenemos uno, pero esto es útil si expandimos a IndexedDB
     console.log('🧹 Limpieza de backups completada');
+  }
+
+  // Limpiar datos para logout
+  clearForLogout() {
+    console.log('🚪 Limpiando datos para logout...');
+    localStorage.setItem('friendbook_intentional_logout', 'true');
+    localStorage.removeItem(BACKUP_KEY);
+    localStorage.removeItem(LAST_BACKUP_KEY);
+    console.log('✅ Backups eliminados - logout preparado');
   }
 
   // Obtener información del backup

@@ -588,7 +588,7 @@ const Settings = () => {
                 <div className="help-info">
                   <h4>Centro de Ayuda</h4>
                   <p>Encuentra respuestas a preguntas comunes</p>
-                  <button className="link-btn" onClick={() => navigate('/ayuda')}>Visitar Centro de Ayuda →</button>
+                  <button className="link-btn" onClick={() => navigate('/app/ayuda')}>Visitar Centro de Ayuda →</button>
                 </div>
               </div>
 
@@ -597,7 +597,7 @@ const Settings = () => {
                 <div className="help-info">
                   <h4>Contactar Soporte</h4>
                   <p>Ponte en contacto con nuestro equipo de soporte</p>
-                  <button className="link-btn" onClick={() => navigate('/contacto')}>Contáctanos →</button>
+                  <button className="link-btn" onClick={() => navigate('/app/contacto')}>Contáctanos →</button>
                 </div>
               </div>
 

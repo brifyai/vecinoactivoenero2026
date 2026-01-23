@@ -48,23 +48,28 @@ export const useReduxAuth = () => {
   };
 
   const handleLogout = () => {
-    // Limpiar Redux Persist
-    localStorage.removeItem('persist:vecino-activo-root');
+    console.log('🔵 handleLogout llamado');
     
-    // Marcar como logout intencional para evitar restauración automática
-    localStorage.setItem('friendbook_intentional_logout', 'true');
-    
-    // Hacer logout en Redux
+    // Hacer logout en Redux - esto limpiará automáticamente Redux Persist
     dispatch(logout());
     
-    // Forzar navegación después de un breve delay
-    setTimeout(() => {
-      window.location.href = '/iniciar-sesion';
-    }, 100);
+    console.log('🔵 Logout dispatch completado');
+    
+    // Redirigir inmediatamente
+    window.location.href = '/iniciar-sesion';
   };
 
   const handleUpdateUser = (updates) => {
     dispatch(updateUser(updates));
+  };
+
+  const handleUpdateUserProfile = (profileData) => {
+    const result = dispatch(updateUser(profileData));
+    if (updateUser.fulfilled.match(result)) {
+      return { success: true };
+    } else {
+      return { success: false, error: result.payload };
+    }
   };
 
   const handleUpdateUserAvatar = (avatar) => {
@@ -79,6 +84,11 @@ export const useReduxAuth = () => {
     dispatch(clearSessionExpired());
   };
 
+  const verifyUserEmail = (email) => {
+    // Marcar email como verificado
+    dispatch(updateUser({ emailVerified: true, email }));
+  };
+
   return {
     user,
     isAuthenticated,
@@ -89,7 +99,9 @@ export const useReduxAuth = () => {
     register,
     logout: handleLogout,
     updateUser: handleUpdateUser,
+    updateUserProfile: handleUpdateUserProfile,
     updateUserAvatar: handleUpdateUserAvatar,
+    verifyUserEmail,
     clearError: handleClearError,
     clearSessionExpired: handleClearSessionExpired
   };

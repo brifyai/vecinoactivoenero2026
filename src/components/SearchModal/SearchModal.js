@@ -39,7 +39,7 @@ const SearchModal = ({ onClose }) => {
       navigate(`/timeline`);
       onClose();
     } else if (result.type === 'post') {
-      navigate('/');
+      navigate('/app');
       onClose();
     }
   };

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import storageService from '../../services/storageService';
 import emailVerificationService from '../../services/emailVerificationService';
+import persistenceManager from '../../utils/persistenceManager';
 
 const SESSION_STORAGE_KEY = 'friendbook_session';
 const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
@@ -106,13 +107,19 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       console.log('🔴 LOGOUT EJECUTADO - Limpiando estado');
-      state.user = null;
-      state.isAuthenticated = false;
-      state.sessionExpired = false;
-      localStorage.removeItem(SESSION_STORAGE_KEY);
-      localStorage.removeItem('persist:vecino-activo-root'); // Limpiar Redux Persist
-      storageService.clearCurrentUser();
-      console.log('✅ Estado limpiado - isAuthenticated:', state.isAuthenticated);
+      
+      // Limpiar localStorage
+      localStorage.removeItem('friendbook_session');
+      localStorage.removeItem('currentUser');
+      
+      // Resetear estado a inicial
+      return {
+        user: null,
+        loading: false,
+        error: null,
+        sessionExpired: false,
+        isAuthenticated: false
+      };
     },
     updateUser: (state, action) => {
       state.user = { ...state.user, ...action.payload };

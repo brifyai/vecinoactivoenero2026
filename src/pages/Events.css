@@ -714,17 +714,286 @@
 
 @media (max-width: 768px) {
   .events-page {
-    padding: 10px;
-    padding-right: 10px;
+    padding: 0;
+  }
+
+  .events-header {
+    padding: 24px 16px;
+    text-align: center;
+  }
+
+  .events-header h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .events-header p {
+    font-size: 16px;
+  }
+
+  .events-center {
+    margin: 16px auto;
+    padding: 0 16px;
+    padding-right: 16px !important;
+    gap: 16px;
+  }
+
+  .search-with-button {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 0;
+  }
+
+  .create-event-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    font-size: 15px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .search-input-wrapper input {
+    padding: 14px 14px 14px 48px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .search-input-wrapper .search-icon {
+    left: 14px;
+    font-size: 20px;
+  }
+
+  .events-tabs {
+    padding: 12px 16px;
+    margin-bottom: 0;
+    border-radius: 12px;
+  }
+
+  .tab-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .category-buttons {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 0;
+  }
+
+  .category-btn {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    font-size: 12px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   .events-grid,
   .community-events-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .event-card {
+    border-radius: 12px;
+  }
+
+  .event-image {
+    height: 120px;
+  }
+
+  .event-content {
+    padding: 12px;
+  }
+
+  .event-content h3 {
+    font-size: 15px;
+  }
+
+  .event-detail {
+    font-size: 12px;
+  }
+
+  .interested-btn,
+  .going-btn {
+    padding: 8px 10px;
+    font-size: 12px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .community-header {
+    margin-bottom: 16px;
+  }
+
+  .calendar-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    padding: 12px;
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .community-event-card {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .community-event-card h3 {
+    font-size: 15px;
+  }
+
+  .community-event-card p {
+    font-size: 12px;
+  }
+
+  .detail-item {
+    font-size: 12px;
+  }
+
+  .attend-btn {
+    padding: 10px;
+    font-size: 12px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .empty-state {
+    padding: 30px 16px;
+  }
+
+  .empty-state h3 {
+    font-size: 16px;
+  }
+
+  .empty-state p {
+    font-size: 13px;
+  }
+
+  .no-events {
+    padding: 40px 20px;
+    font-size: 14px;
+  }
+
+  /* Modal responsive */
+  .modal-content {
+    width: 95%;
+    max-height: 85vh;
+    border-radius: 12px;
+  }
+
+  .modal-header {
+    padding: 16px;
+  }
+
+  .modal-header h2 {
+    font-size: 18px;
+  }
+
+  .modal-body {
+    padding: 16px;
+  }
+
+  .modal-footer {
+    padding: 16px;
+    flex-direction: column;
+  }
+
+  .cancel-btn,
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   .form-row {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .events-header {
+    padding: 20px 12px;
+  }
+
+  .events-header h1 {
+    font-size: 24px;
+  }
+
+  .events-header p {
+    font-size: 14px;
+  }
+
+  .events-center {
+    padding: 0 12px;
+    gap: 12px;
+  }
+
+  .search-input-wrapper input {
+    padding: 12px 12px 12px 44px;
+    font-size: 13px;
+  }
+
+  .search-input-wrapper .search-icon {
+    left: 12px;
+    font-size: 18px;
+  }
+
+  .create-event-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .events-tabs {
+    padding: 10px 12px;
+  }
+
+  .tab-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .category-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+
+  .calendar-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .event-content h3 {
+    font-size: 14px;
+  }
+
+  .community-event-card h3 {
+    font-size: 14px;
   }
 }
 /* Reglas super específicas para forzar colores en Events */

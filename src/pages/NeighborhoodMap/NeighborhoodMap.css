@@ -3,6 +3,7 @@
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 0;
   transition: margin-right 0.3s ease;
+  margin-right: 320px; /* Espacio para el sidebar derecho */
 }
 
 .neighborhood-map-page.sidebar-collapsed {
@@ -43,7 +44,7 @@
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 1;
-  max-width: 1400px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -55,7 +56,7 @@
   font-weight: 400;
   position: relative;
   z-index: 1;
-  max-width: 1400px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -63,15 +64,11 @@
 .map-search-container {
   position: relative;
   margin: 32px auto;
-  max-width: 1400px;
+  max-width: 100%;
   padding: 0 32px;
-  padding-right: 348px;
-  transition: padding-right 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.neighborhood-map-page.sidebar-collapsed .map-search-container {
-  padding-right: 32px;
-}
 
 .map-search-wrapper {
   position: relative;
@@ -193,15 +190,12 @@
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 16px;
   margin: 0 auto 32px;
-  max-width: 1400px;
+  max-width: 100%;
   padding: 0 32px;
-  padding-right: 348px;
-  transition: padding-right 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.neighborhood-map-page.sidebar-collapsed .map-stats {
-  padding-right: 32px;
-}
+
 
 .stat-card {
   background: var(--surface);
@@ -241,17 +235,41 @@
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   position: relative;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto 32px;
-  margin-right: 320px;
-  margin-left: auto;
   padding: 0 32px;
-  transition: margin 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.neighborhood-map-page.sidebar-collapsed .map-container {
-  margin-right: auto;
-  margin-left: auto;
+
+
+/* Asegurar que el mapa de Leaflet ocupe todo el contenedor */
+.map-container .leaflet-container {
+  height: 100% !important;
+  width: 100% !important;
+  border-radius: 16px;
+}
+
+/* Mejorar controles de zoom en móvil */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.leaflet-control-zoom a {
+  background: var(--surface) !important;
+  color: var(--on-surface) !important;
+  border: 1px solid var(--outline-variant) !important;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 38px !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: var(--surface-container) !important;
+  color: var(--primary) !important;
 }
 
 .map-loading {
@@ -459,12 +477,45 @@
 }
 
 @media (max-width: 768px) {
-  .map-container {
-    height: 400px;
+  .neighborhood-map-page {
+    padding: 0;
+    margin-right: 0 !important; /* En mobile no hay sidebar derecho */
+  }
+
+  .map-header {
+    padding: 24px 16px;
+    text-align: center;
+  }
+
+  .map-header h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .map-header p {
+    font-size: 16px;
   }
 
   .map-search-container {
-    max-width: 100%;
+    margin: 16px auto;
+    padding: 0 16px;
+  }
+
+  .search-mode-selector {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .mode-btn {
+    width: 100%;
+    min-width: auto;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .toggle-neighborhoods-btn {
+    margin-left: 0;
   }
 
   .map-search-input {
@@ -474,6 +525,149 @@
 
   .map-stats {
     grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 16px auto;
+    padding: 0 16px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .map-container {
+    height: 70vh;
+    min-height: 400px;
+    margin: 16px auto;
+    padding: 0 16px;
+  }
+
+  .map-container > div {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* Mejorar controles de zoom en móvil */
+  .leaflet-control-zoom a {
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 34px !important;
+    font-size: 16px !important;
+  }
+
+  /* Mejorar popups en móvil */
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px !important;
+  }
+
+  .leaflet-popup-content {
+    margin: 8px !important;
+    font-size: 12px !important;
+  }
+
+  .address-popup {
+    min-width: 200px;
+    max-width: 250px;
+  }
+
+  .neighborhood-popup {
+    min-width: 180px;
+    max-width: 220px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .map-header {
+    padding: 20px 12px;
+  }
+
+  .map-header h1 {
+    font-size: 24px;
+  }
+
+  .map-header p {
+    font-size: 14px;
+  }
+
+  .map-search-container {
+    margin: 12px auto;
+    padding: 0 12px;
+  }
+
+  .mode-btn {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .map-search-input {
+    padding: 10px 40px 10px 12px;
+    font-size: 13px;
+  }
+
+  .map-search-btn {
+    width: 32px;
+    height: 32px;
+    right: 8px;
+  }
+
+  .map-search-clear {
+    right: 36px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .map-stats {
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .stat-number {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .map-container {
+    height: 60vh;
+    min-height: 350px;
+    padding: 0 12px;
+  }
+
+  /* Controles de zoom más pequeños */
+  .leaflet-control-zoom a {
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 30px !important;
+    font-size: 14px !important;
+  }
+
+  /* Popups más compactos */
+  .leaflet-popup-content {
+    margin: 6px !important;
+    font-size: 11px !important;
+  }
+
+  .neighborhood-popup {
+    min-width: 160px;
+    max-width: 200px;
+  }
+
+  .neighborhood-popup h4 {
+    font-size: 0.9rem;
+  }
+
+  .neighborhood-popup p {
+    font-size: 0.8rem;
   }
 }
 
@@ -749,6 +943,8 @@
   .mode-btn {
     width: 100%;
     min-width: auto;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
   
   .toggle-neighborhoods-btn {
@@ -758,6 +954,30 @@
   .address-popup {
     min-width: 200px;
     max-width: 250px;
+  }
+
+  .map-search-input {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .map-search-btn,
+  .map-search-clear {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .map-search-results {
+    max-height: 300px;
+  }
+
+  .map-search-result-item {
+    padding: 16px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 

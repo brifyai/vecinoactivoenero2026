@@ -8,7 +8,7 @@ const MessagesDropdown = ({ onClose }) => {
   const { messages } = useApp();
 
   const handleSeeAll = () => {
-    navigate('/mensajes');
+    navigate('/app/mensajes');
     onClose();
   };
 

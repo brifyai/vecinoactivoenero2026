@@ -12,16 +12,29 @@ export const useSidebar = () => {
 
 export const SidebarProvider = ({ children }) => {
   const [isRightSidebarCollapsed, setIsRightSidebarCollapsed] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const toggleRightSidebar = () => {
     setIsRightSidebarCollapsed(prev => !prev);
+  };
+
+  const toggleMobileSidebar = () => {
+    setIsMobileSidebarOpen(prev => !prev);
+  };
+
+  const closeMobileSidebar = () => {
+    setIsMobileSidebarOpen(false);
   };
 
   return (
     <SidebarContext.Provider value={{ 
       isRightSidebarCollapsed, 
       setIsRightSidebarCollapsed,
-      toggleRightSidebar 
+      toggleRightSidebar,
+      isMobileSidebarOpen,
+      setIsMobileSidebarOpen,
+      toggleMobileSidebar,
+      closeMobileSidebar
     }}>
       {children}
     </SidebarContext.Provider>

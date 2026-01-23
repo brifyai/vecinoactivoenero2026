@@ -42,9 +42,9 @@ const About = () => {
       <ProfileHeader />
       
       <div className="about-tabs">
-        <button className="tab" onClick={() => navigate('/linea-tiempo')}><AccessTimeIcon fontSize="small" /> Línea de tiempo</button>
+        <button className="tab" onClick={() => navigate('/app/linea-tiempo')}><AccessTimeIcon fontSize="small" /> Línea de tiempo</button>
         <button className="tab active"><InfoIcon fontSize="small" /> Acerca de</button>
-        <button className="tab" onClick={() => navigate('/descubrir-vecinos')}><GroupIcon fontSize="small" /> Vecinos</button>
+        <button className="tab" onClick={() => navigate('/app/descubrir-vecinos')}><GroupIcon fontSize="small" /> Vecinos</button>
         <button className="tab" onClick={() => navigate('/fotos')}><PhotoLibraryIcon fontSize="small" /> Fotos</button>
         <div className="tab-right">
           <input type="text" placeholder="Buscar aquí..." />
@@ -188,7 +188,7 @@ const About = () => {
                 { name: 'Josephin Water', location: 'Chamisero, Colina', img: 8 },
                 { name: 'Ana Maria Fernandez', location: 'Chamisero, Colina', img: 9 }
               ].map((friend, i) => (
-                <div key={i} className="friend-preview" onClick={() => navigate('/linea-tiempo')} style={{ cursor: 'pointer' }}>
+                <div key={i} className="friend-preview" onClick={() => navigate('/app/linea-tiempo')} style={{ cursor: 'pointer' }}>
                   <img src={`https://i.pravatar.cc/150?img=${friend.img}`} alt={friend.name} />
                   <p>{friend.name}</p>
                   <span>{friend.location}</span>
@@ -196,7 +196,7 @@ const About = () => {
                 </div>
               ))}
             </div>
-            <button className="see-all-btn" onClick={() => navigate('/descubrir-vecinos')}>Ver todo</button>
+            <button className="see-all-btn" onClick={() => navigate('/app/descubrir-vecinos')}>Ver todo</button>
           </div>
         </div>
       </div>

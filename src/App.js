@@ -16,7 +16,7 @@ import { VerificationProvider } from './context/VerificationContext';
 import { ReportsProvider } from './context/ReportsContext';
 import { ProjectsProvider } from './context/ProjectsContext';
 import { PollsProvider } from './context/PollsContext';
-import { HelpRequestsProvider } from './context/HelpRequestsContext';
+
 import { CommunityCalendarProvider } from './context/CommunityCalendarContext';
 import { LocalBusinessProvider } from './context/LocalBusinessContext';
 import { SharedResourcesProvider } from './context/SharedResourcesContext';
@@ -32,11 +32,11 @@ import { NeighborhoodExpansionProvider } from './context/NeighborhoodExpansionCo
 import Layout from './components/Layout/Layout';
 import AppInitializer from './components/AppInitializer/AppInitializer';
 import ReduxInitializer from './components/ReduxInitializer/ReduxInitializer';
+import Landing from './pages/Landing';
 import Home from './pages/Home';
 import Timeline from './pages/Timeline';
 import About from './pages/About';
 import Friends from './pages/Friends';
-import Photos from './pages/Photos';
 import Birthday from './pages/Birthday';
 import Settings from './pages/Settings';
 import Help from './pages/Help';
@@ -51,7 +51,6 @@ import NeighborhoodMap from './pages/NeighborhoodMap/NeighborhoodMap';
 import Directory from './pages/Directory/Directory';
 import NeighborhoodProfile from './pages/NeighborhoodProfile/NeighborhoodProfile';
 import Projects from './pages/Projects/Projects';
-import HelpRequests from './pages/HelpRequests/HelpRequests';
 import SharedResources from './pages/SharedResources/SharedResources';
 import LocalBusinesses from './pages/LocalBusinesses/LocalBusinesses';
 import CommunityCalendar from './pages/CommunityCalendar/CommunityCalendar';
@@ -97,116 +96,111 @@ function App() {
     <Router>
       <ReduxInitializer>
         <AppInitializer />
-        <AppProvider>
-          <SearchProvider>
-            <ChatProvider>
-              <SidebarProvider>
-                <NeighborhoodProvider>
-                  <SecurityProvider>
-                    <ServicesProvider>
-                      <GamificationProvider>
-                        <VerificationProvider>
-                          <ReportsProvider>
-                            <FriendsProvider>
-                              <EventsProvider>
-                                <GroupsProvider>
-                                  <ProjectsProvider>
-                                    <PollsProvider>
-                                      <HelpRequestsProvider>
-                                      <CommunityCalendarProvider>
-                                        <LocalBusinessProvider>
-                                          <SharedResourcesProvider>
-                                            <PhotosProvider>
-                                              <NeighborhoodsProvider>
-                                                <NeighborhoodExpansionProvider>
-                                                  <ConnectionsProvider>
-                                                    <LocalNeedsProvider>
-                                                      <CommunityActionsProvider>
-                                                        <MessagesProvider>
-                                                          <ModerationProvider>
-                                                            <Routes>
-                                                  <Route path="/iniciar-sesion" element={<Login />} />
-                                                  <Route path="/registrarse" element={<Register />} />
-                                                  <Route path="/recuperar-contrasena" element={<ForgotPassword />} />
-                                                  <Route path="/*" element={
-                                                    <ProtectedRoute>
-                                                      <Layout>
-                                                        <Routes>
-                                                          <Route path="/" element={<Home />} />
-                                                          <Route path="/onboarding" element={<Onboarding />} />
-                                                          <Route path="/descubrir-vecinos" element={<DiscoverNeighbors />} />
-                                                          <Route path="/feed" element={<Feed />} />
-                                                          <Route path="/mensajes-directos" element={<DirectMessages />} />
-                                                          <Route path="/mapa" element={<NeighborhoodMap />} />
-                                                          <Route path="/vecindario/:id" element={<NeighborhoodProfile />} />
-                                                          <Route path="/hub-comunitario" element={<CommunityHub />} />
-                                                          <Route path="/directorio" element={<Navigate to="/hub-comunitario?tab=directorio" replace />} />
-                                                          <Route path="/votaciones" element={<Navigate to="/hub-comunitario?tab=votaciones" replace />} />
-                                                          <Route path="/proyectos" element={<Navigate to="/hub-comunitario?tab=proyectos" replace />} />
-                                                          <Route path="/comunidad" element={<Community />} />
-                                                          <Route path="/proyecto/:slug" element={<UserProfile />} />
-                                                          <Route path="/solicitudes-ayuda" element={<HelpRequests />} />
-                                                          <Route path="/ayuda/:slug" element={<UserProfile />} />
-                                                          <Route path="/recursos-compartidos" element={<SharedResources />} />
-                                                          <Route path="/recursos/:slug" element={<UserProfile />} />
-                                                          <Route path="/negocios-locales" element={<LocalBusinesses />} />
-                                                          <Route path="/calendario-comunitario" element={<CommunityCalendar />} />
-                                                          <Route path="/linea-tiempo" element={<Timeline />} />
-                                                          <Route path="/acerca-de" element={<About />} />
-                                                          <Route path="/vecinos" element={<Friends />} />
-                                                          <Route path="/fotos" element={<Photos />} />
-                                                          <Route path="/acerca-de" element={<About />} />
-                                                          <Route path="/vecinos" element={<Friends />} />
-                                                          <Route path="/fotos" element={<Photos />} />
-                                                          <Route path="/cumpleanos" element={<Birthday />} />
-                                                          <Route path="/configuracion" element={<Settings />} />
-                                                          <Route path="/mensajes" element={<Messenger />} />
-                                                          <Route path="/eventos" element={<Events />} />
-                                                          {/* <Route path="/grupos" element={<Groups />} /> */}
-                                                          <Route path="/grupo/:slug" element={<UserProfile />} />
-                                                          <Route path="/evento/:slug" element={<UserProfile />} />
-                                                          {/* Pages routes removed - generic Facebook feature */}
-                                                          {/* <Route path="/paginas" element={<Pages />} /> */}
-                                                          {/* <Route path="/pagina/:slug" element={<UserProfile />} /> */}
-                                                          {/* <Route path="/paginas/:slug" element={<UserProfile />} /> */}
-                                                          <Route path="/calendario" element={<Calendar />} />
-                                                          <Route path="/favoritos" element={<Favorites />} />
-                                                          <Route path="/historial" element={<History />} />
-                                                          <Route path="/ayuda" element={<Help />} />
-                                                          <Route path="/contacto" element={<Contact />} />
-                                                          <Route path="/:username" element={<UserProfile />} />
-                                                        </Routes>
-                                                      </Layout>
-                                                    </ProtectedRoute>
-                                                  } />
-                                            </Routes>
-                                                        </ModerationProvider>
-                                                      </MessagesProvider>
-                                                    </CommunityActionsProvider>
-                                                  </LocalNeedsProvider>
-                                                </ConnectionsProvider>
-                                              </NeighborhoodExpansionProvider>
-                                            </NeighborhoodsProvider>
-                                          </PhotosProvider>
-                                          </SharedResourcesProvider>
-                                        </LocalBusinessProvider>
-                                      </CommunityCalendarProvider>
-                                    </HelpRequestsProvider>
-                                  </PollsProvider>
-                                </ProjectsProvider>
-                                </GroupsProvider>
-                              </EventsProvider>
-                            </FriendsProvider>
-                          </ReportsProvider>
-                        </VerificationProvider>
-                      </GamificationProvider>
-                    </ServicesProvider>
-                  </SecurityProvider>
-                </NeighborhoodProvider>
-              </SidebarProvider>
-            </ChatProvider>
-          </SearchProvider>
-        </AppProvider>
+        <Routes>
+          {/* Rutas públicas */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/iniciar-sesion" element={<Login />} />
+          <Route path="/registrarse" element={
+            <NeighborhoodProvider>
+              <Register />
+            </NeighborhoodProvider>
+          } />
+          <Route path="/recuperar-contrasena" element={<ForgotPassword />} />
+          
+          {/* Rutas protegidas de la aplicación */}
+          <Route path="/app/*" element={
+            <ProtectedRoute>
+              <AppProvider>
+                <SearchProvider>
+                  <ChatProvider>
+                    <SidebarProvider>
+                      <NeighborhoodProvider>
+                        <SecurityProvider>
+                          <ServicesProvider>
+                            <GamificationProvider>
+                              <VerificationProvider>
+                                <ReportsProvider>
+                                  <FriendsProvider>
+                                    <EventsProvider>
+                                      <GroupsProvider>
+                                        <ProjectsProvider>
+                                          <PollsProvider>
+                                            <CommunityCalendarProvider>
+                                              <LocalBusinessProvider>
+                                                <SharedResourcesProvider>
+                                                  <PhotosProvider>
+                                                    <NeighborhoodsProvider>
+                                                      <NeighborhoodExpansionProvider>
+                                                        <ConnectionsProvider>
+                                                          <LocalNeedsProvider>
+                                                            <CommunityActionsProvider>
+                                                              <MessagesProvider>
+                                                                <ModerationProvider>
+                                                                  <Layout>
+                                                                    <Routes>
+                                                                      <Route path="/" element={<Home />} />
+                                                                      <Route path="/onboarding" element={<Onboarding />} />
+                                                                      <Route path="/descubrir-vecinos" element={<DiscoverNeighbors />} />
+                                                                      <Route path="/feed" element={<Feed />} />
+                                                                      <Route path="/mensajes-directos" element={<DirectMessages />} />
+                                                                      <Route path="/mapa" element={<NeighborhoodMap />} />
+                                                                      <Route path="/vecindario/:id" element={<NeighborhoodProfile />} />
+                                                                      <Route path="/hub-comunitario" element={<CommunityHub />} />
+                                                                      <Route path="/directorio" element={<Navigate to="/app/hub-comunitario?tab=directorio" replace />} />
+                                                                      <Route path="/votaciones" element={<Navigate to="/app/hub-comunitario?tab=votaciones" replace />} />
+                                                                      <Route path="/proyectos" element={<Navigate to="/app/hub-comunitario?tab=proyectos" replace />} />
+                                                                      <Route path="/comunidad" element={<Community />} />
+                                                                      <Route path="/proyecto/:slug" element={<UserProfile />} />
+                                                                      <Route path="/recursos-compartidos" element={<SharedResources />} />
+                                                                      <Route path="/recursos/:slug" element={<UserProfile />} />
+                                                                      <Route path="/negocios-locales" element={<LocalBusinesses />} />
+                                                                      <Route path="/calendario-comunitario" element={<CommunityCalendar />} />
+                                                                      <Route path="/linea-tiempo" element={<Timeline />} />
+                                                                      <Route path="/acerca-de" element={<About />} />
+                                                                      <Route path="/vecinos" element={<Friends />} />
+                                                                      <Route path="/cumpleanos" element={<Birthday />} />
+                                                                      <Route path="/configuracion" element={<Settings />} />
+                                                                      <Route path="/mensajes" element={<Messenger />} />
+                                                                      <Route path="/eventos" element={<Events />} />
+                                                                      <Route path="/grupo/:slug" element={<UserProfile />} />
+                                                                      <Route path="/evento/:slug" element={<UserProfile />} />
+                                                                      <Route path="/calendario" element={<Calendar />} />
+                                                                      <Route path="/favoritos" element={<Favorites />} />
+                                                                      <Route path="/historial" element={<History />} />
+                                                                      <Route path="/ayuda" element={<Help />} />
+                                                                      <Route path="/contacto" element={<Contact />} />
+                                                                      <Route path="/:username" element={<UserProfile />} />
+                                                                    </Routes>
+                                                                  </Layout>
+                                                                </ModerationProvider>
+                                                              </MessagesProvider>
+                                                            </CommunityActionsProvider>
+                                                          </LocalNeedsProvider>
+                                                        </ConnectionsProvider>
+                                                      </NeighborhoodExpansionProvider>
+                                                    </NeighborhoodsProvider>
+                                                  </PhotosProvider>
+                                                </SharedResourcesProvider>
+                                              </LocalBusinessProvider>
+                                            </CommunityCalendarProvider>
+                                          </PollsProvider>
+                                        </ProjectsProvider>
+                                      </GroupsProvider>
+                                    </EventsProvider>
+                                  </FriendsProvider>
+                                </ReportsProvider>
+                              </VerificationProvider>
+                            </GamificationProvider>
+                          </ServicesProvider>
+                        </SecurityProvider>
+                      </NeighborhoodProvider>
+                    </SidebarProvider>
+                  </ChatProvider>
+                </SearchProvider>
+              </AppProvider>
+            </ProtectedRoute>
+          } />
+        </Routes>
       </ReduxInitializer>
     </Router>
   );

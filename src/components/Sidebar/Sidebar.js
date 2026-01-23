@@ -21,15 +21,15 @@ const Sidebar = () => {
   const { user, logout } = useAuth();
 
   const menuItems = [
-    { icon: <DashboardIcon />, path: '/', label: 'Inicio' },
-    { icon: <ExploreIcon />, path: '/descubrir-vecinos', label: 'Descubrir' },
-    { icon: <MapIcon />, path: '/mapa', label: 'Mapa del Barrio' },
-    { icon: <RocketLaunchIcon />, path: '/hub-comunitario', label: 'Hub Comunitario' },
+    { icon: <DashboardIcon />, path: '/app', label: 'Inicio' },
+    { icon: <ExploreIcon />, path: '/app/descubrir-vecinos', label: 'Descubrir' },
+    { icon: <MapIcon />, path: '/app/mapa', label: 'Mapa del Barrio' },
+    { icon: <RocketLaunchIcon />, path: '/app/hub-comunitario', label: 'Hub Comunitario' },
     // Pages removed - generic Facebook feature
     // { icon: <PagesIcon />, path: '/paginas', label: 'Páginas' },
-    { icon: <CalendarMonthIcon />, path: '/eventos', label: 'Eventos' },
-    { icon: null, avatar: user?.avatar, path: `/${user?.username || user?.name?.toLowerCase().replace(/\s+/g, '-') || 'usuario'}`, label: 'Perfil', matchPaths: ['/linea-tiempo', '/acerca-de', '/fotos'] },
-    { icon: <MessageIcon />, path: '/mensajes', label: 'Mensajes' },
+    { icon: <CalendarMonthIcon />, path: '/app/eventos', label: 'Eventos' },
+    { icon: null, avatar: user?.avatar, path: `/app/${user?.username || user?.name?.toLowerCase().replace(/\s+/g, '-') || 'usuario'}`, label: 'Perfil', matchPaths: ['/app/linea-tiempo', '/app/acerca-de'] },
+    { icon: <MessageIcon />, path: '/app/mensajes', label: 'Mensajes' },
   ];
 
   const isActive = (item) => {
@@ -76,7 +76,7 @@ const Sidebar = () => {
         <button 
           className="sidebar-item" 
           title="Configuración"
-          onClick={() => navigate('/configuracion')}
+          onClick={() => navigate('/app/configuracion')}
         >
           <SettingsIcon />
         </button>

@@ -107,7 +107,7 @@ const UserProfile = () => {
         });
       } else {
         showErrorToast('Evento no encontrado');
-        navigate('/eventos');
+        navigate('/app/eventos');
       }
     } else if (isProject) {
       // Buscar proyecto en localStorage
@@ -289,7 +289,7 @@ const UserProfile = () => {
         <div className="user-not-found">
           <h2>Usuario no encontrado</h2>
           <p>El usuario "{identifier}" no existe o ha sido eliminado.</p>
-          <button onClick={() => navigate('/descubrir-vecinos')}>Volver a Descubrir Vecinos</button>
+          <button onClick={() => navigate('/app/descubrir-vecinos')}>Volver a Descubrir Vecinos</button>
         </div>
       </div>
     );

@@ -135,7 +135,7 @@ const Birthday = () => {
               <div><strong>26335</strong><span>Me gusta</span></div>
               <div><strong>6845</strong><span>Seguidores</span></div>
             </div>
-            <button className="view-profile-btn-birthday" onClick={() => navigate('/linea-tiempo')}>Ver Perfil</button>
+            <button className="view-profile-btn-birthday" onClick={() => navigate('/app/linea-tiempo')}>Ver Perfil</button>
           </div>
 
           <div className="friend-suggestion-card">

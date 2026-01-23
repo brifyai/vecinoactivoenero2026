@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { showErrorToast, showSuccessToast, showInfoToast } from '../utils/sweetalert';
 import NeighborhoodSelector from '../components/NeighborhoodSelector/NeighborhoodSelector';
@@ -30,25 +30,22 @@ const DISTANCE_OPTIONS = [
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register, verifyUserEmail } = useAuth();
+  const location = useLocation();
+  const { register, verifyUserEmail, isAuthenticated } = useAuth();
+
+  // Si el usuario ya está autenticado y está en la página de registro, redirigir a app
+  useEffect(() => {
+    if (isAuthenticated && location.pathname === '/registrarse') {
+      navigate('/app');
+    }
+  }, [isAuthenticated, navigate, location.pathname]);
+
   const [formData, setFormData] = useState({
     name: '',
     username: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    // Dirección del usuario
-    address: '',
-    addressNumber: '',
-    // Unidad vecinal
-    neighborhoodId: null,
-    neighborhoodName: '',
-    neighborhoodCode: '',
-    // Coordenadas
-    latitude: null,
-    longitude: null,
-    // Preferencia de distancia para conocer vecinos
-    maxDistance: 5
+    confirmPassword: ''
   });
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -90,45 +87,52 @@ const Register = () => {
     setError('');
     setLoading(true);
 
-    // Validaciones
+    // Validaciones básicas
     if (!formData.name || !formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
-      showErrorToast('Por favor completa todos los campos');
+      setError('Por favor completa todos los campos');
       setLoading(false);
       return;
     }
 
     if (formData.username.length < 3) {
-      showErrorToast('El nombre de usuario debe tener al menos 3 caracteres');
+      setError('El nombre de usuario debe tener al menos 3 caracteres');
       setLoading(false);
       return;
     }
 
     if (usernameAvailable === false) {
-      showErrorToast('Este nombre de usuario ya está en uso');
+      setError('Este nombre de usuario ya está en uso');
       setLoading(false);
       return;
     }
 
-    if (!formData.neighborhoodId) {
-      showErrorToast('Por favor selecciona tu unidad vecinal');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError('Por favor ingresa un email válido');
       setLoading(false);
       return;
     }
 
     if (formData.password.length < 6) {
-      showErrorToast('La contraseña debe tener al menos 6 caracteres');
+      setError('La contraseña debe tener al menos 6 caracteres');
       setLoading(false);
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      showErrorToast('Las contraseñas no coinciden');
+      setError('Las contraseñas no coinciden');
       setLoading(false);
       return;
     }
 
     try {
-      const result = register(formData);
+      // Crear cuenta básica con perfil incompleto
+      const basicUserData = {
+        ...formData,
+        profileComplete: false, // Marcar que el perfil está incompleto
+        needsOnboarding: true   // Necesita completar onboarding
+      };
+      
+      const result = register(basicUserData);
       if (result.success) {
         // Send verification code
         const verificationResult = emailVerificationService.sendVerificationCode(formData.email);
@@ -147,13 +151,6 @@ const Register = () => {
     }
   };
 
-  const handleNeighborhoodSelect = (neighborhoodData) => {
-    setFormData({
-      ...formData,
-      ...neighborhoodData
-    });
-  };
-
   const handleEmailVerificationComplete = () => {
     // Mark email as verified in the user record
     if (verifyUserEmail) {
@@ -162,7 +159,8 @@ const Register = () => {
     
     setShowEmailVerification(false);
     showSuccessToast('¡Bienvenido a Vecino Activo!');
-    navigate('/');
+    // Redirigir a onboarding dentro de la app
+    navigate('/app/onboarding');
   };
 
   const handleSocialSignup = (provider) => {
@@ -179,60 +177,76 @@ const Register = () => {
         />
       )}
       
-      <div className="register-header">
-        <div className="register-logo">Vecino Activo</div>
-        <div className="register-nav">
-          <button onClick={() => navigate('/iniciar-sesion')}>Iniciar sesión</button>
-        </div>
-      </div>
-
-      <div className="register-content">
+      <div className="register-container">
+        {/* Lado izquierdo - Bienvenida */}
         <div className="register-left">
-          <div className="register-illustration">
-            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" alt="Únete" />
+          <div className="register-welcome">
+            <h1>¡Únete a Vecino Activo!</h1>
+            <p>Crea tu cuenta y conecta con tu comunidad local.</p>
           </div>
-          <h1>¡Únete a Vecino Activo!</h1>
-          <p>Conéctate con tus vecinos y tu comunidad en Vecino Activo.</p>
+          
+          <div className="register-benefits">
+            <div className="benefit-item">
+              <div className="benefit-icon">
+                <PersonIcon />
+              </div>
+              <span>Conecta con vecinos cercanos</span>
+            </div>
+            <div className="benefit-item">
+              <div className="benefit-icon">
+                <HomeIcon />
+              </div>
+              <span>Descubre eventos locales</span>
+            </div>
+            <div className="benefit-item">
+              <div className="benefit-icon">
+                <PlaceIcon />
+              </div>
+              <span>Comunidad segura y verificada</span>
+            </div>
+          </div>
         </div>
 
+        {/* Lado derecho - Formulario */}
         <div className="register-right">
-          <div className="register-card">
-            <h2>Registrarse</h2>
-            <p className="register-subtitle">Crea tu cuenta</p>
-            <p className="register-desc">Únete a millones de personas compartiendo y conectando</p>
+          <div className="register-header">
+            <h2>Crear Cuenta</h2>
+            <p className="register-subtitle">Información básica para comenzar</p>
+          </div>
 
-            <form onSubmit={handleRegister}>
-              {error && <div className="error-message">{error}</div>}
-              
-              <div className="form-group">
-                <label>Nombre completo</label>
-                <div className="input-with-icon">
-                  <input 
-                    type="text" 
-                    name="name"
-                    placeholder="Ingresa tu nombre" 
-                    value={formData.name}
-                    onChange={handleChange}
-                    required 
-                  />
-                  <PersonIcon className="input-icon" />
-                </div>
+          {error && (
+            <div className="error-message">
+              <span>{error}</span>
+            </div>
+          )}
+
+          <div className="step-content">
+            <form onSubmit={handleRegister} className="register-form">
+              <div className="input-group">
+                <input 
+                  type="text" 
+                  name="name"
+                  placeholder="Nombre completo" 
+                  value={formData.name}
+                  onChange={handleChange}
+                  required 
+                  className="input-field"
+                />
+                <PersonIcon className="input-icon" />
               </div>
 
-              <div className="form-group">
-                <label>Nombre de usuario</label>
-                <div className="input-with-icon">
-                  <input 
-                    type="text" 
-                    name="username"
-                    placeholder="camiloalegria" 
-                    value={formData.username}
-                    onChange={handleChange}
-                    required 
-                    maxLength="30"
-                  />
-                  <PersonIcon className="input-icon" />
-                </div>
+              <div className="input-group">
+                <input 
+                  type="text" 
+                  name="username"
+                  placeholder="Nombre de usuario" 
+                  value={formData.username}
+                  onChange={handleChange}
+                  required 
+                  maxLength="30"
+                  className="input-field"
+                />
+                <PersonIcon className="input-icon" />
                 {formData.username && (
                   <div className="username-preview">
                     vecinoactivo.cl/<strong>{formData.username}</strong>
@@ -249,146 +263,82 @@ const Register = () => {
                 )}
               </div>
 
-              <div className="form-group">
-                <label>Correo electrónico</label>
-                <div className="input-with-icon">
-                  <input 
-                    type="email" 
-                    name="email"
-                    placeholder="Ingresa tu correo" 
-                    value={formData.email}
-                    onChange={handleChange}
-                    required 
-                  />
-                  <EmailIcon className="input-icon" />
-                </div>
+              <div className="input-group">
+                <input 
+                  type="email" 
+                  name="email"
+                  placeholder="Correo electrónico" 
+                  value={formData.email}
+                  onChange={handleChange}
+                  required 
+                  className="input-field"
+                />
+                <EmailIcon className="input-icon" />
               </div>
 
-              {/* Sección de Dirección */}
-              <div className="form-section-title">
-                <PlaceIcon />
-                <span>Tu Dirección</span>
-              </div>
-              
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Calle</label>
-                  <div className="input-with-icon">
-                    <input 
-                      type="text" 
-                      name="address"
-                      placeholder="Ej: Avenida Providencia" 
-                      value={formData.address}
-                      onChange={handleChange}
-                      required 
-                    />
-                    <HomeIcon className="input-icon" />
-                  </div>
-                </div>
-                
-                <div className="form-group">
-                  <label>Número</label>
-                  <div className="input-with-icon">
-                    <input 
-                      type="text" 
-                      name="addressNumber"
-                      placeholder="Ej: 1234" 
-                      value={formData.addressNumber}
-                      onChange={handleChange}
-                      required 
-                    />
-                    <PlaceIcon className="input-icon" />
-                  </div>
-                </div>
+              <div className="input-group">
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  name="password"
+                  placeholder="Contraseña" 
+                  value={formData.password}
+                  onChange={handleChange}
+                  required 
+                  className="input-field"
+                />
+                <LockIcon className="input-icon" />
+                <button 
+                  type="button" 
+                  className="password-toggle" 
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </button>
               </div>
 
-              <NeighborhoodSelector 
-                onSelect={handleNeighborhoodSelect}
-                selectedNeighborhood={formData}
-              />
-
-              {/* Sección de Preferencia de Distancia */}
-              <div className="form-section-title">
-                <PlaceIcon />
-                <span>¿Qué distancia te interesa?</span>
-              </div>
-              
-              <div className="form-group">
-                <label>Quiero conocer vecinos que vivan a máximo:</label>
-                <div className="distance-selector">
-                  {DISTANCE_OPTIONS.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      className={`distance-option ${formData.maxDistance === option.value ? 'active' : ''}`}
-                      onClick={() => setFormData({ ...formData, maxDistance: option.value })}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-                <p className="distance-help">
-                  💡 Esto determinará qué vecinos verás en tus sugerencias de amistad
-                </p>
-              </div>
-
-              <div className="form-group">
-                <label>Contraseña</label>
-                <div className="input-with-icon">
-                  <input 
-                    type={showPassword ? "text" : "password"} 
-                    name="password"
-                    placeholder="Crea una contraseña" 
-                    value={formData.password}
-                    onChange={handleChange}
-                    required 
-                  />
-                  <button 
-                    type="button" 
-                    className="input-icon-btn" 
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                  </button>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Confirmar contraseña</label>
-                <div className="input-with-icon">
-                  <input 
-                    type={showConfirmPassword ? "text" : "password"} 
-                    name="confirmPassword"
-                    placeholder="Confirma tu contraseña" 
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    required 
-                  />
-                  <button 
-                    type="button" 
-                    className="input-icon-btn" 
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                  </button>
-                </div>
+              <div className="input-group">
+                <input 
+                  type={showConfirmPassword ? "text" : "password"} 
+                  name="confirmPassword"
+                  placeholder="Confirmar contraseña" 
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required 
+                  className="input-field"
+                />
+                <LockIcon className="input-icon" />
+                <button 
+                  type="button" 
+                  className="password-toggle" 
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </button>
               </div>
 
               <button type="submit" className="btn-register" disabled={loading}>
-                {loading ? 'Creando cuenta...' : 'Registrarse'}
+                {loading && <div className="loading-spinner"></div>}
+                {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
               </button>
 
-              <div className="social-login">
-                <p>O regístrate con</p>
-                <div className="social-buttons">
-                  <button type="button" className="social-btn google" onClick={() => handleSocialSignup('Google')}><GoogleIcon /></button>
-                  <button type="button" className="social-btn facebook" onClick={() => handleSocialSignup('Facebook')}><FacebookIcon /></button>
-                  <button type="button" className="social-btn twitter" onClick={() => handleSocialSignup('Twitter')}><TwitterIcon /></button>
-                </div>
+              <div className="divider">
+                <span>O regístrate con</span>
+              </div>
+
+              <div className="social-register">
+                <button type="button" className="social-button google" onClick={() => handleSocialSignup('Google')}>
+                  <GoogleIcon />
+                </button>
+                <button type="button" className="social-button facebook" onClick={() => handleSocialSignup('Facebook')}>
+                  <FacebookIcon />
+                </button>
+                <button type="button" className="social-button twitter" onClick={() => handleSocialSignup('Twitter')}>
+                  <TwitterIcon />
+                </button>
               </div>
 
               <div className="login-link">
-                ¿Ya tienes una cuenta? <a href="/login">Iniciar sesión</a>
+                ¿Ya tienes una cuenta? <a href="/iniciar-sesion">Iniciar sesión</a>
               </div>
             </form>
           </div>

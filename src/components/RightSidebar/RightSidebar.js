@@ -83,7 +83,7 @@ const RightSidebar = () => {
   };
 
   const handleChatClick = (friend) => {
-    navigate('/mensajes', { state: { selectedFriend: friend } });
+    navigate('/app/mensajes', { state: { selectedFriend: friend } });
   };
 
   const filteredCloseFriends = closeFriendsWithDistance.filter(friend =>

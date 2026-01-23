@@ -5,6 +5,8 @@
   margin-bottom: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 1px solid #e8ebff;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .cover-photo {
@@ -21,6 +23,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .profile-avatar {
@@ -326,22 +330,107 @@
 }
 
 @media (max-width: 768px) {
+  .profile-header {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+  }
+  
   .profile-info-container {
-    flex-direction: column;
-    text-align: center;
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 20px 12px !important;
+    gap: 16px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    margin: 0 auto !important;
+    max-width: 100% !important;
   }
   
   .profile-info {
-    align-items: center;
+    align-items: center !important;
+    width: 100% !important;
+    text-align: center !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    margin: 0 auto !important;
   }
 
   .profile-header .profile-stats {
-    margin-left: 0;
+    margin-left: 0 !important;
+    position: static !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+    gap: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    margin: 0 auto !important;
+  }
+  
+  .profile-header .stat {
+    min-width: 70px !important;
+    height: 50px !important;
+    padding: 8px 12px !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+  }
+  
+  .stat-number {
+    font-size: 18px !important;
+  }
+  
+  .stat-label {
+    font-size: 8px !important;
+    letter-spacing: 0.6px !important;
   }
   
   .profile-actions {
-    width: 100%;
-    flex-direction: column;
+    width: 100% !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    display: flex !important;
+    align-items: center !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    margin: 0 auto !important;
+  }
+  
+  .edit-profile-btn,
+  .follow-btn,
+  .message-btn,
+  .verify-profile-btn {
+    flex: 1 !important;
+    min-width: 120px !important;
+    padding: 12px 16px !important;
+    font-size: 13px !important;
+    text-align: center !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
   }
 }
 /* Efectos adicionales para las estadísticas mejorados */
@@ -468,14 +557,81 @@
 }
 
 @media (max-width: 480px) {
+  .profile-header {
+    margin: 0 !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+  }
+  
+  .profile-info-container {
+    padding: 16px 8px !important;
+    gap: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    margin: 0 auto !important;
+    max-width: 100% !important;
+  }
+  
+  .profile-avatar img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  
+  .profile-info {
+    width: 100% !important;
+    text-align: center !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    margin: 0 auto !important;
+  }
+  
+  .profile-info h2 {
+    font-size: 14px !important;
+    text-align: center !important;
+  }
+  
+  .profile-username {
+    font-size: 11px !important;
+    text-align: center !important;
+  }
+  
+  .profile-email {
+    font-size: 10px !important;
+    text-align: center !important;
+  }
+  
   .profile-header .profile-stats {
-    gap: 4px;
+    gap: 6px !important;
+    width: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    margin: 0 auto !important;
   }
   
   .profile-header .stat {
-    min-width: 55px;
-    height: 35px;
-    padding: 4px 10px;
+    min-width: 60px !important;
+    height: 45px !important;
+    padding: 6px 8px !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
   }
   
   .stat-number {
@@ -484,7 +640,33 @@
   
   .stat-label {
     font-size: 7px !important;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.4px !important;
+  }
+  
+  .profile-actions {
+    gap: 6px !important;
+    width: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    margin: 0 auto !important;
+  }
+  
+  .edit-profile-btn,
+  .follow-btn,
+  .message-btn,
+  .verify-profile-btn {
+    min-width: 100px !important;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
   }
 }
 /* Indicador visual fuerte para mostrar el rediseño */

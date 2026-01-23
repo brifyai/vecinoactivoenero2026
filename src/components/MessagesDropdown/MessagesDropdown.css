@@ -13,6 +13,29 @@
   animation: slideDown 0.2s ease-out;
 }
 
+/* Responsive para móvil */
+@media (max-width: 768px) {
+  .messages-dropdown {
+    position: fixed !important;
+    top: 60px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: calc(100vw - 20px) !important;
+    max-width: 350px !important;
+    margin: 0 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .messages-dropdown {
+    width: calc(100vw - 16px) !important;
+    max-width: none !important;
+    margin: 0 8px !important;
+    top: 56px !important;
+  }
+}
+
 .more-btn {
   background: none;
   border: none;

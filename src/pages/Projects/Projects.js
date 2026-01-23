@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProjects } from '../../context/ProjectsContext';
-import { useHelpRequests } from '../../context/HelpRequestsContext';
 import { useSharedResources } from '../../context/SharedResourcesContext';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useSidebar } from '../../context/SidebarContext';
@@ -23,7 +22,6 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import LoopIcon from '@mui/icons-material/Loop';
 import ShareIcon from '@mui/icons-material/Share';
-import HelpRequests from '../HelpRequests/HelpRequests';
 import SharedResources from '../SharedResources/SharedResources';
 import './Projects.css';
 
@@ -98,13 +96,6 @@ const Projects = () => {
 
   const getHeaderContent = () => {
     switch(activeTab) {
-      case 'help':
-        return {
-          icon: <HandshakeIcon className="page-title-icon" />,
-          title: 'Ayuda Mutua',
-          subtitle: 'Red de apoyo entre vecinos - Juntos somos más fuertes',
-          buttonText: 'Solicitar Ayuda'
-        };
       case 'resources':
         return {
           icon: <ShareIcon className="page-title-icon" />,
@@ -146,13 +137,6 @@ const Projects = () => {
         >
           <RocketLaunchIcon />
           Proyectos Comunitarios
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'help' ? 'active' : ''}`}
-          onClick={() => setActiveTab('help')}
-        >
-          <HandshakeIcon />
-          Ayuda Mutua
         </button>
         <button 
           className={`tab-btn ${activeTab === 'resources' ? 'active' : ''}`}
@@ -364,7 +348,6 @@ const Projects = () => {
         </>
       )}
 
-      {activeTab === 'help' && <HelpRequests hideHeader={true} hideStats={true} />}
       {activeTab === 'resources' && <SharedResources hideHeader={true} hideStats={true} />}
     </div>
   );

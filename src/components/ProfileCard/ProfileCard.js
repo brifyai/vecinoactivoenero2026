@@ -38,7 +38,7 @@ const ProfileCard = () => {
       
       <button 
         className="edit-profile-btn-home"
-        onClick={() => navigate('/configuracion')}
+        onClick={() => navigate('/app/configuracion')}
       >
         Editar perfil
       </button>

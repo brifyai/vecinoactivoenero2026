@@ -290,11 +290,32 @@
 
 @media (max-width: 768px) {
   .header {
-    padding: 0 var(--spacing-md);
+    padding: 0 12px;
+    height: 60px;
+  }
+  
+  .header-left {
+    gap: 8px;
+  }
+  
+  .logo {
+    font-size: 16px;
+  }
+  
+  .logo-icon {
+    font-size: 24px;
+  }
+  
+  .logo-text {
+    display: none;
   }
   
   .search-bar {
-    max-width: 200px;
+    display: none !important;
+  }
+  
+  .neighborhood-badge {
+    display: none;
   }
   
   .user-info {
@@ -302,7 +323,133 @@
   }
   
   .header-right {
-    gap: var(--spacing-xs);
+    gap: 4px;
+  }
+  
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+  
+  .icon-btn svg {
+    font-size: 20px;
+  }
+  
+  .user-profile {
+    padding: 4px 8px;
+  }
+  
+  .user-profile img {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .desktop-only {
+    display: none !important;
+  }
+  
+  /* Ocultar específicamente el botón de modo oscuro en móvil */
+  .icon-btn.desktop-only {
+    display: none !important;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 375px) {
+  .header {
+    padding: 0 8px;
+    height: 56px;
+  }
+  
+  .header-left {
+    gap: 6px;
+  }
+  
+  .logo {
+    font-size: 14px;
+  }
+  
+  .logo-icon {
+    font-size: 20px;
+  }
+  
+  .header-right {
+    gap: 2px;
+  }
+  
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+  
+  .icon-btn svg {
+    font-size: 18px;
+  }
+  
+  .user-profile {
+    padding: 2px 4px;
+  }
+  
+  .user-profile img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .hamburger-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    margin-right: 4px;
+  }
+  
+  .hamburger-btn svg {
+    font-size: 20px;
+  }
+}
+
+/* Hamburger Button */
+.hamburger-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 40px;
+  min-width: 40px;
+}
+
+.hamburger-btn svg {
+  font-size: 22px;
+}
+
+.hamburger-btn:hover {
+  background: var(--surface-container);
+  color: var(--primary);
+  transform: scale(1.05);
+}
+
+.hamburger-btn:active {
+  transform: scale(0.95);
+  background: var(--surface-container-high);
+}
+
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: flex;
   }
 }
 /* Reglas super específicas para forzar el color del neighborhood badge */

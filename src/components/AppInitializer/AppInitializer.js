@@ -117,31 +117,18 @@ const demoUsers = [
 
 const AppInitializer = () => {
   useEffect(() => {
-    // Always overwrite with fresh data to ensure updates
-    localStorage.setItem('friendbook_users', JSON.stringify(demoUsers));
-    console.log('AppInitializer: Users data refreshed with new coordinates');
+    // Agregar contraseñas a los usuarios demo
+    const usersWithPasswords = demoUsers.map(user => ({
+      ...user,
+      password: '123456' // Contraseña por defecto para todos los usuarios demo
+    }));
 
-    // Auto-login with first user if not already logged in
-    const currentUser = localStorage.getItem('friendbook_current_user');
-    const session = localStorage.getItem('friendbook_session');
-    
-    if (!currentUser || !session) {
-      const defaultUser = {
-        ...demoUsers[0],
-        status: 'active',
-        lastLogin: new Date().toISOString()
-      };
-      localStorage.setItem('friendbook_current_user', JSON.stringify(defaultUser));
-      
-      // Create session
-      const sessionData = {
-        createdAt: Date.now(),
-        userId: defaultUser.id
-      };
-      localStorage.setItem('friendbook_session', JSON.stringify(sessionData));
-      
-      console.log('✅ AppInitializer: Auto-logged in as', defaultUser.name);
-    }
+    // Always overwrite with fresh data to ensure updates
+    localStorage.setItem('friendbook_users', JSON.stringify(usersWithPasswords));
+    console.log('AppInitializer: Users data refreshed with passwords and coordinates');
+
+    // NO AUTO-LOGIN - Dejar que el usuario haga login manualmente
+    console.log('AppInitializer: Auto-login deshabilitado - usuario debe hacer login manualmente');
   }, []);
 
   return null;

@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { selectUser } from '../../store/selectors/authSelectors';
 import { selectUnreadCount } from '../../store/selectors/notificationsSelectors';
 import { useApp } from '../../context/AppContext';
+import { useSidebar } from '../../context/SidebarContext';
 import HomeIcon from '@mui/icons-material/Home';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
@@ -13,10 +14,13 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import PeopleIcon from '@mui/icons-material/People';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import NotificationsCenter from '../NotificationsCenter/NotificationsCenter';
 import MessagesDropdown from '../MessagesDropdown/MessagesDropdown';
 import ProfileDropdown from '../ProfileDropdown/ProfileDropdown';
 import SearchModal from '../SearchModal/SearchModal';
+import MobileMenu from '../MobileMenu/MobileMenu';
 import './Header.css';
 
 const Header = () => {
@@ -24,6 +28,7 @@ const Header = () => {
   const user = useSelector(selectUser);
   const unreadCount = useSelector(selectUnreadCount);
   const { darkMode, toggleDarkMode, unreadMessagesCount } = useApp();
+  const { isMobileSidebarOpen, toggleMobileSidebar } = useSidebar();
   
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
@@ -61,7 +66,16 @@ const Header = () => {
     <>
       <header className="header">
         <div className="header-left">
-          <div className="logo" onClick={() => navigate('/')}>
+          {/* Botón hamburguesa para móvil */}
+          <button 
+            className="hamburger-btn"
+            onClick={toggleMobileSidebar}
+            aria-label="Abrir menú"
+          >
+            {isMobileSidebarOpen ? <CloseIcon /> : <MenuIcon />}
+          </button>
+
+          <div className="logo" onClick={() => navigate('/app')}>
             <PeopleIcon className="logo-icon" />
             <span className="logo-text">Vecino Activo</span>
           </div>
@@ -79,7 +93,7 @@ const Header = () => {
         </div>
         
         <div className="header-right">
-          <button className="icon-btn" onClick={() => navigate('/')}>
+          <button className="icon-btn desktop-only" onClick={() => navigate('/app')}>
             <HomeIcon />
           </button>
           
@@ -107,7 +121,7 @@ const Header = () => {
             </button>
           </div>
           
-          <button className="icon-btn" onClick={toggleDarkMode}>
+          <button className="icon-btn desktop-only" onClick={toggleDarkMode}>
             {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
           </button>
           
@@ -126,6 +140,9 @@ const Header = () => {
           </div>
         </div>
       </header>
+
+      {/* Mobile Menu */}
+      {isMobileSidebarOpen && <MobileMenu />}
 
       {showNotifications && ReactDOM.createPortal(
         <NotificationsCenter 

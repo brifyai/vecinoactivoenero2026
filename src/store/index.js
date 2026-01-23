@@ -40,45 +40,63 @@ import gamificationReducer from './slices/gamificationSlice';
 import connectionsReducer from './slices/connectionsSlice';
 import appReducer from './slices/appSlice';
 
-// Configuración de persistencia para auth
+// Configuración de persistencia
 const persistConfig = {
   key: 'vecino-activo-root',
   storage,
   whitelist: ['auth'] // Solo persistir auth
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+// Crear el rootReducer primero
+const rootReducer = {
+  auth: authReducer,
+  posts: postsReducer,
+  notifications: notificationsReducer,
+  friends: friendsReducer,
+  groups: groupsReducer,
+  events: eventsReducer,
+  messages: messagesReducer,
+  projects: projectsReducer,
+  polls: pollsReducer,
+  helpRequests: helpRequestsReducer,
+  sharedResources: sharedResourcesReducer,
+  localBusiness: localBusinessReducer,
+  communityCalendar: communityCalendarReducer,
+  neighborhood: neighborhoodReducer,
+  neighborhoods: neighborhoodsReducer,
+  neighborhoodExpansion: neighborhoodExpansionReducer,
+  photos: photosReducer,
+  reports: reportsReducer,
+  security: securityReducer,
+  moderation: moderationReducer,
+  verification: verificationReducer,
+  communityActions: communityActionsReducer,
+  localNeeds: localNeedsReducer,
+  services: servicesReducer,
+  gamification: gamificationReducer,
+  connections: connectionsReducer,
+  app: appReducer
+};
+
+// Aplicar persistencia al rootReducer completo
+const persistedReducer = persistReducer(persistConfig, (state, action) => {
+  // Si es logout, limpiar el estado persistido
+  if (action.type === 'auth/logout') {
+    storage.removeItem('persist:vecino-activo-root');
+    state = undefined;
+  }
+  
+  // Aplicar reducers normalmente
+  const newState = {};
+  Object.keys(rootReducer).forEach(key => {
+    newState[key] = rootReducer[key](state?.[key], action);
+  });
+  
+  return newState;
+});
 
 export const store = configureStore({
-  reducer: {
-    auth: persistedAuthReducer,
-    posts: postsReducer,
-    notifications: notificationsReducer,
-    friends: friendsReducer,
-    groups: groupsReducer,
-    events: eventsReducer,
-    messages: messagesReducer,
-    projects: projectsReducer,
-    polls: pollsReducer,
-    helpRequests: helpRequestsReducer,
-    sharedResources: sharedResourcesReducer,
-    localBusiness: localBusinessReducer,
-    communityCalendar: communityCalendarReducer,
-    neighborhood: neighborhoodReducer,
-    neighborhoods: neighborhoodsReducer,
-    neighborhoodExpansion: neighborhoodExpansionReducer,
-    photos: photosReducer,
-    reports: reportsReducer,
-    security: securityReducer,
-    moderation: moderationReducer,
-    verification: verificationReducer,
-    communityActions: communityActionsReducer,
-    localNeeds: localNeedsReducer,
-    services: servicesReducer,
-    gamification: gamificationReducer,
-    connections: connectionsReducer,
-    app: appReducer
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

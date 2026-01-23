@@ -7,6 +7,13 @@
   transition: padding-right 0.3s ease;
 }
 
+/* FORZAR ELIMINACIÓN DEL PADDING EN MÓVIL */
+@media (max-width: 768px) {
+  .timeline {
+    padding-right: 0 !important;
+  }
+}
+
 .timeline.sidebar-collapsed {
   padding-right: 0;
 }
@@ -463,4 +470,72 @@
   color: #667eea !important;
   background: #f5f3ff !important;
   border-bottom-color: #667eea !important;
+}
+
+/* Mobile responsive styles for Timeline */
+@media (max-width: 768px) {
+  .timeline {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .timeline.sidebar-collapsed {
+    padding-right: 0 !important;
+  }
+  
+  .timeline > .profile-header {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .timeline-tabs {
+    padding: 0 16px !important;
+    position: sticky !important;
+    top: 60px !important;
+  }
+  
+  .timeline-content {
+    padding: 6px 16px 32px 16px !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  .tab-right {
+    display: none !important;
+  }
+  
+  .tab {
+    padding: 16px 12px !important;
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline > .profile-header {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .timeline-tabs {
+    padding: 0 12px !important;
+  }
+  
+  .timeline-content {
+    padding: 6px 12px 32px 12px !important;
+    gap: 12px !important;
+  }
+  
+  .tab {
+    padding: 14px 8px !important;
+    font-size: 13px !important;
+  }
 }
