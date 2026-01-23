@@ -81,7 +81,7 @@ const ProtectedRoute = ({ children }) => {
     return <div className="loading-screen">Loading...</div>;
   }
   
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/iniciar-sesion" replace />;
 };
 
 function App() {
