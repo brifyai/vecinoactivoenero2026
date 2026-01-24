@@ -1,4 +1,4 @@
-# Dockerfile Minimal Sin Inyección - Vecino Activo
+# Dockerfile Corregido para Archivos Estáticos - Vecino Activo
 FROM node:20-alpine AS build
 
 # Establecer directorio de trabajo
@@ -34,11 +34,25 @@ ENV REACT_APP_GEMINI_API_KEY=$REACT_APP_GEMINI_API_KEY
 ENV GENERATE_SOURCEMAP=false
 ENV INLINE_RUNTIME_CHUNK=false
 
-# Build de la aplicación (las variables ya se incluyen automáticamente)
+# Build de la aplicación
 RUN npm run build
 
 # Verificar que el build se generó correctamente
-RUN ls -la build/ && ls -la build/static/ && echo "Build completado exitosamente"
+RUN ls -la build/ && ls -la build/static/
+
+# Inyectar variables como fallback
+RUN echo 'const fs = require("fs"); \
+const path = "./build/index.html"; \
+if (fs.existsSync(path)) { \
+  let html = fs.readFileSync(path, "utf8"); \
+  const envScript = `<script>window.ENV={REACT_APP_SUPABASE_URL:"${REACT_APP_SUPABASE_URL}",REACT_APP_SUPABASE_ANON_KEY:"${REACT_APP_SUPABASE_ANON_KEY}",REACT_APP_ENVIRONMENT:"${REACT_APP_ENVIRONMENT}"};console.log("✅ Variables cargadas");</script>`; \
+  html = html.replace("</head>", envScript + "</head>"); \
+  fs.writeFileSync(path, html); \
+  console.log("Variables inyectadas"); \
+}' > inject.js && node inject.js
+
+# Verificar inyección
+RUN grep -q "window.ENV" build/index.html && echo "✅ Variables inyectadas correctamente" || echo "❌ Variables no inyectadas"
 
 # Etapa de producción
 FROM nginx:alpine
@@ -107,9 +121,9 @@ EOF
 # Mostrar configuración para debug
 RUN echo "=== NGINX CONFIGURATION ===" && cat /etc/nginx/conf.d/default.conf
 
-# Healthcheck
+# Healthcheck mejorado
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost/ || exit 1
+    CMD curl -f http://localhost/ && curl -f http://localhost/static/ || exit 1
 
 EXPOSE 80
 
