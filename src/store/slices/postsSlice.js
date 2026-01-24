@@ -1,133 +1,119 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import storageService from '../../services/storageService';
+import supabasePostsService from '../../services/supabasePostsService';
 
 // Thunks asíncronos
 export const loadPosts = createAsyncThunk(
   'posts/load',
-  async () => {
-    const posts = storageService.getPosts();
-    return posts;
+  async ({ neighborhoodId, limit = 50, offset = 0 }, { rejectWithValue }) => {
+    try {
+      const posts = await supabasePostsService.getPosts(neighborhoodId, limit, offset);
+      return posts;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const createPost = createAsyncThunk(
   'posts/create',
-  async (postData, { getState, dispatch }) => {
-    const { auth } = getState();
-    const user = auth.user;
-    
-    if (!user) {
-      throw new Error('Usuario no autenticado');
+  async (postData, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const user = auth.user;
+      
+      if (!user) {
+        throw new Error('Usuario no autenticado');
+      }
+      
+      const newPost = await supabasePostsService.createPost({
+        content: postData.content,
+        authorId: user.id,
+        neighborhoodId: user.neighborhoodId,
+        images: postData.images || [],
+        feeling: postData.feeling || null,
+        location: postData.location || null,
+        privacy: postData.privacy || 'public',
+        category: postData.category || 'general',
+        hashtags: postData.hashtags || []
+      });
+      
+      return newPost;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
-    
-    const newPost = {
-      id: Date.now(),
-      author: user.name,
-      authorId: user.id,
-      avatar: user.avatar,
-      time: 'Justo ahora',
-      content: postData.content,
-      image: postData.image || null,
-      feeling: postData.feeling || null,
-      location: postData.location || null,
-      privacy: postData.privacy || 'public',
-      category: postData.category || 'general',
-      hashtags: postData.hashtags || [],
-      likes: 0,
-      comments: 0,
-      shares: 0,
-      reactions: {},
-      commentsData: [],
-      createdAt: new Date().toISOString()
-    };
-    
-    storageService.addPost(newPost);
-    
-    return newPost;
   }
 );
 
 export const updatePost = createAsyncThunk(
   'posts/update',
-  async ({ postId, updates }) => {
-    storageService.updatePost(postId, updates);
-    return { postId, updates };
+  async ({ postId, updates }, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const updatedPost = await supabasePostsService.updatePost(postId, updates, auth.user.id);
+      return updatedPost;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const deletePost = createAsyncThunk(
   'posts/delete',
-  async (postId) => {
-    storageService.deletePost(postId);
-    return postId;
+  async (postId, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      await supabasePostsService.deletePost(postId, auth.user.id);
+      return postId;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
 export const addReaction = createAsyncThunk(
   'posts/addReaction',
-  async ({ postId, emoji }, { getState }) => {
-    const { auth } = getState();
-    const userId = auth.user.id;
-    
-    const posts = storageService.getPosts();
-    const post = posts.find(p => p.id === postId);
-    
-    if (!post) throw new Error('Post no encontrado');
-    
-    const reactions = post.reactions || {};
-    const userReactions = reactions[userId] || [];
-    
-    let newUserReactions;
-    if (userReactions.includes(emoji)) {
-      newUserReactions = userReactions.filter(r => r !== emoji);
-    } else {
-      newUserReactions = [...userReactions, emoji];
+  async ({ postId, emoji }, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const result = await supabasePostsService.likePost(postId, auth.user.id);
+      return { postId, ...result };
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
-    
-    const newReactions = {
-      ...reactions,
-      [userId]: newUserReactions
-    };
-    
-    storageService.updatePost(postId, { reactions: newReactions });
-    
-    return { postId, reactions: newReactions };
   }
 );
 
 export const addComment = createAsyncThunk(
   'posts/addComment',
-  async ({ postId, content }, { getState }) => {
-    const { auth } = getState();
-    const user = auth.user;
-    
-    if (!user) throw new Error('Usuario no autenticado');
-    
-    const posts = storageService.getPosts();
-    const post = posts.find(p => p.id === postId);
-    
-    if (!post) throw new Error('Post no encontrado');
-    
-    const newComment = {
-      id: Date.now(),
-      author: user.name,
-      authorId: user.id,
-      avatar: user.avatar,
-      content,
-      time: 'Justo ahora',
-      likes: 0,
-      createdAt: new Date().toISOString()
-    };
-    
-    const commentsData = post.commentsData || [];
-    const updatedComments = [...commentsData, newComment];
-    
-    storageService.updatePost(postId, {
-      commentsData: updatedComments,
-      comments: updatedComments.length
-    });
-    
-    return { postId, comment: newComment };
+  async ({ postId, content }, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const user = auth.user;
+      
+      if (!user) throw new Error('Usuario no autenticado');
+      
+      const comment = await supabasePostsService.addComment(postId, {
+        content,
+        authorId: user.id
+      });
+      
+      return { postId, comment };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const sharePost = createAsyncThunk(
+  'posts/share',
+  async (postId, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      await supabasePostsService.sharePost(postId, auth.user.id);
+      return postId;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
@@ -137,11 +123,54 @@ const postsSlice = createSlice({
   initialState: {
     items: [],
     loading: false,
-    error: null
+    error: null,
+    hasMore: true,
+    subscription: null
   },
   reducers: {
     clearError: (state) => {
       state.error = null;
+    },
+    addPost: (state, action) => {
+      // Para real-time: agregar nuevo post
+      const exists = state.items.find(p => p.id === action.payload.id);
+      if (!exists) {
+        state.items.unshift(action.payload);
+      }
+    },
+    addNewPost: (state, action) => {
+      // Para real-time updates
+      state.items.unshift(action.payload);
+    },
+    updatePostAction: (state, action) => {
+      // Para real-time: actualizar post existente
+      const index = state.items.findIndex(p => p.id === action.payload.id);
+      if (index !== -1) {
+        state.items[index] = { ...state.items[index], ...action.payload };
+      }
+    },
+    removePost: (state, action) => {
+      // Para real-time: eliminar post
+      state.items = state.items.filter(p => p.id !== action.payload);
+    },
+    setSubscription: (state, action) => {
+      state.subscription = action.payload;
+    },
+    // Acciones específicas para real-time polling
+    addPostFromRealtime: (state, action) => {
+      const exists = state.items.find(p => p.id === action.payload.id);
+      if (!exists) {
+        state.items.unshift(action.payload);
+      }
+    },
+    updatePostFromRealtime: (state, action) => {
+      const index = state.items.findIndex(p => p.id === action.payload.id);
+      if (index !== -1) {
+        state.items[index] = { ...state.items[index], ...action.payload };
+      }
+    },
+    removePostFromRealtime: (state, action) => {
+      state.items = state.items.filter(p => p.id !== action.payload);
     }
   },
   extraReducers: (builder) => {
@@ -149,37 +178,53 @@ const postsSlice = createSlice({
       // Load posts
       .addCase(loadPosts.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(loadPosts.fulfilled, (state, action) => {
         state.items = action.payload;
+        state.hasMore = action.payload.length >= 50;
         state.loading = false;
       })
       .addCase(loadPosts.rejected, (state, action) => {
-        state.error = action.error.message;
+        state.error = action.payload;
         state.loading = false;
       })
       // Create post
+      .addCase(createPost.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(createPost.fulfilled, (state, action) => {
         state.items.unshift(action.payload);
+        state.loading = false;
+      })
+      .addCase(createPost.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
       })
       // Update post
       .addCase(updatePost.fulfilled, (state, action) => {
-        const { postId, updates } = action.payload;
-        const index = state.items.findIndex(p => p.id === postId);
+        const index = state.items.findIndex(p => p.id === action.payload.id);
         if (index !== -1) {
-          state.items[index] = { ...state.items[index], ...updates };
+          state.items[index] = action.payload;
         }
+      })
+      .addCase(updatePost.rejected, (state, action) => {
+        state.error = action.payload;
       })
       // Delete post
       .addCase(deletePost.fulfilled, (state, action) => {
         state.items = state.items.filter(p => p.id !== action.payload);
       })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.error = action.payload;
+      })
       // Add reaction
       .addCase(addReaction.fulfilled, (state, action) => {
-        const { postId, reactions } = action.payload;
+        const { postId } = action.payload;
         const post = state.items.find(p => p.id === postId);
         if (post) {
-          post.reactions = reactions;
+          // Increment or decrement likes count
+          post.likes = (post.likes || 0) + (action.payload.added ? 1 : -1);
         }
       })
       // Add comment
@@ -187,13 +232,28 @@ const postsSlice = createSlice({
         const { postId, comment } = action.payload;
         const post = state.items.find(p => p.id === postId);
         if (post) {
-          post.commentsData = post.commentsData || [];
-          post.commentsData.push(comment);
-          post.comments = post.commentsData.length;
+          post.comments = (post.comments || 0) + 1;
+        }
+      })
+      // Share post
+      .addCase(sharePost.fulfilled, (state, action) => {
+        const post = state.items.find(p => p.id === action.payload);
+        if (post) {
+          post.shares = (post.shares || 0) + 1;
         }
       });
   }
 });
 
-export const { clearError } = postsSlice.actions;
+export const { 
+  clearError, 
+  addPost, 
+  addNewPost, 
+  updatePostAction, 
+  removePost, 
+  setSubscription,
+  addPostFromRealtime,
+  updatePostFromRealtime,
+  removePostFromRealtime
+} = postsSlice.actions;
 export default postsSlice.reducer;

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { selectUser } from '../../store/selectors/authSelectors';
-import { selectUnreadCount } from '../../store/selectors/notificationsSelectors';
+import { useReduxNotificationsWithPolling } from '../../hooks/useReduxNotificationsWithPolling';
 import { useApp } from '../../context/AppContext';
 import { useSidebar } from '../../context/SidebarContext';
 import HomeIcon from '@mui/icons-material/Home';
@@ -21,12 +21,18 @@ import MessagesDropdown from '../MessagesDropdown/MessagesDropdown';
 import ProfileDropdown from '../ProfileDropdown/ProfileDropdown';
 import SearchModal from '../SearchModal/SearchModal';
 import MobileMenu from '../MobileMenu/MobileMenu';
+import RealtimeStatusIndicator from '../RealtimeStatusIndicator/RealtimeStatusIndicator';
 import './Header.css';
 
 const Header = () => {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
-  const unreadCount = useSelector(selectUnreadCount);
+  const { unreadCount, pollingStatus } = useReduxNotificationsWithPolling({
+    enablePolling: true,
+    pollingInterval: 2000,
+    showBrowserNotifications: true,
+    playSound: true
+  });
   const { darkMode, toggleDarkMode, unreadMessagesCount } = useApp();
   const { isMobileSidebarOpen, toggleMobileSidebar } = useSidebar();
   
@@ -93,6 +99,8 @@ const Header = () => {
         </div>
         
         <div className="header-right">
+          <RealtimeStatusIndicator showDetails={true} />
+          
           <button className="icon-btn desktop-only" onClick={() => navigate('/app')}>
             <HomeIcon />
           </button>

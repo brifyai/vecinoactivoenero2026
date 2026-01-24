@@ -1,12 +1,12 @@
 import React from 'react';
-import { useReduxNotifications as useNotifications } from '../../hooks/useReduxNotifications';
+import { useReduxNotificationsWithPolling as useNotifications } from '../../hooks/useReduxNotificationsWithPolling';
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import './NotificationsCenter.css';
 
 const NotificationsCenter = ({ isOpen, onClose }) => {
-  const { notifications, markAsRead, markAllAsRead, deleteNotification, clearAll } = useNotifications();
+  const { notifications, markAsRead, markAllAsRead, deleteNotification, clearAll, pollingStatus } = useNotifications();
   const navigate = useNavigate();
 
   if (!isOpen) return null;
