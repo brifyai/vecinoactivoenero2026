@@ -1,10 +1,25 @@
-const API_URL = 'http://localhost:3001/api';
+// Configuración de API - solo usar backend en desarrollo
+const API_URL = process.env.NODE_ENV === 'development' 
+  ? 'http://localhost:3001/api' 
+  : null; // Sin backend en producción
 
 class NeighborhoodService {
+  /**
+   * Verificar si el backend está disponible
+   */
+  isBackendAvailable() {
+    return process.env.NODE_ENV === 'development' && API_URL;
+  }
+
   /**
    * Obtener todas las unidades vecinales
    */
   async getAllNeighborhoods() {
+    if (!this.isBackendAvailable()) {
+      console.log('Backend not available, map will show basic view');
+      return null;
+    }
+
     try {
       const response = await fetch(`${API_URL}/neighborhoods`);
       if (!response.ok) {
@@ -22,6 +37,10 @@ class NeighborhoodService {
    * @param {string} region - Nombre de la región
    */
   async getNeighborhoodsByRegion(region) {
+    if (!this.isBackendAvailable()) {
+      return null;
+    }
+
     try {
       const response = await fetch(`${API_URL}/neighborhoods/region/${region}`);
       if (!response.ok) {
@@ -39,6 +58,10 @@ class NeighborhoodService {
    * @param {Object} bounds - { minLat, maxLat, minLng, maxLng }
    */
   async getNeighborhoodsByBounds(bounds) {
+    if (!this.isBackendAvailable()) {
+      return null;
+    }
+
     try {
       const { minLat, maxLat, minLng, maxLng } = bounds;
       const queryParams = new URLSearchParams({
@@ -63,6 +86,10 @@ class NeighborhoodService {
    * Verificar si el servidor está disponible
    */
   async checkHealth() {
+    if (!this.isBackendAvailable()) {
+      return false;
+    }
+
     try {
       const response = await fetch(`${API_URL}/health`);
       if (!response.ok) {
@@ -75,6 +102,7 @@ class NeighborhoodService {
       return false;
     }
   }
+}
 }
 
 export default new NeighborhoodService();
