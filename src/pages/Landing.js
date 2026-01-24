@@ -319,36 +319,6 @@ const Landing = () => {
                   </div>
                 </div>
               </div>
-              
-              <div className="what-is-stats">
-                <div className="stat-item">
-                  <div className="stat-icon">
-                    <HomeWorkIcon />
-                  </div>
-                  <div className="stat-info">
-                    <span className="stat-value">50+</span>
-                    <span className="stat-label">Comunidades Activas</span>
-                  </div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-icon">
-                    <PeopleAltIcon />
-                  </div>
-                  <div className="stat-info">
-                    <span className="stat-value">1,000+</span>
-                    <span className="stat-label">Vecinos Conectados</span>
-                  </div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-icon">
-                    <EmojiEventsIcon />
-                  </div>
-                  <div className="stat-info">
-                    <span className="stat-value">200+</span>
-                    <span className="stat-label">Eventos Realizados</span>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div className="what-is-visual">
@@ -479,6 +449,36 @@ const Landing = () => {
                   <strong>Así funciona:</strong> Tu hogar se conecta digitalmente con el vecindario, 
                   creando una red inteligente de comunicación y colaboración local.
                 </p>
+              </div>
+              
+              <div className="what-is-stats">
+                <div className="stat-item">
+                  <div className="stat-icon">
+                    <HomeWorkIcon />
+                  </div>
+                  <div className="stat-info">
+                    <span className="stat-value">50+</span>
+                    <span className="stat-label">Comunidades Activas</span>
+                  </div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-icon">
+                    <PeopleAltIcon />
+                  </div>
+                  <div className="stat-info">
+                    <span className="stat-value">1,000+</span>
+                    <span className="stat-label">Vecinos Conectados</span>
+                  </div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-icon">
+                    <EmojiEventsIcon />
+                  </div>
+                  <div className="stat-info">
+                    <span className="stat-value">200+</span>
+                    <span className="stat-label">Eventos Realizados</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
