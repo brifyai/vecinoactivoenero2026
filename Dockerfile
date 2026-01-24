@@ -1,5 +1,5 @@
 # Dockerfile para Vecino Activo - React App
-FROM node:18-alpine as build
+FROM node:18-alpine AS build
 
 # Establecer directorio de trabajo
 WORKDIR /app
@@ -22,8 +22,8 @@ FROM nginx:alpine
 # Copiar archivos construidos desde la etapa anterior
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Copiar configuración personalizada de nginx si existe
-COPY nginx.conf /etc/nginx/conf.d/default.conf 2>/dev/null || echo "No custom nginx config found"
+# Copiar configuración personalizada de nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Exponer puerto
 EXPOSE 80
