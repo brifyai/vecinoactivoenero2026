@@ -349,13 +349,6 @@ const Landing = () => {
                   </div>
                 </div>
               </div>
-              
-              <div className="visual-description">
-                <p>
-                  <strong>Así funciona:</strong> Tu hogar se conecta digitalmente con el vecindario, 
-                  creando una red inteligente de comunicación y colaboración local.
-                </p>
-              </div>
             </div>
 
             <div className="what-is-visual">
@@ -479,6 +472,13 @@ const Landing = () => {
                     <span>Ayuda Vecinal</span>
                   </div>
                 </div>
+              </div>
+              
+              <div className="visual-description">
+                <p>
+                  <strong>Así funciona:</strong> Tu hogar se conecta digitalmente con el vecindario, 
+                  creando una red inteligente de comunicación y colaboración local.
+                </p>
               </div>
             </div>
           </div>

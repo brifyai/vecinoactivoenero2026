@@ -103,7 +103,7 @@
 
 .nav-btn {
   padding: 12px 24px !important;
-  border-radius: 0px !important;
+  border-radius: 12px !important;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -566,43 +566,68 @@
   padding: 32px 0;
 }
 
-.stat-item {
+.what-is-stats .stat-item {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 20px 24px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(102, 126, 234, 0.08);
-  transition: all 0.3s ease;
+  padding: 24px !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  backdrop-filter: blur(10px) !important;
 }
 
-.stat-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.12);
+.what-is-stats .stat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.02) 0%, rgba(118, 75, 162, 0.02) 100%) !important;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.what-is-stats .stat-item:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15) !important;
+}
+
+.what-is-stats .stat-item:hover::before {
+  transform: scaleY(1);
+}
+
+
 
 .stat-icon {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 16px !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 .stat-icon svg {
   font-size: 24px;
-  color: white;
+  color: white !important;
 }
 
 .stat-item:hover .stat-icon {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.25) !important;
 }
 
 .stat-info {
@@ -611,16 +636,16 @@
   gap: 4px;
 }
 
-.stat-value {
+.what-is-stats .stat-item .stat-info .stat-value {
   font-size: 24px;
   font-weight: 800;
-  color: #667eea;
+  color: white !important;
   letter-spacing: -0.02em;
 }
 
-.stat-label {
+.what-is-stats .stat-item .stat-info .stat-label {
   font-size: 12px;
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.8) !important;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -2325,4 +2350,14 @@
 .features-section .features-grid .feature-card .feature-icon svg,
 .features-section .feature-card .feature-icon svg {
   color: #667eea !important;
+}
+/* Forzar color blanco en estadísticas - máxima prioridad */
+.what-is-stats .stat-item .stat-value,
+.what-is-stats .stat-item .stat-label,
+.what-is-stats .stat-item .stat-info .stat-value,
+.what-is-stats .stat-item .stat-info .stat-label {
+  color: white !important;
+}
+.what-is-stats .stat-item .stat-label {
+  color: rgba(255, 255, 255, 0.8) !important;
 }
