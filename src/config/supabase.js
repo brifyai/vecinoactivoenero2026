@@ -2,36 +2,50 @@ import { createClient } from '@supabase/supabase-js';
 
 // Función para obtener configuración desde múltiples fuentes
 const getConfig = () => {
-  // Prioridad: variables de entorno de build > variables de runtime > valores por defecto
-  const supabaseUrl = 
-    process.env.REACT_APP_SUPABASE_URL || 
-    (typeof window !== 'undefined' && window.ENV?.REACT_APP_SUPABASE_URL) ||
-    'https://supabase.vecinoactivo.cl';
-    
-  const supabaseAnonKey = 
-    process.env.REACT_APP_SUPABASE_ANON_KEY || 
-    (typeof window !== 'undefined' && window.ENV?.REACT_APP_SUPABASE_ANON_KEY) ||
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE';
+  // En desarrollo: usar directamente process.env
+  // En producción: usar múltiples fuentes con fallbacks
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
+  let supabaseUrl, supabaseAnonKey;
+  
+  if (isDevelopment) {
+    // Configuración simple para desarrollo
+    supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+    supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+  } else {
+    // Configuración robusta para producción con múltiples fuentes
+    supabaseUrl = 
+      process.env.REACT_APP_SUPABASE_URL || 
+      (typeof window !== 'undefined' && window.ENV?.REACT_APP_SUPABASE_URL) ||
+      'https://supabase.vecinoactivo.cl';
+      
+    supabaseAnonKey = 
+      process.env.REACT_APP_SUPABASE_ANON_KEY || 
+      (typeof window !== 'undefined' && window.ENV?.REACT_APP_SUPABASE_ANON_KEY) ||
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE';
+  }
 
   return { supabaseUrl, supabaseAnonKey };
 };
 
 const { supabaseUrl, supabaseAnonKey } = getConfig();
 
-// Validación mejorada con logging detallado
+// Validación con logging apropiado para cada entorno
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('❌ Configuración de Supabase incompleta');
-  console.error('URL:', supabaseUrl ? '✅ Configurada' : '❌ Faltante');
-  console.error('Key:', supabaseAnonKey ? '✅ Configurada' : '❌ Faltante');
-  console.error('Variables de entorno disponibles:', {
-    NODE_ENV: process.env.NODE_ENV,
-    BUILD_URL: process.env.REACT_APP_SUPABASE_URL ? 'Definida' : 'No definida',
-    RUNTIME_URL: typeof window !== 'undefined' && window.ENV?.REACT_APP_SUPABASE_URL ? 'Definida' : 'No definida'
-  });
+  console.warn('⚠️ Supabase URL o Anon Key no configurados');
+  console.warn('Asegúrate de tener las variables de entorno:');
+  console.warn('- REACT_APP_SUPABASE_URL');
+  console.warn('- REACT_APP_SUPABASE_ANON_KEY');
+  
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('Variables encontradas:', {
+      URL: process.env.REACT_APP_SUPABASE_URL ? '✅' : '❌',
+      KEY: process.env.REACT_APP_SUPABASE_ANON_KEY ? '✅' : '❌',
+      NODE_ENV: process.env.NODE_ENV
+    });
+  }
 } else {
-  console.log('✅ Configuración de Supabase cargada correctamente');
-  console.log('URL:', supabaseUrl);
-  console.log('Key:', supabaseAnonKey ? 'Configurada' : 'Faltante');
+  console.log('✅ Supabase configurado correctamente');
 }
 
 // Crear cliente de Supabase con configuración robusta
@@ -142,10 +156,10 @@ export const diagnoseSupabase = async () => {
   return connectionResult;
 };
 
-// Auto-diagnóstico en desarrollo
-if (process.env.NODE_ENV === 'development') {
-  // Ejecutar diagnóstico después de un breve delay para permitir que window.ENV se cargue
+// Auto-diagnóstico solo si hay problemas de configuración
+if (process.env.NODE_ENV === 'development' && (!supabaseUrl || !supabaseAnonKey)) {
   setTimeout(() => {
+    console.warn('🔍 Ejecutando diagnóstico debido a problemas de configuración...');
     diagnoseSupabase();
   }, 1000);
 }
