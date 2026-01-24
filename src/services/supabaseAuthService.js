@@ -1,8 +1,9 @@
 import { supabase } from '../config/supabase';
+import customAuthService from './customAuthService';
 
 /**
- * Servicio de Autenticación con Supabase
- * Reemplaza el sistema de localStorage por base de datos real
+ * Servicio de Autenticación con Supabase + Bypass Custom
+ * Intenta Supabase Auth primero, fallback a custom auth
  */
 
 class SupabaseAuthService {
@@ -70,92 +71,114 @@ class SupabaseAuthService {
   }
 
   /**
-   * Iniciar sesión
+   * Iniciar sesión con bypass automático
    */
   async login(email, password) {
     try {
-      // 1. Autenticar con Supabase Auth
+      console.log('🔄 Intentando Supabase Auth primero...');
+      
+      // 1. Intentar Supabase Auth normal
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password
       });
 
-      if (authError) throw authError;
+      if (!authError && authData.user) {
+        console.log('✅ Supabase Auth exitoso');
+        
+        // Obtener datos completos del usuario
+        const { data: userData, error: userError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', authData.user.id)
+          .single();
 
-      // 2. Obtener datos completos del usuario
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', authData.user.id)
-        .single();
+        if (!userError && userData) {
+          // Actualizar last_login
+          await supabase
+            .from('users')
+            .update({ last_login: new Date().toISOString() })
+            .eq('id', authData.user.id);
 
-      if (userError) throw userError;
-
-      // 3. Actualizar last_login
-      await supabase
-        .from('users')
-        .update({ last_login: new Date().toISOString() })
-        .eq('id', authData.user.id);
-
-      return {
-        user: userData,
-        session: authData.session
-      };
+          return { user: userData, session: authData.session };
+        }
+      }
+      
+      // 2. Si Supabase Auth falla, usar custom auth
+      console.log('⚠️ Supabase Auth falló, usando custom auth...');
+      console.log('Error de Supabase:', authError?.message);
+      
+      return await customAuthService.login(email, password);
+      
     } catch (error) {
-      console.error('Error en login:', error);
-      throw error;
+      console.log('🔄 Fallback completo a custom auth...');
+      console.error('Error Supabase Auth:', error.message);
+      
+      // Fallback completo a custom auth
+      return await customAuthService.login(email, password);
     }
   }
 
   /**
-   * Cerrar sesión
+   * Cerrar sesión con bypass
    */
   async logout() {
     try {
+      // Intentar logout de Supabase
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      return true;
+      if (error) {
+        console.log('Error en Supabase logout:', error.message);
+      }
     } catch (error) {
-      console.error('Error en logout:', error);
-      throw error;
+      console.log('Supabase logout falló:', error.message);
     }
+    
+    // Siempre hacer logout custom
+    return await customAuthService.logout();
   }
 
   /**
-   * Obtener usuario actual
+   * Obtener usuario actual con bypass
    */
   async getCurrentUser() {
     try {
+      // 1. Intentar Supabase Auth primero
       const { data: { user }, error: authError } = await supabase.auth.getUser();
-      if (authError) throw authError;
-      if (!user) return null;
-
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      if (userError) throw userError;
-      return userData;
+      if (!authError && user) {
+        const { data: userData, error: userError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        if (!userError && userData) {
+          return userData;
+        }
+      }
     } catch (error) {
-      console.error('Error al obtener usuario:', error);
-      return null;
+      console.log('Supabase getCurrentUser falló, usando custom auth');
     }
+    
+    // 2. Fallback a custom auth
+    return await customAuthService.getCurrentUser();
   }
 
   /**
-   * Obtener sesión actual
+   * Obtener sesión actual con bypass
    */
   async getCurrentSession() {
     try {
+      // Intentar Supabase primero
       const { data: { session }, error } = await supabase.auth.getSession();
-      if (error) throw error;
-      return session;
+      if (!error && session) {
+        return session;
+      }
     } catch (error) {
-      console.error('Error al obtener sesión:', error);
-      return null;
+      console.log('Supabase getSession falló, usando custom auth');
     }
+    
+    // Fallback a custom auth
+    return await customAuthService.getCurrentSession();
   }
 
   /**
