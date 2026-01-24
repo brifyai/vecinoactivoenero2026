@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { restoreSession } from '../../store/slices/authSlice';
-import { loadPosts } from '../../store/slices/postsSlice';
-import { loadNotifications } from '../../store/slices/notificationsSlice';
-import storageService from '../../services/storageService';
 
 const ReduxInitializer = ({ children }) => {
   const dispatch = useDispatch();
@@ -11,30 +8,17 @@ const ReduxInitializer = ({ children }) => {
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        console.log('🚀 ReduxInitializer: Iniciando...');
+        console.log('🚀 ReduxInitializer: Iniciando (modo optimizado)...');
         
-        // Inicializar datos mock si es necesario
-        storageService.initializeMockData();
-        
-        // Restaurar sesión con timeout para evitar bloqueos
-        const sessionPromise = dispatch(restoreSession());
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Session restore timeout')), 5000)
-        );
-        
+        // OPTIMIZACIÓN: Solo restaurar sesión, no cargar datos masivos
         try {
-          await Promise.race([sessionPromise, timeoutPromise]);
+          await dispatch(restoreSession());
+          console.log('✅ Sesión restaurada');
         } catch (error) {
-          console.warn('⚠️ Session restore failed or timed out:', error.message);
+          console.warn('⚠️ No hay sesión previa o falló la restauración');
         }
         
-        // Cargar otros datos de forma no bloqueante
-        setTimeout(() => {
-          dispatch(loadPosts());
-          dispatch(loadNotifications());
-        }, 100);
-        
-        console.log('✅ ReduxInitializer: Completado');
+        console.log('✅ ReduxInitializer: Completado (optimizado)');
       } catch (error) {
         console.error('❌ Error en ReduxInitializer:', error);
       }

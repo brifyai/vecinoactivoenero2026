@@ -72,6 +72,7 @@ import CommunityActions from './pages/CommunityActions/CommunityActions';
 import Feed from './pages/Feed/Feed';
 import DirectMessages from './pages/DirectMessages/DirectMessages';
 import StorageTest from './components/StorageTest/StorageTest';
+import DiagnosticPage from './pages/DiagnosticPage';
 import './App.css';
 
 // Componente para rutas protegidas
@@ -111,6 +112,9 @@ function App() {
           } />
           <Route path="/registro-simple" element={<RegisterSimple />} />
           <Route path="/recuperar-contrasena" element={<ForgotPassword />} />
+          
+          {/* Ruta de diagnóstico - accesible sin login */}
+          <Route path="/diagnostico" element={<DiagnosticPage />} />
           
           {/* Ruta de prueba para Storage */}
           <Route path="/storage-test" element={
