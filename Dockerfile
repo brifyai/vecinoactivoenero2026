@@ -1,84 +1,80 @@
-# Dockerfile para Vecino Activo - React App (Optimizado para Producción)
+# Dockerfile Simple y Robusto para Vecino Activo
 FROM node:20-alpine AS build
 
 # Establecer directorio de trabajo
 WORKDIR /app
 
-# Copiar package.json y package-lock.json
+# Instalar git (necesario para algunas dependencias)
+RUN apk add --no-cache git
+
+# Copiar archivos de configuración
 COPY package*.json ./
 
-# Limpiar cache de npm y actualizar package-lock.json
-RUN npm cache clean --force
-
-# Instalar dependencias (usar npm install en lugar de npm ci para resolver conflictos)
-RUN npm install
+# Limpiar cache y instalar dependencias
+RUN npm cache clean --force && \
+    npm install --legacy-peer-deps
 
 # Copiar código fuente
 COPY . .
 
-# Argumentos de build para variables de entorno
-ARG REACT_APP_SUPABASE_URL
+# Argumentos de build
+ARG REACT_APP_SUPABASE_URL=https://supabase.vecinoactivo.cl
 ARG REACT_APP_SUPABASE_ANON_KEY
 ARG REACT_APP_ENVIRONMENT=production
 ARG REACT_APP_GOOGLE_CLIENT_ID
 ARG REACT_APP_GEMINI_API_KEY
 
-# Establecer variables de entorno para el build
+# Variables de entorno para build
+ENV NODE_ENV=production
 ENV REACT_APP_SUPABASE_URL=$REACT_APP_SUPABASE_URL
 ENV REACT_APP_SUPABASE_ANON_KEY=$REACT_APP_SUPABASE_ANON_KEY
 ENV REACT_APP_ENVIRONMENT=$REACT_APP_ENVIRONMENT
 ENV REACT_APP_GOOGLE_CLIENT_ID=$REACT_APP_GOOGLE_CLIENT_ID
 ENV REACT_APP_GEMINI_API_KEY=$REACT_APP_GEMINI_API_KEY
-ENV NODE_ENV=production
 ENV GENERATE_SOURCEMAP=false
 ENV INLINE_RUNTIME_CHUNK=false
 
-# Construir la aplicación para producción
+# Build de la aplicación
 RUN npm run build
 
-# Inyectar variables de entorno en el HTML (fallback)
-RUN node -e "
-const fs = require('fs');
-const path = './build/index.html';
-if (fs.existsSync(path)) {
-  let html = fs.readFileSync(path, 'utf8');
-  const envScript = \`
-    <script>
-      window.ENV = {
-        REACT_APP_SUPABASE_URL: '${REACT_APP_SUPABASE_URL}',
-        REACT_APP_SUPABASE_ANON_KEY: '${REACT_APP_SUPABASE_ANON_KEY}',
-        REACT_APP_ENVIRONMENT: '${REACT_APP_ENVIRONMENT}',
-        REACT_APP_GOOGLE_CLIENT_ID: '${REACT_APP_GOOGLE_CLIENT_ID}',
-        REACT_APP_GEMINI_API_KEY: '${REACT_APP_GEMINI_API_KEY}'
-      };
-      console.log('✅ Variables de entorno cargadas desde window.ENV');
-    </script>
-  \`;
-  html = html.replace('</head>', envScript + '</head>');
-  fs.writeFileSync(path, html);
-  console.log('✅ Variables inyectadas en build/index.html');
-}
-"
+# Inyectar variables como fallback
+RUN echo "const fs = require('fs'); \
+const path = './build/index.html'; \
+if (fs.existsSync(path)) { \
+  let html = fs.readFileSync(path, 'utf8'); \
+  const envScript = \`<script>window.ENV={REACT_APP_SUPABASE_URL:'$REACT_APP_SUPABASE_URL',REACT_APP_SUPABASE_ANON_KEY:'$REACT_APP_SUPABASE_ANON_KEY',REACT_APP_ENVIRONMENT:'$REACT_APP_ENVIRONMENT'};console.log('✅ Variables cargadas');</script>\`; \
+  html = html.replace('</head>', envScript + '</head>'); \
+  fs.writeFileSync(path, html); \
+  console.log('Variables inyectadas'); \
+}" > inject.js && node inject.js
 
-# Etapa de producción con nginx
+# Etapa de producción
 FROM nginx:alpine
 
 # Instalar curl para healthcheck
 RUN apk add --no-cache curl
 
-# Copiar archivos construidos desde la etapa anterior
+# Copiar build
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Copiar configuración personalizada de nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Configuración nginx básica
+RUN echo 'server { \
+    listen 80; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html index.htm; \
+        try_files $uri $uri/ /index.html; \
+    } \
+    location /static/ { \
+        expires 1y; \
+        add_header Cache-Control "public, immutable"; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
-# Copiar script de entrada para inyección de variables en runtime
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost/ || exit 1
 
-# Exponer puerto
 EXPOSE 80
 
-# Usar script de entrada personalizado
-ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
