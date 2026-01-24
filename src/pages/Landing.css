@@ -1854,6 +1854,14 @@
     text-align: center;
   }
 
+  .what-is-text {
+    order: 1;
+  }
+
+  .what-is-visual {
+    order: 2;
+  }
+
   .what-is-title {
     font-size: 36px;
   }

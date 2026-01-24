@@ -281,6 +281,76 @@ const Landing = () => {
       <section id="what-is" className="what-is-section">
         <div className="section-container">
           <div className="what-is-content">
+            <div className="what-is-text">
+              <div className="section-badge">
+                <span>¿Qué es Vecino Activo?</span>
+              </div>
+              <h2 className="what-is-title">
+                Conecta con tu vecindario
+              </h2>
+              <p className="what-is-description">
+                Vecino Activo es más que una aplicación: es el puente digital que une a las personas 
+                de tu comunidad. Desde conocer a tus vecinos hasta organizar eventos, resolver problemas 
+                locales y crear un entorno más seguro y colaborativo.
+              </p>
+              
+              <div className="what-is-features">
+                <div className="feature-item">
+                  <div className="feature-number">01</div>
+                  <div className="feature-content">
+                    <h4>Conecta Localmente</h4>
+                    <p>Encuentra y conecta con personas que viven cerca de ti, creando una red de apoyo vecinal real.</p>
+                  </div>
+                </div>
+                
+                <div className="feature-item">
+                  <div className="feature-number">02</div>
+                  <div className="feature-content">
+                    <h4>Organiza y Participa</h4>
+                    <p>Crea eventos comunitarios, únete a actividades locales y fortalece los lazos de tu vecindario.</p>
+                  </div>
+                </div>
+                
+                <div className="feature-item">
+                  <div className="feature-number">03</div>
+                  <div className="feature-content">
+                    <h4>Resuelve Juntos</h4>
+                    <p>Colabora en la solución de problemas locales, desde seguridad hasta mejoras urbanas.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="what-is-stats">
+                <div className="stat-item">
+                  <div className="stat-icon">
+                    <HomeWorkIcon />
+                  </div>
+                  <div className="stat-info">
+                    <span className="stat-value">50+</span>
+                    <span className="stat-label">Comunidades Activas</span>
+                  </div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-icon">
+                    <PeopleAltIcon />
+                  </div>
+                  <div className="stat-info">
+                    <span className="stat-value">1,000+</span>
+                    <span className="stat-label">Vecinos Conectados</span>
+                  </div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-icon">
+                    <EmojiEventsIcon />
+                  </div>
+                  <div className="stat-info">
+                    <span className="stat-value">200+</span>
+                    <span className="stat-label">Eventos Realizados</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="what-is-visual">
               <div className="visual-container">
                 <div className="digital-neighborhood">
@@ -409,76 +479,6 @@ const Landing = () => {
                   <strong>Así funciona:</strong> Tu hogar se conecta digitalmente con el vecindario, 
                   creando una red inteligente de comunicación y colaboración local.
                 </p>
-              </div>
-            </div>
-
-            <div className="what-is-text">
-              <div className="section-badge">
-                <span>¿Qué es Vecino Activo?</span>
-              </div>
-              <h2 className="what-is-title">
-                Conecta con tu vecindario
-              </h2>
-              <p className="what-is-description">
-                Vecino Activo es más que una aplicación: es el puente digital que une a las personas 
-                de tu comunidad. Desde conocer a tus vecinos hasta organizar eventos, resolver problemas 
-                locales y crear un entorno más seguro y colaborativo.
-              </p>
-              
-              <div className="what-is-features">
-                <div className="feature-item">
-                  <div className="feature-number">01</div>
-                  <div className="feature-content">
-                    <h4>Conecta Localmente</h4>
-                    <p>Encuentra y conecta con personas que viven cerca de ti, creando una red de apoyo vecinal real.</p>
-                  </div>
-                </div>
-                
-                <div className="feature-item">
-                  <div className="feature-number">02</div>
-                  <div className="feature-content">
-                    <h4>Organiza y Participa</h4>
-                    <p>Crea eventos comunitarios, únete a actividades locales y fortalece los lazos de tu vecindario.</p>
-                  </div>
-                </div>
-                
-                <div className="feature-item">
-                  <div className="feature-number">03</div>
-                  <div className="feature-content">
-                    <h4>Resuelve Juntos</h4>
-                    <p>Colabora en la solución de problemas locales, desde seguridad hasta mejoras urbanas.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="what-is-stats">
-                <div className="stat-item">
-                  <div className="stat-icon">
-                    <HomeWorkIcon />
-                  </div>
-                  <div className="stat-info">
-                    <span className="stat-value">50+</span>
-                    <span className="stat-label">Comunidades Activas</span>
-                  </div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-icon">
-                    <PeopleAltIcon />
-                  </div>
-                  <div className="stat-info">
-                    <span className="stat-value">1,000+</span>
-                    <span className="stat-label">Vecinos Conectados</span>
-                  </div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-icon">
-                    <EmojiEventsIcon />
-                  </div>
-                  <div className="stat-info">
-                    <span className="stat-value">200+</span>
-                    <span className="stat-label">Eventos Realizados</span>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
