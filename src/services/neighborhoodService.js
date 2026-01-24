@@ -103,6 +103,5 @@ class NeighborhoodService {
     }
   }
 }
-}
 
 export default new NeighborhoodService();
