@@ -2,28 +2,24 @@ import { createClient } from '@supabase/supabase-js';
 
 // Función para obtener configuración desde múltiples fuentes
 const getConfig = () => {
-  // En desarrollo: usar directamente process.env
-  // En producción: usar múltiples fuentes con fallbacks
-  const isDevelopment = process.env.NODE_ENV === 'development';
+  // Prioridad de fuentes:
+  // 1. Variables de entorno de build (process.env)
+  // 2. Variables inyectadas en window.ENV
+  // 3. Valores hardcodeados como fallback para producción
   
-  let supabaseUrl, supabaseAnonKey;
-  
-  if (isDevelopment) {
-    // Configuración simple para desarrollo
-    supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
-    supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
-  } else {
-    // Configuración robusta para producción con múltiples fuentes
-    supabaseUrl = 
-      process.env.REACT_APP_SUPABASE_URL || 
-      (typeof window !== 'undefined' && window.ENV?.REACT_APP_SUPABASE_URL) ||
-      'https://supabase.vecinoactivo.cl';
-      
-    supabaseAnonKey = 
-      process.env.REACT_APP_SUPABASE_ANON_KEY || 
-      (typeof window !== 'undefined' && window.ENV?.REACT_APP_SUPABASE_ANON_KEY) ||
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE';
-  }
+  let supabaseUrl = 
+    process.env.REACT_APP_SUPABASE_URL || 
+    (typeof window !== 'undefined' && window.ENV?.REACT_APP_SUPABASE_URL) ||
+    'https://supabase.vecinoactivo.cl';
+    
+  let supabaseAnonKey = 
+    process.env.REACT_APP_SUPABASE_ANON_KEY || 
+    (typeof window !== 'undefined' && window.ENV?.REACT_APP_SUPABASE_ANON_KEY) ||
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE';
+
+  // Limpiar posibles espacios o caracteres extraños
+  supabaseUrl = supabaseUrl?.trim();
+  supabaseAnonKey = supabaseAnonKey?.trim();
 
   return { supabaseUrl, supabaseAnonKey };
 };
