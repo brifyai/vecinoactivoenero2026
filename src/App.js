@@ -32,6 +32,7 @@ import { NeighborhoodExpansionProvider } from './context/NeighborhoodExpansionCo
 import Layout from './components/Layout/Layout';
 import AppInitializer from './components/AppInitializer/AppInitializer';
 import ReduxInitializer from './components/ReduxInitializer/ReduxInitializer';
+import RealtimeProvider from './components/RealtimeProvider/RealtimeProvider';
 import Landing from './pages/Landing';
 import Home from './pages/Home';
 import Timeline from './pages/Timeline';
@@ -47,6 +48,7 @@ import Groups from './pages/Groups';
 import ForgotPassword from './pages/ForgotPassword';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import RegisterSimple from './pages/RegisterSimple';
 import NeighborhoodMap from './pages/NeighborhoodMap/NeighborhoodMap';
 import Directory from './pages/Directory/Directory';
 import NeighborhoodProfile from './pages/NeighborhoodProfile/NeighborhoodProfile';
@@ -69,6 +71,7 @@ import LocalNeeds from './pages/LocalNeeds/LocalNeeds';
 import CommunityActions from './pages/CommunityActions/CommunityActions';
 import Feed from './pages/Feed/Feed';
 import DirectMessages from './pages/DirectMessages/DirectMessages';
+import StorageTest from './components/StorageTest/StorageTest';
 import './App.css';
 
 // Componente para rutas protegidas
@@ -95,17 +98,26 @@ function App() {
   return (
     <Router>
       <ReduxInitializer>
-        <AppInitializer />
-        <Routes>
-          {/* Rutas públicas */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/iniciar-sesion" element={<Login />} />
+        <RealtimeProvider>
+          <AppInitializer />
+          <Routes>
+            {/* Rutas públicas */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/iniciar-sesion" element={<Login />} />
           <Route path="/registrarse" element={
             <NeighborhoodProvider>
               <Register />
             </NeighborhoodProvider>
           } />
+          <Route path="/registro-simple" element={<RegisterSimple />} />
           <Route path="/recuperar-contrasena" element={<ForgotPassword />} />
+          
+          {/* Ruta de prueba para Storage */}
+          <Route path="/storage-test" element={
+            <ProtectedRoute>
+              <StorageTest />
+            </ProtectedRoute>
+          } />
           
           {/* Rutas protegidas de la aplicación */}
           <Route path="/app/*" element={
@@ -201,6 +213,7 @@ function App() {
             </ProtectedRoute>
           } />
         </Routes>
+        </RealtimeProvider>
       </ReduxInitializer>
     </Router>
   );

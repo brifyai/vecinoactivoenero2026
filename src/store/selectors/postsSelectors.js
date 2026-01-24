@@ -8,12 +8,12 @@ export const selectPostsError = state => state.posts.error;
 // Selectores memoizados
 export const selectUserPosts = createSelector(
   [selectAllPosts, (state, userId) => userId],
-  (posts, userId) => posts.filter(post => post.authorId === userId)
+  (posts, userId) => posts?.filter(post => post.authorId === userId) || []
 );
 
 export const selectPostsByCategory = createSelector(
   [selectAllPosts, (state, category) => category],
-  (posts, category) => posts.filter(post => post.category === category)
+  (posts, category) => posts?.filter(post => post.category === category) || []
 );
 
 export const selectPostById = createSelector(
@@ -23,5 +23,5 @@ export const selectPostById = createSelector(
 
 export const selectPostsCount = createSelector(
   [selectAllPosts],
-  (posts) => posts.length
+  (posts) => posts?.length || 0
 );

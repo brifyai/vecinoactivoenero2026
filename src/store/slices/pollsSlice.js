@@ -1,44 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { showSuccessToast } from '../../utils/sweetalert';
+import supabasePollsService from '../../services/supabasePollsService';
 
 // Async Thunks
 export const loadPolls = createAsyncThunk(
   'polls/loadPolls',
-  async (_, { rejectWithValue }) => {
+  async (neighborhoodId, { rejectWithValue }) => {
     try {
-      const stored = localStorage.getItem('communityPolls');
-      if (stored) {
-        const loadedPolls = JSON.parse(stored);
-        return loadedPolls.map(poll => ({
-          ...poll,
-          options: poll.options.map(opt => ({
-            ...opt,
-            voters: opt.voters || []
-          }))
-        }));
-      }
-      
-      // Default polls
-      const defaultPolls = [
-        {
-          id: 1,
-          title: '¿Deberíamos instalar cámaras de seguridad en la entrada?',
-          description: 'Votación para decidir si instalamos un sistema de cámaras de seguridad.',
-          options: [
-            { id: 1, text: 'Sí, es necesario', votes: 45, voters: [] },
-            { id: 2, text: 'No, es muy costoso', votes: 12, voters: [] },
-            { id: 3, text: 'Necesito más información', votes: 8, voters: [] }
-          ],
-          totalVotes: 65,
-          endsAt: '2025-02-15',
-          status: 'active',
-          creatorId: 1,
-          creatorName: 'Admin',
-          createdAt: new Date().toISOString()
-        }
-      ];
-      localStorage.setItem('communityPolls', JSON.stringify(defaultPolls));
-      return defaultPolls;
+      const polls = await supabasePollsService.getPolls(neighborhoodId);
+      return polls;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -47,35 +16,9 @@ export const loadPolls = createAsyncThunk(
 
 export const createPoll = createAsyncThunk(
   'polls/createPoll',
-  async ({ pollData, user }, { getState, rejectWithValue }) => {
+  async (pollData, { rejectWithValue }) => {
     try {
-      if (!user) throw new Error('Usuario no autenticado');
-
-      const newPoll = {
-        id: Date.now(),
-        title: pollData.title,
-        description: pollData.description,
-        options: pollData.options.map((text, index) => ({
-          id: index + 1,
-          text,
-          votes: 0,
-          voters: []
-        })),
-        totalVotes: 0,
-        endsAt: pollData.endsAt,
-        status: 'active',
-        creatorId: user.id,
-        creatorName: user.name,
-        creatorAvatar: user.avatar,
-        neighborhoodId: user.neighborhoodId,
-        createdAt: new Date().toISOString()
-      };
-
-      const { polls } = getState().polls;
-      const updated = [...polls, newPoll];
-      localStorage.setItem('communityPolls', JSON.stringify(updated));
-      showSuccessToast('¡Votación creada exitosamente!');
-
+      const newPoll = await supabasePollsService.createPoll(pollData);
       return newPoll;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -85,37 +28,10 @@ export const createPoll = createAsyncThunk(
 
 export const vote = createAsyncThunk(
   'polls/vote',
-  async ({ pollId, optionId, user }, { getState, rejectWithValue }) => {
+  async ({ pollId, optionId, userId }, { rejectWithValue }) => {
     try {
-      if (!user) throw new Error('Usuario no autenticado');
-
-      const { polls } = getState().polls;
-      const poll = polls.find(p => p.id === pollId);
-      if (!poll) throw new Error('Votación no encontrada');
-
-      // Check if already voted
-      const hasVoted = poll.options.some(opt => opt.voters.includes(user.id));
-      if (hasVoted) throw new Error('Ya has votado en esta encuesta');
-
-      const updated = polls.map(p => {
-        if (p.id === pollId) {
-          return {
-            ...p,
-            options: p.options.map(opt => 
-              opt.id === optionId
-                ? { ...opt, votes: opt.votes + 1, voters: [...opt.voters, user.id] }
-                : opt
-            ),
-            totalVotes: p.totalVotes + 1
-          };
-        }
-        return p;
-      });
-
-      localStorage.setItem('communityPolls', JSON.stringify(updated));
-      showSuccessToast('¡Voto registrado!');
-
-      return { pollId, optionId, userId: user.id };
+      await supabasePollsService.vote(pollId, optionId, userId);
+      return { pollId, optionId };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -124,21 +40,21 @@ export const vote = createAsyncThunk(
 
 export const closePoll = createAsyncThunk(
   'polls/closePoll',
-  async ({ pollId, user }, { getState, rejectWithValue }) => {
+  async ({ pollId, userId }, { rejectWithValue }) => {
     try {
-      if (!user) throw new Error('Usuario no autenticado');
+      await supabasePollsService.closePoll(pollId, userId);
+      return pollId;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
-      const { polls } = getState().polls;
-      const poll = polls.find(p => p.id === pollId);
-      
-      if (!poll) throw new Error('Votación no encontrada');
-      if (poll.creatorId !== user.id) throw new Error('No autorizado');
-
-      const updated = polls.map(p => 
-        p.id === pollId ? { ...p, status: 'closed' } : p
-      );
-
-      localStorage.setItem('communityPolls', JSON.stringify(updated));
+export const deletePoll = createAsyncThunk(
+  'polls/deletePoll',
+  async ({ pollId, userId }, { rejectWithValue }) => {
+    try {
+      await supabasePollsService.deletePoll(pollId, userId);
       return pollId;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -172,19 +88,26 @@ const pollsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(createPoll.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(createPoll.fulfilled, (state, action) => {
+        state.loading = false;
         state.polls.push(action.payload);
       })
+      .addCase(createPoll.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       .addCase(vote.fulfilled, (state, action) => {
-        const { pollId, optionId, userId } = action.payload;
+        const { pollId, optionId } = action.payload;
         const poll = state.polls.find(p => p.id === pollId);
         if (poll) {
           const option = poll.options.find(o => o.id === optionId);
           if (option) {
-            option.votes += 1;
-            option.voters.push(userId);
+            option.votes = (option.votes || 0) + 1;
           }
-          poll.totalVotes += 1;
+          poll.totalVotes = (poll.totalVotes || 0) + 1;
         }
       })
       .addCase(closePoll.fulfilled, (state, action) => {
@@ -192,6 +115,9 @@ const pollsSlice = createSlice({
         if (poll) {
           poll.status = 'closed';
         }
+      })
+      .addCase(deletePoll.fulfilled, (state, action) => {
+        state.polls = state.polls.filter(p => p.id !== action.payload);
       });
   }
 });

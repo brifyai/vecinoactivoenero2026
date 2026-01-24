@@ -127,12 +127,15 @@ const Register = () => {
     try {
       // Crear cuenta básica con perfil incompleto
       const basicUserData = {
-        ...formData,
+        name: formData.name,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
         profileComplete: false, // Marcar que el perfil está incompleto
         needsOnboarding: true   // Necesita completar onboarding
       };
       
-      const result = register(basicUserData);
+      const result = await register(basicUserData);
       if (result.success) {
         // Send verification code
         const verificationResult = emailVerificationService.sendVerificationCode(formData.email);
@@ -143,9 +146,14 @@ const Register = () => {
         } else {
           showErrorToast('Error al enviar código de verificación');
         }
+      } else {
+        setError(result.error || 'Error al crear la cuenta');
+        showErrorToast(result.error || 'Error al crear la cuenta');
       }
     } catch (err) {
-      showErrorToast('Registro fallido. Por favor intenta de nuevo.');
+      console.error('Error en registro:', err);
+      setError(err.message || 'Registro fallido. Por favor intenta de nuevo.');
+      showErrorToast(err.message || 'Registro fallido. Por favor intenta de nuevo.');
     } finally {
       setLoading(false);
     }

@@ -17,13 +17,21 @@
     "react-router-dom": "^6.20.0",
     "react-scripts": "5.0.1",
     "redux-persist": "^6.0.0",
-    "sweetalert2": "^11.26.17"
+    "sweetalert2": "^11.26.17",
+    "ws": "^8.19.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "check-env": "node check-env.js",
+    "test:realtime": "node run_realtime_tests.js",
+    "test:realtime:posts": "node test_realtime_posts.js",
+    "test:realtime:notifications": "node test_realtime_notifications.js",
+    "test:realtime:messages": "node test_realtime_messages.js",
+    "test:realtime:setup": "node setup_realtime_tests.js",
+    "test:realtime:sql": "psql -f test_realtime_complete.sql"
   },
   "eslintConfig": {
     "extends": [

@@ -12,11 +12,12 @@ class SupabaseAuthService {
    */
   async register({ email, password, name, phone, bio, neighborhoodId, neighborhoodName, neighborhoodCode }) {
     try {
-      // 1. Crear usuario en Supabase Auth
+      // 1. Crear usuario en Supabase Auth (sin confirmación de email para self-hosted)
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
+          emailRedirectTo: undefined, // No redirigir
           data: {
             name,
             phone,
@@ -29,6 +30,11 @@ class SupabaseAuthService {
       });
 
       if (authError) throw authError;
+
+      // Si no hay usuario creado (puede pasar si el email ya existe)
+      if (!authData.user) {
+        throw new Error('No se pudo crear el usuario. El email puede estar ya registrado.');
+      }
 
       // 2. Crear perfil en tabla users
       const { data: userData, error: userError } = await supabase
@@ -45,7 +51,7 @@ class SupabaseAuthService {
             neighborhood_code: neighborhoodCode,
             avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=667eea&color=fff`,
             verified: false,
-            email_verified: false
+            email_verified: true // Marcar como verificado para self-hosted sin SMTP
           }
         ])
         .select()

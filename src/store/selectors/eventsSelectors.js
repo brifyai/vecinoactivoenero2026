@@ -9,6 +9,7 @@ export const selectEventsError = (state) => state.events.error;
 export const selectUpcomingEvents = createSelector(
   [selectAllEvents],
   (events) => {
+    if (!events) return [];
     const now = new Date();
     return events.filter(event => {
       const eventDate = new Date(event.date);
@@ -20,6 +21,7 @@ export const selectUpcomingEvents = createSelector(
 export const selectPastEvents = createSelector(
   [selectAllEvents],
   (events) => {
+    if (!events) return [];
     const now = new Date();
     return events.filter(event => {
       const eventDate = new Date(event.date);
@@ -30,7 +32,7 @@ export const selectPastEvents = createSelector(
 
 export const selectEventById = createSelector(
   [selectAllEvents, (state, eventId) => eventId],
-  (events, eventId) => events.find(e => e.id === eventId)
+  (events, eventId) => events?.find(e => e.id === eventId)
 );
 
 export const selectUserRSVP = createSelector(

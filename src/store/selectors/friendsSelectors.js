@@ -10,12 +10,12 @@ export const selectFriendsError = (state) => state.friends.error;
 // Selectores memoizados
 export const selectFriendsCount = createSelector(
   [selectFriends],
-  (friends) => friends.length
+  (friends) => friends?.length || 0
 );
 
 export const selectPendingRequestsCount = createSelector(
   [selectFriendRequests],
-  (requests) => requests.length
+  (requests) => requests?.length || 0
 );
 
 export const selectIsFriend = createSelector(

@@ -8,10 +8,10 @@ export const selectUnreadCount = state => state.notifications.unreadCount;
 // Selectores memoizados
 export const selectUnreadNotifications = createSelector(
   [selectAllNotifications],
-  (notifications) => notifications.filter(n => !n.read)
+  (notifications) => notifications?.filter(n => !n.read) || []
 );
 
 export const selectNotificationsByType = createSelector(
   [selectAllNotifications, (state, type) => type],
-  (notifications, type) => notifications.filter(n => n.type === type)
+  (notifications, type) => notifications?.filter(n => n.type === type) || []
 );

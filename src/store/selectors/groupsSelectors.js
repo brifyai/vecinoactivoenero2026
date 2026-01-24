@@ -10,12 +10,13 @@ export const selectGroupsError = (state) => state.groups.error;
 // Selectores memoizados
 export const selectMyGroupsCount = createSelector(
   [selectMyGroups],
-  (myGroups) => myGroups.length
+  (myGroups) => myGroups?.length || 0
 );
 
 export const selectSuggestedGroups = createSelector(
   [selectAllGroups, selectMyGroups],
   (allGroups, myGroups) => {
+    if (!allGroups || !myGroups) return [];
     const myGroupIds = myGroups.map(g => g.id);
     return allGroups.filter(g => !myGroupIds.includes(g.id));
   }
@@ -23,12 +24,12 @@ export const selectSuggestedGroups = createSelector(
 
 export const selectGroupById = createSelector(
   [selectAllGroups, (state, groupId) => groupId],
-  (allGroups, groupId) => allGroups.find(g => g.id === groupId)
+  (allGroups, groupId) => allGroups?.find(g => g.id === groupId)
 );
 
 export const selectIsGroupMember = createSelector(
   [selectMyGroups, (state, groupId) => groupId],
-  (myGroups, groupId) => myGroups.some(g => g.id === groupId)
+  (myGroups, groupId) => myGroups?.some(g => g.id === groupId) || false
 );
 
 export const selectGroupPosts = createSelector(
@@ -39,6 +40,7 @@ export const selectGroupPosts = createSelector(
 export const selectSearchGroups = createSelector(
   [selectAllGroups, (state, query) => query],
   (allGroups, query) => {
+    if (!allGroups) return [];
     if (!query || !query.trim()) return allGroups;
     const lowerQuery = query.toLowerCase();
     return allGroups.filter(group =>

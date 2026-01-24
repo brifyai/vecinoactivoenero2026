@@ -1,7 +1,37 @@
 import { useEffect } from 'react';
+import { initializeDemoData } from '../../utils/initializeDemoData';
 
 // 100 Usuarios reales de Chile con direcciones específicas
 const demoUsers = [
+  // Usuario administrador específico
+  {
+    id: 999,
+    username: 'administrador',
+    name: 'Administrador',
+    email: 'admin@vecinoactivo.cl',
+    avatar: 'https://i.pravatar.cc/150?img=1',
+    cover: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=400&fit=crop',
+    bio: 'Administrador del sistema Vecino Activo. Aquí para ayudar a la comunidad.',
+    location: 'Santiago, Chile',
+    verified: true,
+    isVerifiedNeighbor: true,
+    neighborhoodName: 'Administración Central',
+    neighborhoodCode: 'ADM-001',
+    following: 5,
+    followers: 150,
+    posts: 12,
+    friends: 25,
+    address: 'Oficina Central Vecino Activo',
+    addressNumber: 'S/N',
+    addressStreet: 'Oficina Central',
+    city: 'Santiago',
+    region: 'Region Metropolitana',
+    latitude: -33.4489,
+    longitude: -70.6693,
+    neighborhood: 'Administración Central',
+    likes: 0,
+    password: 'admin123'
+  },
   // === 30 USUARIOS EN CHAMISERO, COLINA ===
   { id: 1, name: 'Carlos Mendoza Silva', username: 'carlosmendoza', email: 'carlos.mendoza@gmail.com', avatar: 'https://i.pravatar.cc/100?img=11', following: 28, likes: 0, followers: 45, verified: true, neighborhood: 'Chamisero', bio: 'Ingeniero civil.', address: 'Avenida Chamisero 10460', addressNumber: '10460', addressStreet: 'Avenida Chamisero', city: 'Colina', region: 'Region Metropolitana', latitude: -33.2000, longitude: -70.6500 },
   { id: 2, name: 'Maria Elena Rodriguez', username: 'mariaelena', email: 'maria.elena@outlook.com', avatar: 'https://i.pravatar.cc/100?img=5', following: 35, likes: 124, followers: 52, verified: true, neighborhood: 'Chamisero', bio: 'Profesora historia.', address: 'Avenida Chamisero 10500', addressNumber: '10500', addressStreet: 'Avenida Chamisero', city: 'Colina', region: 'Region Metropolitana', latitude: -33.2010, longitude: -70.6510 },
@@ -117,18 +147,41 @@ const demoUsers = [
 
 const AppInitializer = () => {
   useEffect(() => {
-    // Agregar contraseñas a los usuarios demo
+    console.log('🚀 AppInitializer: Inicializando aplicación...');
+    
+    // Primero, inicializar datos de demostración usando nuestra utilidad
+    const demoInitialized = initializeDemoData();
+    
+    // Agregar contraseñas a los usuarios demo existentes
     const usersWithPasswords = demoUsers.map(user => ({
       ...user,
-      password: '123456' // Contraseña por defecto para todos los usuarios demo
+      password: user.password || '123456', // Usar contraseña específica o por defecto
+      createdAt: user.createdAt || new Date().toISOString(),
+      lastLogin: user.lastLogin || new Date().toISOString()
     }));
 
-    // Always overwrite with fresh data to ensure updates
-    localStorage.setItem('friendbook_users', JSON.stringify(usersWithPasswords));
-    console.log('AppInitializer: Users data refreshed with passwords and coordinates');
+    // Obtener usuarios existentes del localStorage
+    const existingUsers = JSON.parse(localStorage.getItem('friendbook_users') || '[]');
+    
+    // Agregar usuarios que no existen
+    usersWithPasswords.forEach(user => {
+      const exists = existingUsers.find(u => u.id === user.id || u.username === user.username);
+      if (!exists) {
+        existingUsers.push(user);
+        console.log(`✅ Usuario agregado: ${user.name} (@${user.username})`);
+      }
+    });
 
-    // NO AUTO-LOGIN - Dejar que el usuario haga login manualmente
-    console.log('AppInitializer: Auto-login deshabilitado - usuario debe hacer login manualmente');
+    // Guardar usuarios actualizados
+    localStorage.setItem('friendbook_users', JSON.stringify(existingUsers));
+    
+    if (demoInitialized) {
+      console.log('✅ AppInitializer: Datos de demostración inicializados');
+    } else {
+      console.log('ℹ️ AppInitializer: Datos de demostración ya existían');
+    }
+
+    console.log('✅ AppInitializer: Inicialización completada');
   }, []);
 
   return null;

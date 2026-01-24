@@ -1,32 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { createNotification } from './notificationsSlice';
-import { showSuccessToast } from '../../utils/sweetalert';
-
-// Helper: Generar slug único
-const generateSlug = (title, existingSlugs) => {
-  let baseSlug = title
-    .toLowerCase()
-    .replace(/[^a-z0-9áéíóúñü\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-  
-  let slug = baseSlug;
-  let counter = 1;
-  while (existingSlugs.includes(slug)) {
-    slug = `${baseSlug}-${counter}`;
-    counter++;
-  }
-  return slug;
-};
+import supabaseHelpService from '../../services/supabaseHelpService';
 
 // Async Thunks
 export const loadHelpRequests = createAsyncThunk(
   'helpRequests/loadHelpRequests',
-  async (_, { rejectWithValue }) => {
+  async ({ neighborhoodId, status }, { rejectWithValue }) => {
     try {
-      const stored = localStorage.getItem('helpRequests');
-      return stored ? JSON.parse(stored) : [];
+      const requests = await supabaseHelpService.getHelpRequests(neighborhoodId, status);
+      return requests;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -35,42 +16,9 @@ export const loadHelpRequests = createAsyncThunk(
 
 export const createHelpRequest = createAsyncThunk(
   'helpRequests/createHelpRequest',
-  async ({ requestData, user }, { getState, rejectWithValue }) => {
+  async (requestData, { rejectWithValue }) => {
     try {
-      if (!user) throw new Error('Usuario no autenticado');
-
-      const { helpRequests } = getState().helpRequests;
-      const existingSlugs = helpRequests.map(r => r.slug);
-      const slug = generateSlug(requestData.title, existingSlugs);
-
-      const newRequest = {
-        id: Date.now(),
-        slug,
-        type: requestData.type,
-        title: requestData.title,
-        description: requestData.description,
-        urgency: requestData.urgency || 'normal',
-        status: 'abierta',
-        requesterId: user.id,
-        requesterName: user.name,
-        requesterAvatar: user.avatar,
-        requesterPhone: user.phone || '',
-        neighborhoodId: user.neighborhoodId,
-        neighborhoodName: user.neighborhoodName,
-        neighborhoodCode: user.neighborhoodCode,
-        location: requestData.location || '',
-        images: requestData.images || [],
-        offers: [],
-        acceptedOfferId: null,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        resolvedAt: null
-      };
-
-      const updated = [...helpRequests, newRequest];
-      localStorage.setItem('helpRequests', JSON.stringify(updated));
-      showSuccessToast('¡Solicitud de ayuda publicada!');
-
+      const newRequest = await supabaseHelpService.createHelpRequest(requestData);
       return newRequest;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -80,52 +28,10 @@ export const createHelpRequest = createAsyncThunk(
 
 export const offerHelp = createAsyncThunk(
   'helpRequests/offerHelp',
-  async ({ requestId, offerData, user }, { getState, dispatch, rejectWithValue }) => {
+  async (offerData, { rejectWithValue }) => {
     try {
-      if (!user) throw new Error('Usuario no autenticado');
-
-      const { helpRequests } = getState().helpRequests;
-      const request = helpRequests.find(r => r.id === requestId);
-      if (!request) throw new Error('Solicitud no encontrada');
-
-      const newOffer = {
-        id: Date.now(),
-        helperId: user.id,
-        helperName: user.name,
-        helperAvatar: user.avatar,
-        helperPhone: user.phone || '',
-        message: offerData.message,
-        availability: offerData.availability,
-        createdAt: new Date().toISOString()
-      };
-
-      // Notificar al solicitante
-      dispatch(createNotification({
-        userId: request.requesterId,
-        type: 'help_offer',
-        from: user.id,
-        fromName: user.name,
-        fromAvatar: user.avatar,
-        requestId,
-        message: `${user.name} ofreció ayuda para "${request.title}"`,
-        read: false
-      }));
-
-      const updated = helpRequests.map(r => {
-        if (r.id === requestId) {
-          return {
-            ...r,
-            offers: [...r.offers, newOffer],
-            updatedAt: new Date().toISOString()
-          };
-        }
-        return r;
-      });
-
-      localStorage.setItem('helpRequests', JSON.stringify(updated));
-      showSuccessToast('¡Oferta de ayuda enviada!');
-
-      return { requestId, offer: newOffer };
+      const offer = await supabaseHelpService.offerHelp(offerData);
+      return { requestId: offerData.requestId, offer };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -134,46 +40,10 @@ export const offerHelp = createAsyncThunk(
 
 export const acceptOffer = createAsyncThunk(
   'helpRequests/acceptOffer',
-  async ({ requestId, offerId, user }, { getState, dispatch, rejectWithValue }) => {
+  async ({ requestId, offerId, userId }, { rejectWithValue }) => {
     try {
-      if (!user) throw new Error('Usuario no autenticado');
-
-      const { helpRequests } = getState().helpRequests;
-      const request = helpRequests.find(r => r.id === requestId);
-      
-      if (!request) throw new Error('Solicitud no encontrada');
-      if (request.requesterId !== user.id) throw new Error('No autorizado');
-
-      const offer = request.offers.find(o => o.id === offerId);
-      if (offer) {
-        dispatch(createNotification({
-          userId: offer.helperId,
-          type: 'help_accepted',
-          from: user.id,
-          fromName: user.name,
-          fromAvatar: user.avatar,
-          requestId,
-          message: `${user.name} aceptó tu oferta de ayuda`,
-          read: false
-        }));
-      }
-
-      const updated = helpRequests.map(r => {
-        if (r.id === requestId) {
-          return {
-            ...r,
-            status: 'en_proceso',
-            acceptedOfferId: offerId,
-            updatedAt: new Date().toISOString()
-          };
-        }
-        return r;
-      });
-
-      localStorage.setItem('helpRequests', JSON.stringify(updated));
-      showSuccessToast('¡Oferta aceptada!');
-
-      return { requestId, offerId };
+      const request = await supabaseHelpService.acceptOffer(requestId, offerId, userId);
+      return request;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -182,32 +52,10 @@ export const acceptOffer = createAsyncThunk(
 
 export const resolveRequest = createAsyncThunk(
   'helpRequests/resolveRequest',
-  async ({ requestId, user }, { getState, rejectWithValue }) => {
+  async ({ requestId, userId }, { rejectWithValue }) => {
     try {
-      if (!user) throw new Error('Usuario no autenticado');
-
-      const { helpRequests } = getState().helpRequests;
-      const request = helpRequests.find(r => r.id === requestId);
-      
-      if (!request) throw new Error('Solicitud no encontrada');
-      if (request.requesterId !== user.id) throw new Error('No autorizado');
-
-      const updated = helpRequests.map(r => {
-        if (r.id === requestId) {
-          return {
-            ...r,
-            status: 'resuelta',
-            resolvedAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          };
-        }
-        return r;
-      });
-
-      localStorage.setItem('helpRequests', JSON.stringify(updated));
-      showSuccessToast('¡Solicitud marcada como resuelta!');
-
-      return requestId;
+      const request = await supabaseHelpService.resolveRequest(requestId, userId);
+      return request;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -216,31 +64,46 @@ export const resolveRequest = createAsyncThunk(
 
 export const cancelRequest = createAsyncThunk(
   'helpRequests/cancelRequest',
-  async ({ requestId, user }, { getState, rejectWithValue }) => {
+  async ({ requestId, userId }, { rejectWithValue }) => {
     try {
-      if (!user) throw new Error('Usuario no autenticado');
+      const request = await supabaseHelpService.cancelRequest(requestId, userId);
+      return request;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
-      const { helpRequests } = getState().helpRequests;
-      const request = helpRequests.find(r => r.id === requestId);
-      
-      if (!request) throw new Error('Solicitud no encontrada');
-      if (request.requesterId !== user.id) throw new Error('No autorizado');
-
-      const updated = helpRequests.map(r => {
-        if (r.id === requestId) {
-          return {
-            ...r,
-            status: 'cancelada',
-            updatedAt: new Date().toISOString()
-          };
-        }
-        return r;
-      });
-
-      localStorage.setItem('helpRequests', JSON.stringify(updated));
-      showSuccessToast('Solicitud cancelada');
-
+export const deleteRequest = createAsyncThunk(
+  'helpRequests/deleteRequest',
+  async ({ requestId, userId }, { rejectWithValue }) => {
+    try {
+      await supabaseHelpService.deleteRequest(requestId, userId);
       return requestId;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getMyRequests = createAsyncThunk(
+  'helpRequests/getMyRequests',
+  async (userId, { rejectWithValue }) => {
+    try {
+      const requests = await supabaseHelpService.getMyRequests(userId);
+      return requests;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getMyOffers = createAsyncThunk(
+  'helpRequests/getMyOffers',
+  async (userId, { rejectWithValue }) => {
+    try {
+      const offers = await supabaseHelpService.getMyOffers(userId);
+      return offers;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -251,6 +114,8 @@ const helpRequestsSlice = createSlice({
   name: 'helpRequests',
   initialState: {
     helpRequests: [],
+    myRequests: [],
+    myOffers: [],
     loading: false,
     error: null
   },
@@ -273,40 +138,53 @@ const helpRequestsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(createHelpRequest.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(createHelpRequest.fulfilled, (state, action) => {
+        state.loading = false;
         state.helpRequests.push(action.payload);
+        state.myRequests.push(action.payload);
+      })
+      .addCase(createHelpRequest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
       .addCase(offerHelp.fulfilled, (state, action) => {
         const { requestId, offer } = action.payload;
         const request = state.helpRequests.find(r => r.id === requestId);
         if (request) {
+          if (!request.offers) request.offers = [];
           request.offers.push(offer);
-          request.updatedAt = new Date().toISOString();
         }
       })
       .addCase(acceptOffer.fulfilled, (state, action) => {
-        const { requestId, offerId } = action.payload;
-        const request = state.helpRequests.find(r => r.id === requestId);
-        if (request) {
-          request.status = 'en_proceso';
-          request.acceptedOfferId = offerId;
-          request.updatedAt = new Date().toISOString();
+        const requestIndex = state.helpRequests.findIndex(r => r.id === action.payload.id);
+        if (requestIndex !== -1) {
+          state.helpRequests[requestIndex] = action.payload;
         }
       })
       .addCase(resolveRequest.fulfilled, (state, action) => {
-        const request = state.helpRequests.find(r => r.id === action.payload);
-        if (request) {
-          request.status = 'resuelta';
-          request.resolvedAt = new Date().toISOString();
-          request.updatedAt = new Date().toISOString();
+        const requestIndex = state.helpRequests.findIndex(r => r.id === action.payload.id);
+        if (requestIndex !== -1) {
+          state.helpRequests[requestIndex] = action.payload;
         }
       })
       .addCase(cancelRequest.fulfilled, (state, action) => {
-        const request = state.helpRequests.find(r => r.id === action.payload);
-        if (request) {
-          request.status = 'cancelada';
-          request.updatedAt = new Date().toISOString();
+        const requestIndex = state.helpRequests.findIndex(r => r.id === action.payload.id);
+        if (requestIndex !== -1) {
+          state.helpRequests[requestIndex] = action.payload;
         }
+      })
+      .addCase(deleteRequest.fulfilled, (state, action) => {
+        state.helpRequests = state.helpRequests.filter(r => r.id !== action.payload);
+        state.myRequests = state.myRequests.filter(r => r.id !== action.payload);
+      })
+      .addCase(getMyRequests.fulfilled, (state, action) => {
+        state.myRequests = action.payload;
+      })
+      .addCase(getMyOffers.fulfilled, (state, action) => {
+        state.myOffers = action.payload;
       });
   }
 });

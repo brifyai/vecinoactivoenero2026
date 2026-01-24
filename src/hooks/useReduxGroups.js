@@ -5,8 +5,6 @@ import {
   joinGroup,
   leaveGroup,
   updateGroup,
-  deleteGroup,
-  postToGroup,
   clearError
 } from '../store/slices/groupsSlice';
 import {
@@ -100,37 +98,8 @@ export const useReduxGroups = () => {
     }
   };
 
-  const deleteGroupById = async (groupId) => {
-    if (!user) {
-      showErrorToast('Debes iniciar sesión');
-      return false;
-    }
-
-    try {
-      await dispatch(deleteGroup({ groupId, userId: user.id })).unwrap();
-      showSuccessToast('Grupo eliminado');
-      return true;
-    } catch (error) {
-      showErrorToast(error || 'Error al eliminar grupo');
-      return false;
-    }
-  };
-
-  const createGroupPost = async (groupId, postData) => {
-    if (!user) {
-      showErrorToast('Debes iniciar sesión');
-      return null;
-    }
-
-    try {
-      const result = await dispatch(postToGroup({ groupId, postData, userId: user.id })).unwrap();
-      showSuccessToast('Publicación creada');
-      return result.post;
-    } catch (error) {
-      showErrorToast(error || 'Error al publicar');
-      return null;
-    }
-  };
+  // deleteGroupById y createGroupPost no están implementados en el slice migrado
+  // TODO: Implementar estas funciones cuando se necesiten
 
   const getGroupPosts = (groupId) => {
     const group = allGroups.find(g => g.id === groupId);
@@ -162,8 +131,7 @@ export const useReduxGroups = () => {
     joinGroup: joinGroupById,
     leaveGroup: leaveGroupById,
     updateGroup: updateGroupById,
-    deleteGroup: deleteGroupById,
-    postToGroup: createGroupPost,
+    // deleteGroup y postToGroup no disponibles aún
     getGroupPosts,
     searchGroups,
     clearError: clearGroupsError

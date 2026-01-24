@@ -1,13 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import storageService from '../../services/storageService';
+import supabaseMessagesService from '../../services/supabaseMessagesService';
 
 // Async Thunks
+export const loadConversations = createAsyncThunk(
+  'messages/loadConversations',
+  async (userId, { rejectWithValue }) => {
+    try {
+      const conversations = await supabaseMessagesService.getConversations(userId);
+      return conversations;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const loadMessages = createAsyncThunk(
   'messages/loadMessages',
-  async (_, { rejectWithValue }) => {
+  async ({ conversationId, limit = 50, offset = 0 }, { rejectWithValue }) => {
     try {
-      const messages = storageService.getMessages();
-      return messages;
+      const messages = await supabaseMessagesService.getMessages(conversationId, limit, offset);
+      return { conversationId, messages };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -16,33 +28,18 @@ export const loadMessages = createAsyncThunk(
 
 export const sendMessage = createAsyncThunk(
   'messages/sendMessage',
-  async ({ senderId, recipientId, content }, { rejectWithValue, dispatch }) => {
+  async ({ conversationId, senderId, recipientId, content, type = 'text' }, { rejectWithValue }) => {
     try {
       if (!content.trim()) {
         throw new Error('El mensaje no puede estar vacío');
       }
 
-      const newMessage = {
-        id: `msg-${Date.now()}`,
+      const newMessage = await supabaseMessagesService.sendMessage({
+        conversationId,
         senderId,
         recipientId,
         content,
-        timestamp: new Date().toISOString(),
-        read: false
-      };
-
-      const currentMessages = storageService.getMessages();
-      const updated = [...currentMessages, newMessage];
-      storageService.saveMessages(updated);
-
-      // Crear notificación
-      storageService.addNotification(recipientId, {
-        id: `notif-${Date.now()}`,
-        type: 'new_message',
-        fromUserId: senderId,
-        message: 'Te envió un mensaje',
-        read: false,
-        createdAt: new Date().toISOString()
+        type
       });
 
       return newMessage;
@@ -54,13 +51,9 @@ export const sendMessage = createAsyncThunk(
 
 export const markAsRead = createAsyncThunk(
   'messages/markAsRead',
-  async (messageId, { getState, rejectWithValue }) => {
+  async ({ messageId, userId }, { rejectWithValue }) => {
     try {
-      const { messages } = getState().messages;
-      const updated = messages.map(m =>
-        m.id === messageId ? { ...m, read: true } : m
-      );
-      storageService.saveMessages(updated);
+      await supabaseMessagesService.markAsRead(messageId, userId);
       return messageId;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -70,18 +63,11 @@ export const markAsRead = createAsyncThunk(
 
 export const markConversationAsRead = createAsyncThunk(
   'messages/markConversationAsRead',
-  async ({ userId1, userId2 }, { getState, rejectWithValue }) => {
+  async ({ conversationId, userId }, { rejectWithValue }) => {
     try {
-      const { messages } = getState().messages;
-      const updated = messages.map(m => {
-        if ((m.senderId === userId1 && m.recipientId === userId2) ||
-            (m.senderId === userId2 && m.recipientId === userId1)) {
-          return { ...m, read: true };
-        }
-        return m;
-      });
-      storageService.saveMessages(updated);
-      return { userId1, userId2 };
+      // Mark all messages in conversation as read
+      await supabaseMessagesService.markConversationAsRead(conversationId, userId);
+      return conversationId;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -90,11 +76,9 @@ export const markConversationAsRead = createAsyncThunk(
 
 export const deleteMessage = createAsyncThunk(
   'messages/deleteMessage',
-  async (messageId, { getState, rejectWithValue }) => {
+  async ({ messageId, userId }, { rejectWithValue }) => {
     try {
-      const { messages } = getState().messages;
-      const updated = messages.filter(m => m.id !== messageId);
-      storageService.saveMessages(updated);
+      await supabaseMessagesService.deleteMessage(messageId, userId);
       return messageId;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -102,43 +86,73 @@ export const deleteMessage = createAsyncThunk(
   }
 );
 
-// Helper function to generate conversations
-const generateConversations = (messages) => {
-  const convMap = {};
-
-  messages.forEach(msg => {
-    const key = [msg.senderId, msg.recipientId].sort().join('-');
-    if (!convMap[key]) {
-      convMap[key] = {
-        id: key,
-        user1Id: Math.min(msg.senderId, msg.recipientId),
-        user2Id: Math.max(msg.senderId, msg.recipientId),
-        lastMessage: msg,
-        unreadCount: 0,
-        createdAt: msg.timestamp
-      };
-    }
-    convMap[key].lastMessage = msg;
-  });
-
-  return Object.values(convMap);
-};
-
 const messagesSlice = createSlice({
   name: 'messages',
   initialState: {
-    messages: [],
     conversations: [],
+    messagesByConversation: {},
     loading: false,
-    error: null
+    error: null,
+    subscription: null
   },
   reducers: {
     clearMessagesError: (state) => {
       state.error = null;
+    },
+    addMessage: (state, action) => {
+      // Para real-time: agregar nuevo mensaje
+      const message = action.payload;
+      const conversationId = message.conversation_id;
+      
+      if (!state.messagesByConversation[conversationId]) {
+        state.messagesByConversation[conversationId] = [];
+      }
+      
+      const exists = state.messagesByConversation[conversationId].find(m => m.id === message.id);
+      if (!exists) {
+        state.messagesByConversation[conversationId].push(message);
+      }
+    },
+    addNewMessage: (state, action) => {
+      // Para real-time updates
+      const { conversationId, message } = action.payload;
+      if (!state.messagesByConversation[conversationId]) {
+        state.messagesByConversation[conversationId] = [];
+      }
+      state.messagesByConversation[conversationId].push(message);
+    },
+    updateMessage: (state, action) => {
+      // Para real-time: actualizar mensaje existente
+      const message = action.payload;
+      const conversationId = message.conversation_id;
+      
+      if (state.messagesByConversation[conversationId]) {
+        const index = state.messagesByConversation[conversationId].findIndex(m => m.id === message.id);
+        if (index !== -1) {
+          state.messagesByConversation[conversationId][index] = message;
+        }
+      }
+    },
+    setSubscription: (state, action) => {
+      state.subscription = action.payload;
     }
   },
   extraReducers: (builder) => {
     builder
+      // Load Conversations
+      .addCase(loadConversations.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loadConversations.fulfilled, (state, action) => {
+        state.loading = false;
+        state.conversations = action.payload;
+      })
+      .addCase(loadConversations.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
       // Load Messages
       .addCase(loadMessages.pending, (state) => {
         state.loading = true;
@@ -146,8 +160,8 @@ const messagesSlice = createSlice({
       })
       .addCase(loadMessages.fulfilled, (state, action) => {
         state.loading = false;
-        state.messages = action.payload;
-        state.conversations = generateConversations(action.payload);
+        const { conversationId, messages } = action.payload;
+        state.messagesByConversation[conversationId] = messages;
       })
       .addCase(loadMessages.rejected, (state, action) => {
         state.loading = false;
@@ -161,8 +175,20 @@ const messagesSlice = createSlice({
       })
       .addCase(sendMessage.fulfilled, (state, action) => {
         state.loading = false;
-        state.messages.push(action.payload);
-        state.conversations = generateConversations(state.messages);
+        const message = action.payload;
+        const conversationId = message.conversation_id;
+        
+        if (!state.messagesByConversation[conversationId]) {
+          state.messagesByConversation[conversationId] = [];
+        }
+        state.messagesByConversation[conversationId].push(message);
+        
+        // Update conversation last message
+        const conv = state.conversations.find(c => c.id === conversationId);
+        if (conv) {
+          conv.last_message = message;
+          conv.updated_at = message.created_at;
+        }
       })
       .addCase(sendMessage.rejected, (state, action) => {
         state.loading = false;
@@ -171,32 +197,36 @@ const messagesSlice = createSlice({
 
       // Mark as Read
       .addCase(markAsRead.fulfilled, (state, action) => {
-        const message = state.messages.find(m => m.id === action.payload);
-        if (message) {
-          message.read = true;
-        }
-        state.conversations = generateConversations(state.messages);
+        const messageId = action.payload;
+        Object.values(state.messagesByConversation).forEach(messages => {
+          const message = messages.find(m => m.id === messageId);
+          if (message) {
+            message.read = true;
+          }
+        });
       })
 
       // Mark Conversation as Read
       .addCase(markConversationAsRead.fulfilled, (state, action) => {
-        const { userId1, userId2 } = action.payload;
-        state.messages.forEach(m => {
-          if ((m.senderId === userId1 && m.recipientId === userId2) ||
-              (m.senderId === userId2 && m.recipientId === userId1)) {
+        const conversationId = action.payload;
+        const messages = state.messagesByConversation[conversationId];
+        if (messages) {
+          messages.forEach(m => {
             m.read = true;
-          }
-        });
-        state.conversations = generateConversations(state.messages);
+          });
+        }
       })
 
       // Delete Message
       .addCase(deleteMessage.fulfilled, (state, action) => {
-        state.messages = state.messages.filter(m => m.id !== action.payload);
-        state.conversations = generateConversations(state.messages);
+        const messageId = action.payload;
+        Object.keys(state.messagesByConversation).forEach(conversationId => {
+          state.messagesByConversation[conversationId] = 
+            state.messagesByConversation[conversationId].filter(m => m.id !== messageId);
+        });
       });
   }
 });
 
-export const { clearMessagesError } = messagesSlice.actions;
+export const { clearMessagesError, addMessage, addNewMessage, updateMessage, setSubscription } = messagesSlice.actions;
 export default messagesSlice.reducer;

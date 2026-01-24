@@ -10,6 +10,7 @@ export const selectMessagesError = (state) => state.messages.error;
 export const selectConversationMessages = createSelector(
   [selectMessages, (_, userId1, userId2) => ({ userId1, userId2 })],
   (messages, { userId1, userId2 }) => {
+    if (!messages) return [];
     return messages
       .filter(m =>
         (m.senderId === userId1 && m.recipientId === userId2) ||
@@ -22,6 +23,7 @@ export const selectConversationMessages = createSelector(
 export const selectUnreadCount = createSelector(
   [selectMessages, (_, userId) => userId],
   (messages, userId) => {
+    if (!messages) return 0;
     return messages.filter(m => m.recipientId === userId && !m.read).length;
   }
 );
@@ -29,6 +31,7 @@ export const selectUnreadCount = createSelector(
 export const selectUserConversations = createSelector(
   [selectConversations, (_, userId) => userId],
   (conversations, userId) => {
+    if (!conversations) return [];
     return conversations.filter(c => 
       c.user1Id === userId || c.user2Id === userId
     );
