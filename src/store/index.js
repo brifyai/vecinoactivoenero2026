@@ -10,7 +10,6 @@ import {
   REGISTER
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import logger from 'redux-logger';
 
 import authReducer from './slices/authSlice';
 import postsReducer from './slices/postsSlice';
@@ -97,14 +96,26 @@ const persistedReducer = persistReducer(persistConfig, (state, action) => {
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
+  middleware: (getDefaultMiddleware) => {
+    const middleware = getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
-    }).concat(
-      process.env.NODE_ENV === 'development' ? logger : []
-    ),
+    });
+    
+    // Solo agregar logger en desarrollo y si está disponible
+    if (process.env.NODE_ENV === 'development') {
+      try {
+        const logger = require('redux-logger').default;
+        return middleware.concat(logger);
+      } catch (error) {
+        console.warn('redux-logger no disponible en desarrollo');
+        return middleware;
+      }
+    }
+    
+    return middleware;
+  },
   devTools: process.env.NODE_ENV !== 'production'
 });
 

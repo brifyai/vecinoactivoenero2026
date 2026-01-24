@@ -9,8 +9,8 @@ RUN apk add --no-cache git
 # Copiar package files
 COPY package*.json ./
 
-# Instalar dependencias
-RUN npm ci --only=production --legacy-peer-deps
+# Instalar dependencias (incluyendo devDependencies para build)
+RUN npm ci --legacy-peer-deps
 
 # Copiar código fuente
 COPY . .
