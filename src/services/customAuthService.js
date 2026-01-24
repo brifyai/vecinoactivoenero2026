@@ -1,20 +1,20 @@
 import { supabase } from '../config/supabase';
 
 /**
- * Servicio de autenticación personalizado que bypassa Supabase Auth
- * Usa directamente la base de datos para autenticación
+ * Servicio de autenticación ULTRA-SIMPLE
+ * Solo usa tabla public.users - ignora completamente Supabase Auth
  */
 class CustomAuthService {
   
   async login(email, password) {
     try {
-      console.log('🔄 Custom Auth: Intentando login con:', email);
+      console.log('🔄 ULTRA-SIMPLE AUTH: Login con:', email);
       
-      // 1. Verificar credenciales hardcodeadas para admin
+      // Solo verificar credenciales hardcodeadas para admin
       if (email === 'admin@vecinoactivo.cl' && password === 'admin123') {
-        console.log('✅ Credenciales admin verificadas');
+        console.log('✅ Credenciales admin correctas');
         
-        // 2. Obtener datos del usuario
+        // Obtener datos del usuario de public.users
         const { data: userData, error: userError } = await supabase
           .from('users')
           .select('*')
@@ -25,28 +25,25 @@ class CustomAuthService {
           throw new Error('Usuario no encontrado en base de datos');
         }
         
-        // 3. Crear sesión personalizada
+        // Crear sesión ultra-simple
         const session = {
           user: userData,
-          access_token: 'custom_admin_token_' + Date.now(),
-          refresh_token: 'refresh_admin_' + Date.now(),
+          access_token: 'simple_admin_token',
           expires_at: Date.now() + (24 * 60 * 60 * 1000), // 24 horas
-          token_type: 'bearer',
-          custom_auth: true
+          simple_auth: true
         };
         
-        // 4. Guardar sesión
+        // Guardar en localStorage
         localStorage.setItem('vecino-activo-auth', JSON.stringify(session));
         
-        console.log('✅ Login custom exitoso para admin');
+        console.log('✅ LOGIN EXITOSO - ULTRA SIMPLE');
         return { user: userData, session };
       }
       
-      // Para otros usuarios, intentar verificación con base de datos
       throw new Error('Credenciales inválidas');
       
     } catch (error) {
-      console.error('❌ Error en custom auth:', error);
+      console.error('❌ Error en ultra-simple auth:', error);
       throw error;
     }
   }
@@ -54,25 +51,19 @@ class CustomAuthService {
   async getCurrentUser() {
     try {
       const sessionData = localStorage.getItem('vecino-activo-auth');
-      if (!sessionData) {
-        console.log('🔍 No hay sesión guardada');
-        return null;
-      }
+      if (!sessionData) return null;
       
       const session = JSON.parse(sessionData);
       
       // Verificar expiración
       if (Date.now() > session.expires_at) {
-        console.log('⏰ Sesión expirada');
         localStorage.removeItem('vecino-activo-auth');
         return null;
       }
       
-      console.log('✅ Usuario recuperado de sesión custom');
       return session.user;
       
     } catch (error) {
-      console.error('Error obteniendo usuario custom:', error);
       localStorage.removeItem('vecino-activo-auth');
       return null;
     }
@@ -97,22 +88,9 @@ class CustomAuthService {
   }
   
   async logout() {
-    console.log('🚪 Logout custom auth');
+    console.log('🚪 Logout ultra-simple');
     localStorage.removeItem('vecino-activo-auth');
     return true;
-  }
-  
-  // Método para verificar si estamos usando auth personalizado
-  isCustomAuth() {
-    try {
-      const sessionData = localStorage.getItem('vecino-activo-auth');
-      if (!sessionData) return false;
-      
-      const session = JSON.parse(sessionData);
-      return session.custom_auth === true;
-    } catch (error) {
-      return false;
-    }
   }
 }
 

@@ -27,15 +27,15 @@ const RealtimeProvider = ({ children }) => {
     }
   }, [isAuthenticated]);
 
-  // Polling: Consultar datos cada 10 segundos
+  // POLLING TEMPORALMENTE DESHABILITADO - CAUSABA COLAPSO DEL NAVEGADOR
   useEffect(() => {
     if (!isAuthenticated || !user) return;
 
-    console.log('🔄 Polling activado - consultando cada 10 segundos');
+    console.log('⚠️ Polling deshabilitado temporalmente para evitar colapso del navegador');
 
-    // Función para refrescar datos
-    const refreshData = () => {
-      console.log('🔄 Refrescando datos...');
+    // Cargar datos solo UNA VEZ al iniciar sesión
+    const loadInitialData = () => {
+      console.log('🔄 Cargando datos iniciales...');
       
       // Recargar posts (con parámetros por defecto)
       dispatch(loadPosts({ 
@@ -43,30 +43,28 @@ const RealtimeProvider = ({ children }) => {
         limit: 50, 
         offset: 0 
       })).catch(err => {
-        console.error('Error al recargar posts:', err);
+        console.error('Error al cargar posts:', err);
       });
 
       // Recargar notificaciones
       dispatch(loadNotifications()).catch(err => {
-        console.error('Error al recargar notificaciones:', err);
+        console.error('Error al cargar notificaciones:', err);
       });
 
       // Recargar mensajes
       dispatch(loadMessages()).catch(err => {
-        console.error('Error al recargar mensajes:', err);
+        console.error('Error al cargar mensajes:', err);
       });
     };
 
-    // Ejecutar inmediatamente
-    refreshData();
+    // Ejecutar solo una vez
+    loadInitialData();
 
-    // Configurar intervalo de 10 segundos
-    const interval = setInterval(refreshData, 10000);
+    // NO configurar intervalo para evitar colapso
+    // const interval = setInterval(refreshData, 10000);
 
-    // Cleanup: cancelar intervalo al desmontar
     return () => {
-      console.log('🔄 Polling desactivado');
-      clearInterval(interval);
+      console.log('🔄 Cleanup realizado');
     };
   }, [isAuthenticated, user, dispatch]);
 

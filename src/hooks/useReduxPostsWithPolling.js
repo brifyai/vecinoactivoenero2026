@@ -32,8 +32,8 @@ import {
  */
 export const useReduxPostsWithPolling = (options = {}) => {
   const {
-    enablePolling = true,
-    pollingInterval = 3000,
+    enablePolling = false, // DESHABILITADO TEMPORALMENTE
+    pollingInterval = 30000, // Aumentado a 30 segundos si se habilita
     showNotifications = true
   } = options;
 

@@ -30,8 +30,8 @@ import { selectUser } from '../store/selectors/authSelectors';
  */
 export const useReduxNotificationsWithPolling = (options = {}) => {
   const {
-    enablePolling = true,
-    pollingInterval = 2000,
+    enablePolling = false, // DESHABILITADO TEMPORALMENTE
+    pollingInterval = 30000, // Aumentado a 30 segundos si se habilita
     showBrowserNotifications = true,
     playSound = true
   } = options;
