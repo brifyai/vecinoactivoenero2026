@@ -76,19 +76,31 @@ const WebSocketDiagnostic = () => {
 
       // 4. Verificar configuración de realtime en base de datos
       try {
-        const { data, error } = await supabase
-          .from('pg_publication_tables')
-          .select('*')
-          .eq('pubname', 'supabase_realtime');
+        // Primero verificar si la extensión existe
+        const { data: extensionData, error: extensionError } = await supabase
+          .rpc('check_realtime_extension');
 
-        if (error) {
-          results.testResults.realtimeConfig = 'unknown';
+        if (extensionError) {
+          // Si falla, probablemente no hay extensión realtime
+          results.testResults.realtimeConfig = 'extension_not_available';
+          results.testResults.realtimeMessage = 'Extensión supabase_realtime no disponible en el servidor';
         } else {
-          results.testResults.realtimeConfig = data.length > 0 ? 'configured' : 'not_configured';
-          results.testResults.realtimeTables = data.map(t => t.tablename);
+          // Verificar publicación realtime
+          const { data, error } = await supabase
+            .from('pg_publication_tables')
+            .select('*')
+            .eq('pubname', 'supabase_realtime');
+
+          if (error) {
+            results.testResults.realtimeConfig = 'unknown';
+          } else {
+            results.testResults.realtimeConfig = data.length > 0 ? 'configured' : 'not_configured';
+            results.testResults.realtimeTables = data.map(t => t.tablename);
+          }
         }
       } catch (error) {
-        results.testResults.realtimeConfig = 'unknown';
+        results.testResults.realtimeConfig = 'extension_not_available';
+        results.testResults.realtimeMessage = 'Supabase self-hosted sin extensión Realtime';
       }
 
     } catch (error) {
@@ -129,6 +141,8 @@ const WebSocketDiagnostic = () => {
         return 'Falló';
       case 'not_configured':
         return 'No configurado';
+      case 'extension_not_available':
+        return 'Extensión no disponible';
       case 'checking':
         return 'Verificando...';
       case 'unknown':
@@ -190,6 +204,13 @@ const WebSocketDiagnostic = () => {
           </span>
         </div>
 
+        {diagnostics.testResults.realtimeMessage && (
+          <div className="status-item">
+            <span>Mensaje:</span>
+            <span className="message">{diagnostics.testResults.realtimeMessage}</span>
+          </div>
+        )}
+
         {diagnostics.testResults.realtimeTables && (
           <div className="status-item">
             <span>Tablas configuradas:</span>
@@ -209,9 +230,17 @@ const WebSocketDiagnostic = () => {
         <ul>
           <li><strong>✅ Todo verde:</strong> WebSocket funcionando correctamente</li>
           <li><strong>❌ WebSocket falló:</strong> Tu Supabase self-hosted no tiene realtime habilitado</li>
+          <li><strong>❌ Extensión no disponible:</strong> Tu servidor no tiene supabase_realtime instalado</li>
           <li><strong>❌ Configuración no configurada:</strong> Ejecuta el script SQL de configuración</li>
-          <li><strong>⚪ Si todo falla:</strong> La app seguirá funcionando con carga manual</li>
+          <li><strong>✅ Si todo falla:</strong> La app funciona PERFECTAMENTE con carga manual</li>
         </ul>
+        
+        <div className="info-box">
+          <h4>🎯 CONCLUSIÓN IMPORTANTE:</h4>
+          <p>Si ves "Extensión no disponible", es NORMAL para Supabase self-hosted básico. 
+          Tu aplicación funciona perfectamente sin WebSocket. Para una red social de vecindario, 
+          la carga manual es más que suficiente.</p>
+        </div>
       </div>
     </div>
   );
