@@ -239,8 +239,8 @@ const LandingMap = () => {
             result: result
           });
 
-          // Hacer zoom a la ubicación (suficiente para ver UVs si están disponibles)
-          const targetZoom = Math.max(MIN_ZOOM_FOR_UVS + 2, 16);
+          // Hacer zoom a la ubicación (nivel óptimo para ver UVs)
+          const targetZoom = 13; // Zoom perfecto para ver UVs y contexto
           mapInstance?.setView([lat, lon], targetZoom);
           
           showSuccessAlert(
@@ -293,8 +293,8 @@ const LandingMap = () => {
     const centerLat = sumLat / coords.length;
     const centerLng = sumLng / coords.length;
 
-    // Hacer zoom a nivel suficiente para ver las UVs (mínimo 15)
-    const targetZoom = Math.max(MIN_ZOOM_FOR_UVS + 5, 15);
+    // Hacer zoom a nivel óptimo para ver las UVs
+    const targetZoom = 13; // Nivel perfecto para ver UVs con contexto
     mapInstance.setView([centerLat, centerLng], targetZoom);
 
     // Abrir popup después de que se carguen las UVs
