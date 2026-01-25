@@ -97,10 +97,15 @@ const demoUsers = [
 const demoPosts = [
   {
     id: generateId(),
-    author: 'Administrador',
+    author: {
+      id: 999,
+      name: 'Administrador',
+      avatar: 'https://i.pravatar.cc/150?img=1',
+      verified: true
+    },
     authorId: 999,
     time: 'hace 2 horas',
-    avatar: 'https://i.pravatar.cc/150?img=1',
+    avatar: 'https://i.pravatar.cc/150?img=1', // Keep for backward compatibility
     content: '¡Bienvenidos a Vecino Activo! 🏘️ Esta plataforma está diseñada para conectar a los vecinos y fortalecer nuestras comunidades. Compartan sus ideas, organicen eventos y ayúdense mutuamente. ¡Juntos construimos un mejor barrio!',
     hashtags: ['#VecinoActivo', '#Comunidad', '#Bienvenida'],
     likes: 45,
@@ -111,10 +116,15 @@ const demoPosts = [
   },
   {
     id: generateId(),
-    author: 'María González',
+    author: {
+      id: 1001,
+      name: 'María González',
+      avatar: 'https://i.pravatar.cc/150?img=5',
+      verified: false
+    },
     authorId: 1001,
     time: 'hace 4 horas',
-    avatar: 'https://i.pravatar.cc/150?img=5',
+    avatar: 'https://i.pravatar.cc/150?img=5', // Keep for backward compatibility
     content: 'Organizando una junta de vecinos para el próximo sábado a las 10:00 AM en la plaza del barrio. Vamos a discutir temas importantes como la seguridad y el mantenimiento de áreas verdes. ¡Los esperamos! 🌳',
     image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=500&fit=crop',
     hashtags: ['#JuntaVecinos', '#Comunidad', '#LasCondes'],
@@ -126,10 +136,15 @@ const demoPosts = [
   },
   {
     id: generateId(),
-    author: 'Carlos Rodríguez',
+    author: {
+      id: 1002,
+      name: 'Carlos Rodríguez',
+      avatar: 'https://i.pravatar.cc/150?img=8',
+      verified: false
+    },
     authorId: 1002,
     time: 'hace 6 horas',
-    avatar: 'https://i.pravatar.cc/150?img=8',
+    avatar: 'https://i.pravatar.cc/150?img=8', // Keep for backward compatibility
     content: 'Encontré este gatito perdido cerca del metro Providencia. Parece estar bien cuidado, seguramente tiene dueño. Si alguien lo reconoce o sabe de alguien que haya perdido un gato, por favor avísenme. 🐱',
     image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&h=500&fit=crop',
     hashtags: ['#MascotaPerdida', '#Providencia', '#Ayuda'],
@@ -141,10 +156,15 @@ const demoPosts = [
   },
   {
     id: generateId(),
-    author: 'Ana Martínez',
+    author: {
+      id: 1003,
+      name: 'Ana Martínez',
+      avatar: 'https://i.pravatar.cc/150?img=9',
+      verified: true
+    },
     authorId: 1003,
     time: 'hace 1 día',
-    avatar: 'https://i.pravatar.cc/150?img=9',
+    avatar: 'https://i.pravatar.cc/150?img=9', // Keep for backward compatibility
     content: '¡Excelente noticia! El proyecto de mejoramiento de la plaza ya está en marcha. Gracias a todos los vecinos que participaron en las votaciones y donaciones. Este es un ejemplo de lo que podemos lograr trabajando juntos. 💪',
     image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=500&fit=crop',
     hashtags: ['#ProyectoComunitario', '#Ñuñoa', '#Éxito'],

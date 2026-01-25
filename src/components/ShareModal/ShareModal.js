@@ -52,9 +52,9 @@ const ShareModal = ({ post, onClose }) => {
 
             <div className="shared-post-preview">
               <div className="shared-post-header">
-                <img src={post.avatar} alt={post.author} />
+                <img src={post.author?.avatar || post.avatar} alt={post.author?.name || post.author} />
                 <div className="shared-post-author">
-                  <strong>{post.author}</strong>
+                  <strong>{post.author?.name || post.author}</strong>
                   <span>{post.time}</span>
                 </div>
               </div>

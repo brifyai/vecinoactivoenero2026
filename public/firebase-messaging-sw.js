@@ -2,14 +2,15 @@
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
 
-// Configuración Firebase (debe coincidir con la del cliente)
+// Configuración Firebase (CREDENCIALES REALES)
 const firebaseConfig = {
-  apiKey: "demo-api-key",
-  authDomain: "vecino-activo.firebaseapp.com",
-  projectId: "vecino-activo",
-  storageBucket: "vecino-activo.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef123456"
+  apiKey: "AIzaSyBZQYW7aRY1o07IW3NwCXY-v6Q85mMCCNU",
+  authDomain: "stratega-ai-x.firebaseapp.com",
+  databaseURL: "https://stratega-ai-x-default-rtdb.firebaseio.com",
+  projectId: "stratega-ai-x",
+  storageBucket: "stratega-ai-x.firebasestorage.app",
+  messagingSenderId: "777409222994",
+  appId: "1:777409222994:web:4b23f04e44e4a38aca428b"
 };
 
 // Inicializar Firebase

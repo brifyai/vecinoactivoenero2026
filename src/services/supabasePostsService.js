@@ -9,9 +9,9 @@ class SupabasePostsService {
   /**
    * Obtener todas las publicaciones
    */
-  async getPosts(limit = 50, offset = 0) {
+  async getPosts(neighborhoodId = null, limit = 50, offset = 0) {
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('posts')
         .select(`
           *,
@@ -28,8 +28,15 @@ class SupabasePostsService {
         .order('created_at', { ascending: false })
         .range(offset, offset + limit - 1);
 
+      // Filtrar por vecindario si se especifica
+      if (neighborhoodId) {
+        query = query.eq('neighborhood_id', neighborhoodId);
+      }
+
+      const { data, error } = await query;
+
       if (error) throw error;
-      return data;
+      return data || [];
     } catch (error) {
       console.error('Error al obtener posts:', error);
       throw error;

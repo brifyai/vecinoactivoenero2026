@@ -35,10 +35,15 @@ function createMinimalData() {
   // Solo un post de bienvenida
   const welcomePost = {
     id: Date.now(),
-    author: 'Administrador',
+    author: {
+      id: 999,
+      name: 'Administrador',
+      avatar: 'https://i.pravatar.cc/150?img=1',
+      verified: true
+    },
     authorId: 999,
     time: 'hace 1 hora',
-    avatar: 'https://i.pravatar.cc/150?img=1',
+    avatar: 'https://i.pravatar.cc/150?img=1', // Keep for backward compatibility
     content: '¡Bienvenidos a Vecino Activo! 🏘️ Plataforma optimizada para conectar vecinos.',
     hashtags: ['#VecinoActivo', '#Bienvenida'],
     likes: 5,

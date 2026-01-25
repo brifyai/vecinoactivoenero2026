@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated, selectAuthLoading } from './store/selectors/authSelectors';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { AppProvider } from './context/AppContext';
 import { SearchProvider } from './context/SearchContext';
 import { ChatProvider } from './context/ChatContext';
@@ -102,11 +103,12 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   console.log('✅ App component rendering');
   return (
-    <Router>
-      <ReduxInitializer>
-        <RealtimeProvider>
-          <AppInitializer />
-          <Routes>
+    <ErrorBoundary>
+      <Router>
+        <ReduxInitializer>
+          <RealtimeProvider>
+            <AppInitializer />
+            <Routes>
             {/* Rutas públicas */}
             <Route path="/" element={<Landing />} />
             <Route path="/iniciar-sesion" element={<Login />} />
@@ -239,6 +241,7 @@ function App() {
         </RealtimeProvider>
       </ReduxInitializer>
     </Router>
+    </ErrorBoundary>
   );
 }
 

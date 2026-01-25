@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import storageService from '../../services/storageService';
-import emailVerificationService from '../../services/emailVerificationService';
+import supabaseAuthService from '../../services/supabaseAuthService';
 import persistenceManager from '../../utils/persistenceManager';
 
 const SESSION_STORAGE_KEY = 'friendbook_session';
@@ -11,24 +10,21 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const users = storageService.getUsers();
-      const user = users.find(u => u.email === email && u.password === password);
+      console.log('🚀 Redux authSlice: Intentando login con:', email);
       
-      if (!user) {
+      // Usar supabaseAuthService en lugar de storageService
+      const result = await supabaseAuthService.login(email, password);
+      
+      if (!result || !result.user) {
         return rejectWithValue('Credenciales inválidas');
       }
       
-      // Guardar sesión
-      const session = {
-        createdAt: Date.now(),
-        userId: user.id
-      };
-      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
-      storageService.setCurrentUser(user);
+      console.log('✅ Redux authSlice: Login exitoso');
+      return result.user;
       
-      return user;
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.error('❌ Redux authSlice: Error en login:', error);
+      return rejectWithValue(error.message || 'Credenciales inválidas');
     }
   }
 );
@@ -37,34 +33,21 @@ export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData, { rejectWithValue }) => {
     try {
-      const users = storageService.getUsers();
+      console.log('🚀 Redux authSlice: Registrando usuario...');
       
-      if (users.find(u => u.email === userData.email)) {
-        return rejectWithValue('El email ya está registrado');
+      // Usar supabaseAuthService para registro
+      const result = await supabaseAuthService.register(userData);
+      
+      if (!result || !result.user) {
+        return rejectWithValue('Error en el registro');
       }
       
-      const newUser = {
-        id: Date.now(),
-        ...userData,
-        createdAt: new Date().toISOString(),
-        friends: [],
-        friendRequests: [],
-        verified: false
-      };
+      console.log('✅ Redux authSlice: Registro exitoso');
+      return result.user;
       
-      storageService.addUser(newUser);
-      storageService.setCurrentUser(newUser);
-      
-      // Guardar sesión
-      const session = {
-        createdAt: Date.now(),
-        userId: newUser.id
-      };
-      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
-      
-      return newUser;
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.error('❌ Redux authSlice: Error en registro:', error);
+      return rejectWithValue(error.message || 'Error en el registro');
     }
   }
 );
@@ -73,23 +56,22 @@ export const restoreSession = createAsyncThunk(
   'auth/restoreSession',
   async (_, { rejectWithValue }) => {
     try {
-      const session = JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY) || 'null');
-      const savedUser = storageService.getCurrentUser();
+      console.log('🔄 Redux authSlice: Restaurando sesión...');
       
-      if (!session || !savedUser) {
+      // Usar supabaseAuthService para obtener usuario actual
+      const user = await supabaseAuthService.getCurrentUser();
+      
+      if (!user) {
+        console.log('❌ Redux authSlice: No hay sesión activa');
         return rejectWithValue('No hay sesión');
       }
       
-      const currentTime = Date.now();
-      if (currentTime - session.createdAt > SESSION_TIMEOUT) {
-        localStorage.removeItem(SESSION_STORAGE_KEY);
-        storageService.clearCurrentUser();
-        return rejectWithValue('Sesión expirada');
-      }
+      console.log('✅ Redux authSlice: Sesión restaurada');
+      return user;
       
-      return savedUser;
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.error('❌ Redux authSlice: Error restaurando sesión:', error);
+      return rejectWithValue(error.message || 'Error restaurando sesión');
     }
   }
 );
@@ -108,9 +90,8 @@ const authSlice = createSlice({
     logout: (state) => {
       console.log('🔴 LOGOUT EJECUTADO - Limpiando estado');
       
-      // Limpiar localStorage
-      localStorage.removeItem('friendbook_session');
-      localStorage.removeItem('currentUser');
+      // Usar supabaseAuthService para logout
+      supabaseAuthService.logout();
       
       // Resetear estado a inicial
       return {
@@ -123,14 +104,12 @@ const authSlice = createSlice({
     },
     updateUser: (state, action) => {
       state.user = { ...state.user, ...action.payload };
-      storageService.updateUser(state.user.id, action.payload);
-      storageService.setCurrentUser(state.user);
+      // TODO: Implementar actualización en Supabase si es necesario
     },
     updateUserAvatar: (state, action) => {
       if (state.user) {
         state.user.avatar = action.payload;
-        storageService.updateUser(state.user.id, { avatar: action.payload });
-        storageService.setCurrentUser(state.user);
+        // TODO: Implementar actualización en Supabase si es necesario
       }
     },
     clearError: (state) => {

@@ -2,6 +2,7 @@
   min-height: 100vh;
   background: #ffffff;
   padding: 20px 32px;
+  padding-right: 320px; /* Espacio para sidebar desplegado */
   transition: padding-right 0.3s ease;
   margin: 0;
   position: relative;
@@ -9,11 +10,17 @@
 }
 
 .discover-neighbors-page.sidebar-collapsed {
-  padding-right: 32px;
+  padding-right: 32px; /* Sidebar colapsado */
 }
 
 .discover-header {
   margin-bottom: 32px;
+  transition: all 0.3s ease;
+}
+
+/* Ajustar header cuando sidebar está colapsado */
+.sidebar-collapsed .discover-header {
+  margin-bottom: 28px;
 }
 
 .discover-header h1 {
@@ -28,6 +35,19 @@
   color: #6b7280;
 }
 
+.neighborhood-info {
+  font-size: 14px;
+  color: #667eea;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.neighbor-location {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0;
+}
+
 .filter-buttons {
   display: flex;
   gap: 12px;
@@ -36,6 +56,12 @@
   position: relative;
   z-index: 100;
   pointer-events: auto;
+  transition: all 0.3s ease;
+}
+
+/* Ajustar filtros cuando sidebar está colapsado */
+.sidebar-collapsed .filter-buttons {
+  gap: 16px;
 }
 
 .filter-buttons .filter-btn {
@@ -70,6 +96,13 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
+  transition: all 0.3s ease;
+}
+
+/* Cuando el sidebar está colapsado, podemos mostrar más columnas */
+.sidebar-collapsed .neighbors-grid {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
 }
 
 .neighbor-card {
@@ -84,12 +117,23 @@
   gap: 12px;
   transition: all 0.3s ease;
   cursor: pointer;
+  transform: translateY(0);
 }
 
 .neighbor-card:hover {
   box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
   border-color: #667eea;
   transform: translateY(-4px);
+}
+
+/* Ajustar tarjetas cuando sidebar está colapsado */
+.sidebar-collapsed .neighbor-card {
+  padding: 16px;
+  gap: 10px;
+}
+
+.sidebar-collapsed .neighbor-card:hover {
+  transform: translateY(-2px);
 }
 
 .neighbor-avatar-large {
@@ -152,6 +196,15 @@
 }
 
 @media (max-width: 768px) {
+  .discover-neighbors-page {
+    padding: 16px;
+    padding-right: 16px; /* En móvil no hay sidebar */
+  }
+  
+  .discover-neighbors-page.sidebar-collapsed {
+    padding-right: 16px;
+  }
+  
   .neighbors-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
@@ -167,5 +220,15 @@
 
   .neighbor-card h3 {
     font-size: 16px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .discover-neighbors-page {
+    padding-right: 280px; /* Sidebar más pequeño en pantallas medianas */
+  }
+  
+  .discover-neighbors-page.sidebar-collapsed {
+    padding-right: 32px;
   }
 }

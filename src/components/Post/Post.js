@@ -75,10 +75,10 @@ const Post = ({ post, onShare }) => {
     <>
       <div className="post">
         <div className="post-header">
-          <img src={post.avatar} alt={post.author} className="post-avatar" />
+          <img src={post.author?.avatar || post.avatar} alt={post.author?.name || post.author} className="post-avatar" />
           <div className="post-author-info">
             <h4>
-              {post.author}
+              {post.author?.name || post.author}
               {authorVerification?.verified && <VerifiedBadge size="small" />}
             </h4>
             <div className="post-meta">
@@ -214,7 +214,7 @@ const Post = ({ post, onShare }) => {
         <ReportModal 
           type="post"
           targetId={post.id}
-          targetAuthor={post.author}
+          targetAuthor={post.author?.name || post.author}
           onClose={() => setShowReportModal(false)}
         />
       )}

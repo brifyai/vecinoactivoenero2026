@@ -59,7 +59,7 @@ class AdvancedSearch {
       const lowerQuery = query.toLowerCase();
       results = results.filter(post => {
         const contentMatch = post.content && post.content.toLowerCase().includes(lowerQuery);
-        const authorMatch = post.author && post.author.toLowerCase().includes(lowerQuery);
+        const authorMatch = (post.author?.name || post.author) && (post.author?.name || post.author).toLowerCase().includes(lowerQuery);
         const hashtagMatch = post.hashtags && post.hashtags.some(tag => 
           tag.toLowerCase().includes(lowerQuery)
         );
@@ -80,7 +80,7 @@ class AdvancedSearch {
     // Filtro por autor
     if (filters.author) {
       results = results.filter(post => 
-        post.author && post.author.toLowerCase().includes(filters.author.toLowerCase())
+        (post.author?.name || post.author) && (post.author?.name || post.author).toLowerCase().includes(filters.author.toLowerCase())
       );
     }
 

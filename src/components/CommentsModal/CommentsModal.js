@@ -18,8 +18,12 @@ const CommentsModal = ({ post, onClose }) => {
     {
       id: 1,
       authorId: 15,
-      author: 'Pabalo Mukrani',
-      avatar: 'https://i.pravatar.cc/40?img=15',
+      author: {
+        id: 15,
+        name: 'Pabalo Mukrani',
+        avatar: 'https://i.pravatar.cc/40?img=15'
+      },
+      avatar: 'https://i.pravatar.cc/40?img=15', // Keep for backward compatibility
       content: 'Oooo muy lindo y dulce perrito feliz cumpleaños... 🎂',
       time: 'hace 30 min',
       likes: 12,
@@ -29,8 +33,12 @@ const CommentsModal = ({ post, onClose }) => {
     {
       id: 2,
       authorId: 16,
-      author: 'Sufiya Elija',
-      avatar: 'https://i.pravatar.cc/40?img=16',
+      author: {
+        id: 16,
+        name: 'Sufiya Elija',
+        avatar: 'https://i.pravatar.cc/40?img=16'
+      },
+      avatar: 'https://i.pravatar.cc/40?img=16', // Keep for backward compatibility
       content: 'Muchas gracias 😊😊',
       time: 'hace 25 min',
       likes: 8,
@@ -39,8 +47,12 @@ const CommentsModal = ({ post, onClose }) => {
         {
           id: 3,
           authorId: 5,
-          author: 'Anna Sthesia',
-          avatar: 'https://i.pravatar.cc/40?img=5',
+          author: {
+            id: 5,
+            name: 'Anna Sthesia',
+            avatar: 'https://i.pravatar.cc/40?img=5'
+          },
+          avatar: 'https://i.pravatar.cc/40?img=5', // Keep for backward compatibility
           content: '¡Felicitaciones! 🎉',
           time: 'hace 20 min',
           likes: 3,
@@ -59,8 +71,12 @@ const CommentsModal = ({ post, onClose }) => {
     const newComment = {
       id: Date.now(),
       authorId: user.id,
-      author: user.name,
-      avatar: user.avatar,
+      author: {
+        id: user.id,
+        name: user.name,
+        avatar: user.avatar
+      },
+      avatar: user.avatar, // Keep for backward compatibility
       content: commentText,
       time: 'Justo ahora',
       likes: 0,
@@ -118,7 +134,7 @@ const CommentsModal = ({ post, onClose }) => {
     <div className="comments-modal-overlay" onClick={onClose}>
       <div className="comments-modal" onClick={(e) => e.stopPropagation()}>
         <div className="comments-modal-header">
-          <h2>Publicación de {post.author}</h2>
+          <h2>Publicación de {post.author?.name || post.author}</h2>
           <button className="close-modal-btn" onClick={onClose}>
             <CloseIcon />
           </button>
@@ -127,9 +143,9 @@ const CommentsModal = ({ post, onClose }) => {
         <div className="comments-modal-content">
           <div className="post-in-modal">
             <div className="post-header-modal">
-              <img src={post.avatar} alt={post.author} />
+              <img src={post.author?.avatar || post.avatar} alt={post.author?.name || post.author} />
               <div className="post-author-info-modal">
-                <h4>{post.author}</h4>
+                <h4>{post.author?.name || post.author}</h4>
                 <span>{post.time}</span>
               </div>
             </div>

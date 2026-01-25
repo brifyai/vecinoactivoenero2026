@@ -34,7 +34,12 @@ export const useReduxPosts = (options = {}) => {
   // Cargar posts iniciales si no hay datos
   useEffect(() => {
     if (posts.length === 0 && !loading) {
-      dispatch(loadPosts());
+      // Pasar parámetros por defecto para evitar el loop infinito
+      dispatch(loadPosts({ 
+        neighborhoodId: null, // null para obtener todos los posts
+        limit: 50, 
+        offset: 0 
+      }));
     }
   }, [dispatch, posts.length, loading]);
 
@@ -89,7 +94,11 @@ export const useReduxPosts = (options = {}) => {
   };
 
   const refresh = () => {
-    dispatch(loadPosts());
+    dispatch(loadPosts({ 
+      neighborhoodId: null, 
+      limit: 50, 
+      offset: 0 
+    }));
   };
 
   return {

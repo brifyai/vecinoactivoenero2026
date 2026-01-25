@@ -11,7 +11,7 @@ class CustomAuthService {
       console.log('🔄 ULTRA-SIMPLE AUTH: Login con:', email);
       
       // Solo verificar credenciales hardcodeadas para admin
-      if (email === 'admin@vecinoactivo.cl' && password === 'admin123') {
+      if (email === 'admin@vecinoactivo.cl' && password === '123456') {
         console.log('✅ Credenciales admin correctas');
         
         // Obtener datos del usuario de public.users
