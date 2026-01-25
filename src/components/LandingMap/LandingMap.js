@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap, Marker, Popup } from 'react-leaflet';
-import neighborhoodService from '../../services/neighborhoodService';
-import geocodingService from '../../services/geocodingService';
 import { showErrorAlert, showSuccessAlert, showInfoToast } from '../../utils/sweetalert';
 import 'leaflet/dist/leaflet.css';
 import './LandingMap.css';
@@ -48,9 +46,7 @@ const LandingMap = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [mapInstance, setMapInstance] = useState(null);
-  const [selectedUV, setSelectedUV] = useState(null);
   const [searchMode, setSearchMode] = useState('uv'); // 'uv' o 'address'
-  const [searchingAddress, setSearchingAddress] = useState(false);
   const [addressMarker, setAddressMarker] = useState(null);
 
   // Centro por defecto (Chile completo)
@@ -65,22 +61,30 @@ const LandingMap = () => {
   const loadNeighborhoods = async () => {
     setLoading(true);
     try {
-      // Verificar si el backend está disponible
-      const isHealthy = await neighborhoodService.checkHealth();
-      if (!isHealthy) {
-        console.warn('Backend not available, map will show basic view');
-        setLoading(false);
-        return;
+      console.log('🗺️ Cargando unidades vecinales desde archivo local...');
+      
+      // Cargar el archivo GeoJSON local
+      const response = await fetch('/data/geo/unidades_vecinales_simple.geojson');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      // Cargar todos los vecindarios de Chile
-      const data = await neighborhoodService.getAllNeighborhoods();
-      if (data) {
+      
+      const data = await response.json();
+      
+      if (data && data.features) {
         setNeighborhoodsData(data);
-        console.log(`Cargados ${data.features?.length || 0} vecindarios de Chile`);
+        console.log(`✅ Cargadas ${data.features.length} unidades vecinales de Chile`);
+        showInfoToast(`Mapa cargado: ${data.features.length.toLocaleString('es-CL')} unidades vecinales`);
+      } else {
+        throw new Error('Formato de datos inválido');
       }
     } catch (error) {
-      console.error('Error loading neighborhoods:', error);
+      console.error('❌ Error loading neighborhoods:', error);
+      showErrorAlert(
+        'Error de Carga',
+        'No se pudieron cargar las unidades vecinales. El mapa mostrará solo la vista básica.'
+      );
     } finally {
       setLoading(false);
     }
@@ -132,7 +136,7 @@ const LandingMap = () => {
     setShowSearchResults(results.length > 0);
   };
 
-  // Búsqueda por dirección
+  // Búsqueda por dirección usando Nominatim
   const handleAddressSearch = async () => {
     if (!searchTerm || searchTerm.length < 5) {
       showErrorAlert(
@@ -152,40 +156,47 @@ const LandingMap = () => {
     setAddressMarker(null);
 
     try {
-      const result = await geocodingService.findUVByAddress(searchTerm, neighborhoodsData);
+      // Usar Nominatim para geocodificación
+      const params = new URLSearchParams({
+        q: `${searchTerm}, Chile`,
+        format: 'json',
+        countrycodes: 'cl',
+        limit: '1',
+        addressdetails: '1'
+      });
 
-      if (result.error) {
-        // Mostrar la ubicación aunque no esté en una UV
-        if (result.coordinates) {
-          const [lat, lon] = result.coordinates;
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?${params}`, {
+        headers: {
+          'User-Agent': 'VecinoActivo/1.0'
+        }
+      });
+
+      if (response.ok) {
+        const results = await response.json();
+        if (results.length > 0) {
+          const result = results[0];
+          const lat = parseFloat(result.lat);
+          const lon = parseFloat(result.lon);
+          
+          // Mostrar marcador en la dirección
           setAddressMarker({
             position: [lat, lon],
-            address: result.results[0]?.displayName || searchTerm,
-            error: result.error
+            address: result.display_name,
+            result: result
           });
-          mapInstance?.setView([lat, lon], 16);
-        }
-        showErrorAlert('Dirección No Encontrada', result.error);
-      } else if (result.success && result.primaryMatch) {
-        const match = result.primaryMatch;
-        
-        // Mostrar marcador en la dirección
-        setAddressMarker({
-          position: match.coordinates,
-          address: match.address.displayName,
-          uv: match.uv
-        });
 
-        // Hacer zoom a la UV encontrada
-        handleSelectUV(match.uv);
-        
-        // Mostrar mensaje de éxito
-        setTimeout(() => {
+          // Hacer zoom a la ubicación
+          mapInstance?.setView([lat, lon], 16);
+          
           showSuccessAlert(
             '¡Dirección Encontrada!',
-            `Unidad Vecinal: UV ${match.uv.codigo}\nNombre: ${match.uv.nombre}\nComuna: ${match.uv.comuna}`
+            `Ubicación: ${result.display_name}`
           );
-        }, 500);
+        } else {
+          showErrorAlert('Dirección No Encontrada', 'No se encontró la dirección especificada');
+        }
+      } else {
+        throw new Error('Error en la búsqueda');
       }
     } catch (error) {
       console.error('Error searching address:', error);
@@ -211,7 +222,6 @@ const LandingMap = () => {
   const handleSelectUV = (uv) => {
     if (!mapInstance) return;
 
-    setSelectedUV(uv);
     setSearchTerm(`UV ${uv.codigo} - ${uv.nombre}`);
     setShowSearchResults(false);
 
@@ -247,7 +257,6 @@ const LandingMap = () => {
     setSearchTerm('');
     setSearchResults([]);
     setShowSearchResults(false);
-    setSelectedUV(null);
     setAddressMarker(null);
   };
 
@@ -289,7 +298,7 @@ const LandingMap = () => {
             value={searchTerm}
             onChange={(e) => handleSearch(e.target.value)}
             onFocus={() => searchMode === 'uv' && searchResults.length > 0 && setShowSearchResults(true)}
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               if (e.key === 'Enter' && searchMode === 'address') {
                 handleAddressSearch();
               }
@@ -484,16 +493,7 @@ const LandingMap = () => {
                 <div className="demo-address-popup">
                   <h4>📍 Dirección Encontrada</h4>
                   <p className="demo-address-text">{addressMarker.address}</p>
-                  {addressMarker.uv ? (
-                    <div className="demo-uv-info">
-                      <p><strong>Unidad Vecinal:</strong></p>
-                      <p>UV {addressMarker.uv.codigo} - {addressMarker.uv.nombre}</p>
-                      <p>📍 {addressMarker.uv.comuna}, {addressMarker.uv.region}</p>
-                    </div>
-                  ) : (
-                    <p className="demo-no-uv-warning">⚠️ {addressMarker.error}</p>
-                  )}
-                  <p class="demo-popup-note">💡 Regístrate para conectar con vecinos de esta zona</p>
+                  <p className="demo-popup-note">💡 Regístrate para conectar con vecinos de esta zona</p>
                 </div>
               </Popup>
             </Marker>
