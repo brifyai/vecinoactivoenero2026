@@ -1,15 +1,34 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import supabaseAuthService from '../../services/supabaseAuthService';
+import storageService from '../../services/storageService';
+import emailVerificationService from '../../services/emailVerificationService';
+import persistenceManager from '../../utils/persistenceManager';
 
-// Thunks asíncronos con Supabase
+const SESSION_STORAGE_KEY = 'friendbook_session';
+const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
+
+// Thunks asíncronos
 export const loginUser = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const { user } = await supabaseAuthService.login(email, password);
+      const users = storageService.getUsers();
+      const user = users.find(u => u.email === email && u.password === password);
+      
+      if (!user) {
+        return rejectWithValue('Credenciales inválidas');
+      }
+      
+      // Guardar sesión
+      const session = {
+        createdAt: Date.now(),
+        userId: user.id
+      };
+      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+      storageService.setCurrentUser(user);
+      
       return user;
     } catch (error) {
-      return rejectWithValue(error.message || 'Credenciales inválidas');
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -18,10 +37,34 @@ export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData, { rejectWithValue }) => {
     try {
-      const { user } = await supabaseAuthService.register(userData);
-      return user;
+      const users = storageService.getUsers();
+      
+      if (users.find(u => u.email === userData.email)) {
+        return rejectWithValue('El email ya está registrado');
+      }
+      
+      const newUser = {
+        id: Date.now(),
+        ...userData,
+        createdAt: new Date().toISOString(),
+        friends: [],
+        friendRequests: [],
+        verified: false
+      };
+      
+      storageService.addUser(newUser);
+      storageService.setCurrentUser(newUser);
+      
+      // Guardar sesión
+      const session = {
+        createdAt: Date.now(),
+        userId: newUser.id
+      };
+      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+      
+      return newUser;
     } catch (error) {
-      return rejectWithValue(error.message || 'Error al registrar usuario');
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -30,13 +73,23 @@ export const restoreSession = createAsyncThunk(
   'auth/restoreSession',
   async (_, { rejectWithValue }) => {
     try {
-      const user = await supabaseAuthService.getCurrentUser();
-      if (!user) {
+      const session = JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY) || 'null');
+      const savedUser = storageService.getCurrentUser();
+      
+      if (!session || !savedUser) {
         return rejectWithValue('No hay sesión');
       }
-      return user;
+      
+      const currentTime = Date.now();
+      if (currentTime - session.createdAt > SESSION_TIMEOUT) {
+        localStorage.removeItem(SESSION_STORAGE_KEY);
+        storageService.clearCurrentUser();
+        return rejectWithValue('Sesión expirada');
+      }
+      
+      return savedUser;
     } catch (error) {
-      return rejectWithValue(error.message || 'Error al restaurar sesión');
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -55,8 +108,9 @@ const authSlice = createSlice({
     logout: (state) => {
       console.log('🔴 LOGOUT EJECUTADO - Limpiando estado');
       
-      // Logout de Supabase
-      supabaseAuthService.logout().catch(err => console.error('Error en logout:', err));
+      // Limpiar localStorage
+      localStorage.removeItem('friendbook_session');
+      localStorage.removeItem('currentUser');
       
       // Resetear estado a inicial
       return {
@@ -69,18 +123,14 @@ const authSlice = createSlice({
     },
     updateUser: (state, action) => {
       state.user = { ...state.user, ...action.payload };
-      // Actualizar en Supabase
-      if (state.user?.id) {
-        supabaseAuthService.updateProfile(state.user.id, action.payload)
-          .catch(err => console.error('Error al actualizar perfil:', err));
-      }
+      storageService.updateUser(state.user.id, action.payload);
+      storageService.setCurrentUser(state.user);
     },
     updateUserAvatar: (state, action) => {
       if (state.user) {
         state.user.avatar = action.payload;
-        // Actualizar en Supabase
-        supabaseAuthService.updateAvatar(state.user.id, action.payload)
-          .catch(err => console.error('Error al actualizar avatar:', err));
+        storageService.updateUser(state.user.id, { avatar: action.payload });
+        storageService.setCurrentUser(state.user);
       }
     },
     clearError: (state) => {

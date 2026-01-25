@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Button Click</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test Button Click Events</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: Basic Button Click</h3>
+        <button id="basicBtn">Click Me (Basic)</button>
+        <div id="basicResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 2: Form Submit</h3>
+        <form id="testForm">
+            <input type="email" value="admin@vecinoactivo.cl" required>
+            <input type="password" value="admin123" required>
+            <button type="submit">Submit Form</button>
+        </form>
+        <div id="formResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 3: Async Function</h3>
+        <button id="asyncBtn">Async Test</button>
+        <div id="asyncResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 4: Simulate Login Process</h3>
+        <button id="loginBtn">Simulate Login</button>
+        <div id="loginResult"></div>
+    </div>
+
+    <script>
+        // Test 1: Basic click
+        document.getElementById('basicBtn').addEventListener('click', function() {
+            document.getElementById('basicResult').innerHTML = '<span class="success">✅ Basic click works!</span>';
+        });
+        
+        // Test 2: Form submit
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('formResult').innerHTML = '<span class="success">✅ Form submit works!</span>';
+        });
+        
+        // Test 3: Async function
+        document.getElementById('asyncBtn').addEventListener('click', async function() {
+            const resultDiv = document.getElementById('asyncResult');
+            resultDiv.innerHTML = '⏳ Testing async...';
+            
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                resultDiv.innerHTML = '<span class="success">✅ Async function works!</span>';
+            } catch (error) {
+                resultDiv.innerHTML = '<span class="error">❌ Async failed: ' + error.message + '</span>';
+            }
+        });
+        
+        // Test 4: Simulate login
+        document.getElementById('loginBtn').addEventListener('click', async function() {
+            const resultDiv = document.getElementById('loginResult');
+            const btn = this;
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ Logging in...';
+            resultDiv.innerHTML = '🔄 Starting login process...';
+            
+            try {
+                // Simulate login steps
+                resultDiv.innerHTML += '<br>1. Validating credentials...';
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                resultDiv.innerHTML += '<br>2. Connecting to database...';
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                resultDiv.innerHTML += '<br>3. Creating session...';
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                resultDiv.innerHTML += '<br><span class="success">✅ Login simulation complete!</span>';
+                
+            } catch (error) {
+                resultDiv.innerHTML += '<br><span class="error">❌ Login failed: ' + error.message + '</span>';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Simulate Login';
+            }
+        });
+        
+        console.log('🚀 Test page loaded - all event listeners attached');
+    </script>
+</body>
+</html>

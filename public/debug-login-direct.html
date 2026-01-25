@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Login Direct</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #667eea; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; width: 100%; }
+        button:hover { background: #5a6fd8; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .log { background: #f8f9fa; padding: 10px; margin-top: 10px; border-radius: 5px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Login Direct</h1>
+        <p>Test directo del login sin React para identificar el problema</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" value="admin@vecinoactivo.cl" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" value="admin123" required>
+            </div>
+            
+            <button type="submit" id="loginBtn">🚀 Test Login</button>
+        </form>
+        
+        <div id="result"></div>
+        <div id="log" class="log"></div>
+    </div>
+
+    <script>
+        let logs = [];
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}`;
+            logs.push(logMessage);
+            console.log(logMessage);
+            
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML = logs.join('<br>');
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = message;
+            resultDiv.className = `result ${type}`;
+        }
+        
+        // Capturar todos los errores
+        window.addEventListener('error', (e) => {
+            log(`❌ ERROR: ${e.message} at ${e.filename}:${e.lineno}`);
+        });
+        
+        window.addEventListener('unhandledrejection', (e) => {
+            log(`❌ PROMISE REJECTION: ${e.reason}`);
+        });
+        
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const loginBtn = document.getElementById('loginBtn');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            log('🔄 Iniciando proceso de login...');
+            
+            loginBtn.disabled = true;
+            loginBtn.textContent = '⏳ Testing...';
+            
+            try {
+                // 1. Verificar credenciales
+                log(`📧 Email: ${email}`);
+                log(`🔑 Password: ${password.replace(/./g, '*')}`);
+                
+                if (email !== 'admin@vecinoactivo.cl' || password !== 'admin123') {
+                    throw new Error('Credenciales incorrectas');
+                }
+                log('✅ Credenciales hardcodeadas correctas');
+                
+                // 2. Test conexión a Supabase
+                log('🔄 Probando conexión a Supabase...');
+                const supabaseUrl = 'https://supabase.vecinoactivo.cl';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyAgCiAgICAicm9sZSI6ICJhbm9uIiwKICAgICJpc3MiOiAic3VwYWJhc2UtZGVtbyIsCiAgICAiaWF0IjogMTY0MTc2OTIwMCwKICAgICJleHAiOiAxNzk5NTM1NjAwCn0.dc_X5iR_VP_qT0zsiyj_I_OZ2T9FtRU2BBNWN8Bu4GE';
+                
+                const response = await fetch(`${supabaseUrl}/rest/v1/users?email=eq.${email}&select=*`, {
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const users = await response.json();
+                log(`📊 Respuesta de Supabase: ${users.length} usuarios encontrados`);
+                
+                if (!users || users.length === 0) {
+                    throw new Error('Usuario no encontrado en base de datos');
+                }
+                
+                const userData = users[0];
+                log(`👤 Usuario encontrado: ${userData.name} (${userData.email})`);
+                
+                // 3. Crear sesión
+                log('🔄 Creando sesión...');
+                const session = {
+                    user: userData,
+                    access_token: 'simple_admin_token',
+                    expires_at: Date.now() + (24 * 60 * 60 * 1000),
+                    simple_auth: true
+                };
+                
+                // 4. Guardar en localStorage
+                localStorage.setItem('vecino-activo-auth', JSON.stringify(session));
+                log('💾 Sesión guardada en localStorage');
+                
+                // 5. Verificar que se guardó
+                const savedSession = localStorage.getItem('vecino-activo-auth');
+                if (savedSession) {
+                    log('✅ Sesión verificada en localStorage');
+                } else {
+                    throw new Error('Error al guardar sesión');
+                }
+                
+                showResult(`✅ Login exitoso! Bienvenido ${userData.name}`, 'success');
+                log('🎉 LOGIN COMPLETADO EXITOSAMENTE');
+                
+                // Opcional: redirigir
+                setTimeout(() => {
+                    if (confirm('¿Quieres ir a la aplicación principal?')) {
+                        window.location.href = '/app';
+                    }
+                }, 2000);
+                
+            } catch (error) {
+                log(`❌ ERROR EN LOGIN: ${error.message}`);
+                showResult(`❌ Login falló: ${error.message}`, 'error');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = '🚀 Test Login';
+            }
+        });
+        
+        // Test inicial
+        log('🚀 Página cargada - Sistema de debug iniciado');
+        log('📋 Credenciales de prueba: admin@vecinoactivo.cl / admin123');
+        
+        // Test de localStorage
+        try {
+            localStorage.setItem('test', 'test');
+            localStorage.removeItem('test');
+            log('✅ localStorage funciona correctamente');
+        } catch (e) {
+            log('❌ localStorage no funciona: ' + e.message);
+        }
+        
+        // Test de fetch
+        fetch('/').then(response => {
+            log(`✅ Fetch funciona - Status: ${response.status}`);
+        }).catch(error => {
+            log(`❌ Fetch no funciona: ${error.message}`);
+        });
+    </script>
+</body>
+</html>
