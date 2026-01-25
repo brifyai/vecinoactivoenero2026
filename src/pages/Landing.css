@@ -192,17 +192,6 @@
   z-index: 1;
 }
 
-/* En desktop: mapa a la izquierda, contenido a la derecha */
-@media (min-width: 769px) {
-  .hero-content {
-    order: 2; /* Contenido va a la derecha */
-  }
-  
-  .hero-visual {
-    order: 1; /* Mapa va a la izquierda */
-  }
-}
-
 .hero-content {
   display: flex;
   flex-direction: column;

@@ -55,9 +55,15 @@ const NeighborhoodMap = () => {
   // Redimensionar el mapa cuando cambia el estado del sidebar
   useEffect(() => {
     if (mapInstance) {
-      setTimeout(() => {
-        mapInstance.invalidateSize();
+      const timer = setTimeout(() => {
+        try {
+          mapInstance.invalidateSize();
+        } catch (error) {
+          console.warn('Error al redimensionar mapa:', error);
+        }
       }, 300);
+      
+      return () => clearTimeout(timer);
     }
   }, [isRightSidebarCollapsed, mapInstance]);
 
