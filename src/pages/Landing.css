@@ -192,6 +192,17 @@
   z-index: 1;
 }
 
+/* En desktop: mapa a la izquierda, contenido a la derecha */
+@media (min-width: 769px) {
+  .hero-content {
+    order: 2; /* Contenido va a la derecha */
+  }
+  
+  .hero-visual {
+    order: 1; /* Mapa va a la izquierda */
+  }
+}
+
 .hero-content {
   display: flex;
   flex-direction: column;
@@ -1777,10 +1788,17 @@
 
   .logo {
     font-size: 24px;
+    display: flex; /* Asegurar que el logo sea visible en móvil */
+    align-items: center;
+    gap: 12px;
   }
 
   .logo-icon {
     font-size: 28px;
+  }
+
+  .logo-text {
+    display: block; /* Asegurar que el texto del logo sea visible */
   }
 
   .header-nav {
@@ -1809,6 +1827,15 @@
     grid-template-columns: 1fr;
     gap: 40px;
     text-align: center;
+  }
+
+  /* En móvil: mantener orden original (contenido arriba, mapa abajo) */
+  .hero-content {
+    order: 1;
+  }
+  
+  .hero-visual {
+    order: 2;
   }
 
   .hero-image {
