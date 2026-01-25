@@ -47,6 +47,7 @@ const LandingMap = () => {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [mapInstance, setMapInstance] = useState(null);
   const [searchMode, setSearchMode] = useState('uv'); // 'uv' o 'address'
+  const [searchingAddress, setSearchingAddress] = useState(false);
   const [addressMarker, setAddressMarker] = useState(null);
 
   // Centro por defecto (Chile completo)
