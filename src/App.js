@@ -28,6 +28,10 @@ import { LocalNeedsProvider } from './context/LocalNeedsContext';
 import { CommunityActionsProvider } from './context/CommunityActionsContext';
 import { MessagesProvider } from './context/MessagesContext';
 import { ModerationProvider } from './context/ModerationContext';
+
+// Firebase Initializer
+import FirebaseInitializer from './components/FirebaseInitializer/FirebaseInitializer';
+import FirebaseTest from './components/FirebaseTest/FirebaseTest';
 import { NeighborhoodExpansionProvider } from './context/NeighborhoodExpansionContext';
 import Layout from './components/Layout/Layout';
 import AppInitializer from './components/AppInitializer/AppInitializer';
@@ -127,10 +131,20 @@ function App() {
             </ProtectedRoute>
           } />
           
+          {/* Ruta de prueba para Firebase */}
+          <Route path="/firebase-test" element={
+            <ProtectedRoute>
+              <FirebaseInitializer>
+                <FirebaseTest />
+              </FirebaseInitializer>
+            </ProtectedRoute>
+          } />
+          
           {/* Rutas protegidas de la aplicación */}
           <Route path="/app/*" element={
             <ProtectedRoute>
-              <AppProvider>
+              <FirebaseInitializer>
+                <AppProvider>
                 <SearchProvider>
                   <ChatProvider>
                     <SidebarProvider>
@@ -218,6 +232,7 @@ function App() {
                   </ChatProvider>
                 </SearchProvider>
               </AppProvider>
+              </FirebaseInitializer>
             </ProtectedRoute>
           } />
         </Routes>

@@ -6,7 +6,7 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import './NotificationsCenter.css';
 
 const NotificationsCenter = ({ isOpen, onClose }) => {
-  const { notifications, markAsRead, markAllAsRead, deleteNotification, clearAll } = useNotifications();
+  const { notifications, markAsRead, markAllAsRead, deleteNotification } = useNotifications();
   const navigate = useNavigate();
 
   if (!isOpen) return null;
@@ -45,8 +45,8 @@ const NotificationsCenter = ({ isOpen, onClose }) => {
               </button>
               <button
                 className="action-btn"
-                onClick={clearAll}
-                title="Limpiar todas"
+                onClick={markAllAsRead}
+                title="Marcar todas como leídas"
               >
                 <DeleteIcon fontSize="small" />
               </button>

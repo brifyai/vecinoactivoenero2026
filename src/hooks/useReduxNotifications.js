@@ -11,7 +11,6 @@ import {
   markAsRead,
   markAllAsRead,
   deleteNotification,
-  clearAll,
   clearError
 } from '../store/slices/notificationsSlice';
 import {
@@ -71,17 +70,8 @@ export const useReduxNotifications = (options = {}) => {
   };
 
   const handleDeleteNotification = async (notificationId) => {
-    const result = await dispatch(deleteNotification({ notificationId, userId: user?.id }));
+    const result = await dispatch(deleteNotification(notificationId));
     if (deleteNotification.fulfilled.match(result)) {
-      return { success: true };
-    } else {
-      return { success: false, error: result.error.message };
-    }
-  };
-
-  const handleClearAll = async () => {
-    const result = await dispatch(clearAll(user?.id));
-    if (clearAll.fulfilled.match(result)) {
       return { success: true };
     } else {
       return { success: false, error: result.error.message };
@@ -110,7 +100,6 @@ export const useReduxNotifications = (options = {}) => {
     markAsRead: handleMarkAsRead,
     markAllAsRead: handleMarkAllAsRead,
     deleteNotification: handleDeleteNotification,
-    clearAll: handleClearAll,
     clearError: handleClearError,
     refresh
   };

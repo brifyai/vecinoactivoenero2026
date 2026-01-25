@@ -1,12 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import supabaseNotificationsService from '../../services/supabaseNotificationsService';
+import firebaseNotificationsService from '../../services/firebaseNotificationsService';
 
-// Thunks asíncronos
+// Thunks asíncronos - Usando Firebase para tiempo real
+export const initializeNotifications = createAsyncThunk(
+  'notifications/initialize',
+  async (userId, { rejectWithValue }) => {
+    try {
+      // Inicializar servicio de notificaciones Firebase
+      const token = await firebaseNotificationsService.initialize(userId);
+      return { userId, token };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const loadNotifications = createAsyncThunk(
   'notifications/load',
-  async ({ userId, limit = 50, offset = 0 }, { rejectWithValue }) => {
+  async ({ userId, limit = 50 }, { rejectWithValue }) => {
     try {
-      const notifications = await supabaseNotificationsService.getNotifications(userId, limit, offset);
+      const notifications = await firebaseNotificationsService.getNotifications(userId, limit);
       return notifications;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -18,9 +31,8 @@ export const createNotification = createAsyncThunk(
   'notifications/create',
   async (notificationData, { rejectWithValue }) => {
     try {
-      // This is typically called by other services, not directly
-      // But keeping for compatibility
-      return notificationData;
+      const notification = await firebaseNotificationsService.createNotification(notificationData);
+      return notification;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -29,9 +41,9 @@ export const createNotification = createAsyncThunk(
 
 export const markAsRead = createAsyncThunk(
   'notifications/markAsRead',
-  async ({ notificationId, userId }, { rejectWithValue }) => {
+  async (notificationId, { rejectWithValue }) => {
     try {
-      await supabaseNotificationsService.markAsRead(notificationId, userId);
+      await firebaseNotificationsService.markAsRead(notificationId);
       return notificationId;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -43,7 +55,7 @@ export const markAllAsRead = createAsyncThunk(
   'notifications/markAllAsRead',
   async (userId, { rejectWithValue }) => {
     try {
-      await supabaseNotificationsService.markAllAsRead(userId);
+      await firebaseNotificationsService.markAllAsRead(userId);
       return true;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -53,9 +65,9 @@ export const markAllAsRead = createAsyncThunk(
 
 export const deleteNotification = createAsyncThunk(
   'notifications/delete',
-  async ({ notificationId, userId }, { rejectWithValue }) => {
+  async (notificationId, { rejectWithValue }) => {
     try {
-      await supabaseNotificationsService.deleteNotification(notificationId, userId);
+      await firebaseNotificationsService.deleteNotification(notificationId);
       return notificationId;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -63,12 +75,12 @@ export const deleteNotification = createAsyncThunk(
   }
 );
 
-export const clearAll = createAsyncThunk(
-  'notifications/clearAll',
+export const getUnreadCount = createAsyncThunk(
+  'notifications/getUnreadCount',
   async (userId, { rejectWithValue }) => {
     try {
-      await supabaseNotificationsService.clearAll(userId);
-      return true;
+      const count = await firebaseNotificationsService.getUnreadCount(userId);
+      return count;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -83,58 +95,41 @@ const notificationsSlice = createSlice({
     loading: false,
     error: null,
     unreadCount: 0,
-    subscription: null
+    subscription: null,
+    fcmToken: null,
+    initialized: false
   },
   reducers: {
     clearError: (state) => {
       state.error = null;
     },
-    addNotification: (state, action) => {
-      // Para real-time: agregar nueva notificación
-      const exists = state.items.find(n => n.id === action.payload.id);
-      if (!exists) {
-        state.items.unshift(action.payload);
-        if (!action.payload.read) {
-          state.unreadCount += 1;
-        }
-      }
+    
+    // Acciones para tiempo real con Firebase
+    setNotificationsFromRealtime: (state, action) => {
+      state.items = action.payload;
+      state.unreadCount = action.payload.filter(n => !n.read).length;
     },
-    addNewNotification: (state, action) => {
-      // Para real-time updates
-      state.items.unshift(action.payload);
-      if (!action.payload.read) {
-        state.unreadCount += 1;
-      }
-    },
-    removeNotification: (state, action) => {
-      // Para real-time: eliminar notificación
-      const notification = state.items.find(n => n.id === action.payload);
-      if (notification && !notification.read) {
-        state.unreadCount = Math.max(0, state.unreadCount - 1);
-      }
-      state.items = state.items.filter(n => n.id !== action.payload);
-    },
-    setSubscription: (state, action) => {
-      state.subscription = action.payload;
-    },
-    // Acciones específicas para real-time polling
+    
     addNotificationFromRealtime: (state, action) => {
-      const exists = state.items.find(n => n.id === action.payload.id);
+      const notification = action.payload;
+      const exists = state.items.find(n => n.id === notification.id);
       if (!exists) {
-        state.items.unshift(action.payload);
-        if (!action.payload.read) {
+        state.items.unshift(notification);
+        if (!notification.read) {
           state.unreadCount += 1;
         }
       }
     },
+    
     updateNotificationFromRealtime: (state, action) => {
-      const index = state.items.findIndex(n => n.id === action.payload.id);
+      const notification = action.payload;
+      const index = state.items.findIndex(n => n.id === notification.id);
       if (index !== -1) {
         const oldNotification = state.items[index];
         const wasUnread = !oldNotification.read;
-        const isNowRead = action.payload.read;
+        const isNowRead = notification.read;
         
-        state.items[index] = { ...oldNotification, ...action.payload };
+        state.items[index] = { ...oldNotification, ...notification };
         
         // Actualizar contador si cambió el estado de lectura
         if (wasUnread && isNowRead) {
@@ -144,16 +139,63 @@ const notificationsSlice = createSlice({
         }
       }
     },
+    
     removeNotificationFromRealtime: (state, action) => {
-      const notification = state.items.find(n => n.id === action.payload);
+      const notificationId = action.payload;
+      const notification = state.items.find(n => n.id === notificationId);
       if (notification && !notification.read) {
         state.unreadCount = Math.max(0, state.unreadCount - 1);
       }
-      state.items = state.items.filter(n => n.id !== action.payload);
+      state.items = state.items.filter(n => n.id !== notificationId);
+    },
+    
+    setSubscription: (state, action) => {
+      state.subscription = action.payload;
+    },
+    
+    setFCMToken: (state, action) => {
+      state.fcmToken = action.payload;
+    },
+    
+    setInitialized: (state, action) => {
+      state.initialized = action.payload;
+    },
+    
+    updateUnreadCount: (state, action) => {
+      state.unreadCount = action.payload;
+    },
+    
+    // Acciones específicas para notificaciones push
+    handleForegroundNotification: (state, action) => {
+      // Manejar notificación recibida en foreground
+      const notification = action.payload;
+      // Agregar a la lista si no existe
+      const exists = state.items.find(n => n.id === notification.id);
+      if (!exists && notification.id) {
+        state.items.unshift(notification);
+        if (!notification.read) {
+          state.unreadCount += 1;
+        }
+      }
     }
   },
   extraReducers: (builder) => {
     builder
+      // Initialize notifications
+      .addCase(initializeNotifications.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(initializeNotifications.fulfilled, (state, action) => {
+        state.loading = false;
+        state.fcmToken = action.payload.token;
+        state.initialized = true;
+      })
+      .addCase(initializeNotifications.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
       // Load notifications
       .addCase(loadNotifications.pending, (state) => {
         state.loading = true;
@@ -168,52 +210,44 @@ const notificationsSlice = createSlice({
         state.error = action.payload;
         state.loading = false;
       })
+      
       // Create notification
       .addCase(createNotification.fulfilled, (state, action) => {
-        state.items.unshift(action.payload);
-        if (!action.payload.read) {
-          state.unreadCount += 1;
-        }
+        // La notificación se agregará automáticamente via realtime listener
       })
+      
       // Mark as read
       .addCase(markAsRead.fulfilled, (state, action) => {
-        const notification = state.items.find(n => n.id === action.payload);
-        if (notification && !notification.read) {
-          notification.read = true;
-          state.unreadCount = Math.max(0, state.unreadCount - 1);
-        }
+        // Los cambios se reflejarán via realtime listeners
       })
+      
       // Mark all as read
       .addCase(markAllAsRead.fulfilled, (state) => {
-        state.items.forEach(n => {
-          n.read = true;
-        });
-        state.unreadCount = 0;
+        // Los cambios se reflejarán via realtime listeners
       })
+      
       // Delete notification
       .addCase(deleteNotification.fulfilled, (state, action) => {
-        const notification = state.items.find(n => n.id === action.payload);
-        if (notification && !notification.read) {
-          state.unreadCount = Math.max(0, state.unreadCount - 1);
-        }
-        state.items = state.items.filter(n => n.id !== action.payload);
+        // La notificación se eliminará automáticamente via realtime listener
       })
-      // Clear all notifications
-      .addCase(clearAll.fulfilled, (state) => {
-        state.items = [];
-        state.unreadCount = 0;
+      
+      // Get unread count
+      .addCase(getUnreadCount.fulfilled, (state, action) => {
+        state.unreadCount = action.payload;
       });
   }
 });
 
 export const { 
-  clearError, 
-  addNotification, 
-  addNewNotification, 
-  removeNotification, 
-  setSubscription,
+  clearError,
+  setNotificationsFromRealtime,
   addNotificationFromRealtime,
   updateNotificationFromRealtime,
-  removeNotificationFromRealtime
+  removeNotificationFromRealtime,
+  setSubscription,
+  setFCMToken,
+  setInitialized,
+  updateUnreadCount,
+  handleForegroundNotification
 } = notificationsSlice.actions;
 export default notificationsSlice.reducer;
