@@ -1,4 +1,10 @@
+// =====================================================
+// HOOK REDUX POSTS SIN POLLING
+// Hook limpio para manejo de posts sin polling destructivo
+// =====================================================
+
 import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import {
   loadPosts,
   createPost,
@@ -11,21 +17,28 @@ import {
 import {
   selectAllPosts,
   selectPostsLoading,
-  selectPostsError,
-  selectUserPosts,
-  selectPostsByCategory
+  selectPostsError
 } from '../store/selectors/postsSelectors';
 
 /**
- * Hook personalizado que replica la API de usePosts() pero usa Redux
+ * Hook Redux para posts SIN polling
+ * Carga datos una vez y permite operaciones CRUD
  */
-export const useReduxPosts = () => {
+export const useReduxPosts = (options = {}) => {
   const dispatch = useDispatch();
   
   const posts = useSelector(selectAllPosts);
   const loading = useSelector(selectPostsLoading);
   const error = useSelector(selectPostsError);
 
+  // Cargar posts iniciales si no hay datos
+  useEffect(() => {
+    if (posts.length === 0 && !loading) {
+      dispatch(loadPosts());
+    }
+  }, [dispatch, posts.length, loading]);
+
+  // Funciones de manejo de posts
   const handleCreatePost = async (postData) => {
     const result = await dispatch(createPost(postData));
     if (createPost.fulfilled.match(result)) {
@@ -71,34 +84,29 @@ export const useReduxPosts = () => {
     }
   };
 
-  const getUserPosts = (userId) => {
-    // Este método debe ser usado directamente con useSelector en el componente
-    // No podemos llamar hooks dentro de funciones regulares
-    console.warn('getUserPosts debe ser usado con useSelector directamente en el componente');
-    return [];
-  };
-
-  const getPostsByCategory = (category) => {
-    // Este método debe ser usado directamente con useSelector en el componente
-    console.warn('getPostsByCategory debe ser usado con useSelector directamente en el componente');
-    return [];
-  };
-
   const handleClearError = () => {
     dispatch(clearError());
   };
 
+  const refresh = () => {
+    dispatch(loadPosts());
+  };
+
   return {
+    // Datos principales
     posts,
     loading,
     error,
+    
+    // Funciones de manejo
     createPost: handleCreatePost,
     updatePost: handleUpdatePost,
     deletePost: handleDeletePost,
     addReaction: handleAddReaction,
     addComment: handleAddComment,
-    getUserPosts,
-    getPostsByCategory,
-    clearError: handleClearError
+    clearError: handleClearError,
+    refresh
   };
 };
+
+export default useReduxPosts;

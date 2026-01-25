@@ -4,14 +4,18 @@
 // =====================================================
 
 import React, { useState } from 'react';
-import { useReduxPostsWithPolling } from '../../hooks/useReduxPostsWithPolling';
-import { useReduxNotificationsWithPolling } from '../../hooks/useReduxNotificationsWithPolling';
+import { useReduxPosts } from '../../hooks/useReduxPosts';
+import { useReduxNotifications } from '../../hooks/useReduxNotifications';
 import { supabase } from '../../config/supabase';
 import './RealtimeStatusIndicator.css';
 
 const RealtimeStatusIndicator = ({ showDetails = false }) => {
-  const { pollingStatus: postsStatus } = useReduxPostsWithPolling();
-  const { pollingStatus: notificationsStatus } = useReduxNotificationsWithPolling();
+  const { loading: postsLoading } = useReduxPosts();
+  const { loading: notificationsLoading } = useReduxNotifications();
+  
+  // Mock polling status for compatibility
+  const postsStatus = { isPolling: false, error: null, interval: 0 };
+  const notificationsStatus = { isPolling: false, error: null, interval: 0 };
   const [isCreatingTest, setIsCreatingTest] = useState(false);
   const [showTestPanel, setShowTestPanel] = useState(false);
 

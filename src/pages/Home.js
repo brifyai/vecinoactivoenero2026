@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useReduxPostsWithPolling as usePosts } from '../hooks/useReduxPostsWithPolling';
+import { useReduxPosts as usePosts } from '../hooks/useReduxPosts';
 import { useSidebar } from '../context/SidebarContext';
 import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
@@ -27,11 +27,7 @@ import CelebrationIcon from '@mui/icons-material/Celebration';
 import './Home.css';
 
 const Home = () => {
-  const { posts, createPost, pollingStatus } = usePosts({
-    enablePolling: true,
-    pollingInterval: 3000,
-    showNotifications: true
-  });
+  const { posts, createPost } = usePosts();
   const { isRightSidebarCollapsed } = useSidebar();
   const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -81,17 +77,6 @@ const Home = () => {
       </div>
 
       <div className="home-center">
-        {/* Indicador de estado del polling */}
-        {pollingStatus.isPolling && (
-          <div className="polling-status">
-            <div className="polling-indicator">
-              <span className="polling-dot"></span>
-              <span className="polling-text">
-                Actualizaciones en tiempo real activas (cada {pollingStatus.interval / 1000}s)
-              </span>
-            </div>
-          </div>
-        )}
 
         {/* Filtro de vecindario */}
         {user?.neighborhoodId && (

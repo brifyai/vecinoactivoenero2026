@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { selectUser } from '../../store/selectors/authSelectors';
-import { useReduxNotificationsWithPolling } from '../../hooks/useReduxNotificationsWithPolling';
+import { useReduxNotifications } from '../../hooks/useReduxNotifications';
 import { useApp } from '../../context/AppContext';
 import { useSidebar } from '../../context/SidebarContext';
 import HomeIcon from '@mui/icons-material/Home';
@@ -27,12 +27,7 @@ import './Header.css';
 const Header = () => {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
-  const { unreadCount, pollingStatus } = useReduxNotificationsWithPolling({
-    enablePolling: true,
-    pollingInterval: 2000,
-    showBrowserNotifications: true,
-    playSound: true
-  });
+  const { unreadCount } = useReduxNotifications();
   const { darkMode, toggleDarkMode, unreadMessagesCount } = useApp();
   const { isMobileSidebarOpen, toggleMobileSidebar } = useSidebar();
   

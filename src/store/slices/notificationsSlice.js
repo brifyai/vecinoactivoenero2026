@@ -63,6 +63,18 @@ export const deleteNotification = createAsyncThunk(
   }
 );
 
+export const clearAll = createAsyncThunk(
+  'notifications/clearAll',
+  async (userId, { rejectWithValue }) => {
+    try {
+      await supabaseNotificationsService.clearAll(userId);
+      return true;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // Slice
 const notificationsSlice = createSlice({
   name: 'notifications',
@@ -185,6 +197,11 @@ const notificationsSlice = createSlice({
           state.unreadCount = Math.max(0, state.unreadCount - 1);
         }
         state.items = state.items.filter(n => n.id !== action.payload);
+      })
+      // Clear all notifications
+      .addCase(clearAll.fulfilled, (state) => {
+        state.items = [];
+        state.unreadCount = 0;
       });
   }
 });

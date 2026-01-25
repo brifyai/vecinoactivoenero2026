@@ -57,6 +57,24 @@ class SupabaseNotificationsService {
     return data;
   }
 
+  async deleteNotification(notificationId) {
+    const { error } = await supabase
+      .from('notifications')
+      .delete()
+      .eq('id', notificationId);
+    if (error) throw error;
+    return true;
+  }
+
+  async clearAll(userId) {
+    const { error } = await supabase
+      .from('notifications')
+      .delete()
+      .eq('user_id', userId);
+    if (error) throw error;
+    return true;
+  }
+
   subscribeToNotifications(userId, callback) {
     return supabase
       .channel(`notifications:${userId}`)
