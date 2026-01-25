@@ -434,40 +434,6 @@ const LandingMap = () => {
         </div>
       </div>
 
-      {/* Indicador de zoom para UVs */}
-      {currentZoom < MIN_ZOOM_FOR_UVS && (
-        <div className="zoom-indicator">
-          <div className="zoom-message">
-            🔍 <strong>Haz zoom para ver las unidades vecinales</strong>
-            <br />
-            <span className="zoom-detail">
-              Zoom actual: {currentZoom} | Requerido: {MIN_ZOOM_FOR_UVS}+
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* Debug info */}
-      {process.env.NODE_ENV === 'development' && (
-        <div style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          background: 'rgba(0,0,0,0.8)',
-          color: 'white',
-          padding: '10px',
-          borderRadius: '5px',
-          fontSize: '12px',
-          zIndex: 1000
-        }}>
-          <div>Zoom: {currentZoom}</div>
-          <div>Min Zoom: {MIN_ZOOM_FOR_UVS}</div>
-          <div>Data: {neighborhoodsData ? `${neighborhoodsData.features?.length || 0} features` : 'No data'}</div>
-          <div>Show: {showNeighborhoods ? 'Yes' : 'No'}</div>
-          <div>Render: {showNeighborhoods && neighborhoodsData && currentZoom >= MIN_ZOOM_FOR_UVS ? 'Yes' : 'No'}</div>
-        </div>
-      )}
-
       {/* Mapa */}
       <div className="landing-map-wrapper">
         {loading && (
