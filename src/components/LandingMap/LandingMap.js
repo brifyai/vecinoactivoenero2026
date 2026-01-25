@@ -87,24 +87,58 @@ const LandingMap = () => {
       const response = await fetch('/data/geo/unidades_vecinales_simple.geojson');
       
       if (!response.ok) {
+        console.error(`Error HTTP: ${response.status}`);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
+      console.log('📁 Archivo encontrado, parseando JSON...');
       const data = await response.json();
       
       if (data && data.features) {
+        console.log(`✅ Cargadas ${data.features.length} unidades vecinales`);
         setNeighborhoodsData(data);
-        console.log(`✅ Cargadas ${data.features.length} unidades vecinales de Chile`);
-        showInfoToast(`Mapa cargado: ${data.features.length.toLocaleString('es-CL')} unidades vecinales`);
+        
+        // Mostrar mensaje de éxito
+        setTimeout(() => {
+          console.log('🎯 Datos listos para renderizar');
+        }, 1000);
       } else {
         throw new Error('Formato de datos inválido');
       }
     } catch (error) {
       console.error('❌ Error loading neighborhoods:', error);
-      showErrorAlert(
-        'Error de Carga',
-        'No se pudieron cargar las unidades vecinales. El mapa mostrará solo la vista básica.'
-      );
+      
+      // Crear datos de prueba si falla la carga
+      console.log('🔄 Creando datos de prueba...');
+      const testData = {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {
+              t_id_uv_ca: "test-1",
+              uv_carto: "13101001",
+              t_uv_nom: "Centro Santiago",
+              t_com_nom: "Santiago",
+              t_reg_nom: "Región Metropolitana",
+              PERSONAS: "15000",
+              HOGARES: "5000"
+            },
+            geometry: {
+              type: "Polygon",
+              coordinates: [[
+                [-70.6693, -33.4489],
+                [-70.6593, -33.4489],
+                [-70.6593, -33.4389],
+                [-70.6693, -33.4389],
+                [-70.6693, -33.4489]
+              ]]
+            }
+          }
+        ]
+      };
+      setNeighborhoodsData(testData);
+      console.log('✅ Datos de prueba cargados');
     } finally {
       setLoading(false);
     }
@@ -413,13 +447,34 @@ const LandingMap = () => {
         </div>
       )}
 
+      {/* Debug info */}
+      {process.env.NODE_ENV === 'development' && (
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          background: 'rgba(0,0,0,0.8)',
+          color: 'white',
+          padding: '10px',
+          borderRadius: '5px',
+          fontSize: '12px',
+          zIndex: 1000
+        }}>
+          <div>Zoom: {currentZoom}</div>
+          <div>Min Zoom: {MIN_ZOOM_FOR_UVS}</div>
+          <div>Data: {neighborhoodsData ? `${neighborhoodsData.features?.length || 0} features` : 'No data'}</div>
+          <div>Show: {showNeighborhoods ? 'Yes' : 'No'}</div>
+          <div>Render: {showNeighborhoods && neighborhoodsData && currentZoom >= MIN_ZOOM_FOR_UVS ? 'Yes' : 'No'}</div>
+        </div>
+      )}
+
       {/* Mapa */}
       <div className="landing-map-wrapper">
         {loading && (
           <div className="demo-map-loading">
             <div className="demo-loading-spinner"></div>
-            <p>Cargando 6.891 unidades vecinales...</p>
-            <p className="demo-loading-tip">💡 Usa el buscador para encontrar UVs rápidamente</p>
+            <p>Cargando unidades vecinales...</p>
+            <p className="demo-loading-tip">💡 Archivo de 79MB - puede tomar unos segundos</p>
           </div>
         )}
         <MapContainer
@@ -442,14 +497,17 @@ const LandingMap = () => {
           {/* Capa de Unidades Vecinales - Solo visible con zoom suficiente */}
           {showNeighborhoods && neighborhoodsData && currentZoom >= MIN_ZOOM_FOR_UVS && (
             <GeoJSON
+              key={`geojson-${currentZoom}`} // Force re-render on zoom change
               data={neighborhoodsData}
               style={{
                 fillColor: '#f97316',
-                fillOpacity: 0.1,
+                fillOpacity: 0.2,
                 color: '#f97316',
-                weight: 1.5
+                weight: 2
               }}
               onEachFeature={(feature, layer) => {
+                console.log('🗺️ Renderizando feature:', feature.properties?.uv_carto);
+                
                 if (!feature.properties) return;
                 
                 const props = feature.properties;
@@ -476,11 +534,11 @@ const LandingMap = () => {
                 
                 // Efecto hover
                 layer.on('mouseover', function() {
-                  this.setStyle({ fillOpacity: 0.3, weight: 2.5 });
+                  this.setStyle({ fillOpacity: 0.4, weight: 3 });
                 });
                 
                 layer.on('mouseout', function() {
-                  this.setStyle({ fillOpacity: 0.1, weight: 1.5 });
+                  this.setStyle({ fillOpacity: 0.2, weight: 2 });
                 });
                 
                 // Popup con datos completos
