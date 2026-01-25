@@ -73,6 +73,7 @@ import Feed from './pages/Feed/Feed';
 import DirectMessages from './pages/DirectMessages/DirectMessages';
 import StorageTest from './components/StorageTest/StorageTest';
 import DiagnosticPage from './pages/DiagnosticPage';
+import WebSocketDiagnostic from './components/WebSocketDiagnostic/WebSocketDiagnostic';
 import './App.css';
 
 // Componente para rutas protegidas
@@ -115,6 +116,9 @@ function App() {
           
           {/* Ruta de diagnóstico - accesible sin login */}
           <Route path="/diagnostico" element={<DiagnosticPage />} />
+          
+          {/* Ruta de diagnóstico WebSocket - accesible sin login */}
+          <Route path="/websocket-test" element={<WebSocketDiagnostic />} />
           
           {/* Ruta de prueba para Storage */}
           <Route path="/storage-test" element={
