@@ -27,13 +27,28 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// Componente para capturar la instancia del mapa
-const MapInstanceCapture = ({ setMapInstance }) => {
+// Componente para capturar la instancia del mapa y eventos de zoom
+const MapInstanceCapture = ({ setMapInstance, setCurrentZoom }) => {
   const map = useMap();
   
   useEffect(() => {
     setMapInstance(map);
-  }, [map, setMapInstance]);
+    
+    // Capturar zoom inicial
+    setCurrentZoom(map.getZoom());
+    
+    // Escuchar cambios de zoom
+    const handleZoomEnd = () => {
+      setCurrentZoom(map.getZoom());
+    };
+    
+    map.on('zoomend', handleZoomEnd);
+    
+    // Cleanup
+    return () => {
+      map.off('zoomend', handleZoomEnd);
+    };
+  }, [map, setMapInstance, setCurrentZoom]);
   
   return null;
 };
@@ -49,6 +64,10 @@ const LandingMap = () => {
   const [searchMode, setSearchMode] = useState('uv'); // 'uv' o 'address'
   const [searchingAddress, setSearchingAddress] = useState(false);
   const [addressMarker, setAddressMarker] = useState(null);
+  const [currentZoom, setCurrentZoom] = useState(5); // Zoom actual del mapa
+
+  // Configuración de zoom para mostrar UVs
+  const MIN_ZOOM_FOR_UVS = 10; // Solo mostrar UVs cuando zoom >= 10
 
   // Centro por defecto (Chile completo)
   const defaultCenter = [-38.7359, -71.4394];
@@ -186,8 +205,9 @@ const LandingMap = () => {
             result: result
           });
 
-          // Hacer zoom a la ubicación
-          mapInstance?.setView([lat, lon], 16);
+          // Hacer zoom a la ubicación (suficiente para ver UVs si están disponibles)
+          const targetZoom = Math.max(MIN_ZOOM_FOR_UVS + 2, 16);
+          mapInstance?.setView([lat, lon], targetZoom);
           
           showSuccessAlert(
             '¡Dirección Encontrada!',
@@ -239,10 +259,11 @@ const LandingMap = () => {
     const centerLat = sumLat / coords.length;
     const centerLng = sumLng / coords.length;
 
-    // Hacer zoom a la UV
-    mapInstance.setView([centerLat, centerLng], 15);
+    // Hacer zoom a nivel suficiente para ver las UVs (mínimo 15)
+    const targetZoom = Math.max(MIN_ZOOM_FOR_UVS + 5, 15);
+    mapInstance.setView([centerLat, centerLng], targetZoom);
 
-    // Abrir popup (simulando click en el polígono)
+    // Abrir popup después de que se carguen las UVs
     setTimeout(() => {
       const layers = mapInstance._layers;
       Object.values(layers).forEach(layer => {
@@ -250,7 +271,7 @@ const LandingMap = () => {
           layer.openPopup();
         }
       });
-    }, 500);
+    }, 800); // Más tiempo para que se rendericen las UVs
   };
 
   // Limpiar búsqueda
@@ -379,6 +400,19 @@ const LandingMap = () => {
         </div>
       </div>
 
+      {/* Indicador de zoom para UVs */}
+      {currentZoom < MIN_ZOOM_FOR_UVS && (
+        <div className="zoom-indicator">
+          <div className="zoom-message">
+            🔍 <strong>Haz zoom para ver las unidades vecinales</strong>
+            <br />
+            <span className="zoom-detail">
+              Zoom actual: {currentZoom} | Requerido: {MIN_ZOOM_FOR_UVS}+
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Mapa */}
       <div className="landing-map-wrapper">
         {loading && (
@@ -402,11 +436,11 @@ const LandingMap = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          {/* Capturar instancia del mapa */}
-          <MapInstanceCapture setMapInstance={setMapInstance} />
+          {/* Capturar instancia del mapa y zoom */}
+          <MapInstanceCapture setMapInstance={setMapInstance} setCurrentZoom={setCurrentZoom} />
 
-          {/* Capa de Unidades Vecinales */}
-          {showNeighborhoods && neighborhoodsData && (
+          {/* Capa de Unidades Vecinales - Solo visible con zoom suficiente */}
+          {showNeighborhoods && neighborhoodsData && currentZoom >= MIN_ZOOM_FOR_UVS && (
             <GeoJSON
               data={neighborhoodsData}
               style={{
