@@ -52,6 +52,10 @@ import Events from './pages/Events';
 import Groups from './pages/Groups';
 import ForgotPassword from './pages/ForgotPassword';
 import Login from './pages/Login';
+import VecinosLogin from './pages/VecinosLogin';
+import AdminLogin from './pages/AdminLogin';
+import UserTypeSelection from './pages/UserTypeSelection';
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import Register from './pages/Register';
 import RegisterSimple from './pages/RegisterSimple';
 import NeighborhoodMap from './pages/NeighborhoodMap/NeighborhoodMap';
@@ -111,7 +115,9 @@ function App() {
             <Routes>
             {/* Rutas públicas */}
             <Route path="/" element={<Landing />} />
-            <Route path="/iniciar-sesion" element={<Login />} />
+            <Route path="/iniciar-sesion" element={<UserTypeSelection />} />
+            <Route path="/iniciar-sesion-vecinos" element={<VecinosLogin />} />
+            <Route path="/iniciar-sesion-admin" element={<AdminLogin />} />
           <Route path="/registrarse" element={
             <NeighborhoodProvider>
               <Register />
@@ -139,6 +145,13 @@ function App() {
               <FirebaseInitializer>
                 <FirebaseTest />
               </FirebaseInitializer>
+            </ProtectedRoute>
+          } />
+          
+          {/* Rutas del Admin Dashboard */}
+          <Route path="/admin/dashboard/*" element={
+            <ProtectedRoute>
+              <AdminDashboard />
             </ProtectedRoute>
           } />
           

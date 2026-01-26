@@ -4,6 +4,7 @@ import { useSidebar } from '../../context/SidebarContext';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
 import RightSidebar from '../RightSidebar/RightSidebar';
+import EmergencyButton from '../EmergencyButton/EmergencyButton';
 import './Layout.css';
 
 const Layout = ({ children }) => {
@@ -28,6 +29,9 @@ const Layout = ({ children }) => {
         </main>
         {!isFullWidth && !hideRightSidebar && <RightSidebar />}
       </div>
+      
+      {/* Botón de emergencia - solo en móvil */}
+      <EmergencyButton />
     </div>
   );
 };

@@ -38,30 +38,36 @@ const DiscoverNeighbors = () => {
     performanceMonitor.start('filter-neighbors');
     console.log('🔄 Filtering neighbors for user:', currentUser.username);
     
-    const neighborList = allUsers.filter(u => {
-      if (u.id === currentUser.id) return false;
-      
-      // Try multiple neighborhood matching strategies
-      if (currentUser.neighborhoodId && u.neighborhoodId) {
-        return u.neighborhoodId === currentUser.neighborhoodId;
-      }
-      
-      if (currentUser.neighborhoodName && u.neighborhoodName) {
-        return u.neighborhoodName === currentUser.neighborhoodName;
-      }
-      
-      if (currentUser.neighborhoodCode && u.neighborhoodCode) {
-        return u.neighborhoodCode === currentUser.neighborhoodCode;
-      }
-      
-      // If no neighborhood info, include all users except current
-      return true;
-    });
+    try {
+      const neighborList = allUsers.filter(u => {
+        if (u.id === currentUser.id) return false;
+        
+        // Try multiple neighborhood matching strategies
+        if (currentUser.neighborhoodId && u.neighborhoodId) {
+          return u.neighborhoodId === currentUser.neighborhoodId;
+        }
+        
+        if (currentUser.neighborhoodName && u.neighborhoodName) {
+          return u.neighborhoodName === currentUser.neighborhoodName;
+        }
+        
+        if (currentUser.neighborhoodCode && u.neighborhoodCode) {
+          return u.neighborhoodCode === currentUser.neighborhoodCode;
+        }
+        
+        // If no neighborhood info, include all users except current
+        return true;
+      });
 
-    const sortedNeighbors = neighborList.sort((a, b) => a.name.localeCompare(b.name));
-    performanceMonitor.end('filter-neighbors');
-    
-    return sortedNeighbors;
+      const sortedNeighbors = neighborList.sort((a, b) => a.name.localeCompare(b.name));
+      performanceMonitor.end('filter-neighbors');
+      
+      return sortedNeighbors;
+    } catch (error) {
+      console.error('Error filtering neighbors:', error);
+      performanceMonitor.end('filter-neighbors');
+      return [];
+    }
   }, [currentUser, allUsers]);
 
   // Memoize friends IDs for faster filtering

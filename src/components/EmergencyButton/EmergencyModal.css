@@ -1,0 +1,347 @@
+.emergency-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.emergency-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+}
+
+.emergency-modal-header {
+  background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+  color: white;
+  padding: 24px;
+  border-radius: 16px 16px 0 0;
+  text-align: center;
+}
+
+.emergency-modal-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.emergency-modal-header p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.emergency-modal-content {
+  padding: 24px;
+}
+
+.emergency-info {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-icon {
+  color: #667eea;
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.info-item span {
+  font-size: 14px;
+  color: #333;
+}
+
+.anonymity-section {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.anonymity-toggle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.anonymity-toggle input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.toggle-label:hover {
+  color: #667eea;
+}
+
+.toggle-icon {
+  margin-right: 8px;
+  font-size: 20px;
+  color: #667eea;
+}
+
+.anonymity-toggle input[type="checkbox"]:checked + .toggle-label .toggle-icon {
+  color: #e17055;
+}
+
+.anonymity-description {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.message-section {
+  margin-bottom: 20px;
+}
+
+.message-section label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.message-section textarea {
+  width: 100%;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.message-section textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.message-section textarea:disabled {
+  background: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.character-count {
+  text-align: right;
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+.media-preview {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.media-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.media-preview-header span {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.remove-media-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.remove-media-btn:hover:not(:disabled) {
+  background: #c82333;
+}
+
+.remove-media-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.media-preview-image,
+.media-preview-video {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.emergency-modal-actions {
+  display: flex;
+  gap: 12px;
+  padding: 24px;
+  border-top: 1px solid #e9ecef;
+}
+
+.emergency-cancel-btn,
+.emergency-send-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.emergency-cancel-btn {
+  background: #6c757d;
+  color: white;
+}
+
+.emergency-cancel-btn:hover:not(:disabled) {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.emergency-send-btn {
+  background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+}
+
+.emergency-send-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ff3333 0%, #bb0000 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 68, 68, 0.4);
+}
+
+.emergency-cancel-btn:disabled,
+.emergency-send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .emergency-modal-overlay {
+    padding: 10px;
+  }
+  
+  .emergency-modal {
+    max-height: 95vh;
+  }
+  
+  .emergency-modal-header {
+    padding: 20px;
+  }
+  
+  .emergency-modal-header h2 {
+    font-size: 20px;
+  }
+  
+  .emergency-modal-content {
+    padding: 20px;
+  }
+  
+  .emergency-modal-actions {
+    padding: 20px;
+    flex-direction: column;
+  }
+  
+  .emergency-cancel-btn,
+  .emergency-send-btn {
+    padding: 16px 20px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .emergency-modal-overlay,
+  .emergency-modal {
+    animation: none;
+  }
+  
+  .loading-spinner {
+    animation: none;
+  }
+}

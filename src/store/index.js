@@ -39,6 +39,14 @@ import gamificationReducer from './slices/gamificationSlice';
 import connectionsReducer from './slices/connectionsSlice';
 import appReducer from './slices/appSlice';
 
+// Nuevos reducers para Admin Dashboard
+import adminDashboardReducer from './slices/adminDashboardSlice';
+import ticketsReducer from './slices/ticketsSlice';
+import campaignsReducer from './slices/campaignsSlice';
+
+// Emergency reducer
+import emergencyReducer from './slices/emergencySlice';
+
 // Configuración de persistencia
 const persistConfig = {
   key: 'vecino-activo-root',
@@ -74,7 +82,15 @@ const rootReducer = {
   services: servicesReducer,
   gamification: gamificationReducer,
   connections: connectionsReducer,
-  app: appReducer
+  app: appReducer,
+  
+  // Nuevos reducers para Admin Dashboard
+  adminDashboard: adminDashboardReducer,
+  tickets: ticketsReducer,
+  campaigns: campaignsReducer,
+  
+  // Emergency reducer
+  emergency: emergencyReducer
 };
 
 // Aplicar persistencia al rootReducer completo

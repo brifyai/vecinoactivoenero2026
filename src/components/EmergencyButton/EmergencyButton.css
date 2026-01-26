@@ -1,0 +1,138 @@
+.emergency-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 25px rgba(255, 68, 68, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.emergency-button:active {
+  transform: scale(0.95);
+}
+
+.emergency-button.pressing {
+  animation: emergencyPulse 0.5s infinite;
+  box-shadow: 0 0 30px rgba(255, 68, 68, 0.8);
+  transform: scale(1.05);
+}
+
+@keyframes emergencyPulse {
+  0%, 100% { 
+    transform: scale(1.05); 
+    box-shadow: 0 0 30px rgba(255, 68, 68, 0.8);
+  }
+  50% { 
+    transform: scale(1.15); 
+    box-shadow: 0 0 40px rgba(255, 68, 68, 1);
+  }
+}
+
+.emergency-progress {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.emergency-progress.active {
+  opacity: 1;
+  animation: progressSpin 6s linear;
+}
+
+@keyframes progressSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.emergency-text {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.emergency-text::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.8);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .emergency-button {
+    bottom: 15px;
+    right: 15px;
+    width: 60px;
+    height: 60px;
+  }
+  
+  .emergency-progress {
+    top: -4px;
+    left: -4px;
+    width: 68px;
+    height: 68px;
+  }
+  
+  .emergency-text {
+    font-size: 11px;
+    padding: 6px 10px;
+    top: -55px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .emergency-button.pressing {
+    animation: none;
+  }
+  
+  .emergency-progress.active {
+    animation: none;
+  }
+  
+  .emergency-text {
+    animation: none;
+  }
+}

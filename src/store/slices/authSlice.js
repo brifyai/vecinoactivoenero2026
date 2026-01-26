@@ -8,12 +8,12 @@ const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
 // Thunks asíncronos
 export const loginUser = createAsyncThunk(
   'auth/login',
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password, userType = 'user' }, { rejectWithValue }) => {
     try {
-      console.log('🚀 Redux authSlice: Intentando login con:', email);
+      console.log('🚀 Redux authSlice: Intentando login con:', email, 'tipo:', userType);
       
       // Usar supabaseAuthService en lugar de storageService
-      const result = await supabaseAuthService.login(email, password);
+      const result = await supabaseAuthService.login(email, password, userType);
       
       if (!result || !result.user) {
         return rejectWithValue('Credenciales inválidas');

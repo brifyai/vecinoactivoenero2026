@@ -29,10 +29,10 @@ export const useReduxAuth = () => {
   const error = useSelector(selectAuthError);
   const sessionExpired = useSelector(selectSessionExpired);
 
-  const login = async (email, password) => {
-    const result = await dispatch(loginUser({ email, password }));
+  const login = async (email, password, userType = 'user') => {
+    const result = await dispatch(loginUser({ email, password, userType }));
     if (loginUser.fulfilled.match(result)) {
-      return { success: true };
+      return { success: true, user: result.payload };
     } else {
       return { success: false, error: result.payload };
     }

@@ -74,12 +74,12 @@ class SupabaseAuthService {
    * Iniciar sesión - DIRECTO A CUSTOM AUTH
    * Ignora completamente Supabase Auth (problemático)
    */
-  async login(email, password) {
+  async login(email, password, userType = 'user') {
     try {
       console.log('🚀 BYPASS COMPLETO - Usando solo custom auth');
       
       // Ir directo a custom auth (no intentar Supabase)
-      return await customAuthService.login(email, password);
+      return await customAuthService.login(email, password, userType);
       
     } catch (error) {
       console.error('❌ Error en login bypass:', error);
