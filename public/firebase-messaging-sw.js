@@ -13,15 +13,19 @@ const firebaseConfig = {
   appId: "1:777409222994:web:4b23f04e44e4a38aca428b"
 };
 
+console.log('🔥 Service Worker: Inicializando Firebase');
+
 // Inicializar Firebase
 firebase.initializeApp(firebaseConfig);
 
 // Obtener instancia de messaging
 const messaging = firebase.messaging();
 
+console.log('✅ Service Worker: Firebase Messaging listo');
+
 // Manejar mensajes en background
 messaging.onBackgroundMessage((payload) => {
-  console.log('Mensaje recibido en background:', payload);
+  console.log('📩 Mensaje recibido en background:', payload);
 
   const notificationTitle = payload.notification?.title || 'Vecino Activo';
   const notificationOptions = {
@@ -30,6 +34,7 @@ messaging.onBackgroundMessage((payload) => {
     badge: '/favicon.ico',
     tag: payload.data?.type || 'general',
     data: payload.data,
+    requireInteraction: false,
     actions: [
       {
         action: 'open',
@@ -42,12 +47,12 @@ messaging.onBackgroundMessage((payload) => {
     ]
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  return self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 // Manejar clicks en notificaciones
 self.addEventListener('notificationclick', (event) => {
-  console.log('Click en notificación:', event);
+  console.log('👆 Click en notificación:', event);
   
   event.notification.close();
 
@@ -81,3 +86,5 @@ self.addEventListener('notificationclick', (event) => {
     })
   );
 });
+
+console.log('✅ Service Worker: Event listeners configurados');

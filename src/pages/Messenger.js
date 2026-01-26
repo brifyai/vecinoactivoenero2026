@@ -46,20 +46,22 @@ const Messenger = () => {
       
       if (existingConv) {
         setActiveConversation(existingConv);
-      } else {
-        // Crear nueva conversación
-        const newConv = createConversation(selectedFriend.id);
-        if (newConv) {
-          setActiveConversation(newConv);
-        }
-      }
-      
-      // Limpiar el state para que no se reprocese
-      if (location.state?.selectedFriend) {
+        // Limpiar el state
         navigate(location.pathname, { replace: true, state: {} });
+      } else {
+        // Crear nueva conversación de forma async
+        const handleCreateConversation = async () => {
+          const newConv = await createConversation(selectedFriend.id);
+          if (newConv) {
+            setActiveConversation(newConv);
+          }
+          // Limpiar el state
+          navigate(location.pathname, { replace: true, state: {} });
+        };
+        handleCreateConversation();
       }
     }
-  }, [location.state, conversations, createConversation, navigate, location.pathname, setActiveConversation]);
+  }, [location.state?.selectedFriend]); // Solo depender de selectedFriend
 
   // Cerrar menú al hacer click fuera
   useEffect(() => {

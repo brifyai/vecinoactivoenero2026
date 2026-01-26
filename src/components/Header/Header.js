@@ -94,7 +94,7 @@ const Header = () => {
         </div>
         
         <div className="header-right">
-          <RealtimeStatusIndicator showDetails={true} />
+          {/* <RealtimeStatusIndicator showDetails={true} /> */}
           
           <button className="icon-btn desktop-only" onClick={() => navigate('/app')}>
             <HomeIcon />
@@ -128,7 +128,8 @@ const Header = () => {
             {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
           </button>
           
-          <div className="dropdown-container" ref={profileRef}>
+          {/* Botón de perfil oculto - usar ProfileDropdown desde notificaciones o mensajes */}
+          {/* <div className="dropdown-container" ref={profileRef}>
             <div 
               className="user-profile" 
               onClick={() => setShowProfile(!showProfile)}
@@ -140,7 +141,7 @@ const Header = () => {
               </div>
               <KeyboardArrowDownIcon className="dropdown-arrow" />
             </div>
-          </div>
+          </div> */}
         </div>
       </header>
 

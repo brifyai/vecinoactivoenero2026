@@ -9,6 +9,8 @@ Scripts para testing y validación de funcionalidades
 - Archivos HTML de testing
 - Scripts de testing de componentes
 - Scripts de testing de funcionalidades específicas
+- **`verify-firebase-status.js`** - Verificación rápida del estado de Firebase
+- **`test-firebase-setup.js`** - Testing completo de Firebase (requiere service account)
 
 ### `/debugging`
 Scripts para debugging y diagnóstico de problemas
