@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useSidebar } from '../../context/SidebarContext';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useMessages } from '../../context/MessagesContext';
+import { useReduxMessages } from '../../hooks/useReduxMessages';
 import { useReduxNotifications as useNotifications } from '../../hooks/useReduxNotifications';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import MapIcon from '@mui/icons-material/Map';
@@ -14,7 +14,7 @@ const CommunityNavigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { getUnreadCount } = useMessages();
+  const { getUnreadCount } = useReduxMessages();
   const { unreadCount } = useNotifications();
 
   const unreadMessages = getUnreadCount(user?.id);

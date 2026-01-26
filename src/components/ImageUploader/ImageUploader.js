@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import imageService from '../../services/imageService';
 import { showErrorToast, showSuccessToast } from '../../utils/sweetalert';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';

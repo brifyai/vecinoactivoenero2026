@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import storageService from '../services/storageService';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../store/selectors/authSelectors';

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { showSuccessToast, showConfirmDialog } from '../utils/sweetalert';
 import StarIcon from '@mui/icons-material/Star';
 import './Favorites.css';

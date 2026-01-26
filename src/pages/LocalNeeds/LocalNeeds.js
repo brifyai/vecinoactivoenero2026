@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useLocalNeeds } from '../../context/LocalNeedsContext';
+import { useReduxLocalNeeds } from '../../hooks/useReduxLocalNeeds';
 import { useNeighborhoods } from '../../context/NeighborhoodsContext';
 import CreateNeedModal from '../../components/CreateNeedModal/CreateNeedModal';
 import NeedCard from '../../components/NeedCard/NeedCard';
@@ -9,7 +9,7 @@ import './LocalNeeds.css';
 
 const LocalNeeds = () => {
   const { user } = useAuth();
-  const { needs, getActiveNeeds, getNeighborhoodNeeds } = useLocalNeeds();
+  const { needs, getActiveNeeds, getNeighborhoodNeeds } = useReduxLocalNeeds();
   const { calculateDistance } = useNeighborhoods();
   const [filteredNeeds, setFilteredNeeds] = useState([]);
   const [selectedType, setSelectedType] = useState('all');

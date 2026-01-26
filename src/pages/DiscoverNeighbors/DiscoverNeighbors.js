@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useReduxFriends } from '../../hooks/useReduxFriends';

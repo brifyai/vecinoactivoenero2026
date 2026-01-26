@@ -4,8 +4,8 @@ import { selectUser } from '../../store/selectors/authSelectors';
 import { selectAllPosts as selectPosts, selectPostsLoading, selectPostsError } from '../../store/selectors/postsSelectors';
 import { loadPosts, createPost } from '../../store/slices/postsSlice';
 import { useHybridRealtimeContext } from '../../components/HybridRealtimeProvider/HybridRealtimeProvider';
-import { useLocalNeeds } from '../../context/LocalNeedsContext';
-import { useCommunityActions } from '../../context/CommunityActionsContext';
+import { useReduxLocalNeeds } from '../../hooks/useReduxLocalNeeds';
+import { useReduxCommunityActions } from '../../hooks/useReduxCommunityActions';
 import feedService from '../../services/feedService';
 import Post from '../../components/Post/Post';
 import CreatePost from '../../components/CreatePost/CreatePost';
@@ -22,8 +22,8 @@ const Feed = () => {
   const postsError = useSelector(selectPostsError);
   
   // Contextos existentes
-  const { needs, getNeighborhoodNeeds } = useLocalNeeds();
-  const { actions, getNeighborhoodActions } = useCommunityActions();
+  const { needs, getNeighborhoodNeeds } = useReduxLocalNeeds();
+  const { actions, getNeighborhoodActions } = useReduxCommunityActions();
   
   // Sistema híbrido
   const hybridRealtime = useHybridRealtimeContext();

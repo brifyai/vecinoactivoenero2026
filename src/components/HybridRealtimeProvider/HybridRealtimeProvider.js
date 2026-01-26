@@ -102,10 +102,10 @@ export const HybridRealtimeProvider = ({ children }) => {
   return (
     <HybridRealtimeContext.Provider value={contextValue}>
       {children}
-      {/* Indicador de estado (opcional) */}
-      {process.env.NODE_ENV === 'development' && (
+      {/* Indicador de estado deshabilitado */}
+      {/* {process.env.NODE_ENV === 'development' && (
         <HybridRealtimeDebugIndicator {...contextValue} />
-      )}
+      )} */}
     </HybridRealtimeContext.Provider>
   );
 };

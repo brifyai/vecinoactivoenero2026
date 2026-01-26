@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import neighborhoodExpansionService from '../services/neighborhoodExpansionService';
 import storageService from '../services/storageService';
 

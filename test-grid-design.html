@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Grid Design - Vecino Activo</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        /* Página principal de selección */
+        .user-type-selection-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .selection-container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header de selección */
+        .selection-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        /* Grid de tipos de usuario */
+        .user-type-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            padding: 40px;
+        }
+
+        /* Tarjetas de tipo de usuario */
+        .user-type-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            min-height: 280px;
+        }
+
+        .user-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .user-type-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .user-type-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Iconos de las tarjetas */
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            font-size: 40px;
+            color: white;
+        }
+
+        .vecinos-card .card-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .admin-card .card-icon {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .business-card .card-icon {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .emergency-card .card-icon {
+            background: linear-gradient(135deg, #ff9f43 0%, #f0932b 100%);
+        }
+
+        .user-type-card:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        /* Contenido de las tarjetas */
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            color: #2d3748;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            color: #4a5568;
+            line-height: 1.6;
+            margin: 0 0 20px 0;
+            flex-grow: 1;
+        }
+
+        .card-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .feature-tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .admin-card .feature-tag {
+            background: rgba(26, 26, 46, 0.1);
+            color: #1a1a2e;
+        }
+
+        .business-card .feature-tag {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+
+        .emergency-card .feature-tag {
+            background: rgba(255, 159, 67, 0.1);
+            color: #ff9f43;
+        }
+
+        /* Efectos hover específicos por tipo */
+        .vecinos-card:hover {
+            background: linear-gradient(135deg, #f8faff 0%, #e8f2ff 100%);
+        }
+
+        .admin-card:hover {
+            background: linear-gradient(135deg, #f8f8fa 0%, #e8e8f0 100%);
+        }
+
+        .business-card:hover {
+            background: linear-gradient(135deg, #fff8f8 0%, #ffe8e8 100%);
+        }
+
+        .emergency-card:hover {
+            background: linear-gradient(135deg, #fffaf8 0%, #ffede8 100%);
+        }
+
+        /* Footer de selección */
+        .selection-footer {
+            background: #f7fafc;
+            padding: 30px 40px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .info-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .info-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: #2d3748;
+        }
+
+        .info-content p {
+            font-size: 0.95rem;
+            color: #4a5568;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Responsive para grid */
+        @media (max-width: 768px) {
+            .user-type-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 30px 20px;
+            }
+            
+            .user-type-card {
+                padding: 24px 20px;
+                min-height: 240px;
+            }
+            
+            .card-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 36px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            .card-description {
+                font-size: 0.95rem;
+            }
+            
+            .selection-header {
+                padding: 30px 20px;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .main-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="user-type-selection-page">
+        <div class="selection-container">
+            <!-- Header -->
+            <div class="selection-header">
+                <div class="header-content">
+                    <h1 class="main-title">Vecino Activo</h1>
+                    <p class="main-subtitle">Elige tu tipo de acceso para continuar</p>
+                </div>
+            </div>
+
+            <!-- Grid de opciones -->
+            <div class="user-type-grid">
+                <!-- Vecinos -->
+                <div class="user-type-card vecinos-card" onclick="alert('Seleccionaste: Vecinos')">
+                    <div class="card-icon">
+                        <span class="material-icons">groups</span>
+                    </div>
+                    <h3 class="card-title">Vecinos</h3>
+                    <p class="card-description">
+                        Conecta con tu comunidad, participa en eventos y construye relaciones con tus vecinos
+                    </p>
+                    <div class="card-features">
+                        <span class="feature-tag">Comunidad</span>
+                        <span class="feature-tag">Eventos</span>
+                        <span class="feature-tag">Conexiones</span>
+                    </div>
+                </div>
+
+                <!-- Unidad Vecinal -->
+                <div class="user-type-card admin-card" onclick="alert('Seleccionaste: Unidad Vecinal')">
+                    <div class="card-icon">
+                        <span class="material-icons">admin_panel_settings</span>
+                    </div>
+                    <h3 class="card-title">Unidad Vecinal</h3>
+                    <p class="card-description">
+                        Panel administrativo para dirigentes y administradores de unidades vecinales
+                    </p>
+                    <div class="card-features">
+                        <span class="feature-tag">Dashboard</span>
+                        <span class="feature-tag">Gestión</span>
+                        <span class="feature-tag">Reportes</span>
+                    </div>
+                </div>
+
+                <!-- Empresas Locales -->
+                <div class="user-type-card business-card" onclick="alert('Seleccionaste: Empresas Locales')">
+                    <div class="card-icon">
+                        <span class="material-icons">business</span>
+                    </div>
+                    <h3 class="card-title">Empresas Locales</h3>
+                    <p class="card-description">
+                        Registra tu negocio local y conecta con la comunidad del barrio
+                    </p>
+                    <div class="card-features">
+                        <span class="feature-tag">Negocio</span>
+                        <span class="feature-tag">Promoción</span>
+                        <span class="feature-tag">Clientes</span>
+                    </div>
+                </div>
+
+                <!-- Servicios de Emergencia -->
+                <div class="user-type-card emergency-card" onclick="alert('Seleccionaste: Servicios de Emergencia')">
+                    <div class="card-icon">
+                        <span class="material-icons">security</span>
+                    </div>
+                    <h3 class="card-title">Servicios de Emergencia</h3>
+                    <p class="card-description">
+                        Acceso para servicios de emergencia, bomberos, policía y personal médico
+                    </p>
+                    <div class="card-features">
+                        <span class="feature-tag">Emergencias</span>
+                        <span class="feature-tag">Respuesta</span>
+                        <span class="feature-tag">Seguridad</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer info -->
+            <div class="selection-footer">
+                <div class="info-content">
+                    <div>
+                        <h4>✅ Nuevo Diseño de Cuadrícula Implementado</h4>
+                        <p>Diseño moderno con 4 opciones en formato 2x2. Cada tarjeta tiene su propio color y funcionalidad específica.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Agregar efectos de hover adicionales
+        document.querySelectorAll('.user-type-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

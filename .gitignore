@@ -42,3 +42,20 @@ public/data/geo/*.cpg
 public/data/geo/*.sbn
 public/data/geo/*.sbx
 public/data/geo/*.xml
+# Archived documentation (for reference only)
+docs/archive/
+
+# Docker history (for reference only)
+.docker-history/
+
+# Testing and debugging scripts (development only)
+scripts/testing/
+scripts/debugging/
+
+# Temporary files and reports
+*.json
+realtime_*.json
+production.log
+*.tar.gz
+# Temporary files and old deployments
+temp/

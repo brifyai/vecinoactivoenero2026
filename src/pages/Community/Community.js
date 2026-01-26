@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useProjects } from '../../context/ProjectsContext';
-import { useSharedResources } from '../../context/SharedResourcesContext';
+import React, { useState } from 'react';
+import { useReduxProjects } from '../../hooks/useReduxProjects';
+import { useReduxSharedResources } from '../../hooks/useReduxSharedResources';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useSidebar } from '../../context/SidebarContext';
 import Projects from '../Projects/Projects';

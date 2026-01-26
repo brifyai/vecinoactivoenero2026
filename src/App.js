@@ -5,30 +5,10 @@ import { selectIsAuthenticated, selectAuthLoading } from './store/selectors/auth
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { AppProvider } from './context/AppContext';
 import { SearchProvider } from './context/SearchContext';
-import { ChatProvider } from './context/ChatContext';
 import { SidebarProvider } from './context/SidebarContext';
 import { NeighborhoodProvider } from './context/NeighborhoodContext';
-import { SecurityProvider } from './context/SecurityContext';
-import { ServicesProvider } from './context/ServicesContext';
-import { FriendsProvider } from './context/FriendsContext';
-import { EventsProvider } from './context/EventsContext';
-import { GroupsProvider } from './context/GroupsContext';
-import { VerificationProvider } from './context/VerificationContext';
-import { ReportsProvider } from './context/ReportsContext';
-import { ProjectsProvider } from './context/ProjectsContext';
-import { PollsProvider } from './context/PollsContext';
-
 import { CommunityCalendarProvider } from './context/CommunityCalendarContext';
-import { LocalBusinessProvider } from './context/LocalBusinessContext';
-import { SharedResourcesProvider } from './context/SharedResourcesContext';
-import { GamificationProvider } from './context/GamificationContext';
-import { PhotosProvider } from './context/PhotosContext';
 import { NeighborhoodsProvider } from './context/NeighborhoodsContext';
-import { ConnectionsProvider } from './context/ConnectionsContext';
-import { LocalNeedsProvider } from './context/LocalNeedsContext';
-import { CommunityActionsProvider } from './context/CommunityActionsContext';
-import { MessagesProvider } from './context/MessagesContext';
-import { ModerationProvider } from './context/ModerationContext';
 
 // Firebase Initializer
 import FirebaseInitializer from './components/FirebaseInitializer/FirebaseInitializer';
@@ -95,17 +75,42 @@ const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const loading = useSelector(selectAuthLoading);
   
+  console.log('🔒 ProtectedRoute - Auth:', isAuthenticated, 'Loading:', loading);
+  
   // Durante la carga inicial, mostrar loading
   if (loading) {
-    return <div className="loading-screen">Loading...</div>;
+    return (
+      <div className="loading-screen" style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        background: '#f8fafc'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{
+            width: '50px',
+            height: '50px',
+            border: '4px solid #e2e8f0',
+            borderTop: '4px solid #667eea',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 16px'
+          }}></div>
+          <p style={{ color: '#4a5568' }}>Cargando...</p>
+        </div>
+      </div>
+    );
   }
   
   // Si no está autenticado, redirigir a login
   if (!isAuthenticated) {
+    console.log('❌ No autenticado, redirigiendo a login');
     return <Navigate to="/iniciar-sesion" replace />;
   }
   
   // Si está autenticado, mostrar el contenido
+  console.log('✅ Autenticado, mostrando contenido');
   return children;
 };
 
@@ -184,30 +189,11 @@ function App() {
               <FirebaseInitializer>
                 <AppProvider>
                 <SearchProvider>
-                  <ChatProvider>
                     <SidebarProvider>
                       <NeighborhoodProvider>
-                        <SecurityProvider>
-                          <ServicesProvider>
-                            <GamificationProvider>
-                              <VerificationProvider>
-                                <ReportsProvider>
-                                  <FriendsProvider>
-                                    <EventsProvider>
-                                      <GroupsProvider>
-                                        <ProjectsProvider>
-                                          <PollsProvider>
-                                            <CommunityCalendarProvider>
-                                              <LocalBusinessProvider>
-                                                <SharedResourcesProvider>
-                                                  <PhotosProvider>
-                                                    <NeighborhoodsProvider>
+                            <CommunityCalendarProvider>
+                                                  <NeighborhoodsProvider>
                                                       <NeighborhoodExpansionProvider>
-                                                        <ConnectionsProvider>
-                                                          <LocalNeedsProvider>
-                                                            <CommunityActionsProvider>
-                                                              <MessagesProvider>
-                                                                <ModerationProvider>
                                                                   <Layout>
                                                                     <Routes>
                                                                       <Route path="/" element={<Home />} />
@@ -244,30 +230,11 @@ function App() {
                                                                       <Route path="/:username" element={<UserProfile />} />
                                                                     </Routes>
                                                                   </Layout>
-                                                                </ModerationProvider>
-                                                              </MessagesProvider>
-                                                            </CommunityActionsProvider>
-                                                          </LocalNeedsProvider>
-                                                        </ConnectionsProvider>
                                                       </NeighborhoodExpansionProvider>
                                                     </NeighborhoodsProvider>
-                                                  </PhotosProvider>
-                                                </SharedResourcesProvider>
-                                              </LocalBusinessProvider>
-                                            </CommunityCalendarProvider>
-                                          </PollsProvider>
-                                        </ProjectsProvider>
-                                      </GroupsProvider>
-                                    </EventsProvider>
-                                  </FriendsProvider>
-                                </ReportsProvider>
-                              </VerificationProvider>
-                            </GamificationProvider>
-                          </ServicesProvider>
-                        </SecurityProvider>
+                            </CommunityCalendarProvider>
                       </NeighborhoodProvider>
                     </SidebarProvider>
-                  </ChatProvider>
                 </SearchProvider>
               </AppProvider>
               </FirebaseInitializer>

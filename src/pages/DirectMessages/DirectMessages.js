@@ -4,8 +4,8 @@ import { selectUser } from '../../store/selectors/authSelectors';
 import { selectMessages, selectMessagesLoading, selectMessagesError } from '../../store/selectors/messagesSelectors';
 import { loadConversations, sendMessage } from '../../store/slices/messagesSlice';
 import { useHybridRealtimeContext } from '../../components/HybridRealtimeProvider/HybridRealtimeProvider';
-import { useMessages } from '../../context/MessagesContext';
-import { useConnections } from '../../context/ConnectionsContext';
+import { useReduxMessages } from '../../hooks/useReduxMessages';
+import { useReduxConnections } from '../../hooks/useReduxConnections';
 import storageService from '../../services/storageService';
 import ConversationList from '../../components/ConversationList/ConversationList';
 import ChatWindow from '../../components/ChatWindow/ChatWindow';
@@ -20,8 +20,8 @@ const DirectMessages = () => {
   const messagesError = useSelector(selectMessagesError);
   
   // Contextos existentes (para compatibilidad)
-  const { conversations, getUnreadCount } = useMessages();
-  const { getAcceptedConnections } = useConnections();
+  const { conversations, getUnreadCount } = useReduxMessages();
+  const { getAcceptedConnections } = useReduxConnections();
   
   // Sistema híbrido
   const hybridRealtime = useHybridRealtimeContext();

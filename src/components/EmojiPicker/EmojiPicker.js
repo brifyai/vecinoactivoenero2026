@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './EmojiPicker.css';
 
 const EmojiPicker = ({ onEmojiSelect, position = 'bottom' }) => {

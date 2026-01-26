@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useLocalNeeds } from '../../context/LocalNeedsContext';
+import { useReduxLocalNeeds } from '../../hooks/useReduxLocalNeeds';
 import { showSuccessToast, showErrorToast } from '../../utils/sweetalert';
 import CloseIcon from '@mui/icons-material/Close';
 import './RespondNeedModal.css';
 
 const RespondNeedModal = ({ need, onClose, onSuccess }) => {
   const { user } = useAuth();
-  const { respondToNeed } = useLocalNeeds();
+  const { respondToNeed } = useReduxLocalNeeds();
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useCommunityCalendar } from '../../context/CommunityCalendarContext';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useGamification } from '../../context/GamificationContext';
+import { useReduxGamification } from '../../hooks/useReduxGamification';
 import { formatNumber } from '../../utils/formatNumber';
 import AddIcon from '@mui/icons-material/Add';
 import EventIcon from '@mui/icons-material/Event';
@@ -15,7 +15,7 @@ import './CommunityCalendar.css';
 const CommunityCalendar = () => {
   const { user } = useAuth();
   const { calendarEvents, createEvent, attendEvent, getUpcomingEvents } = useCommunityCalendar();
-  const { addPoints, updateActivity } = useGamification();
+  const { addPoints, updateActivity } = useReduxGamification();
   
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newEvent, setNewEvent] = useState({

@@ -1,37 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { useSidebar } from '../context/SidebarContext';
-import storageService from '../services/storageService';
+import { useUserProfileData } from '../hooks/useUserProfileData';
+import { useUserProfileState } from '../hooks/useUserProfileState';
+import { useUserProfilePosts } from '../hooks/useUserProfilePosts';
 import ProfileHeader from '../components/ProfileHeader/ProfileHeader';
-import Post from '../components/Post/Post';
-import EventsWidget from '../components/EventsWidget/EventsWidget';
-import ActivityNewsWidget from '../components/ActivityNewsWidget/ActivityNewsWidget';
+import UserNotFound from '../components/UserProfile/UserNotFound';
+import ProfileTabs from '../components/UserProfile/ProfileTabs';
+import ActivityFeed from '../components/UserProfile/ActivityFeed';
+import PostsContainer from '../components/UserProfile/PostsContainer';
+import ProfileSidebar from '../components/UserProfile/ProfileSidebar';
+import PhotosSection from '../components/UserProfile/PhotosSection';
 import PhotoLightbox from '../components/PhotoLightbox/PhotoLightbox';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { showErrorToast, showSuccessToast } from '../utils/sweetalert';
 import './Timeline.css';
 
 const UserProfile = () => {
   const { username, slug } = useParams();
-  const navigate = useNavigate();
   const location = useLocation();
   const { user: currentUser } = useAuth();
   const { isRightSidebarCollapsed } = useSidebar();
-  const [profileUser, setProfileUser] = useState(null);
-  const [pageData, setPageData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [visiblePosts, setVisiblePosts] = useState(3);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState(location.state?.activeTab || 'timeline');
-  const [userPhotos, setUserPhotos] = useState([]);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  // Determinar tipo de ruta
+  // Determine route type
   const isPage = location.pathname.startsWith('/pagina/') || location.pathname.startsWith('/paginas/');
   const isGroup = location.pathname.startsWith('/grupo/');
   const isEvent = location.pathname.startsWith('/evento/');
@@ -40,251 +29,28 @@ const UserProfile = () => {
   const isResource = location.pathname.startsWith('/recursos/');
   const identifier = isPage || isGroup || isEvent || isProject || isHelp || isResource ? slug : username;
 
-  useEffect(() => {
-    if (!identifier) {
-      setLoading(false);
-      return;
-    }
+  // Custom hooks
+  const { profileUser, loading } = useUserProfileData(
+    identifier, currentUser, isPage, isGroup, isEvent, isProject, isHelp, isResource
+  );
 
-    if (isPage) {
-      // Buscar página usando storageService
-      const pages = storageService.getPages();
-      const foundPage = pages.find(p => p.slug === identifier || p.id === parseInt(identifier));
+  const {
+    visiblePosts,
+    searchQuery,
+    setSearchQuery,
+    activeTab,
+    setActiveTab,
+    userPhotos,
+    lightboxOpen,
+    setLightboxOpen,
+    lightboxIndex,
+    loadMore,
+    handlePhotoClick
+  } = useUserProfileState();
 
-      if (foundPage) {
-        setPageData(foundPage);
-        setProfileUser({
-          id: foundPage.id,
-          name: foundPage.name,
-          username: foundPage.slug,
-          email: foundPage.email,
-          avatar: foundPage.image || foundPage.avatar,
-          bio: foundPage.description || `Página: ${foundPage.name}`,
-          isPage: true
-        });
-      } else {
-        showErrorToast('Página no encontrada');
-        navigate('/paginas');
-      }
-    } else if (isGroup) {
-      // Buscar grupo usando storageService
-      const groups = storageService.getGroups();
-      const foundGroup = groups.find(g => g.slug === identifier || g.id === parseInt(identifier));
+  const { posts, hasMorePosts } = useUserProfilePosts(profileUser, visiblePosts);
 
-      if (foundGroup) {
-        setProfileUser({
-          id: foundGroup.id,
-          name: foundGroup.name,
-          username: foundGroup.slug,
-          email: foundGroup.description,
-          avatar: foundGroup.image,
-          bio: `Grupo: ${foundGroup.name}`,
-          members: foundGroup.members,
-          isGroup: true
-        });
-      } else {
-        showErrorToast('Grupo no encontrado');
-        navigate('/grupos');
-      }
-    } else if (isEvent) {
-      // Buscar evento en localStorage
-      const events = JSON.parse(localStorage.getItem('events') || '[]');
-      const foundEvent = events.find(e => e.slug === identifier);
-
-      if (foundEvent) {
-        const eventDate = new Date(foundEvent.date);
-        setProfileUser({
-          id: foundEvent.id,
-          name: foundEvent.title,
-          username: foundEvent.slug,
-          email: foundEvent.location,
-          avatar: foundEvent.image,
-          bio: `Evento: ${foundEvent.title}`,
-          date: eventDate.toLocaleDateString('es-CL'),
-          time: eventDate.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' }),
-          attendees: foundEvent.attendees,
-          isEvent: true
-        });
-      } else {
-        showErrorToast('Evento no encontrado');
-        navigate('/app/eventos');
-      }
-    } else if (isProject) {
-      // Buscar proyecto en localStorage
-      const projects = JSON.parse(localStorage.getItem('communityProjects') || '[]');
-      const foundProject = projects.find(p => p.slug === identifier);
-
-      if (foundProject) {
-        setProfileUser({
-          id: foundProject.id,
-          name: foundProject.title,
-          username: foundProject.slug,
-          email: foundProject.category,
-          avatar: foundProject.creatorAvatar,
-          bio: foundProject.description,
-          status: foundProject.status,
-          votes: foundProject.votes,
-          volunteers: foundProject.volunteers,
-          budget: foundProject.budget,
-          creatorName: foundProject.creatorName,
-          neighborhoodName: foundProject.neighborhoodName,
-          isProject: true
-        });
-      } else {
-        showErrorToast('Proyecto no encontrado');
-        navigate('/proyectos');
-      }
-    } else if (isHelp) {
-      // Buscar solicitud de ayuda en localStorage
-      const helpRequests = JSON.parse(localStorage.getItem('helpRequests') || '[]');
-      const foundHelp = helpRequests.find(h => h.slug === identifier);
-
-      if (foundHelp) {
-        setProfileUser({
-          id: foundHelp.id,
-          name: foundHelp.title,
-          username: foundHelp.slug,
-          email: foundHelp.type,
-          avatar: foundHelp.requesterAvatar,
-          bio: foundHelp.description,
-          status: foundHelp.status,
-          urgency: foundHelp.urgency,
-          location: foundHelp.location,
-          offers: foundHelp.offers,
-          requesterName: foundHelp.requesterName,
-          neighborhoodName: foundHelp.neighborhoodName,
-          isHelp: true
-        });
-      } else {
-        showErrorToast('Solicitud de ayuda no encontrada');
-        navigate('/solicitudes-ayuda');
-      }
-    } else if (isResource) {
-      // Buscar recurso compartido en localStorage
-      const sharedResources = JSON.parse(localStorage.getItem('sharedResources') || '[]');
-      const foundResource = sharedResources.find(r => r.slug === identifier);
-
-      if (foundResource) {
-        setProfileUser({
-          id: foundResource.id,
-          name: foundResource.name,
-          username: foundResource.slug,
-          email: foundResource.category,
-          avatar: foundResource.ownerAvatar,
-          bio: foundResource.description,
-          condition: foundResource.condition,
-          maxLoanDays: foundResource.maxLoanDays,
-          requiresDeposit: foundResource.requiresDeposit,
-          depositAmount: foundResource.depositAmount,
-          totalLoans: foundResource.totalLoans,
-          isAvailable: foundResource.isAvailable,
-          ownerName: foundResource.ownerName,
-          neighborhoodName: foundResource.neighborhoodName,
-          isResource: true
-        });
-      } else {
-        showErrorToast('Recurso no encontrado');
-        navigate('/recursos-compartidos');
-      }
-    } else {
-      // Buscar usuario
-      // Primero buscar en el usuario actual (currentUser)
-      if (currentUser?.username === identifier) {
-        setProfileUser(currentUser);
-        setLoading(false);
-        return;
-      }
-      
-      // Luego buscar en la lista de usuarios (usar la misma clave que storageService)
-      const users = storageService.getUsers();
-      
-      // Buscar por username exacto o por nombre convertido a slug
-      const foundUser = users.find(u => 
-        u.username === identifier || 
-        u.name.toLowerCase().replace(/\s+/g, '') === identifier
-      );
-
-      if (foundUser) {
-        setProfileUser(foundUser);
-      } else {
-        // No redirigir, simplemente dejar profileUser como null
-        // y mostrar un mensaje en la página
-      }
-    }
-    setLoading(false);
-  }, [identifier, currentUser, navigate, isPage, isGroup, isEvent, isProject, isHelp, isResource]);
-
-  // Cargar fotos del usuario
-  useEffect(() => {
-    if (profileUser?.id) {
-      // Generar fotos de ejemplo del usuario
-      const photos = [
-        { id: 1, url: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&h=800&fit=crop', likes: 45, title: 'Foto 1', description: 'Hermosa foto' },
-        { id: 2, url: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=1200&h=800&fit=crop', likes: 32, title: 'Foto 2', description: 'Momento especial' },
-        { id: 3, url: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=1200&h=800&fit=crop', likes: 28, title: 'Foto 3', description: 'Recuerdo inolvidable' },
-        { id: 4, url: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=1200&h=800&fit=crop', likes: 56, title: 'Foto 4', description: 'Gran momento' },
-        { id: 5, url: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=1200&h=800&fit=crop', likes: 41, title: 'Foto 5', description: 'Día perfecto' },
-        { id: 6, url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=1200&h=800&fit=crop', likes: 38, title: 'Foto 6', description: 'Aventura' },
-        { id: 7, url: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=1200&h=800&fit=crop', likes: 52, title: 'Foto 7', description: 'Diversión' },
-        { id: 8, url: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1200&h=800&fit=crop', likes: 29, title: 'Foto 8', description: 'Alegría' },
-        { id: 9, url: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400&h=400&fit=crop', image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=1200&h=800&fit=crop', likes: 47, title: 'Foto 9', description: 'Felicidad' }
-      ];
-      setUserPhotos(photos);
-    }
-  }, [profileUser]);
-
-  const allPosts = [
-    {
-      id: 1,
-      author: {
-        id: profileUser?.id || 1,
-        name: profileUser?.name || 'Usuario',
-        avatar: profileUser?.avatar || 'https://i.pravatar.cc/50?img=1',
-        verified: profileUser?.verified || false
-      },
-      authorId: profileUser?.id || 1,
-      time: 'hace 30 min',
-      avatar: profileUser?.avatar || 'https://i.pravatar.cc/50?img=1', // Keep for backward compatibility
-      content: '¡Hoy es el cumpleaños de nuestros tres lindos cachorros!',
-      image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&h=500&fit=crop',
-      hashtags: ['#cachorros', '#cumpleaños', '#perros'],
-      likes: 175,
-      comments: 4368,
-      shares: 936,
-      reactions: ['🤝', '❤️', '👏', '💡']
-    },
-    {
-      id: 2,
-      author: {
-        id: profileUser?.id || 1,
-        name: profileUser?.name || 'Usuario',
-        avatar: profileUser?.avatar || 'https://i.pravatar.cc/50?img=16',
-        verified: profileUser?.verified || false
-      },
-      authorId: profileUser?.id || 1,
-      time: 'hace 1 hora',
-      avatar: profileUser?.avatar || 'https://i.pravatar.cc/50?img=16', // Keep for backward compatibility
-      content: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.',
-      image: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=800&h=500&fit=crop',
-      hashtags: ['#estilodeVida', '#inspiración'],
-      likes: 234,
-      comments: 89,
-      shares: 45,
-      reactions: ['🤝', '❤️', '🙌']
-    }
-  ];
-
-  const posts = allPosts.slice(0, visiblePosts);
-
-  const loadMore = () => {
-    setVisiblePosts(prev => Math.min(prev + 3, allPosts.length));
-  };
-
-  const handlePhotoClick = (index) => {
-    setLightboxIndex(index);
-    setLightboxOpen(true);
-  };
-
+  // Loading state
   if (loading) {
     return (
       <div className="timeline">
@@ -293,40 +59,11 @@ const UserProfile = () => {
     );
   }
 
+  // User not found state
   if (!profileUser) {
-    // Obtener usuarios disponibles para sugerencias
-    const availableUsers = storageService.getUsers();
-    const suggestions = availableUsers.slice(0, 5);
-
     return (
       <div className={`timeline ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-        <div className="user-not-found">
-          <h2>Usuario no encontrado</h2>
-          <p>El usuario "{identifier}" no existe o ha sido eliminado.</p>
-          
-          {suggestions.length > 0 && (
-            <div className="user-suggestions">
-              <h3>¿Quizás buscabas a uno de estos usuarios?</h3>
-              <div className="suggestions-list">
-                {suggestions.map(user => (
-                  <div key={user.id} className="suggestion-item" onClick={() => navigate(`/${user.username}`)}>
-                    <img src={user.avatar} alt={user.name} />
-                    <div>
-                      <strong>{user.name}</strong>
-                      <span>@{user.username}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          <div className="action-buttons">
-            <button onClick={() => navigate('/app/descubrir-vecinos')}>Descubrir Vecinos</button>
-            <button onClick={() => navigate('/app/feed')}>Ir al Feed</button>
-            <button onClick={() => window.location.reload()}>Recargar Página</button>
-          </div>
-        </div>
+        <UserNotFound identifier={identifier} />
       </div>
     );
   }
@@ -355,301 +92,42 @@ const UserProfile = () => {
         isOwnProfile={isOwnProfile}
       />
       
-      <div className="timeline-tabs">
-        <button 
-          className={`tab ${activeTab === 'timeline' ? 'active' : ''}`}
-          onClick={() => setActiveTab('timeline')}
-        >
-          <AccessTimeIcon fontSize="small" /> Línea de tiempo
-        </button>
-        <button 
-          className={`tab ${activeTab === 'photos' ? 'active' : ''}`}
-          onClick={() => setActiveTab('photos')}
-        >
-          <PhotoLibraryIcon fontSize="small" /> Fotos
-        </button>
-        <div className="tab-right">
-          <input 
-            type="text" 
-            placeholder="Buscar aquí..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </div>
+      <ProfileTabs
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
       
       <div className="timeline-content">
-        {isOwnProfile && activeTab === 'timeline' && (
-          <div className="activity-feed">
-            <div className="feed-header">
-              <h3>Feed de actividad</h3>
-              <div className="feed-actions">
-                <button><RefreshIcon fontSize="small" /></button>
-                <button><SettingsIcon fontSize="small" /></button>
-              </div>
-            </div>
-            <div className="feed-timeline">
-              <h4>Hoy</h4>
-              <div className="feed-item">
-                <img src="https://i.pravatar.cc/40?img=12" alt="" />
-                <div>
-                  <p><strong>Usuario</strong> comentó en una foto</p>
-                  <span>hace 3 horas</span>
-                </div>
-              </div>
-              <div className="feed-item">
-                <img src="https://i.pravatar.cc/40?img=1" alt="" />
-                <div>
-                  <p><strong>Usuario</strong> le gustó una foto</p>
-                  <span>hace 5 horas</span>
-                </div>
-              </div>
-              <button className="load-more-feed-btn">Cargar más</button>
-            </div>
-          </div>
-        )}
+        <ActivityFeed isOwnProfile={isOwnProfile} activeTab={activeTab} />
 
-        <div className="posts-container">
-          {activeTab === 'timeline' && (
-            <>
-              {posts.length > 0 ? (
-                <>
-                  {posts.map(post => (
-                    <Post key={post.id} post={post} />
-                  ))}
-                  
-                  {visiblePosts < allPosts.length && (
-                    <button className="load-more-btn" onClick={loadMore}>
-                      Cargar más
-                    </button>
-                  )}
-                </>
-              ) : (
-                <div className="no-posts">
-                  <p>{isOwnProfile ? 'Aún no has publicado nada.' : 'Este usuario aún no ha publicado nada.'}</p>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+        <PostsContainer
+          activeTab={activeTab}
+          posts={posts}
+          hasMorePosts={hasMorePosts}
+          loadMore={loadMore}
+          isOwnProfile={isOwnProfile}
+        />
         
-        {activeTab === 'timeline' && (
-          <div className="widgets-sidebar">
-            {isOwnProfile ? (
-              <>
-                <EventsWidget />
-                <ActivityNewsWidget />
-              </>
-            ) : (
-              <div className="profile-info-card">
-                <h3>Información</h3>
-                {profileUser.bio && (
-                  <div className="info-item">
-                    <strong>Biografía:</strong>
-                    <p>{profileUser.bio}</p>
-                  </div>
-                )}
-                {profileUser.neighborhoodName && (
-                  <div className="info-item">
-                    <strong>Unidad Vecinal:</strong>
-                    <p>{profileUser.neighborhoodName} ({profileUser.neighborhoodCode})</p>
-                  </div>
-                )}
-                <div className="info-item">
-                  <strong>URL del perfil:</strong>
-                  <div className="url-display">
-                    {isPage ? `vecinoactivo.cl/pagina/${profileUser.username}` : isGroup ? `vecinoactivo.cl/grupo/${profileUser.username}` : isEvent ? `vecinoactivo.cl/evento/${profileUser.username}` : isProject ? `vecinoactivo.cl/proyecto/${profileUser.username}` : isHelp ? `vecinoactivo.cl/ayuda/${profileUser.username}` : isResource ? `vecinoactivo.cl/recursos/${profileUser.username}` : `vecinoactivo.cl/${profileUser.username}`}
-                  </div>
-                </div>
-              {isGroup && profileUser.members && (
-                <div className="info-item">
-                  <strong>Miembros:</strong>
-                  <p>{profileUser.members.length} miembros</p>
-                </div>
-              )}
-              {isEvent && profileUser.date && (
-                <>
-                  <div className="info-item">
-                    <strong>Fecha:</strong>
-                    <p>{profileUser.date}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Hora:</strong>
-                    <p>{profileUser.time}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Ubicación:</strong>
-                    <p>{profileUser.email}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Asistentes:</strong>
-                    <p>{profileUser.attendees?.length || 0} personas</p>
-                  </div>
-                </>
-              )}
-              {isProject && (
-                <>
-                  <div className="info-item">
-                    <strong>Estado:</strong>
-                    <p>{profileUser.status}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Votos:</strong>
-                    <p>{profileUser.votes}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Voluntarios:</strong>
-                    <p>{profileUser.volunteers?.length || 0}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Presupuesto:</strong>
-                    <p>${profileUser.budget || 0}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Creador:</strong>
-                    <p>{profileUser.creatorName}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Unidad Vecinal:</strong>
-                    <p>{profileUser.neighborhoodName}</p>
-                  </div>
-                </>
-              )}
-              {isHelp && (
-                <>
-                  <div className="info-item">
-                    <strong>Estado:</strong>
-                    <p>{profileUser.status}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Urgencia:</strong>
-                    <p>{profileUser.urgency}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Tipo:</strong>
-                    <p>{profileUser.email}</p>
-                  </div>
-                  {profileUser.location && (
-                    <div className="info-item">
-                      <strong>Ubicación:</strong>
-                      <p>{profileUser.location}</p>
-                    </div>
-                  )}
-                  <div className="info-item">
-                    <strong>Ofertas de ayuda:</strong>
-                    <p>{profileUser.offers?.length || 0}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Solicitante:</strong>
-                    <p>{profileUser.requesterName}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Unidad Vecinal:</strong>
-                    <p>{profileUser.neighborhoodName}</p>
-                  </div>
-                </>
-              )}
-              {isResource && (
-                <>
-                  <div className="info-item">
-                    <strong>Categoría:</strong>
-                    <p>{profileUser.email}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Condición:</strong>
-                    <p>{profileUser.condition}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Disponible:</strong>
-                    <p>{profileUser.isAvailable ? 'Sí' : 'No'}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Días máx. de préstamo:</strong>
-                    <p>{profileUser.maxLoanDays}</p>
-                  </div>
-                  {profileUser.requiresDeposit && (
-                    <div className="info-item">
-                      <strong>Depósito:</strong>
-                      <p>${profileUser.depositAmount}</p>
-                    </div>
-                  )}
-                  <div className="info-item">
-                    <strong>Préstamos realizados:</strong>
-                    <p>{profileUser.totalLoans}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Dueño:</strong>
-                    <p>{profileUser.ownerName}</p>
-                  </div>
-                  <div className="info-item">
-                    <strong>Unidad Vecinal:</strong>
-                    <p>{profileUser.neighborhoodName}</p>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-          </div>
-        )}
+        <ProfileSidebar
+          activeTab={activeTab}
+          isOwnProfile={isOwnProfile}
+          profileUser={profileUser}
+          isPage={isPage}
+          isGroup={isGroup}
+          isEvent={isEvent}
+          isProject={isProject}
+          isHelp={isHelp}
+          isResource={isResource}
+        />
       </div>
 
-      {/* Sección de fotos FUERA del timeline-content para ancho completo */}
-      {activeTab === 'photos' && (
-        <div style={{ 
-          width: '100%', 
-          padding: '20px',
-          background: '#f8f9fa'
-        }}>
-          <div style={{ 
-            maxWidth: '1400px', 
-            margin: '0 auto',
-            background: 'white',
-            borderRadius: '16px',
-            padding: '24px'
-          }}>
-            <h3 style={{ marginBottom: '20px' }}>Fotos ({userPhotos.length})</h3>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-              gap: '12px',
-              width: '100%'
-            }}>
-              {userPhotos.map((photo, index) => (
-                <div 
-                  key={photo.id} 
-                  onClick={() => handlePhotoClick(index)} 
-                  style={{ 
-                    cursor: 'pointer',
-                    aspectRatio: '1',
-                    borderRadius: '12px',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
-                  }}
-                >
-                  <img 
-                    src={photo.url} 
-                    alt={`Foto ${photo.id}`} 
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover'
-                    }}
-                  />
-                  <div className="photo-overlay">
-                    <span>❤️ {photo.likes}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            {userPhotos.length === 0 && (
-              <p style={{ textAlign: 'center', padding: '40px 20px', color: '#65676b' }}>
-                No hay fotos para mostrar
-              </p>
-            )}
-          </div>
-        </div>
-      )}
+      <PhotosSection
+        activeTab={activeTab}
+        userPhotos={userPhotos}
+        handlePhotoClick={handlePhotoClick}
+      />
 
       {lightboxOpen && (
         <PhotoLightbox

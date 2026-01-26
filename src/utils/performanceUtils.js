@@ -104,29 +104,29 @@ export const createLazyLoader = (loadFunction) => {
 export const performanceMonitor = {
   activeMarks: new Set(),
   
-  start: (label) => {
+  start: function(label) {
     if (typeof performance !== 'undefined') {
       try {
         const markName = `${label}-start`;
         
         // Clear any existing marks with the same name
-        if (this.activeMarks.has(label)) {
-          this.clearMark(label);
+        if (performanceMonitor.activeMarks.has(label)) {
+          performanceMonitor.clearMark(label);
         }
         
         performance.mark(markName);
-        this.activeMarks.add(label);
+        performanceMonitor.activeMarks.add(label);
       } catch (error) {
         console.warn(`⚠️ Performance mark failed for ${label}:`, error.message);
       }
     }
   },
   
-  end: (label) => {
+  end: function(label) {
     if (typeof performance !== 'undefined') {
       try {
         // Verificar que el mark de inicio existe
-        if (!this.activeMarks.has(label)) {
+        if (!performanceMonitor.activeMarks.has(label)) {
           console.warn(`⚠️ Performance start mark '${label}-start' not found. Skipping measurement.`);
           return;
         }
@@ -134,7 +134,7 @@ export const performanceMonitor = {
         const startMark = performance.getEntriesByName(`${label}-start`);
         if (startMark.length === 0) {
           console.warn(`⚠️ Performance start mark '${label}-start' not found in performance entries. Skipping measurement.`);
-          this.activeMarks.delete(label);
+          performanceMonitor.activeMarks.delete(label);
           return;
         }
         
@@ -147,34 +147,34 @@ export const performanceMonitor = {
         }
         
         // Clean up
-        this.clearMark(label);
+        performanceMonitor.clearMark(label);
       } catch (error) {
         console.warn(`⚠️ Performance measurement failed for ${label}:`, error.message);
-        this.activeMarks.delete(label);
+        performanceMonitor.activeMarks.delete(label);
       }
     }
   },
   
-  clearMark: (label) => {
+  clearMark: function(label) {
     if (typeof performance !== 'undefined') {
       try {
         performance.clearMarks(`${label}-start`);
         performance.clearMarks(`${label}-end`);
         performance.clearMeasures(label);
-        this.activeMarks.delete(label);
+        performanceMonitor.activeMarks.delete(label);
       } catch (error) {
         console.warn(`⚠️ Performance clear failed for ${label}:`, error.message);
       }
     }
   },
   
-  clearAll: () => {
+  clearAll: function() {
     if (typeof performance !== 'undefined') {
       try {
-        this.activeMarks.forEach(label => {
-          this.clearMark(label);
+        performanceMonitor.activeMarks.forEach(label => {
+          performanceMonitor.clearMark(label);
         });
-        this.activeMarks.clear();
+        performanceMonitor.activeMarks.clear();
       } catch (error) {
         console.warn('⚠️ Performance clear all failed:', error.message);
       }

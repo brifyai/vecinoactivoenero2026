@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
-import { useChat } from '../context/ChatContext';
-import { useFriends } from '../context/FriendsContext';
+import { useReduxConversations } from '../hooks/useReduxConversations';
+import { useReduxFriends } from '../hooks/useReduxFriends';
 import { useSidebar } from '../context/SidebarContext';
 import { showSuccessToast } from '../utils/sweetalert';
 import EmojiPicker from '../components/EmojiPicker/EmojiPicker';
@@ -26,8 +26,8 @@ const Messenger = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  const { conversations, activeConversation, setActiveConversation, sendMessage, getMessages, markAsRead, createConversation } = useChat();
-  const { friends } = useFriends();
+  const { conversations, activeConversation, setActiveConversation, sendMessage, getMessages, markAsRead, createConversation } = useReduxConversations();
+  const { friends } = useReduxFriends();
   const { isRightSidebarCollapsed } = useSidebar();
   const [messageText, setMessageText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,10 +38,10 @@ const Messenger = () => {
   // Manejar amigo seleccionado desde la navegación
   useEffect(() => {
     const selectedFriend = location.state?.selectedFriend;
-    if (selectedFriend) {
+    if (selectedFriend && conversations && Array.isArray(conversations)) {
       // Buscar si ya existe una conversación con este usuario
       const existingConv = conversations.find(conv =>
-        conv.participants.includes(selectedFriend.id)
+        conv && conv.participants && Array.isArray(conv.participants) && conv.participants.includes(selectedFriend.id)
       );
       
       if (existingConv) {
@@ -59,7 +59,7 @@ const Messenger = () => {
         navigate(location.pathname, { replace: true, state: {} });
       }
     }
-  }, [location.state, conversations, createConversation, navigate, location.pathname]);
+  }, [location.state, conversations, createConversation, navigate, location.pathname, setActiveConversation]);
 
   // Cerrar menú al hacer click fuera
   useEffect(() => {
@@ -91,7 +91,17 @@ const Messenger = () => {
   }, [activeConversation]);
 
   const getConversationUser = (conv) => {
-    const otherUserId = conv.participants.find(id => id !== user.id);
+    // Validar que la conversación y participants existan
+    if (!conv || !conv.participants || !Array.isArray(conv.participants)) {
+      return { name: 'Usuario', avatar: 'https://i.pravatar.cc/50' };
+    }
+    
+    const otherUserId = conv.participants.find(id => id !== user?.id);
+    
+    if (!otherUserId) {
+      return { name: 'Usuario', avatar: 'https://i.pravatar.cc/50' };
+    }
+    
     // Usar friendbook_users que es la clave correcta donde se guardan los usuarios
     const allUsers = JSON.parse(localStorage.getItem('friendbook_users') || '[]');
     const otherUser = allUsers.find(u => u.id === otherUserId);
@@ -131,9 +141,10 @@ const Messenger = () => {
     setMessageText(messageText + emoji);
   };
 
-  const filteredConversations = conversations.filter(conv => {
+  const filteredConversations = (conversations || []).filter(conv => {
+    if (!conv) return false;
     const convUser = getConversationUser(conv);
-    return convUser.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return convUser && convUser.name && convUser.name.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
   return (
@@ -176,8 +187,10 @@ const Messenger = () => {
             </div>
           ) : (
             filteredConversations.map(conv => {
+              if (!conv || !conv.messages) return null;
+              
               const convUser = getConversationUser(conv);
-              const unreadCount = conv.messages.filter(m => m.senderId !== user.id && !m.read).length;
+              const unreadCount = conv.messages.filter(m => m.senderId !== user?.id && !m.read).length;
               
               return (
                 <div

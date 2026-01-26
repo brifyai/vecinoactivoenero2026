@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import supabaseCampaignsService from '../../services/supabaseCampaignsService';
+import campaignSenderService from '../../services/campaignSenderService';
 
 // =====================================================
 // ASYNC THUNKS
@@ -106,11 +107,17 @@ export const sendCampaign = createAsyncThunk(
   'campaigns/send',
   async (campaignId, { rejectWithValue }) => {
     try {
-      const result = await supabaseCampaignsService.sendCampaign(campaignId);
+      // Usar el campaignSenderService que orquesta todos los canales
+      const result = await campaignSenderService.sendCampaign(campaignId);
       if (!result.success) {
         return rejectWithValue(result.error);
       }
-      return { campaignId, sentCount: result.sent_count };
+      return { 
+        campaignId, 
+        sent: result.sent,
+        failed: result.failed,
+        total: result.total
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }

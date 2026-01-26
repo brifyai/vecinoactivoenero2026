@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGroups } from '../context/GroupsContext';
+import { useReduxGroups } from '../hooks/useReduxGroups';
 import { useSidebar } from '../context/SidebarContext';
 import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { showSuccessToast, showInputDialog } from '../utils/sweetalert';
@@ -12,7 +12,7 @@ import './Groups.css';
 
 const Groups = () => {
   const navigate = useNavigate();
-  const { groups, myGroups, joinGroup, leaveGroup, createGroup } = useGroups();
+  const { groups, myGroups, joinGroup, leaveGroup, createGroup } = useReduxGroups();
   const { isRightSidebarCollapsed } = useSidebar();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('my');

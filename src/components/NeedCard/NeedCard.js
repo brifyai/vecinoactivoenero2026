@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useLocalNeeds } from '../../context/LocalNeedsContext';
+import { useReduxLocalNeeds } from '../../hooks/useReduxLocalNeeds';
 import { useNeighborhoods } from '../../context/NeighborhoodsContext';
 import storageService from '../../services/storageService';
 import RespondNeedModal from '../RespondNeedModal/RespondNeedModal';
@@ -11,7 +11,7 @@ import './NeedCard.css';
 
 const NeedCard = ({ need, userLocation }) => {
   const { user } = useAuth();
-  const { respondToNeed } = useLocalNeeds();
+  const { respondToNeed } = useReduxLocalNeeds();
   const { calculateDistance } = useNeighborhoods();
   const [showRespondModal, setShowRespondModal] = useState(false);
   const [creator, setCreator] = useState(null);

@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import { useReduxTickets } from '../../hooks/useReduxTickets';
 import { useReduxAdmin } from '../../hooks/useReduxAdmin';
+import CreateTicketModal from '../../components/AdminDashboard/CreateTicketModal';
 
 // Material UI Icons
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
@@ -33,6 +34,7 @@ const TicketsManagement = () => {
     filters,
     searchTerm,
     fetchTickets,
+    createTicket,
     search,
     setFilters,
     setSearchTerm,
@@ -52,6 +54,7 @@ const TicketsManagement = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedTickets, setSelectedTickets] = useState([]);
   const [viewMode, setViewMode] = useState('list'); // list, grid, kanban
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   // Cargar tickets al montar el componente
   useEffect(() => {
@@ -101,6 +104,34 @@ const TicketsManagement = () => {
     );
   };
 
+  const handleCreateTicket = () => {
+    console.log('📝 Abriendo modal para crear ticket');
+    setShowCreateModal(true);
+  };
+
+  const handleSubmitTicket = async (ticketData) => {
+    console.log('📤 Creando ticket:', ticketData);
+    
+    try {
+      const result = await createTicket(ticketData);
+      
+      if (result.success) {
+        alert(`✅ Ticket "${ticketData.title}" creado exitosamente`);
+        
+        // Recargar tickets
+        const neighborhoodId = getCurrentNeighborhoodId();
+        if (neighborhoodId) {
+          await loadTickets(neighborhoodId);
+        }
+      } else {
+        alert(`❌ Error al crear ticket: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error creando ticket:', error);
+      alert('❌ Error al crear el ticket. Por favor intenta de nuevo.');
+    }
+  };
+
   const getStatusIcon = (status) => {
     switch (status) {
       case 'pending': return <PendingIcon />;
@@ -147,7 +178,7 @@ const TicketsManagement = () => {
           </div>
         </div>
         <div className="header-actions">
-          <button className="create-ticket-btn">
+          <button className="create-ticket-btn" onClick={handleCreateTicket}>
             <AddIcon />
             Crear Ticket
           </button>
@@ -385,6 +416,14 @@ const TicketsManagement = () => {
           </div>
         )}
       </div>
+
+      {/* Modal de Crear Ticket */}
+      <CreateTicketModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSubmit={handleSubmitTicket}
+        neighborhoodId={getCurrentNeighborhoodId()}
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import StoryModal from '../StoryModal/StoryModal';
 import CreateStoryModal from '../CreateStoryModal/CreateStoryModal';

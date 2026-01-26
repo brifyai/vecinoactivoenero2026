@@ -23,7 +23,7 @@
 /* Content Area */
 .admin-content-area {
   flex: 1;
-  padding: 24px;
+  padding: 0;
   overflow-y: auto;
   background-color: #f8fafc;
   min-height: 0; /* Permite que el contenido se ajuste correctamente */
@@ -40,13 +40,13 @@
   }
   
   .admin-content-area {
-    padding: 16px;
+    padding: 0;
   }
 }
 
 @media (max-width: 768px) {
   .admin-content-area {
-    padding: 12px;
+    padding: 0;
   }
 }
 

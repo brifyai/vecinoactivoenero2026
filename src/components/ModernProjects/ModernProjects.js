@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
-import { useProjects } from '../../context/ProjectsContext';
+import { useReduxProjects } from '../../hooks/useReduxProjects';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import PeopleIcon from '@mui/icons-material/People';
@@ -11,7 +11,7 @@ import './ModernProjects.css';
 
 const ModernProjects = () => {
   const { isRightSidebarCollapsed } = useSidebar();
-  const { projects, createProject } = useProjects();
+  const { projects, createProject } = useReduxProjects();
   const { user } = useAuth();
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [showModal, setShowModal] = useState(false);

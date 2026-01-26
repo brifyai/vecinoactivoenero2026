@@ -9,6 +9,11 @@ export const selectAllReports = createSelector(
   (reports) => reports.reports
 );
 
+export const selectBlockedUsers = createSelector(
+  [selectReportsState],
+  (reports) => reports.blockedUsers
+);
+
 export const selectReportsLoading = createSelector(
   [selectReportsState],
   (reports) => reports.loading
@@ -19,25 +24,10 @@ export const selectReportsError = createSelector(
   (reports) => reports.error
 );
 
-export const selectCurrentReport = createSelector(
-  [selectReportsState],
-  (reports) => reports.currentReport
-);
-
-export const selectReportCategories = createSelector(
-  [selectReportsState],
-  (reports) => reports.categories
-);
-
 // Computed selectors
 export const selectReportById = createSelector(
   [selectAllReports, (state, id) => id],
   (reports, id) => reports.find(report => report.id === id)
-);
-
-export const selectReportsByCategory = createSelector(
-  [selectAllReports, (state, category) => category],
-  (reports, category) => reports.filter(report => report.category === category)
 );
 
 export const selectPendingReports = createSelector(
@@ -50,11 +40,9 @@ export const selectResolvedReports = createSelector(
   (reports) => reports.filter(report => report.status === 'resolved')
 );
 
-export const selectRecentReports = createSelector(
-  [selectAllReports],
-  (reports) => reports
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 10)
+export const selectUserReports = createSelector(
+  [selectAllReports, (state, userId) => userId],
+  (reports, userId) => reports.filter(report => report.reporterId === userId)
 );
 
 export const selectReportsCount = createSelector(
@@ -62,7 +50,19 @@ export const selectReportsCount = createSelector(
   (reports) => reports.length
 );
 
-export const selectReportsByPriority = createSelector(
-  [selectAllReports, (state, priority) => priority],
-  (reports, priority) => reports.filter(report => report.priority === priority)
+export const selectPendingReportsCount = createSelector(
+  [selectPendingReports],
+  (reports) => reports.length
+);
+
+// Blocked users selectors
+export const selectUserBlockedUsers = createSelector(
+  [selectBlockedUsers, (state, userId) => userId],
+  (blockedUsers, userId) => blockedUsers.filter(b => b.blockerId === userId)
+);
+
+export const selectIsUserBlocked = createSelector(
+  [selectBlockedUsers, (state, { userId, blockerId }) => ({ userId, blockerId })],
+  (blockedUsers, { userId, blockerId }) => 
+    blockedUsers.some(b => b.blockerId === blockerId && b.blockedUserId === userId)
 );

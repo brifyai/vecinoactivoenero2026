@@ -1,43 +1,35 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-// Base selector
 const selectLocalNeedsState = (state) => state.localNeeds;
 
-// Basic selectors
 export const selectAllLocalNeeds = createSelector(
   [selectLocalNeedsState],
-  (needs) => needs.needs
+  (localNeeds) => localNeeds.needs
 );
 
 export const selectLocalNeedsLoading = createSelector(
   [selectLocalNeedsState],
-  (needs) => needs.loading
+  (localNeeds) => localNeeds.loading
 );
 
 export const selectLocalNeedsError = createSelector(
   [selectLocalNeedsState],
-  (needs) => needs.error
+  (localNeeds) => localNeeds.error
 );
 
-export const selectCurrentLocalNeed = createSelector(
-  [selectLocalNeedsState],
-  (needs) => needs.currentNeed
+export const selectLocalNeedsCount = createSelector(
+  [selectAllLocalNeeds],
+  (needs) => needs.length
 );
 
-export const selectNeedCategories = createSelector(
-  [selectLocalNeedsState],
-  (needs) => needs.categories
-);
-
-export const selectNeedResponses = createSelector(
-  [selectLocalNeedsState],
-  (needs) => needs.responses
-);
-
-// Computed selectors
 export const selectLocalNeedById = createSelector(
-  [selectAllLocalNeeds, (state, id) => id],
-  (needs, id) => needs.find(need => need.id === id)
+  [selectAllLocalNeeds, (state, needId) => needId],
+  (needs, needId) => needs.find(need => need.id === needId)
+);
+
+export const selectLocalNeedsByNeighborhood = createSelector(
+  [selectAllLocalNeeds, (state, neighborhoodId) => neighborhoodId],
+  (needs, neighborhoodId) => needs.filter(need => need.neighborhoodId === neighborhoodId)
 );
 
 export const selectActiveLocalNeeds = createSelector(
@@ -45,34 +37,24 @@ export const selectActiveLocalNeeds = createSelector(
   (needs) => needs.filter(need => need.status === 'active')
 );
 
-export const selectLocalNeedsByCategory = createSelector(
-  [selectAllLocalNeeds, (state, category) => category],
-  (needs, category) => needs.filter(need => need.category === category)
+export const selectActiveLocalNeedsByNeighborhood = createSelector(
+  [selectAllLocalNeeds, (state, neighborhoodId) => neighborhoodId],
+  (needs, neighborhoodId) => needs.filter(
+    need => need.neighborhoodId === neighborhoodId && need.status === 'active'
+  )
 );
 
-export const selectUrgentLocalNeeds = createSelector(
-  [selectAllLocalNeeds],
-  (needs) => needs.filter(need => need.priority === 'urgent')
-);
-
-export const selectRecentLocalNeeds = createSelector(
-  [selectAllLocalNeeds],
-  (needs) => needs
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 10)
-);
-
-export const selectLocalNeedsByUser = createSelector(
+export const selectUserLocalNeeds = createSelector(
   [selectAllLocalNeeds, (state, userId) => userId],
   (needs, userId) => needs.filter(need => need.userId === userId)
 );
 
-export const selectLocalNeedsStatistics = createSelector(
-  [selectAllLocalNeeds, selectNeedResponses],
-  (needs, responses) => ({
-    totalNeeds: needs.length,
-    activeNeeds: needs.filter(n => n.status === 'active').length,
-    fulfilledNeeds: needs.filter(n => n.status === 'fulfilled').length,
-    totalResponses: responses.length
-  })
+export const selectLocalNeedsByUrgency = createSelector(
+  [selectAllLocalNeeds, (state, urgency) => urgency],
+  (needs, urgency) => needs.filter(need => need.urgency === urgency)
+);
+
+export const selectCriticalLocalNeeds = createSelector(
+  [selectAllLocalNeeds],
+  (needs) => needs.filter(need => need.urgency === 'critical' && need.status === 'active')
 );

@@ -1,4 +1,4 @@
-/* Dashboard Overview */
+/* Dashboard Overview - VERSIÓN COMPACTA */
 .dashboard-overview {
   padding: 0;
   max-width: 100%;
@@ -6,12 +6,12 @@
   background: #f8fafc;
 }
 
-/* Header */
+/* Header - MUY COMPACTO */
 .dashboard-header {
-  background: white;
+  background: #e3f2fd; /* Color temporal para verificar cambios */
   border-bottom: 1px solid #e2e8f0;
-  padding: 24px 32px;
-  margin-bottom: 32px;
+  padding: 8px 16px !important; /* !important para forzar */
+  margin-bottom: 12px !important;
 }
 
 .header-content {
@@ -29,20 +29,20 @@
 }
 
 .header-icon {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 24px !important;
+  font-size: 20px !important;
 }
 
 .header-info h1 {
-  margin: 0 0 4px 0;
-  font-size: 2rem;
+  margin: 0 0 2px 0;
+  font-size: 1.75rem;
   font-weight: 700;
   color: #1a202c;
 }
@@ -102,16 +102,16 @@
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  gap: 20px;
   max-width: 1400px;
-  margin: 0 auto 32px auto;
-  padding: 0 32px;
+  margin: 0 auto 24px auto;
+  padding: 0 24px;
 }
 
 .metric-card {
   background: white;
   border-radius: 16px;
-  padding: 24px;
+  padding: 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   position: relative;
@@ -137,7 +137,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .metric-icon {
@@ -226,17 +226,17 @@
 .dashboard-content {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 32px;
+  gap: 24px;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 24px 24px 24px;
 }
 
 .content-left,
 .content-right {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 /* Widgets del dashboard */
@@ -253,7 +253,7 @@
 }
 
 .widget-header {
-  padding: 20px 24px;
+  padding: 16px 20px;
   border-bottom: 1px solid #f1f5f9;
   display: flex;
   justify-content: space-between;
@@ -286,7 +286,7 @@
 }
 
 .widget-content {
-  padding: 24px;
+  padding: 20px;
 }
 
 /* Loading y estados vacíos */
@@ -717,7 +717,7 @@
 
 @media (max-width: 768px) {
   .dashboard-header {
-    padding: 20px 16px;
+    padding: 12px 16px;
   }
   
   .header-content {

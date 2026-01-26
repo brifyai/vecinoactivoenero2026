@@ -19,6 +19,7 @@ import {
 import { createNotification } from '../store/slices/notificationsSlice';
 import { selectUser } from '../store/selectors/authSelectors';
 import { showSuccessToast, showInfoToast } from '../utils/sweetalert';
+import storageService from '../services/storageService';
 
 export const useReduxFriends = () => {
   const dispatch = useDispatch();
@@ -119,6 +120,37 @@ export const useReduxFriends = () => {
     dispatch(clearError());
   };
 
+  // Helper functions from FriendsContext
+  const isFriend = (userId) => {
+    if (!user) return false;
+    return storageService.isFriend(user.id, userId);
+  };
+
+  const getFriendSuggestions = () => {
+    if (!user) return [];
+    
+    const allUsers = storageService.getUsers();
+    const currentFriends = storageService.getFriends(user.id);
+    
+    const suggestions = allUsers.filter(u => 
+      u.id !== user.id && 
+      !currentFriends.includes(u.id)
+    );
+    
+    return suggestions.slice(0, 10);
+  };
+
+  const searchFriends = (query) => {
+    if (!query.trim()) return friends;
+    
+    const lowerQuery = query.toLowerCase();
+    return friends.filter(friend => 
+      friend.name.toLowerCase().includes(lowerQuery) ||
+      (friend.email && friend.email.toLowerCase().includes(lowerQuery)) ||
+      (friend.location && friend.location.toLowerCase().includes(lowerQuery))
+    );
+  };
+
   return {
     friends,
     friendRequests,
@@ -132,6 +164,11 @@ export const useReduxFriends = () => {
     acceptFriendRequest: acceptRequest,
     rejectFriendRequest: rejectRequest,
     removeFriend: removeFriendship,
-    clearError: clearFriendsError
+    clearError: clearFriendsError,
+    // Helper functions
+    isFriend,
+    getFriendSuggestions,
+    searchFriends,
+    refreshFriends: loadUserFriends
   };
 };

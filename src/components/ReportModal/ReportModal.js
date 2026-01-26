@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useReports } from '../../context/ReportsContext';
+import { useReduxReports } from '../../hooks/useReduxReports';
 import { showSuccessToast, showErrorToast } from '../../utils/sweetalert';
 import ReportIcon from '@mui/icons-material/Report';
 import CloseIcon from '@mui/icons-material/Close';
 import './ReportModal.css';
 
 const ReportModal = ({ isOpen, onClose, targetType, targetId, targetInfo = {} }) => {
-  const { reportContent } = useReports();
+  const { reportContent } = useReduxReports();
   const [formData, setFormData] = useState({
     reason: '',
     description: ''

@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useProjects } from '../../context/ProjectsContext';
-import { useSharedResources } from '../../context/SharedResourcesContext';
+import { useReduxProjects } from '../../hooks/useReduxProjects';
+import { useReduxSharedResources } from '../../hooks/useReduxSharedResources';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useSidebar } from '../../context/SidebarContext';
-import { useGamification } from '../../context/GamificationContext';
+import { useReduxGamification } from '../../hooks/useReduxGamification';
 import { formatNumber } from '../../utils/formatNumber';
 import AddIcon from '@mui/icons-material/Add';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -28,8 +28,8 @@ import './Projects.css';
 const Projects = () => {
   const { user } = useAuth();
   const { isRightSidebarCollapsed } = useSidebar();
-  const { projects, voteProject, joinAsVolunteer, createProject } = useProjects();
-  const { addPoints, updateActivity } = useGamification();
+  const { projects, voteProject, joinAsVolunteer, createProject } = useReduxProjects();
+  const { addPoints, updateActivity } = useReduxGamification();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('projects');
   const [filter, setFilter] = useState('all');

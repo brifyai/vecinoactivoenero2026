@@ -1,93 +1,106 @@
 import { supabase } from '../config/supabase';
 
 /**
- * Servicio de autenticación ULTRA-SIMPLE
- * Solo usa tabla public.users - ignora completamente Supabase Auth
+ * Servicio de autenticación conectado a Supabase
+ * Usa tabla public.users con validación de contraseña
  */
 class CustomAuthService {
   
   async login(email, password, userType = 'user') {
     try {
-      console.log('🔄 ULTRA-SIMPLE AUTH: Login con:', email, 'tipo:', userType);
+      console.log('🔄 AUTH: Intentando login con:', email, 'tipo:', userType);
       
-      // Verificar credenciales hardcodeadas
-      const validCredentials = [
-        // Admin credentials
-        { email: 'admin@vecinoactivo.cl', password: '123456', role: 'admin' },
-        // Regular user credentials (demo)
-        { email: 'usuario@vecinoactivo.cl', password: '123456', role: 'user' },
-        { email: 'vecino@vecinoactivo.cl', password: '123456', role: 'user' }
-      ];
-      
-      const credential = validCredentials.find(cred => 
-        cred.email === email && cred.password === password
-      );
-      
-      if (!credential) {
-        throw new Error('Credenciales inválidas');
-      }
-      
-      // Si se solicita login de admin pero el usuario no es admin
-      if (userType === 'admin' && credential.role !== 'admin') {
-        throw new Error('No tienes permisos de administrador');
-      }
-      
-      console.log('✅ Credenciales correctas para:', credential.role);
-      
-      // Obtener datos del usuario de public.users
-      let { data: userData, error: userError } = await supabase
+      // 1. Buscar usuario en la base de datos por email
+      const { data: userData, error: userError } = await supabase
         .from('users')
         .select('*')
         .eq('email', email)
         .single();
       
       if (userError || !userData) {
-        // Si no existe el usuario en la BD, crear uno básico
-        const newUser = {
-          id: `user_${Date.now()}`,
-          email: email,
-          name: credential.role === 'admin' ? 'Administrador' : 'Usuario Demo',
-          role: credential.role,
-          avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(credential.role === 'admin' ? 'Admin' : 'Usuario')}&background=667eea&color=fff`,
-          verified: true,
-          email_verified: true,
-          created_at: new Date().toISOString()
-        };
-        
-        // Intentar insertar el usuario
-        const { data: insertedUser, error: insertError } = await supabase
-          .from('users')
-          .insert([newUser])
-          .select()
-          .single();
-        
-        if (!insertError && insertedUser) {
-          userData = insertedUser;
-        } else {
-          // Si falla la inserción, usar datos mock
-          userData = newUser;
-        }
+        console.error('❌ Usuario no encontrado:', email);
+        throw new Error('Credenciales inválidas');
       }
       
-      // Asegurar que el rol esté correcto
-      userData.role = credential.role;
+      console.log('✅ Usuario encontrado:', userData.email);
       
-      // Crear sesión ultra-simple
+      // 2. Validar contraseña
+      const storedPassword = userData.password;
+      
+      if (!storedPassword) {
+        console.error('❌ Usuario sin contraseña configurada');
+        throw new Error('Usuario sin contraseña configurada. Contacta al administrador.');
+      }
+      
+      // Validación de contraseña (soporta bcrypt y texto plano)
+      let passwordValid = false;
+      
+      // Si la contraseña almacenada es un hash bcrypt
+      if (storedPassword.startsWith('$2a$') || storedPassword.startsWith('$2b$')) {
+        // En producción, aquí usarías bcrypt.compare()
+        // Por ahora, solo para desarrollo
+        console.log('⚠️ Contraseña hasheada detectada - requiere bcrypt');
+        throw new Error('Sistema de contraseñas hasheadas no implementado aún');
+      } else {
+        // Contraseña en texto plano (solo desarrollo)
+        passwordValid = (storedPassword === password);
+      }
+      
+      if (!passwordValid) {
+        console.error('❌ Contraseña incorrecta');
+        throw new Error('Credenciales inválidas');
+      }
+      
+      console.log('✅ Contraseña correcta');
+      
+      // 3. Determinar rol del usuario
+      // Los admins son identificados por email específico o campo verified especial
+      const isAdmin = email === 'admin@vecinoactivo.cl' || 
+                      email.includes('admin@') ||
+                      userData.username === 'admin';
+      
+      const userRole = isAdmin ? 'admin' : 'user';
+      
+      // Si se solicita login de admin pero el usuario no es admin
+      if (userType === 'admin' && !isAdmin) {
+        console.error('❌ Usuario sin permisos de administrador');
+        throw new Error('No tienes permisos de administrador');
+      }
+      
+      console.log('✅ Validación de rol exitosa:', userRole);
+      
+      // 4. Actualizar última conexión
+      try {
+        await supabase
+          .from('users')
+          .update({ 
+            last_login: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', userData.id);
+      } catch (updateError) {
+        console.warn('⚠️ No se pudo actualizar last_login:', updateError);
+      }
+      
+      // 5. Crear sesión
       const session = {
-        user: userData,
-        access_token: `simple_${credential.role}_token`,
+        user: {
+          ...userData,
+          role: userRole
+        },
+        access_token: `token_${userData.id}_${Date.now()}`,
         expires_at: Date.now() + (24 * 60 * 60 * 1000), // 24 horas
-        simple_auth: true
+        created_at: Date.now()
       };
       
-      // Guardar en localStorage
+      // 6. Guardar sesión en localStorage
       localStorage.setItem('vecino-activo-auth', JSON.stringify(session));
       
-      console.log('✅ LOGIN EXITOSO - ULTRA SIMPLE');
-      return { user: userData, session };
+      console.log('✅ LOGIN EXITOSO - Usuario:', userData.name, 'Role:', userRole);
+      return { user: session.user, session };
       
     } catch (error) {
-      console.error('❌ Error en ultra-simple auth:', error);
+      console.error('❌ Error en autenticación:', error);
       throw error;
     }
   }
@@ -95,19 +108,33 @@ class CustomAuthService {
   async getCurrentUser() {
     try {
       const sessionData = localStorage.getItem('vecino-activo-auth');
-      if (!sessionData) return null;
+      
+      if (!sessionData) {
+        console.log('ℹ️ No hay sesión guardada en localStorage');
+        return null;
+      }
       
       const session = JSON.parse(sessionData);
       
-      // Verificar expiración
-      if (Date.now() > session.expires_at) {
+      // Verificar que la sesión tenga los datos necesarios
+      if (!session.user || !session.expires_at) {
+        console.warn('⚠️ Sesión inválida, limpiando...');
         localStorage.removeItem('vecino-activo-auth');
         return null;
       }
       
+      // Verificar expiración
+      if (Date.now() > session.expires_at) {
+        console.log('⏰ Sesión expirada, limpiando...');
+        localStorage.removeItem('vecino-activo-auth');
+        return null;
+      }
+      
+      console.log('✅ Sesión válida encontrada:', session.user.email);
       return session.user;
       
     } catch (error) {
+      console.error('❌ Error al obtener usuario actual:', error);
       localStorage.removeItem('vecino-activo-auth');
       return null;
     }

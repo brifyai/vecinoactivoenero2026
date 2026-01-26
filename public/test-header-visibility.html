@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Header Visibility</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: white;
+        }
+        
+        .test-header {
+            position: fixed !important;
+            top: 0px !important;
+            left: 0px !important;
+            right: 0px !important;
+            width: 100vw !important;
+            height: 100px !important;
+            background: red !important;
+            z-index: 999999 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 0 32px !important;
+            box-sizing: border-box !important;
+            border: 5px solid yellow !important;
+            font-size: 20px !important;
+            font-weight: bold !important;
+            color: white !important;
+        }
+        
+        .logo {
+            display: flex !important;
+            align-items: center !important;
+            gap: 16px !important;
+            color: white !important;
+            font-size: 28px !important;
+            font-weight: 800 !important;
+        }
+        
+        .buttons {
+            display: flex !important;
+            gap: 12px !important;
+            align-items: center !important;
+        }
+        
+        .btn {
+            background: blue !important;
+            color: white !important;
+            border: 3px solid black !important;
+            padding: 15px 25px !important;
+            border-radius: 12px !important;
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            min-width: 150px !important;
+            min-height: 50px !important;
+        }
+        
+        .btn.primary {
+            background: green !important;
+        }
+        
+        .content {
+            margin-top: 120px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <div class="logo">
+            <span style="font-size: 36px;">👥</span>
+            <span>VECINO ACTIVO</span>
+        </div>
+        
+        <div class="buttons">
+            <button class="btn">INICIAR SESIÓN</button>
+            <button class="btn primary">REGISTRARSE</button>
+        </div>
+    </div>
+    
+    <div class="content">
+        <h1>Test de Visibilidad de Header</h1>
+        <p>Si puedes ver el header rojo con botones arriba, entonces el problema no es del CSS básico.</p>
+        <p>Si NO puedes ver el header, entonces hay un problema más profundo con el navegador o la configuración.</p>
+    </div>
+</body>
+</html>

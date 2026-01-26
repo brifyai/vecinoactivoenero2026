@@ -1,10 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-// Base selector
 const selectVerificationState = (state) => state.verification;
 
-// Basic selectors
-export const selectVerificationRequests = createSelector(
+export const selectAllVerificationRequests = createSelector(
   [selectVerificationState],
   (verification) => verification.requests
 );
@@ -19,56 +17,53 @@ export const selectVerificationError = createSelector(
   (verification) => verification.error
 );
 
-export const selectVerificationStatus = createSelector(
-  [selectVerificationState],
-  (verification) => verification.status
-);
-
-export const selectVerificationDocuments = createSelector(
-  [selectVerificationState],
-  (verification) => verification.documents
-);
-
-export const selectVerificationSettings = createSelector(
-  [selectVerificationState],
-  (verification) => verification.settings
-);
-
-// Computed selectors
-export const selectPendingVerificationRequests = createSelector(
-  [selectVerificationRequests],
-  (requests) => requests.filter(request => request.status === 'pending')
+export const selectVerificationRequestsCount = createSelector(
+  [selectAllVerificationRequests],
+  (requests) => requests.length
 );
 
 export const selectVerificationRequestById = createSelector(
-  [selectVerificationRequests, (state, id) => id],
-  (requests, id) => requests.find(request => request.id === id)
+  [selectAllVerificationRequests, (state, requestId) => requestId],
+  (requests, requestId) => requests.find(request => request.id === requestId)
 );
 
-export const selectVerifiedUsers = createSelector(
-  [selectVerificationRequests],
-  (requests) => requests.filter(request => request.status === 'verified')
+export const selectPendingVerificationRequests = createSelector(
+  [selectAllVerificationRequests],
+  (requests) => requests.filter(request => request.status === 'pending')
 );
 
-export const selectVerificationRequestsByType = createSelector(
-  [selectVerificationRequests, (state, type) => type],
-  (requests, type) => requests.filter(request => request.type === type)
+export const selectApprovedVerificationRequests = createSelector(
+  [selectAllVerificationRequests],
+  (requests) => requests.filter(request => request.status === 'approved')
 );
 
-export const selectVerificationStatistics = createSelector(
-  [selectVerificationRequests],
-  (requests) => ({
-    total: requests.length,
-    pending: requests.filter(r => r.status === 'pending').length,
-    verified: requests.filter(r => r.status === 'verified').length,
-    rejected: requests.filter(r => r.status === 'rejected').length
-  })
+export const selectRejectedVerificationRequests = createSelector(
+  [selectAllVerificationRequests],
+  (requests) => requests.filter(request => request.status === 'rejected')
 );
 
-export const selectUserVerificationStatus = createSelector(
-  [selectVerificationRequests, (state, userId) => userId],
-  (requests, userId) => {
-    const userRequest = requests.find(request => request.userId === userId);
-    return userRequest ? userRequest.status : 'unverified';
+export const selectUserVerificationRequest = createSelector(
+  [selectAllVerificationRequests, (state, userId) => userId],
+  (requests, userId) => requests.find(
+    request => request.userId === userId && request.status === 'pending'
+  )
+);
+
+export const selectUserVerificationHistory = createSelector(
+  [selectAllVerificationRequests, (state, userId) => userId],
+  (requests, userId) => requests.filter(request => request.userId === userId)
+);
+
+export const selectVerificationsByNeighborhood = createSelector(
+  [selectAllVerificationRequests, (state, neighborhoodId) => neighborhoodId],
+  (requests, neighborhoodId) => requests.filter(request => request.neighborhoodId === neighborhoodId)
+);
+
+export const selectRecentVerificationRequests = createSelector(
+  [selectAllVerificationRequests],
+  (requests) => {
+    return [...requests]
+      .sort((a, b) => new Date(b.requestDate) - new Date(a.requestDate))
+      .slice(0, 10);
   }
 );

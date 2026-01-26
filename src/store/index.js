@@ -18,6 +18,7 @@ import friendsReducer from './slices/friendsSlice';
 import groupsReducer from './slices/groupsSlice';
 import eventsReducer from './slices/eventsSlice';
 import messagesReducer from './slices/messagesSlice';
+import conversationsReducer from './slices/conversationsSlice';
 import projectsReducer from './slices/projectsSlice';
 import pollsReducer from './slices/pollsSlice';
 import helpRequestsReducer from './slices/helpRequestsSlice';
@@ -63,6 +64,7 @@ const rootReducer = {
   groups: groupsReducer,
   events: eventsReducer,
   messages: messagesReducer,
+  conversations: conversationsReducer,
   projects: projectsReducer,
   polls: pollsReducer,
   helpRequests: helpRequestsReducer,

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import useFirebaseNotifications from '../../hooks/useFirebaseNotifications';
-import useFirebaseMessages from '../../hooks/useFirebaseMessages';
+import { useFirebaseNotifications } from '../../hooks/useFirebaseNotifications';
+import { useFirebaseMessages } from '../../hooks/useFirebaseMessages';
 
 const FirebaseInitializer = ({ children }) => {
   const { user } = useSelector(state => state.auth);

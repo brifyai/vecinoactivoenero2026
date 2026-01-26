@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useServices } from '../../context/ServicesContext';
+import { useReduxServices } from '../../hooks/useReduxServices';
 import { useSidebar } from '../../context/SidebarContext';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import SearchIcon from '@mui/icons-material/Search';
@@ -12,7 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './ModernDirectory.css';
 
 const ModernDirectory = () => {
-  const { services, addService } = useServices();
+  const { services, addService } = useReduxServices();
   const { isRightSidebarCollapsed } = useSidebar();
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');

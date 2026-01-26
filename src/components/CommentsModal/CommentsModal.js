@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useVerification } from '../../context/VerificationContext';
+import { useReduxVerification } from '../../hooks/useReduxVerification';
 import VerifiedBadge from '../VerifiedBadge/VerifiedBadge';
 import EmojiPicker from '../EmojiPicker/EmojiPicker';
 import CloseIcon from '@mui/icons-material/Close';
@@ -11,7 +11,7 @@ import './CommentsModal.css';
 
 const CommentsModal = ({ post, onClose }) => {
   const { user } = useAuth();
-  const { getVerificationStatus } = useVerification();
+  const { getVerificationStatus } = useReduxVerification();
   const [commentText, setCommentText] = useState('');
   const [showReactionPicker, setShowReactionPicker] = useState(null);
   const [comments, setComments] = useState([

@@ -40,38 +40,21 @@ export const selectServiceById = createSelector(
   (services, id) => services.find(service => service.id === id)
 );
 
-export const selectActiveServices = createSelector(
-  [selectAllServices],
-  (services) => services.filter(service => service.status === 'active')
-);
-
 export const selectServicesByCategory = createSelector(
   [selectAllServices, (state, category) => category],
-  (services, category) => services.filter(service => service.category === category)
+  (services, category) => {
+    if (category === 'all') return services;
+    return services.filter(service => service.category === category);
+  }
 );
 
-export const selectServicesByProvider = createSelector(
-  [selectAllServices, (state, providerId) => providerId],
-  (services, providerId) => services.filter(service => service.providerId === providerId)
+export const selectServicesByNeighborhood = createSelector(
+  [selectAllServices, (state, neighborhoodId) => neighborhoodId],
+  (services, neighborhoodId) => 
+    services.filter(service => service.neighborhoodId === neighborhoodId || !service.neighborhoodId)
 );
 
-export const selectFeaturedServices = createSelector(
+export const selectServicesCount = createSelector(
   [selectAllServices],
-  (services) => services.filter(service => service.featured)
-);
-
-export const selectServicesByRating = createSelector(
-  [selectAllServices],
-  (services) => services
-    .sort((a, b) => (b.rating || 0) - (a.rating || 0))
-);
-
-export const selectServicesStatistics = createSelector(
-  [selectAllServices, selectServiceProviders],
-  (services, providers) => ({
-    totalServices: services.length,
-    activeServices: services.filter(s => s.status === 'active').length,
-    totalProviders: providers.length,
-    averageRating: services.reduce((sum, s) => sum + (s.rating || 0), 0) / services.length || 0
-  })
+  (services) => services.length
 );

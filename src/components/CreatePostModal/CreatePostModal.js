@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useReduxPosts as usePosts } from '../../hooks/useReduxPosts';
 import { showSuccessToast, showInfoToast } from '../../utils/sweetalert';

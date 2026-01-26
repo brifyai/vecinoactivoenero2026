@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useVerification } from '../../context/VerificationContext';
+import { useReduxVerification } from '../../hooks/useReduxVerification';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { showSuccessToast, showErrorToast } from '../../utils/sweetalert';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
@@ -9,7 +9,7 @@ import './VerificationModal.css';
 
 const VerificationModal = ({ isOpen, onClose }) => {
   const { user } = useAuth();
-  const { requestVerification, loading } = useVerification();
+  const { requestVerification, loading } = useReduxVerification();
   const [formData, setFormData] = useState({
     documentType: 'cedula',
     documentNumber: '',

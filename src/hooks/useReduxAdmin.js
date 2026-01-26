@@ -16,6 +16,7 @@ import {
   updateConfigValue,
   clearUserSearchResults
 } from '../store/slices/adminDashboardSlice';
+import { selectUser } from '../store/selectors/authSelectors';
 
 /**
  * Hook personalizado para gestión administrativa con Redux
@@ -23,6 +24,9 @@ import {
  */
 export const useReduxAdmin = () => {
   const dispatch = useDispatch();
+  
+  // Obtener usuario autenticado
+  const authUser = useSelector(selectUser);
   
   const {
     currentAdmin,
@@ -171,11 +175,37 @@ export const useReduxAdmin = () => {
     return permissions.role_types.includes(roleType);
   };
 
-  const canManageTickets = () => hasPermission('can_manage_tickets');
-  const canSendCampaigns = () => hasPermission('can_send_campaigns');
-  const canManageUsers = () => hasPermission('can_manage_users');
-  const canViewAnalytics = () => hasPermission('can_view_analytics');
-  const isAdmin = () => hasPermission('is_admin');
+  const canManageTickets = () => {
+    // Si el usuario autenticado tiene role === 'admin', permitir acceso
+    if (authUser?.role === 'admin') return true;
+    if (currentAdmin?.role === 'admin') return true;
+    // Si no, verificar permisos específicos
+    return hasPermission('can_manage_tickets');
+  };
+  
+  const canSendCampaigns = () => {
+    if (authUser?.role === 'admin') return true;
+    if (currentAdmin?.role === 'admin') return true;
+    return hasPermission('can_send_campaigns');
+  };
+  
+  const canManageUsers = () => {
+    if (authUser?.role === 'admin') return true;
+    if (currentAdmin?.role === 'admin') return true;
+    return hasPermission('can_manage_users');
+  };
+  
+  const canViewAnalytics = () => {
+    if (authUser?.role === 'admin') return true;
+    if (currentAdmin?.role === 'admin') return true;
+    return hasPermission('can_view_analytics');
+  };
+  
+  const isAdmin = () => {
+    if (authUser?.role === 'admin') return true;
+    if (currentAdmin?.role === 'admin') return true;
+    return hasPermission('is_admin');
+  };
 
   const isSuperAdmin = () => hasRole('super_admin');
   const isUVAdmin = () => hasRole('uv_admin');

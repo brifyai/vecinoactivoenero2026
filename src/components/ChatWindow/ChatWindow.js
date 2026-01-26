@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useMessages as useMessagesContext } from '../../context/MessagesContext';
+import { useReduxMessages } from '../../hooks/useReduxMessages';
 import storageService from '../../services/storageService';
 import SendIcon from '@mui/icons-material/Send';
 import './ChatWindow.css';
 
 const ChatWindow = ({ conversation, currentUserId }) => {
-  const { sendMessage, getConversation, markConversationAsRead } = useMessagesContext();
+  const { sendMessage, getConversation, markConversationAsRead } = useReduxMessages();
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
   const [loading, setLoading] = useState(true);

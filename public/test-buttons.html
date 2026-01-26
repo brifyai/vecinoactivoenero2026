@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Buttons - Independiente</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial;">
+    
+    <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 80px;
+        background: red;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        box-sizing: border-box;
+    ">
+        <div style="color: white; font-size: 24px; font-weight: bold;">
+            VECINO ACTIVO TEST
+        </div>
+        
+        <div style="display: flex; gap: 15px;">
+            <button onclick="alert('LOGIN FUNCIONA')" style="
+                background: yellow;
+                color: black;
+                border: 3px solid black;
+                padding: 12px 20px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                border-radius: 8px;
+                min-width: 120px;
+            ">
+                INICIAR SESIÓN
+            </button>
+            
+            <button onclick="alert('REGISTER FUNCIONA')" style="
+                background: blue;
+                color: white;
+                border: 3px solid white;
+                padding: 12px 20px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                border-radius: 8px;
+                min-width: 120px;
+            ">
+                REGISTRARSE
+            </button>
+        </div>
+    </div>
+    
+    <div style="margin-top: 100px; padding: 20px;">
+        <h1>Test de Botones Independiente</h1>
+        <p>Si ves los botones arriba, el navegador funciona correctamente.</p>
+        <p>Ancho de pantalla: <span id="width"></span>px</p>
+        <p>Alto de pantalla: <span id="height"></span>px</p>
+    </div>
+    
+    <script>
+        document.getElementById('width').textContent = window.innerWidth;
+        document.getElementById('height').textContent = window.innerHeight;
+        console.log('Test HTML cargado - Ancho:', window.innerWidth, 'Alto:', window.innerHeight);
+    </script>
+    
+</body>
+</html>

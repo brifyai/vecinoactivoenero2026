@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import useFirebaseMessages from '../../hooks/useFirebaseMessages';
-import useFirebaseNotifications from '../../hooks/useFirebaseNotifications';
+import { useFirebaseMessages } from '../../hooks/useFirebaseMessages';
+import { useFirebaseNotifications } from '../../hooks/useFirebaseNotifications';
 import './FirebaseTest.css';
 
 const FirebaseTest = () => {

@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEvents } from '../../context/EventsContext';
+import { useReduxEvents } from '../../hooks/useReduxEvents';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { showSuccessToast } from '../../utils/sweetalert';
 import './EventCard.css';
 
 const EventCard = () => {
   const navigate = useNavigate();
-  const { events, attendEvent, cancelAttendance } = useEvents();
+  const { events, attendEvent, cancelAttendance } = useReduxEvents();
   const { user } = useAuth();
 
   // Obtener el próximo evento

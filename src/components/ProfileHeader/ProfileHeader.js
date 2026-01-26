@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useVerification } from '../../context/VerificationContext';
+import { useReduxVerification } from '../../hooks/useReduxVerification';
 import imageService from '../../services/imageService';
 import { showSuccessToast, showErrorToast } from '../../utils/sweetalert';
 import { formatNumber } from '../../utils/formatNumber';
@@ -13,7 +13,7 @@ import './ProfileHeader.css';
 
 const ProfileHeader = ({ user: propUser, isOwnProfile = true }) => {
   const { user: currentUser, updateUser } = useAuth();
-  const { getVerificationStatus } = useVerification();
+  const { getVerificationStatus } = useReduxVerification();
   
   // Usar el usuario del prop si existe, sino usar el usuario actual
   const displayUser = propUser || currentUser;

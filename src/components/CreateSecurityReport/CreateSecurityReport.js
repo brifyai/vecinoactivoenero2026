@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useSecurity } from '../../context/SecurityContext';
+import { useReduxSecurity } from '../../hooks/useReduxSecurity';
 import { showSuccessToast, showErrorToast } from '../../utils/sweetalert';
 import CloseIcon from '@mui/icons-material/Close';
 import './CreateSecurityReport.css';
 
 const CreateSecurityReport = ({ onClose, defaultLocation }) => {
   const { user } = useAuth();
-  const { createReport } = useSecurity();
+  const { createReport } = useReduxSecurity();
   
   const [formData, setFormData] = useState({
     type: 'robo',

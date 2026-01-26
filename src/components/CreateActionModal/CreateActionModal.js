@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useCommunityActions } from '../../context/CommunityActionsContext';
+import { useReduxCommunityActions } from '../../hooks/useReduxCommunityActions';
 import { showSuccessToast, showErrorToast } from '../../utils/sweetalert';
 import CloseIcon from '@mui/icons-material/Close';
 import './CreateActionModal.css';
 
 const CreateActionModal = ({ onClose, onSuccess }) => {
   const { user } = useAuth();
-  const { createAction } = useCommunityActions();
+  const { createAction } = useReduxCommunityActions();
   const [formData, setFormData] = useState({
     title: '',
     description: '',

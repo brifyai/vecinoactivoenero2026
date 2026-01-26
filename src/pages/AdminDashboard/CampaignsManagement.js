@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import { useReduxCampaigns } from '../../hooks/useReduxCampaigns';
 import { useReduxAdmin } from '../../hooks/useReduxAdmin';
+import CreateCampaignModal from '../../components/AdminDashboard/CreateCampaignModal';
 
 // Material UI Icons
 import CampaignIcon from '@mui/icons-material/Campaign';
@@ -37,6 +38,7 @@ const CampaignsManagement = () => {
     error,
     filters,
     fetchCampaigns,
+    createCampaign,
     sendCampaign,
     deleteCampaign,
     setFilters,
@@ -56,6 +58,7 @@ const CampaignsManagement = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCampaigns, setSelectedCampaigns] = useState([]);
   const [viewMode, setViewMode] = useState('grid'); // list, grid
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   // Cargar campañas al montar el componente
   useEffect(() => {
@@ -82,9 +85,20 @@ const CampaignsManagement = () => {
   };
 
   const handleSendCampaign = async (campaignId) => {
+    if (!window.confirm('¿Estás seguro de que quieres enviar esta campaña ahora?')) {
+      return;
+    }
+
     const result = await sendCampaign(campaignId);
     if (result.success) {
-      console.log('✅ Campaña enviada correctamente');
+      alert(`✅ Campaña enviada: ${result.sent}/${result.total} mensajes enviados exitosamente`);
+      // Recargar campañas
+      const neighborhoodId = getCurrentNeighborhoodId();
+      if (neighborhoodId) {
+        await loadCampaigns(neighborhoodId);
+      }
+    } else {
+      alert(`❌ Error al enviar campaña: ${result.error}`);
     }
   };
 
@@ -94,6 +108,46 @@ const CampaignsManagement = () => {
       if (result.success) {
         console.log('✅ Campaña eliminada correctamente');
       }
+    }
+  };
+
+  const handleCreateCampaign = () => {
+    console.log('📝 Abriendo modal para crear campaña');
+    setShowCreateModal(true);
+  };
+
+  const handleSubmitCampaign = async (campaignData) => {
+    console.log('📤 Creando campaña:', campaignData);
+    
+    try {
+      // Llamar a la función de crear campaña del hook
+      const result = await createCampaign(campaignData);
+      
+      if (result.success) {
+        // Si el estado es 'sent', enviar inmediatamente
+        if (campaignData.status === 'sent') {
+          const sendResult = await sendCampaign(result.data.id);
+          
+          if (sendResult.success) {
+            alert(`✅ Campaña "${campaignData.title}" enviada exitosamente: ${sendResult.sent}/${sendResult.total} mensajes`);
+          } else {
+            alert(`⚠️ Campaña creada pero hubo un error al enviar: ${sendResult.error}`);
+          }
+        } else {
+          alert(`✅ Campaña "${campaignData.title}" ${campaignData.status === 'scheduled' ? 'programada' : 'guardada como borrador'} exitosamente`);
+        }
+        
+        // Recargar campañas
+        const neighborhoodId = getCurrentNeighborhoodId();
+        if (neighborhoodId) {
+          await loadCampaigns(neighborhoodId);
+        }
+      } else {
+        alert(`❌ Error al crear campaña: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error creando campaña:', error);
+      alert('❌ Error al crear la campaña. Por favor intenta de nuevo.');
     }
   };
 
@@ -159,7 +213,7 @@ const CampaignsManagement = () => {
           </div>
         </div>
         <div className="header-actions">
-          <button className="create-campaign-btn">
+          <button className="create-campaign-btn" onClick={handleCreateCampaign}>
             <AddIcon />
             Nueva Campaña
           </button>
@@ -310,7 +364,7 @@ const CampaignsManagement = () => {
             <CampaignIcon />
             <h3>No hay campañas</h3>
             <p>No se encontraron campañas con los filtros aplicados.</p>
-            <button className="create-first-campaign">
+            <button className="create-first-campaign" onClick={handleCreateCampaign}>
               <AddIcon />
               Crear primera campaña
             </button>
@@ -414,6 +468,14 @@ const CampaignsManagement = () => {
           </div>
         )}
       </div>
+
+      {/* Modal de Crear Campaña */}
+      <CreateCampaignModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSubmit={handleSubmitCampaign}
+        neighborhoodId={getCurrentNeighborhoodId()}
+      />
     </div>
   );
 };

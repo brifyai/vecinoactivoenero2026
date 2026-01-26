@@ -19,6 +19,7 @@ import CampaignsManagement from './CampaignsManagement';
 import UsersManagement from './UsersManagement';
 import Analytics from './Analytics';
 import EmergencyManagement from './EmergencyManagement';
+import SettingsPage from './SettingsPage';
 
 // Material UI
 import { Box, CircularProgress, Alert } from '@mui/material';
@@ -297,6 +298,7 @@ const AdminDashboard = () => {
               <Route path="/campaigns/*" element={<CampaignsManagement />} />
               <Route path="/users/*" element={<UsersManagement />} />
               <Route path="/analytics" element={<Analytics />} />
+              <Route path="/settings" element={<SettingsPage />} />
               <Route path="*" element={<Navigate to="/admin/dashboard/overview" replace />} />
             </Routes>
           </div>

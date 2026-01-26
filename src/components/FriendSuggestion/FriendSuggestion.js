@@ -1,9 +1,9 @@
 import React from 'react';
-import { useFriends } from '../../context/FriendsContext';
+import { useReduxFriends } from '../../hooks/useReduxFriends';
 import './FriendSuggestion.css';
 
 const FriendSuggestion = () => {
-  const { getFriendSuggestions, sendFriendRequest } = useFriends();
+  const { getFriendSuggestions, sendFriendRequest } = useReduxFriends();
   const suggestions = getFriendSuggestions().slice(0, 2);
 
   const handleAddFriend = (friendId, friendName) => {

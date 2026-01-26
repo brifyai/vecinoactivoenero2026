@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSidebar } from '../../context/SidebarContext';
-import { usePolls } from '../../context/PollsContext';
+import { useReduxPolls } from '../../hooks/useReduxPolls';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import PeopleIcon from '@mui/icons-material/People';
@@ -13,7 +13,7 @@ import './ModernPolls.css';
 
 const ModernPolls = () => {
   const { isRightSidebarCollapsed } = useSidebar();
-  const { polls, createPoll, vote, getUserVote } = usePolls();
+  const { polls, createPoll, vote, getUserVote } = useReduxPolls();
   const { user } = useAuth();
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [showModal, setShowModal] = useState(false);

@@ -1,9 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-// Base selector
 const selectConnectionsState = (state) => state.connections;
 
-// Basic selectors
 export const selectAllConnections = createSelector(
   [selectConnectionsState],
   (connections) => connections.connections
@@ -19,55 +17,60 @@ export const selectConnectionsError = createSelector(
   (connections) => connections.error
 );
 
-export const selectConnectionRequests = createSelector(
-  [selectConnectionsState],
-  (connections) => connections.requests
-);
-
-export const selectConnectionSuggestions = createSelector(
-  [selectConnectionsState],
-  (connections) => connections.suggestions
-);
-
-export const selectBlockedUsers = createSelector(
-  [selectConnectionsState],
-  (connections) => connections.blocked
-);
-
-// Computed selectors
-export const selectConnectionById = createSelector(
-  [selectAllConnections, (state, id) => id],
-  (connections, id) => connections.find(connection => connection.id === id)
-);
-
-export const selectActiveConnections = createSelector(
+export const selectConnectionsCount = createSelector(
   [selectAllConnections],
-  (connections) => connections.filter(connection => connection.status === 'active')
+  (connections) => connections.length
 );
 
-export const selectPendingConnectionRequests = createSelector(
-  [selectConnectionRequests],
-  (requests) => requests.filter(request => request.status === 'pending')
+export const selectConnectionById = createSelector(
+  [selectAllConnections, (state, connectionId) => connectionId],
+  (connections, connectionId) => connections.find(connection => connection.id === connectionId)
 );
 
-export const selectMutualConnections = createSelector(
+export const selectUserConnections = createSelector(
   [selectAllConnections, (state, userId) => userId],
-  (connections, userId) => connections.filter(connection => 
-    connection.mutualConnections && connection.mutualConnections.includes(userId)
+  (connections, userId) => connections.filter(
+    connection => connection.user1Id === userId || connection.user2Id === userId
   )
 );
 
-export const selectNearbyConnections = createSelector(
-  [selectAllConnections],
-  (connections) => connections.filter(connection => connection.distance && connection.distance < 1000)
+export const selectAcceptedConnections = createSelector(
+  [selectAllConnections, (state, userId) => userId],
+  (connections, userId) => connections.filter(
+    connection => connection.status === 'accepted' &&
+                 (connection.user1Id === userId || connection.user2Id === userId)
+  )
 );
 
-export const selectConnectionsStatistics = createSelector(
-  [selectAllConnections, selectConnectionRequests, selectBlockedUsers],
-  (connections, requests, blocked) => ({
-    totalConnections: connections.length,
-    activeConnections: connections.filter(c => c.status === 'active').length,
-    pendingRequests: requests.filter(r => r.status === 'pending').length,
-    blockedUsers: blocked.length
-  })
+export const selectPendingConnectionRequests = createSelector(
+  [selectAllConnections, (state, userId) => userId],
+  (connections, userId) => connections.filter(
+    connection => connection.status === 'pending' && connection.user2Id === userId
+  )
+);
+
+export const selectSentConnectionRequests = createSelector(
+  [selectAllConnections, (state, userId) => userId],
+  (connections, userId) => connections.filter(
+    connection => connection.status === 'pending' && connection.user1Id === userId
+  )
+);
+
+export const selectConnectionStatus = createSelector(
+  [selectAllConnections, (state, userId1, userId2) => ({ userId1, userId2 })],
+  (connections, { userId1, userId2 }) => {
+    const connection = connections.find(
+      c => (c.user1Id === userId1 && c.user2Id === userId2) ||
+           (c.user1Id === userId2 && c.user2Id === userId1)
+    );
+    return connection?.status || null;
+  }
+);
+
+export const selectBlockedConnections = createSelector(
+  [selectAllConnections, (state, userId) => userId],
+  (connections, userId) => connections.filter(
+    connection => connection.status === 'blocked' &&
+                 (connection.user1Id === userId || connection.user2Id === userId)
+  )
 );

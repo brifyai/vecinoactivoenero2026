@@ -161,7 +161,12 @@ const AdminHeader = ({ currentAdmin, onSidebarToggle, sidebarCollapsed }) => {
         <div className="header-item profile-wrapper">
           <button 
             className="profile-btn"
-            onClick={() => setShowProfileMenu(!showProfileMenu)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowProfileMenu(!showProfileMenu);
+              setShowNotifications(false);
+            }}
+            type="button"
           >
             {currentAdmin?.avatar ? (
               <img 

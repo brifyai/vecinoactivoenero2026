@@ -209,7 +209,7 @@ code {
   background: white !important;
 }
 
-/* SOLUCIÓN SIMPLE PARA MÓVIL */
+/* DESHABILITADO TEMPORALMENTE PARA DEBUG
 @media (max-width: 768px) {
   body, html {
     margin: 0 !important;
@@ -241,7 +241,6 @@ code {
     margin: 0 !important;
   }
   
-  /* FORZAR CENTRADO PARA SETTINGS */
   .settings-page {
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -251,23 +250,40 @@ code {
     box-sizing: border-box !important;
   }
   
-  /* FORZAR OCULTAR RIGHTSIDEBAR EN MÓVIL */
   .right-sidebar,
   .collapse-toggle-btn {
     display: none !important;
   }
   
-  /* ASEGURAR QUE TODO EL CONTENIDO QUEPA EN PANTALLA */
-  * {
-    max-width: 100% !important;
-    box-sizing: border-box !important;
+  [data-testid="debug-header"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: red !important;
+    z-index: 99999 !important;
   }
   
-  /* PREVENIR SCROLL HORIZONTAL */
+  [data-testid="debug-header"] > div {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  [data-testid="debug-header"] div[style*="background: yellow"],
+  [data-testid="debug-header"] div[style*="background: blue"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-width: 100px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+  
   body {
     overflow-x: hidden !important;
   }
 }
+*/
 
 /* Estilos globales para iconos Material UI */
 .MuiSvgIcon-root {

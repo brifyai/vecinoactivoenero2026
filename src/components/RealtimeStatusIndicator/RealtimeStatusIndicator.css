@@ -44,6 +44,7 @@
 }
 
 .test-toggle {
+  display: none; /* Ocultar botón Test */
   background: #3b82f6;
   color: white;
   border: none;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useCommunityActions } from '../../context/CommunityActionsContext';
+import { useReduxCommunityActions } from '../../hooks/useReduxCommunityActions';
 import { useNeighborhoods } from '../../context/NeighborhoodsContext';
 import storageService from '../../services/storageService';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -11,7 +11,7 @@ import './ActionCard.css';
 
 const ActionCard = ({ action, userLocation }) => {
   const { user } = useAuth();
-  const { joinAction, leaveAction } = useCommunityActions();
+  const { joinAction, leaveAction } = useReduxCommunityActions();
   const { calculateDistance } = useNeighborhoods();
   const [organizer, setOrganizer] = useState(null);
   const [isJoined, setIsJoined] = useState(

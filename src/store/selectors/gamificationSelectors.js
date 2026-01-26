@@ -1,17 +1,15 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-// Base selector
 const selectGamificationState = (state) => state.gamification;
 
-// Basic selectors
-export const selectUserPoints = createSelector(
+export const selectUserStats = createSelector(
   [selectGamificationState],
-  (gamification) => gamification.points
+  (gamification) => gamification.userStats
 );
 
-export const selectUserBadges = createSelector(
+export const selectLeaderboard = createSelector(
   [selectGamificationState],
-  (gamification) => gamification.badges
+  (gamification) => gamification.leaderboard
 );
 
 export const selectGamificationLoading = createSelector(
@@ -24,63 +22,42 @@ export const selectGamificationError = createSelector(
   (gamification) => gamification.error
 );
 
-export const selectLeaderboard = createSelector(
-  [selectGamificationState],
-  (gamification) => gamification.leaderboard
-);
-
-export const selectAchievements = createSelector(
-  [selectGamificationState],
-  (gamification) => gamification.achievements
-);
-
-export const selectChallenges = createSelector(
-  [selectGamificationState],
-  (gamification) => gamification.challenges
-);
-
-// Computed selectors
-export const selectUserLevel = createSelector(
-  [selectUserPoints],
-  (points) => {
-    if (points < 100) return 1;
-    if (points < 500) return 2;
-    if (points < 1000) return 3;
-    if (points < 2500) return 4;
-    return 5;
-  }
-);
-
-export const selectUnlockedBadges = createSelector(
-  [selectUserBadges],
-  (badges) => badges.filter(badge => badge.unlocked)
-);
-
-export const selectActiveChallenges = createSelector(
-  [selectChallenges],
-  (challenges) => challenges.filter(challenge => challenge.active)
-);
-
-export const selectCompletedAchievements = createSelector(
-  [selectAchievements],
-  (achievements) => achievements.filter(achievement => achievement.completed)
-);
-
 export const selectUserRank = createSelector(
-  [selectLeaderboard, selectUserPoints],
-  (leaderboard, userPoints) => {
-    const sortedLeaderboard = leaderboard.sort((a, b) => b.points - a.points);
-    return sortedLeaderboard.findIndex(user => user.points === userPoints) + 1;
+  [selectLeaderboard, (state, userId) => userId],
+  (leaderboard, userId) => {
+    const index = leaderboard.findIndex(u => u.userId === userId);
+    return index >= 0 ? index + 1 : null;
   }
 );
 
-export const selectGamificationStatistics = createSelector(
-  [selectUserPoints, selectUserBadges, selectAchievements, selectChallenges],
-  (points, badges, achievements, challenges) => ({
-    totalPoints: points,
-    totalBadges: badges.length,
-    unlockedBadges: badges.filter(b => b.unlocked).length,
-    completedAchievements: achievements.filter(a => a.completed).length,
-    activeChallenges: challenges.filter(c => c.active).length
-  })
+export const selectNeighborhoodLeaderboard = createSelector(
+  [selectLeaderboard, (state, neighborhoodId) => neighborhoodId],
+  (leaderboard, neighborhoodId) => {
+    return leaderboard.filter(u => u.neighborhoodId === neighborhoodId).slice(0, 10);
+  }
+);
+
+export const selectTopUsers = createSelector(
+  [selectLeaderboard],
+  (leaderboard) => leaderboard.slice(0, 10)
+);
+
+export const selectUserLevel = createSelector(
+  [selectUserStats],
+  (userStats) => userStats?.level || 1
+);
+
+export const selectUserPoints = createSelector(
+  [selectUserStats],
+  (userStats) => userStats?.points || 0
+);
+
+export const selectUserBadges = createSelector(
+  [selectUserStats],
+  (userStats) => userStats?.badges || []
+);
+
+export const selectUserStreak = createSelector(
+  [selectUserStats],
+  (userStats) => userStats?.streak || { current: 0, longest: 0 }
 );

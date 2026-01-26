@@ -4,9 +4,14 @@ import { createSelector } from '@reduxjs/toolkit';
 const selectModerationState = (state) => state.moderation;
 
 // Basic selectors
-export const selectModerationQueue = createSelector(
+export const selectModerationReports = createSelector(
   [selectModerationState],
-  (moderation) => moderation.queue
+  (moderation) => moderation.reports
+);
+
+export const selectModerators = createSelector(
+  [selectModerationState],
+  (moderation) => moderation.moderators
 );
 
 export const selectModerationLoading = createSelector(
@@ -19,51 +24,40 @@ export const selectModerationError = createSelector(
   (moderation) => moderation.error
 );
 
-export const selectModerationActions = createSelector(
-  [selectModerationState],
-  (moderation) => moderation.actions
-);
-
-export const selectModerationRules = createSelector(
-  [selectModerationState],
-  (moderation) => moderation.rules
-);
-
-export const selectModerationSettings = createSelector(
-  [selectModerationState],
-  (moderation) => moderation.settings
-);
-
 // Computed selectors
-export const selectPendingModerationItems = createSelector(
-  [selectModerationQueue],
-  (queue) => queue.filter(item => item.status === 'pending')
+export const selectPendingModerationReports = createSelector(
+  [selectModerationReports],
+  (reports) => reports.filter(report => report.status === 'pending')
 );
 
-export const selectModerationItemById = createSelector(
-  [selectModerationQueue, (state, id) => id],
-  (queue, id) => queue.find(item => item.id === id)
+export const selectResolvedModerationReports = createSelector(
+  [selectModerationReports],
+  (reports) => reports.filter(report => report.status === 'resolved')
 );
 
-export const selectModerationItemsByType = createSelector(
-  [selectModerationQueue, (state, type) => type],
-  (queue, type) => queue.filter(item => item.type === type)
+export const selectRejectedModerationReports = createSelector(
+  [selectModerationReports],
+  (reports) => reports.filter(report => report.status === 'rejected')
 );
 
-export const selectRecentModerationActions = createSelector(
-  [selectModerationActions],
-  (actions) => actions
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 20)
+export const selectModeratorReports = createSelector(
+  [selectModerationReports, (state, moderatorId) => moderatorId],
+  (reports, moderatorId) => reports.filter(report => report.moderatorId === moderatorId)
+);
+
+export const selectModerationReportById = createSelector(
+  [selectModerationReports, (state, id) => id],
+  (reports, id) => reports.find(report => report.id === id)
 );
 
 export const selectModerationStatistics = createSelector(
-  [selectModerationQueue, selectModerationActions],
-  (queue, actions) => ({
-    totalItems: queue.length,
-    pendingItems: queue.filter(item => item.status === 'pending').length,
-    approvedItems: queue.filter(item => item.status === 'approved').length,
-    rejectedItems: queue.filter(item => item.status === 'rejected').length,
-    totalActions: actions.length
+  [selectModerationReports, selectModerators],
+  (reports, moderators) => ({
+    totalReports: reports.length,
+    pendingReports: reports.filter(r => r.status === 'pending').length,
+    resolvedReports: reports.filter(r => r.status === 'resolved').length,
+    rejectedReports: reports.filter(r => r.status === 'rejected').length,
+    totalModerators: moderators.length,
+    activeModerators: moderators.filter(m => m.actionsCount > 0).length
   })
 );

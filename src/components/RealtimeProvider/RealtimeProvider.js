@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated, selectUser } from '../../store/selectors/authSelectors';
 import { useRealtimePosts, useRealtimeNotifications } from '../../hooks/useSupabaseRealtime';

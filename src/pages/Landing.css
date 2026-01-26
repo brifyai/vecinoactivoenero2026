@@ -11,12 +11,56 @@
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.98) !important;
   backdrop-filter: blur(24px);
   border-bottom: 1px solid rgba(102, 126, 234, 0.08);
   z-index: 1000;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 24px rgba(0, 0, 0, 0.04);
+}
+
+/* Forzar estilos de botones del header */
+.landing-header .nav-btn {
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: none !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  letter-spacing: -0.01em !important;
+  position: relative !important;
+  overflow: hidden !important;
+  min-width: 120px !important;
+  justify-content: center !important;
+  outline: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.landing-header .nav-btn.secondary {
+  background: rgba(102, 126, 234, 0.15) !important;
+  color: #667eea !important;
+  border: 2px solid rgba(102, 126, 234, 0.3) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.landing-header .nav-btn.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border: 2px solid transparent !important;
+  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.3) !important;
+}
+
+/* Forzar visibilidad de texto en botones */
+.landing-header .nav-btn * {
+  color: inherit !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .header-container {
@@ -118,12 +162,16 @@
   overflow: hidden;
   min-width: 120px;
   justify-content: center;
+  /* Forzar visibilidad del texto */
+  color: inherit !important;
+  background-color: transparent;
+  outline: none;
 }
 
 .nav-btn.secondary {
-  background: rgba(102, 126, 234, 0.08);
-  color: #667eea;
-  border: 2px solid rgba(102, 126, 234, 0.15);
+  background: rgba(102, 126, 234, 0.08) !important;
+  color: #667eea !important;
+  border: 2px solid rgba(102, 126, 234, 0.15) !important;
   backdrop-filter: blur(10px);
 }
 
@@ -135,9 +183,9 @@
 }
 
 .nav-btn.primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: 2px solid transparent;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border: 2px solid transparent !important;
   box-shadow: 0 6px 24px rgba(102, 126, 234, 0.3);
 }
 

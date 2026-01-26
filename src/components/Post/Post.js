@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/selectors/authSelectors';
-import { useVerification } from '../../context/VerificationContext';
+import { useReduxVerification } from '../../hooks/useReduxVerification';
 import { formatNumber } from '../../utils/formatNumber';
 import VerifiedBadge from '../VerifiedBadge/VerifiedBadge';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -18,7 +18,7 @@ import './Post.css';
 // Vecino Activo - Botones comunitarios: Me Uno, Opinar, Compartir
 const Post = ({ post, onShare }) => {
   const user = useSelector(selectUser);
-  const { getVerificationStatus } = useVerification();
+  const { getVerificationStatus } = useReduxVerification();
   const [showCommentsModal, setShowCommentsModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [showReactionsModal, setShowReactionsModal] = useState(false);

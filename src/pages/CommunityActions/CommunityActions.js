@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
-import { useCommunityActions } from '../../context/CommunityActionsContext';
+import { useReduxCommunityActions } from '../../hooks/useReduxCommunityActions';
 import { useNeighborhoods } from '../../context/NeighborhoodsContext';
 import CreateActionModal from '../../components/CreateActionModal/CreateActionModal';
 import ActionCard from '../../components/ActionCard/ActionCard';
@@ -9,7 +9,7 @@ import './CommunityActions.css';
 
 const CommunityActions = () => {
   const { user } = useAuth();
-  const { actions, getUpcomingActions } = useCommunityActions();
+  const { actions, getUpcomingActions } = useReduxCommunityActions();
   const { calculateDistance } = useNeighborhoods();
   const [filteredActions, setFilteredActions] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);

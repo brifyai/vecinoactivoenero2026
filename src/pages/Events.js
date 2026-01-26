@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEvents } from '../context/EventsContext';
+import { useReduxEvents } from '../hooks/useReduxEvents';
 import { useCommunityCalendar } from '../context/CommunityCalendarContext';
 import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
-import { useGamification } from '../context/GamificationContext';
+import { useReduxGamification } from '../hooks/useReduxGamification';
 import { useSidebar } from '../context/SidebarContext';
 import { formatNumber } from '../utils/formatNumber';
 import { showSuccessToast, showInputDialog } from '../utils/sweetalert';
@@ -29,14 +29,14 @@ import './Events.css';
 const Events = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { events, upcomingEvents, rsvpEvent, createEvent: createSocialEvent } = useEvents();
+  const { events, upcomingEvents, rsvpEvent, createEvent: createSocialEvent } = useReduxEvents();
   const {
     calendarEvents,
     createEvent: createCommunityEvent,
     attendEvent,
     getUpcomingEvents
   } = useCommunityCalendar();
-  const { addPoints, updateActivity } = useGamification();
+  const { addPoints, updateActivity } = useReduxGamification();
   const { isRightSidebarCollapsed } = useSidebar();
   
   const [activeTab, setActiveTab] = useState('social'); // 'social' o 'community'

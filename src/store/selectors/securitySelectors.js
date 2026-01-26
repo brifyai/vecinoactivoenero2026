@@ -19,50 +19,27 @@ export const selectSecurityError = createSelector(
   (security) => security.error
 );
 
-export const selectSecurityAlerts = createSelector(
-  [selectSecurityState],
-  (security) => security.alerts
-);
-
-export const selectSecurityIncidents = createSelector(
-  [selectSecurityState],
-  (security) => security.incidents
-);
-
-export const selectSecuritySettings = createSelector(
-  [selectSecurityState],
-  (security) => security.settings
-);
-
 // Computed selectors
-export const selectActiveSecurityAlerts = createSelector(
-  [selectSecurityAlerts],
-  (alerts) => alerts.filter(alert => alert.active)
-);
-
-export const selectHighPriorityIncidents = createSelector(
-  [selectSecurityIncidents],
-  (incidents) => incidents.filter(incident => incident.priority === 'high')
-);
-
-export const selectRecentSecurityReports = createSelector(
-  [selectSecurityReports],
-  (reports) => reports
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 10)
-);
-
 export const selectSecurityReportById = createSelector(
   [selectSecurityReports, (state, id) => id],
   (reports, id) => reports.find(report => report.id === id)
 );
 
-export const selectSecurityStatistics = createSelector(
-  [selectSecurityReports, selectSecurityIncidents],
-  (reports, incidents) => ({
-    totalReports: reports.length,
-    totalIncidents: incidents.length,
-    resolvedReports: reports.filter(r => r.status === 'resolved').length,
-    activeIncidents: incidents.filter(i => i.status === 'active').length
-  })
+export const selectReportsByNeighborhood = createSelector(
+  [selectSecurityReports, (state, neighborhoodId) => neighborhoodId],
+  (reports, neighborhoodId) => reports.filter(report => report.neighborhoodId === neighborhoodId)
+);
+
+export const selectRecentReports = createSelector(
+  [selectSecurityReports, (state, hours = 24) => hours],
+  (reports, hours) => {
+    const now = new Date();
+    const cutoff = new Date(now.getTime() - hours * 60 * 60 * 1000);
+    return reports.filter(report => new Date(report.timestamp) > cutoff);
+  }
+);
+
+export const selectSecurityReportsCount = createSelector(
+  [selectSecurityReports],
+  (reports) => reports.length
 );
