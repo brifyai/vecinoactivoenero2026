@@ -1,5 +1,6 @@
 -- =====================================================
 -- ESQUEMA DE BASE DE DATOS PARA ALERTAS DE EMERGENCIA
+-- VERSIÓN CORREGIDA PARA POSTGRESQL/SUPABASE
 -- =====================================================
 
 -- Tabla para alertas de emergencia
@@ -52,6 +53,12 @@ CREATE TRIGGER trigger_emergency_alerts_updated_at
 -- Habilitar RLS
 ALTER TABLE emergency_alerts ENABLE ROW LEVEL SECURITY;
 
+-- Limpiar políticas existentes
+DROP POLICY IF EXISTS "Users can view neighborhood emergencies" ON emergency_alerts;
+DROP POLICY IF EXISTS "Users can create emergencies" ON emergency_alerts;
+DROP POLICY IF EXISTS "Admins can update emergencies" ON emergency_alerts;
+DROP POLICY IF EXISTS "Admins can delete emergencies" ON emergency_alerts;
+
 -- Política: Los usuarios pueden ver emergencias de su vecindario
 CREATE POLICY "Users can view neighborhood emergencies" ON emergency_alerts
   FOR SELECT USING (
@@ -99,6 +106,11 @@ CREATE POLICY "Admins can delete emergencies" ON emergency_alerts
 INSERT INTO storage.buckets (id, name, public) 
 VALUES ('emergency-media', 'emergency-media', true)
 ON CONFLICT (id) DO NOTHING;
+
+-- Limpiar políticas de storage existentes
+DROP POLICY IF EXISTS "Emergency media upload" ON storage.objects;
+DROP POLICY IF EXISTS "Emergency media access" ON storage.objects;
+DROP POLICY IF EXISTS "Admins can delete emergency media" ON storage.objects;
 
 -- Políticas de almacenamiento para archivos de emergencia
 CREATE POLICY "Emergency media upload" ON storage.objects
@@ -206,36 +218,75 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- =====================================================
--- DATOS DE PRUEBA (OPCIONAL - SOLO DESARROLLO)
+-- VERIFICACIÓN FINAL
 -- =====================================================
 
--- Insertar algunas emergencias de prueba (comentar en producción)
-/*
-INSERT INTO emergency_alerts (
-  user_name, 
-  neighborhood_id, 
-  message, 
-  location, 
-  type,
-  is_anonymous
-) VALUES 
-(
-  'Usuario Demo',
-  'default',
-  'Prueba de sistema de emergencias',
-  '{"latitude": -33.4489, "longitude": -70.6693, "accuracy": 10}',
-  'emergency',
-  false
-),
-(
-  'Reporte Anónimo',
-  'default',
-  'Emergencia anónima de prueba',
-  '{"latitude": -33.4500, "longitude": -70.6700, "accuracy": 15}',
-  'security',
-  true
-);
-*/
+-- Verificar que la tabla se creó correctamente
+DO $$
+BEGIN
+  IF EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'emergency_alerts') THEN
+    RAISE NOTICE '✅ Tabla emergency_alerts creada correctamente';
+  ELSE
+    RAISE EXCEPTION '❌ Error: Tabla emergency_alerts no fue creada';
+  END IF;
+END $$;
+
+-- Verificar políticas RLS
+DO $$
+DECLARE
+  policy_count INTEGER;
+BEGIN
+  SELECT COUNT(*) INTO policy_count
+  FROM pg_policies 
+  WHERE tablename = 'emergency_alerts';
+  
+  IF policy_count >= 4 THEN
+    RAISE NOTICE '✅ Políticas RLS configuradas correctamente (% políticas)', policy_count;
+  ELSE
+    RAISE WARNING '⚠️ Solo se encontraron % políticas RLS', policy_count;
+  END IF;
+END $$;
+
+-- Verificar índices
+DO $$
+DECLARE
+  index_count INTEGER;
+BEGIN
+  SELECT COUNT(*) INTO index_count
+  FROM pg_indexes 
+  WHERE tablename = 'emergency_alerts';
+  
+  IF index_count >= 5 THEN
+    RAISE NOTICE '✅ Índices creados correctamente (% índices)', index_count;
+  ELSE
+    RAISE WARNING '⚠️ Solo se encontraron % índices', index_count;
+  END IF;
+END $$;
+
+-- Verificar bucket de storage
+DO $$
+BEGIN
+  IF EXISTS (SELECT FROM storage.buckets WHERE id = 'emergency-media') THEN
+    RAISE NOTICE '✅ Bucket emergency-media configurado correctamente';
+  ELSE
+    RAISE WARNING '⚠️ Bucket emergency-media no encontrado';
+  END IF;
+END $$;
+
+-- Verificar funciones
+DO $$
+BEGIN
+  IF EXISTS (SELECT FROM pg_proc WHERE proname = 'get_emergency_stats') THEN
+    RAISE NOTICE '✅ Función get_emergency_stats creada correctamente';
+  END IF;
+  
+  IF EXISTS (SELECT FROM pg_proc WHERE proname = 'resolve_emergency') THEN
+    RAISE NOTICE '✅ Función resolve_emergency creada correctamente';
+  END IF;
+END $$;
+
+-- Mensaje final
+SELECT '🚨 ¡ESQUEMA DE ALERTAS DE EMERGENCIA CONFIGURADO EXITOSAMENTE! 🚨' AS resultado;
 
 -- =====================================================
 -- COMENTARIOS Y DOCUMENTACIÓN
@@ -253,39 +304,3 @@ COMMENT ON COLUMN emergency_alerts.type IS 'Tipo: emergency, security, medical, 
 
 COMMENT ON FUNCTION get_emergency_stats(TEXT) IS 'Obtiene estadísticas de emergencias para un vecindario';
 COMMENT ON FUNCTION resolve_emergency(UUID, TEXT) IS 'Marca una emergencia como resuelta (solo admins)';
-
--- =====================================================
--- VERIFICACIÓN FINAL
--- =====================================================
-
--- Verificar que la tabla se creó correctamente
-SELECT 
-  table_name,
-  column_name,
-  data_type,
-  is_nullable
-FROM information_schema.columns 
-WHERE table_name = 'emergency_alerts'
-ORDER BY ordinal_position;
-
--- Verificar políticas RLS
-SELECT 
-  schemaname,
-  tablename,
-  policyname,
-  permissive,
-  roles,
-  cmd,
-  qual
-FROM pg_policies 
-WHERE tablename = 'emergency_alerts';
-
--- Verificar índices
-SELECT 
-  indexname,
-  indexdef
-FROM pg_indexes 
-WHERE tablename = 'emergency_alerts';
-
--- ✅ Esquema de alertas de emergencia creado exitosamente
-SELECT '✅ Esquema de alertas de emergencia creado exitosamente' AS resultado;
