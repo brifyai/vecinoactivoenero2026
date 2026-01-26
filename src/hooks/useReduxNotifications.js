@@ -1,107 +1,109 @@
 // =====================================================
-// HOOK REDUX NOTIFICATIONS SIN POLLING
-// Hook limpio para manejo de notificaciones sin polling destructivo
+// HOOK REDUX NOTIFICATIONS CON HÍBRIDO
+// Hook para manejo de notificaciones con sincronización híbrida
 // =====================================================
 
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import {
   loadNotifications,
-  createNotification,
   markAsRead,
   markAllAsRead,
-  deleteNotification,
   clearError
 } from '../store/slices/notificationsSlice';
 import {
-  selectAllNotifications,
+  selectNotifications,
   selectNotificationsLoading,
+  selectNotificationsError,
   selectUnreadCount,
   selectUnreadNotifications
 } from '../store/selectors/notificationsSelectors';
-import { selectUser } from '../store/selectors/authSelectors';
 
 /**
- * Hook Redux para notificaciones SIN polling
- * Carga datos una vez y permite operaciones CRUD
+ * Hook Redux para notificaciones con sincronización híbrida
  */
-export const useReduxNotifications = (options = {}) => {
+export const useReduxNotifications = (userId) => {
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
   
-  const notifications = useSelector(selectAllNotifications);
+  const notifications = useSelector(selectNotifications);
   const loading = useSelector(selectNotificationsLoading);
+  const error = useSelector(selectNotificationsError);
   const unreadCount = useSelector(selectUnreadCount);
   const unreadNotifications = useSelector(selectUnreadNotifications);
 
-  // Cargar notificaciones iniciales si no hay datos
+  // Cargar notificaciones iniciales
   useEffect(() => {
-    if (notifications.length === 0 && !loading && user?.id) {
-      dispatch(loadNotifications({ userId: user.id }));
+    if (userId && notifications.length === 0 && !loading) {
+      dispatch(loadNotifications({ userId, limit: 50 }));
     }
-  }, [dispatch, notifications.length, loading, user?.id]);
+  }, [dispatch, userId, notifications.length, loading]);
 
   // Funciones de manejo de notificaciones
-  const addNotification = async (notificationData) => {
-    const result = await dispatch(createNotification(notificationData));
-    if (createNotification.fulfilled.match(result)) {
-      return { success: true, notification: result.payload };
-    } else {
-      return { success: false, error: result.error.message };
+  const handleMarkAsRead = useCallback(async (notificationId) => {
+    try {
+      const result = await dispatch(markAsRead({ notificationId, userId }));
+      
+      if (markAsRead.fulfilled.match(result)) {
+        return { success: true };
+      } else {
+        return { success: false, error: result.error.message };
+      }
+    } catch (error) {
+      return { success: false, error: error.message };
     }
-  };
+  }, [dispatch, userId]);
 
-  const handleMarkAsRead = async (notificationId) => {
-    const result = await dispatch(markAsRead({ notificationId, userId: user?.id }));
-    if (markAsRead.fulfilled.match(result)) {
-      return { success: true };
-    } else {
-      return { success: false, error: result.error.message };
+  const handleMarkAllAsRead = useCallback(async () => {
+    try {
+      const result = await dispatch(markAllAsRead({ userId }));
+      
+      if (markAllAsRead.fulfilled.match(result)) {
+        return { success: true };
+      } else {
+        return { success: false, error: result.error.message };
+      }
+    } catch (error) {
+      return { success: false, error: error.message };
     }
-  };
+  }, [dispatch, userId]);
 
-  const handleMarkAllAsRead = async () => {
-    const result = await dispatch(markAllAsRead(user?.id));
-    if (markAllAsRead.fulfilled.match(result)) {
-      return { success: true };
-    } else {
-      return { success: false, error: result.error.message };
-    }
-  };
-
-  const handleDeleteNotification = async (notificationId) => {
-    const result = await dispatch(deleteNotification(notificationId));
-    if (deleteNotification.fulfilled.match(result)) {
-      return { success: true };
-    } else {
-      return { success: false, error: result.error.message };
-    }
-  };
-
-  const handleClearError = () => {
+  const handleClearError = useCallback(() => {
     dispatch(clearError());
-  };
+  }, [dispatch]);
 
-  const refresh = () => {
-    if (user?.id) {
-      dispatch(loadNotifications({ userId: user.id }));
+  const refreshNotifications = useCallback((limit = 50) => {
+    if (userId) {
+      dispatch(loadNotifications({ userId, limit }));
     }
-  };
+  }, [dispatch, userId]);
+
+  // Obtener notificaciones por tipo
+  const getNotificationsByType = useCallback((type) => {
+    return notifications.filter(n => n.type === type);
+  }, [notifications]);
+
+  // Obtener notificación por ID
+  const getNotificationById = useCallback((notificationId) => {
+    return notifications.find(n => n.id === notificationId);
+  }, [notifications]);
 
   return {
     // Datos principales
     notifications,
     loading,
+    error,
     unreadCount,
     unreadNotifications,
     
     // Funciones de manejo
-    addNotification,
     markAsRead: handleMarkAsRead,
     markAllAsRead: handleMarkAllAsRead,
-    deleteNotification: handleDeleteNotification,
     clearError: handleClearError,
-    refresh
+    refreshNotifications,
+    
+    // Funciones de utilidad
+    getNotificationsByType,
+    getNotificationById
   };
 };
 

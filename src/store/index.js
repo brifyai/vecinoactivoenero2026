@@ -119,15 +119,18 @@ export const store = configureStore({
       }
     });
     
-    // Solo agregar logger en desarrollo y si está disponible
+    // Solo agregar logger en desarrollo
     if (process.env.NODE_ENV === 'development') {
-      try {
-        const logger = require('redux-logger').default;
-        return middleware.concat(logger);
-      } catch (error) {
-        console.warn('redux-logger no disponible en desarrollo');
-        return middleware;
-      }
+      // Usar import dinámico más seguro
+      return middleware.concat((store) => (next) => (action) => {
+        console.group(`🔄 Redux Action: ${action.type}`);
+        console.log('Previous State:', store.getState());
+        console.log('Action:', action);
+        const result = next(action);
+        console.log('Next State:', store.getState());
+        console.groupEnd();
+        return result;
+      });
     }
     
     return middleware;

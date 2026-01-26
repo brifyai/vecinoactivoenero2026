@@ -1,111 +1,142 @@
+// =====================================================
+// HOOK REDUX MESSAGES CON HÍBRIDO
+// Hook para manejo de mensajes con sincronización híbrida
+// =====================================================
+
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
+  loadConversations,
   loadMessages,
-  sendMessage as sendMessageAction,
-  markAsRead as markAsReadAction,
-  markConversationAsRead as markConversationAsReadAction,
-  deleteMessage as deleteMessageAction,
+  sendMessage,
+  markAsRead,
   clearMessagesError
 } from '../store/slices/messagesSlice';
 import {
-  selectMessages,
   selectConversations,
+  selectMessages,
   selectMessagesLoading,
   selectMessagesError,
-  selectConversationMessages,
-  selectUnreadCount
+  selectUnreadCount,
+  selectUserConversations
 } from '../store/selectors/messagesSelectors';
 
 /**
- * Hook de compatibilidad para migración de MessagesContext a Redux
- * Mantiene la misma API que el context original
+ * Hook Redux para mensajes con sincronización híbrida
  */
-export const useReduxMessages = () => {
+export const useReduxMessages = (userId) => {
   const dispatch = useDispatch();
   
+  const conversations = useSelector(state => selectUserConversations(state, userId));
   const messages = useSelector(selectMessages);
-  const conversations = useSelector(selectConversations);
   const loading = useSelector(selectMessagesLoading);
   const error = useSelector(selectMessagesError);
+  const unreadCount = useSelector(state => selectUnreadCount(state, userId));
 
-  // Cargar mensajes al montar
+  // Cargar conversaciones iniciales
   useEffect(() => {
-    dispatch(loadMessages());
-  }, [dispatch]);
+    if (userId && conversations.length === 0 && !loading) {
+      dispatch(loadConversations(userId));
+    }
+  }, [dispatch, userId, conversations.length, loading]);
 
-  // Enviar mensaje
-  const sendMessage = useCallback(async (senderId, recipientId, content) => {
+  // Funciones de manejo de mensajes
+  const handleSendMessage = useCallback(async (messageData) => {
     try {
-      const result = await dispatch(sendMessageAction({ 
-        senderId, 
-        recipientId, 
-        content 
-      })).unwrap();
+      const result = await dispatch(sendMessage({
+        ...messageData,
+        senderId: userId
+      }));
       
-      return { success: true, message: result };
+      if (sendMessage.fulfilled.match(result)) {
+        return { success: true, message: result.payload };
+      } else {
+        return { success: false, error: result.error.message };
+      }
     } catch (error) {
-      return { success: false, error };
+      return { success: false, error: error.message };
     }
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
-  // Obtener conversación entre dos usuarios
-  const getConversation = useCallback((userId1, userId2) => {
-    return selectConversationMessages({ messages: { messages } }, userId1, userId2);
-  }, [messages]);
-
-  // Marcar mensaje como leído
-  const markAsRead = useCallback(async (messageId) => {
+  const handleLoadMessages = useCallback(async (conversationId, options = {}) => {
     try {
-      await dispatch(markAsReadAction(messageId)).unwrap();
-      return { success: true };
+      const result = await dispatch(loadMessages({
+        conversationId,
+        ...options
+      }));
+      
+      if (loadMessages.fulfilled.match(result)) {
+        return { success: true, messages: result.payload.messages };
+      } else {
+        return { success: false, error: result.error.message };
+      }
     } catch (error) {
-      return { success: false, error };
+      return { success: false, error: error.message };
     }
   }, [dispatch]);
 
-  // Marcar conversación completa como leída
-  const markConversationAsRead = useCallback(async (userId1, userId2) => {
+  const handleMarkAsRead = useCallback(async (messageId) => {
     try {
-      await dispatch(markConversationAsReadAction({ userId1, userId2 })).unwrap();
-      return { success: true };
+      const result = await dispatch(markAsRead({ messageId, userId }));
+      
+      if (markAsRead.fulfilled.match(result)) {
+        return { success: true };
+      } else {
+        return { success: false, error: result.error.message };
+      }
     } catch (error) {
-      return { success: false, error };
+      return { success: false, error: error.message };
     }
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
-  // Obtener cantidad de mensajes no leídos
-  const getUnreadCount = useCallback((userId) => {
-    return selectUnreadCount({ messages: { messages } }, userId);
-  }, [messages]);
-
-  // Eliminar mensaje
-  const deleteMessage = useCallback(async (messageId) => {
-    try {
-      await dispatch(deleteMessageAction(messageId)).unwrap();
-      return { success: true };
-    } catch (error) {
-      return { success: false, error };
-    }
-  }, [dispatch]);
-
-  // Limpiar error
-  const clearError = useCallback(() => {
+  const handleClearError = useCallback(() => {
     dispatch(clearMessagesError());
   }, [dispatch]);
 
+  const refreshConversations = useCallback(() => {
+    if (userId) {
+      dispatch(loadConversations(userId));
+    }
+  }, [dispatch, userId]);
+
+  // Obtener mensajes de una conversación específica
+  const getConversationMessages = useCallback((conversationId) => {
+    return messages.filter(m => m.conversationId === conversationId)
+      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  }, [messages]);
+
+  // Obtener conversación por ID
+  const getConversation = useCallback((conversationId) => {
+    return conversations.find(c => c.id === conversationId);
+  }, [conversations]);
+
+  // Obtener conversación con otro usuario
+  const getConversationWithUser = useCallback((otherUserId) => {
+    return conversations.find(c => 
+      (c.user1Id === userId && c.user2Id === otherUserId) ||
+      (c.user1Id === otherUserId && c.user2Id === userId)
+    );
+  }, [conversations, userId]);
+
   return {
-    messages,
+    // Datos principales
     conversations,
+    messages,
     loading,
     error,
-    sendMessage,
+    unreadCount,
+    
+    // Funciones de manejo
+    sendMessage: handleSendMessage,
+    loadMessages: handleLoadMessages,
+    markAsRead: handleMarkAsRead,
+    clearError: handleClearError,
+    refreshConversations,
+    
+    // Funciones de utilidad
+    getConversationMessages,
     getConversation,
-    markAsRead,
-    markConversationAsRead,
-    getUnreadCount,
-    deleteMessage,
-    clearError
+    getConversationWithUser
   };
 };
 

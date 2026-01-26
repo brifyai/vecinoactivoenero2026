@@ -1,5 +1,6 @@
 import { supabase } from '../config/supabase';
 import firebaseNotificationsService from './firebaseNotificationsService';
+import hybridSyncService from './hybridSyncService';
 
 export const emergencyService = {
   // Enviar alerta de emergencia
@@ -35,7 +36,20 @@ export const emergencyService = {
 
       console.log('✅ Emergencia guardada en BD:', emergency.id);
 
-      // 3. Subir archivo multimedia si existe
+      // 3. Sincronizar a Firebase para realtime
+      try {
+        await hybridSyncService.syncEmergencyToFirebase({
+          ...emergency,
+          userName: emergencyData.userName,
+          location: emergencyData.location
+        });
+        console.log('🔄 Emergencia sincronizada a Firebase');
+      } catch (syncError) {
+        console.error('Error sincronizando emergencia a Firebase:', syncError);
+        // Continuar sin sincronización
+      }
+
+      // 4. Subir archivo multimedia si existe
       let mediaUrl = null;
       if (emergencyData.mediaFile) {
         try {
@@ -54,7 +68,7 @@ export const emergencyService = {
         }
       }
 
-      // 4. Obtener todos los residentes de la unidad vecinal
+      // 5. Obtener todos los residentes de la unidad vecinal
       const { data: residents, error: residentsError } = await supabase
         .from('users')
         .select('id, email, name, fcm_token')
@@ -66,7 +80,7 @@ export const emergencyService = {
         // Continuar sin notificaciones si falla
       }
 
-      // 5. Enviar notificaciones push masivas
+      // 6. Enviar notificaciones push masivas
       let notificationsSent = 0;
       if (residents && residents.length > 0) {
         console.log(`📱 Enviando notificaciones a ${residents.length} residentes`);
@@ -101,7 +115,7 @@ export const emergencyService = {
         console.log(`✅ ${notificationsSent} notificaciones enviadas`);
       }
 
-      // 6. Notificar a administradores
+      // 7. Notificar a administradores
       try {
         await this.notifyAdministrators(emergency, emergencyData);
       } catch (adminError) {

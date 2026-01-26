@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser } from '../../store/selectors/authSelectors';
+import { selectMessages, selectMessagesLoading, selectMessagesError } from '../../store/selectors/messagesSelectors';
+import { loadConversations, sendMessage } from '../../store/slices/messagesSlice';
+import { useHybridRealtimeContext } from '../../components/HybridRealtimeProvider/HybridRealtimeProvider';
 import { useMessages } from '../../context/MessagesContext';
 import { useConnections } from '../../context/ConnectionsContext';
 import storageService from '../../services/storageService';
@@ -9,18 +13,55 @@ import SearchIcon from '@mui/icons-material/Search';
 import './DirectMessages.css';
 
 const DirectMessages = () => {
-  const { user } = useAuth();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const messages = useSelector(selectMessages);
+  const messagesLoading = useSelector(selectMessagesLoading);
+  const messagesError = useSelector(selectMessagesError);
+  
+  // Contextos existentes (para compatibilidad)
   const { conversations, getUnreadCount } = useMessages();
   const { getAcceptedConnections } = useConnections();
+  
+  // Sistema híbrido
+  const hybridRealtime = useHybridRealtimeContext();
+  
+  // Estados locales
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredConversations, setFilteredConversations] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Cargar conversaciones iniciales
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(loadConversations({ userId: user.id }));
+    }
+  }, [dispatch, user?.id]);
+
+  // Escuchar actualizaciones híbridas de mensajes
+  useEffect(() => {
+    const handleHybridMessagesUpdate = (event) => {
+      console.log('💬 Mensajes actualizados desde sistema híbrido:', event.detail);
+      
+      // Recargar conversaciones cuando hay actualizaciones híbridas
+      if (user?.id) {
+        dispatch(loadConversations({ userId: user.id }));
+      }
+    };
+
+    // Escuchar eventos del sistema híbrido
+    window.addEventListener('hybridMessagesUpdate', handleHybridMessagesUpdate);
+    
+    return () => {
+      window.removeEventListener('hybridMessagesUpdate', handleHybridMessagesUpdate);
+    };
+  }, [dispatch, user?.id]);
+
   useEffect(() => {
     filterConversations();
-    setLoading(false);
-  }, [conversations, searchTerm]);
+    setLoading(messagesLoading);
+  }, [conversations, messages, searchTerm, messagesLoading]);
 
   const filterConversations = () => {
     let filtered = conversations.map(conv => {
@@ -42,12 +83,48 @@ const DirectMessages = () => {
     setSelectedConversation(conversation);
   };
 
+  // Manejar envío de mensaje con sincronización híbrida
+  const handleSendMessage = async (messageData) => {
+    try {
+      const result = await dispatch(sendMessage({
+        ...messageData,
+        senderId: user.id,
+        conversationId: selectedConversation.id
+      })).unwrap();
+      
+      // Sincronizar con sistema híbrido
+      if (hybridRealtime.isConnected) {
+        await hybridRealtime.syncMessage(result);
+        console.log('💬 Mensaje sincronizado al sistema híbrido');
+      }
+      
+    } catch (error) {
+      console.error('Error enviando mensaje:', error);
+    }
+  };
+
   const unreadCount = getUnreadCount(user.id);
 
   if (loading) {
     return (
       <div className="direct-messages-page">
-        <div className="loading">Cargando mensajes...</div>
+        <div className="loading">
+          <div className="loading-spinner"></div>
+          <p>Cargando mensajes...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (messagesError) {
+    return (
+      <div className="direct-messages-page">
+        <div className="error-message">
+          <p>Error cargando mensajes: {messagesError}</p>
+          <button onClick={() => dispatch(loadConversations({ userId: user.id }))}>
+            Reintentar
+          </button>
+        </div>
       </div>
     );
   }
@@ -58,9 +135,17 @@ const DirectMessages = () => {
         <div className="conversations-panel">
           <div className="panel-header">
             <h2>Mensajes</h2>
-            {unreadCount > 0 && (
-              <span className="unread-badge">{unreadCount}</span>
-            )}
+            <div className="header-indicators">
+              {unreadCount > 0 && (
+                <span className="unread-badge">{unreadCount}</span>
+              )}
+              {hybridRealtime.isConnected && (
+                <div className="realtime-indicator">
+                  <span className="realtime-dot"></span>
+                  <span className="realtime-text">Tiempo real</span>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="search-box">
@@ -87,10 +172,21 @@ const DirectMessages = () => {
             <ChatWindow
               conversation={selectedConversation}
               currentUserId={user.id}
+              onSendMessage={handleSendMessage}
+              hybridRealtime={hybridRealtime}
             />
           ) : (
             <div className="no-conversation">
-              <p>Selecciona una conversación para comenzar</p>
+              <div className="no-conversation-content">
+                <h3>Selecciona una conversación</h3>
+                <p>Elige una conversación de la lista para comenzar a chatear</p>
+                {hybridRealtime.isConnected && (
+                  <div className="realtime-status">
+                    <span className="realtime-dot"></span>
+                    Mensajes en tiempo real activos
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>

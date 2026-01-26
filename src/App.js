@@ -32,12 +32,13 @@ import { ModerationProvider } from './context/ModerationContext';
 
 // Firebase Initializer
 import FirebaseInitializer from './components/FirebaseInitializer/FirebaseInitializer';
-import FirebaseTest from './components/FirebaseTest/FirebaseTest';
+
 import { NeighborhoodExpansionProvider } from './context/NeighborhoodExpansionContext';
 import Layout from './components/Layout/Layout';
 import AppInitializer from './components/AppInitializer/AppInitializer';
 import ReduxInitializer from './components/ReduxInitializer/ReduxInitializer';
 import RealtimeProvider from './components/RealtimeProvider/RealtimeProvider';
+import HybridRealtimeProvider from './components/HybridRealtimeProvider/HybridRealtimeProvider';
 import Landing from './pages/Landing';
 import Home from './pages/Home';
 import Timeline from './pages/Timeline';
@@ -80,10 +81,14 @@ import LocalNeeds from './pages/LocalNeeds/LocalNeeds';
 import CommunityActions from './pages/CommunityActions/CommunityActions';
 import Feed from './pages/Feed/Feed';
 import DirectMessages from './pages/DirectMessages/DirectMessages';
-import StorageTest from './components/StorageTest/StorageTest';
-import DiagnosticPage from './pages/DiagnosticPage';
-import WebSocketDiagnostic from './components/WebSocketDiagnostic/WebSocketDiagnostic';
 import './App.css';
+
+// Test components - only imported in development
+const DiagnosticPage = React.lazy(() => import('./pages/DiagnosticPage'));
+const WebSocketDiagnostic = React.lazy(() => import('./components/WebSocketDiagnostic/WebSocketDiagnostic'));
+const HybridSystemTest = React.lazy(() => import('./components/HybridSystemTest/HybridSystemTest'));
+const StorageTest = React.lazy(() => import('./components/StorageTest/StorageTest'));
+const FirebaseTest = React.lazy(() => import('./components/FirebaseTest/FirebaseTest'));
 
 // Componente para rutas protegidas
 const ProtectedRoute = ({ children }) => {
@@ -110,9 +115,10 @@ function App() {
     <ErrorBoundary>
       <Router>
         <ReduxInitializer>
-          <RealtimeProvider>
-            <AppInitializer />
-            <Routes>
+          <HybridRealtimeProvider>
+            <RealtimeProvider>
+              <AppInitializer />
+              <Routes>
             {/* Rutas públicas */}
             <Route path="/" element={<Landing />} />
             <Route path="/iniciar-sesion" element={<UserTypeSelection />} />
@@ -126,27 +132,44 @@ function App() {
           <Route path="/registro-simple" element={<RegisterSimple />} />
           <Route path="/recuperar-contrasena" element={<ForgotPassword />} />
           
-          {/* Ruta de diagnóstico - accesible sin login */}
-          <Route path="/diagnostico" element={<DiagnosticPage />} />
-          
-          {/* Ruta de diagnóstico WebSocket - accesible sin login */}
-          <Route path="/websocket-test" element={<WebSocketDiagnostic />} />
-          
-          {/* Ruta de prueba para Storage */}
-          <Route path="/storage-test" element={
-            <ProtectedRoute>
-              <StorageTest />
-            </ProtectedRoute>
-          } />
-          
-          {/* Ruta de prueba para Firebase */}
-          <Route path="/firebase-test" element={
-            <ProtectedRoute>
-              <FirebaseInitializer>
-                <FirebaseTest />
-              </FirebaseInitializer>
-            </ProtectedRoute>
-          } />
+          {/* Rutas de desarrollo - solo disponibles en modo desarrollo */}
+          {process.env.NODE_ENV === 'development' && (
+            <>
+              <Route path="/diagnostico" element={
+                <React.Suspense fallback={<div>Cargando...</div>}>
+                  <DiagnosticPage />
+                </React.Suspense>
+              } />
+              <Route path="/websocket-test" element={
+                <React.Suspense fallback={<div>Cargando...</div>}>
+                  <WebSocketDiagnostic />
+                </React.Suspense>
+              } />
+              <Route path="/hybrid-test" element={
+                <ProtectedRoute>
+                  <React.Suspense fallback={<div>Cargando...</div>}>
+                    <HybridSystemTest />
+                  </React.Suspense>
+                </ProtectedRoute>
+              } />
+              <Route path="/storage-test" element={
+                <ProtectedRoute>
+                  <React.Suspense fallback={<div>Cargando...</div>}>
+                    <StorageTest />
+                  </React.Suspense>
+                </ProtectedRoute>
+              } />
+              <Route path="/firebase-test" element={
+                <ProtectedRoute>
+                  <React.Suspense fallback={<div>Cargando...</div>}>
+                    <FirebaseInitializer>
+                      <FirebaseTest />
+                    </FirebaseInitializer>
+                  </React.Suspense>
+                </ProtectedRoute>
+              } />
+            </>
+          )}
           
           {/* Rutas del Admin Dashboard */}
           <Route path="/admin/dashboard/*" element={
@@ -252,7 +275,8 @@ function App() {
           } />
         </Routes>
         </RealtimeProvider>
-      </ReduxInitializer>
+      </HybridRealtimeProvider>
+    </ReduxInitializer>
     </Router>
     </ErrorBoundary>
   );
