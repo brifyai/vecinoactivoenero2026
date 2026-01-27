@@ -222,43 +222,43 @@
 /* Reglas super específicas para forzar colores en FriendSuggestions */
 .friend-suggestions .suggestions-header .suggestions-count,
 .suggestions-header .suggestions-count {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
 }
 
 .friend-suggestions .suggestion-card .distance-badge,
 .suggestion-card .distance-badge {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
 }
 
 .friend-suggestions .suggestion-actions .btn-add,
 .suggestion-actions .btn-add {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
 }
 
 .friend-suggestions .suggestion-actions .btn-add:hover,
 .suggestion-actions .btn-add:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+  background: linear-gradient(135deg, #5b21b6 0%, #3730a3 100%) !important;
   transform: scale(1.1);
 }
 
 /* Forzar en el contexto del Home */
 .home-page .friend-suggestions .suggestions-count,
 .home-left .friend-suggestions .suggestions-count {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
 }
 
 .home-page .friend-suggestions .distance-badge,
 .home-left .friend-suggestions .distance-badge {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
 }
 
 .home-page .friend-suggestions .btn-add,
 .home-left .friend-suggestions .btn-add {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
 }

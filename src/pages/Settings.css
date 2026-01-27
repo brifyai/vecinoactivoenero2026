@@ -110,7 +110,7 @@
 
 .settings-menu-item.active {
   background: #fff7ed;
-  color: #667eea;
+  color: #3730a3;
 }
 
 .settings-menu-item svg {
@@ -217,7 +217,7 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #3730a3;
 }
 
 .form-group textarea {
@@ -235,7 +235,7 @@
 }
 
 .username-preview strong {
-  color: #667eea;
+  color: #3730a3;
   font-weight: 600;
 }
 
@@ -263,7 +263,7 @@
 
 .save-btn {
   padding: 12px 24px;
-  background: #667eea;
+  background: #3730a3;
   color: white;
   border: none;
   border-radius: 8px;
@@ -277,7 +277,7 @@
 }
 
 .save-btn:hover {
-  background: #764ba2;
+  background: #5b21b6;
 }
 
 .security-item,
@@ -318,7 +318,7 @@
 .action-btn {
   padding: 8px 20px;
   background: #fff7ed;
-  color: #667eea;
+  color: #3730a3;
   border: none;
   border-radius: 6px;
   font-size: 14px;
@@ -369,7 +369,7 @@
 }
 
 input:checked + .slider {
-  background-color: #667eea;
+  background-color: #3730a3;
 }
 
 input:checked + .slider:before {
@@ -398,7 +398,7 @@ input:checked + .slider:before {
 
 .help-icon {
   font-size: 40px;
-  color: #667eea;
+  color: #3730a3;
 }
 
 .help-info {
@@ -421,7 +421,7 @@ input:checked + .slider:before {
 .link-btn {
   background: none;
   border: none;
-  color: #667eea;
+  color: #3730a3;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -458,7 +458,7 @@ input:checked + .slider:before {
 }
 
 .about-links a {
-  color: #667eea;
+  color: #3730a3;
   text-decoration: none;
   font-size: 15px;
   font-weight: 500;

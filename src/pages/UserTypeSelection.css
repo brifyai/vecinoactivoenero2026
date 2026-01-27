@@ -1,7 +1,7 @@
 /* Página principal de selección */
 .user-type-selection-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +32,7 @@
 
 /* Header de selección */
 .selection-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   padding: 40px;
   text-align: center;
@@ -86,7 +86,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: linear-gradient(90deg, #3730a3, #5b21b6);
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
@@ -94,7 +94,7 @@
 .user-type-card:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  border-color: #667eea;
+  border-color: #3730a3;
 }
 
 .user-type-card:hover::before {
@@ -115,7 +115,7 @@
 }
 
 .vecinos-card .card-icon {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
 }
 
 .admin-card .card-icon {
@@ -158,8 +158,8 @@
 }
 
 .feature-tag {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(55, 48, 163, 0.1);
+  color: #3730a3;
   padding: 6px 12px;
   border-radius: 12px;
   font-size: 0.85rem;

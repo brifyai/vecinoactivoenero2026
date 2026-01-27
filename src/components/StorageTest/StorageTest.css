@@ -56,7 +56,7 @@
 .form-group select:focus,
 .form-group input[type="file"]:focus {
   outline: none;
-  border-color: #4F46E5;
+  border-color: #3730a3;
 }
 
 .form-group select:disabled,
@@ -79,7 +79,7 @@
 
 .upload-button {
   padding: 12px 24px;
-  background: #4F46E5;
+  background: #3730a3;
   color: white;
   border: none;
   border-radius: 8px;

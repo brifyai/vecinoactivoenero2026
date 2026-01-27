@@ -100,10 +100,10 @@
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 8px 12px !important;
+  padding: 6px 10px !important;
   background: linear-gradient(145deg, #ffffff 0%, #f8faff 30%, #eef4ff 70%, #e6f0ff 100%) !important;
-  border: 2px solid rgba(102, 126, 234, 0.2) !important;
-  border-radius: 14px !important;
+  border: 2px solid rgba(55, 48, 163, 0.2) !important;
+  border-radius: 12px !important;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
   cursor: pointer !important;
   flex: 1 !important;
@@ -111,45 +111,45 @@
   overflow: hidden !important;
   backdrop-filter: blur(15px) !important;
   box-shadow: 
-    0 4px 18px rgba(102, 126, 234, 0.1) !important,
-    0 2px 6px rgba(102, 126, 234, 0.06) !important,
+    0 4px 18px rgba(55, 48, 163, 0.1) !important,
+    0 2px 6px rgba(55, 48, 163, 0.06) !important,
     inset 0 1px 0 rgba(255, 255, 255, 0.9) !important,
-    inset 0 -1px 0 rgba(102, 126, 234, 0.05) !important;
+    inset 0 -1px 0 rgba(55, 48, 163, 0.05) !important;
   transform: translateZ(0) !important;
-  min-height: 45px !important;
+  min-height: 32px !important;
 }
 
 .stat-home:hover {
   transform: translateY(-4px) scale(1.03) !important;
   box-shadow: 
-    0 10px 35px rgba(102, 126, 234, 0.2) !important,
-    0 6px 18px rgba(102, 126, 234, 0.15) !important,
+    0 10px 35px rgba(55, 48, 163, 0.2) !important,
+    0 6px 18px rgba(55, 48, 163, 0.15) !important,
     0 3px 10px rgba(118, 75, 162, 0.1) !important,
     inset 0 1px 0 rgba(255, 255, 255, 1) !important,
-    inset 0 -1px 0 rgba(102, 126, 234, 0.1) !important;
-  border-color: rgba(102, 126, 234, 0.35) !important;
+    inset 0 -1px 0 rgba(55, 48, 163, 0.1) !important;
+  border-color: rgba(55, 48, 163, 0.35) !important;
   background: linear-gradient(145deg, #ffffff 0%, #f8faff 20%, #eef4ff 60%, #dde8ff 100%) !important;
 }
 
 .stat-home strong {
-  font-size: 20px !important;
+  font-size: 16px !important;
   font-weight: 900 !important;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 40%, #5b21b6 80%, #4c1d95 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 40%, #5b21b6 80%, #4c1d95 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
   line-height: 1 !important;
   position: relative !important;
   z-index: 1 !important;
-  text-shadow: 0 2px 4px rgba(102, 126, 234, 0.12) !important;
+  text-shadow: 0 2px 4px rgba(55, 48, 163, 0.12) !important;
   animation: numberPulseHome 3s ease-in-out infinite !important;
-  filter: drop-shadow(0 1px 3px rgba(102, 126, 234, 0.08)) !important;
+  filter: drop-shadow(0 1px 3px rgba(55, 48, 163, 0.08)) !important;
   transition: all 0.4s ease !important;
 }
 
 .stat-home:hover strong {
   animation: none !important;
-  filter: brightness(1.25) drop-shadow(0 0 8px rgba(102, 126, 234, 0.3)) !important;
+  filter: brightness(1.25) drop-shadow(0 0 8px rgba(55, 48, 163, 0.3)) !important;
   transform: scale(1.05) !important;
 }
 
@@ -173,8 +173,8 @@
   margin: 0 var(--spacing-lg);
   padding: var(--spacing-sm) var(--spacing-md);
   background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: #3730a3;
+  border: 2px solid #3730a3;
   border-radius: var(--radius-full);
   font-size: 14px;
   font-weight: 700;
@@ -186,7 +186,7 @@
 }
 
 .edit-profile-btn-home:hover {
-  background: #667eea;
+  background: #3730a3;
   color: white;
   box-shadow: var(--elevation-3);
 }
@@ -203,7 +203,7 @@
   left: 50%;
   width: 0;
   height: 0;
-  background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.1) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(55, 48, 163, 0.15) 0%, rgba(118, 75, 162, 0.1) 50%, transparent 70%);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -225,9 +225,9 @@
   height: 100%;
   background: linear-gradient(145deg, 
     transparent 0%, 
-    rgba(102, 126, 234, 0.08) 20%,
+    rgba(55, 48, 163, 0.08) 20%,
     rgba(118, 75, 162, 0.12) 50%,
-    rgba(102, 126, 234, 0.08) 80%,
+    rgba(55, 48, 163, 0.08) 80%,
     transparent 100%);
   transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 0;
@@ -241,19 +241,19 @@
 @keyframes numberPulseHome {
   0%, 100% { 
     transform: scale(1);
-    filter: brightness(1) drop-shadow(0 1px 3px rgba(102, 126, 234, 0.08));
+    filter: brightness(1) drop-shadow(0 1px 3px rgba(55, 48, 163, 0.08));
   }
   25% {
     transform: scale(1.02);
-    filter: brightness(1.1) drop-shadow(0 2px 5px rgba(102, 126, 234, 0.15));
+    filter: brightness(1.1) drop-shadow(0 2px 5px rgba(55, 48, 163, 0.15));
   }
   50% { 
     transform: scale(1.03);
-    filter: brightness(1.15) drop-shadow(0 3px 8px rgba(102, 126, 234, 0.2));
+    filter: brightness(1.15) drop-shadow(0 3px 8px rgba(55, 48, 163, 0.2));
   }
   75% {
     transform: scale(1.02);
-    filter: brightness(1.1) drop-shadow(0 2px 5px rgba(102, 126, 234, 0.15));
+    filter: brightness(1.1) drop-shadow(0 2px 5px rgba(55, 48, 163, 0.15));
   }
 }
 
@@ -314,11 +314,11 @@
   right: -6px;
   bottom: -6px;
   background: linear-gradient(45deg, 
-    rgba(102, 126, 234, 0.1) 0%, 
+    rgba(55, 48, 163, 0.1) 0%, 
     rgba(118, 75, 162, 0.1) 25%,
-    rgba(102, 126, 234, 0.1) 50%,
+    rgba(55, 48, 163, 0.1) 50%,
     rgba(118, 75, 162, 0.1) 75%,
-    rgba(102, 126, 234, 0.1) 100%);
+    rgba(55, 48, 163, 0.1) 100%);
   border-radius: 20px;
   z-index: -1;
   animation: borderGlowHome 4s ease-in-out infinite;
@@ -346,7 +346,7 @@
     filter: brightness(1);
   }
   50% {
-    filter: brightness(1.2) drop-shadow(0 0 20px rgba(102, 126, 234, 0.3));
+    filter: brightness(1.2) drop-shadow(0 0 20px rgba(55, 48, 163, 0.3));
   }
 }
 

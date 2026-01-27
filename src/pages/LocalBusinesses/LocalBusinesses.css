@@ -309,7 +309,7 @@
   gap: 6px;
   padding: 8px 12px;
   background: #fef3c7;
-  color: #667eea;
+  color: #3730a3;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
@@ -667,7 +667,7 @@
 }
 
 .offer-header svg {
-  color: #667eea;
+  color: #3730a3;
 }
 
 .offer-header h5 {
@@ -693,7 +693,7 @@
 .offer-validity {
   padding: 4px 10px;
   background: #fef3c7;
-  color: #667eea;
+  color: #3730a3;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;

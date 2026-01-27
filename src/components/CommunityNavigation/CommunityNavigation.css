@@ -53,9 +53,9 @@
 }
 
 .nav-item.active {
-  color: #667eea;
+  color: #3730a3;
   background: #eff6ff;
-  border-bottom: 3px solid #667eea;
+  border-bottom: 3px solid #3730a3;
 }
 
 .nav-icon {
@@ -151,7 +151,7 @@
 
   .nav-item.active {
     background: transparent;
-    border-bottom: 3px solid #667eea;
+    border-bottom: 3px solid #3730a3;
   }
 
   .nav-label {

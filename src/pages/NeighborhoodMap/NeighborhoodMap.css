@@ -61,7 +61,7 @@
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #3730a3;
 }
 
 .map-info-panel h3 {
@@ -176,8 +176,8 @@
 
 .map-search-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #3730a3;
+  box-shadow: 0 0 0 3px rgba(55, 48, 163, 0.1);
 }
 
 .map-search-input::placeholder {
@@ -210,7 +210,7 @@
 }
 
 .map-search-clear:hover {
-  background: #667eea !important;
+  background: #3730a3 !important;
   color: white !important;
   transform: scale(1.1);
 }
@@ -252,7 +252,7 @@
 }
 
 .search-result-code {
-  background: #667eea !important;
+  background: #3730a3 !important;
   color: white !important;
   padding: 2px 8px;
   border-radius: 6px;
@@ -298,7 +298,7 @@
 .stat-number {
   font-size: 32px;
   font-weight: 700;
-  color: #667eea !important;
+  color: #3730a3 !important;
 }
 
 .stat-label {
@@ -345,7 +345,7 @@
 
 .leaflet-control-zoom a:hover {
   background: #f8fafc !important;
-  color: #667eea !important;
+  color: #3730a3 !important;
 }
 
 .map-loading {
@@ -441,7 +441,7 @@
 }
 
 .popup-type strong {
-  color: #667eea;
+  color: #3730a3;
   text-transform: capitalize;
 }
 
@@ -544,7 +544,7 @@
 .modal-content button {
   margin-top: 20px;
   padding: 12px 24px;
-  background: #667eea;
+  background: #3730a3;
   color: white;
   border: none;
   border-radius: 25px;
@@ -756,7 +756,7 @@
 
 .neighborhood-popup h4 {
   margin: 0 0 6px 0;
-  color: #667eea;
+  color: #3730a3;
   font-size: 0.95rem;
   font-weight: 600;
   border-bottom: 2px solid #fed7aa;
@@ -766,7 +766,7 @@
 .neighborhood-popup .popup-code {
   margin: 0 0 6px 0;
   font-size: 0.85rem;
-  color: #764ba2;
+  color: #5b21b6;
   font-weight: 600;
 }
 
@@ -781,13 +781,13 @@
   padding: 8px;
   border-radius: 6px;
   margin: 8px 0;
-  border-left: 3px solid #667eea;
+  border-left: 3px solid #3730a3;
 }
 
 .neighborhood-popup .popup-note {
   margin: 0;
   font-size: 0.75rem;
-  color: #764ba2;
+  color: #5b21b6;
   font-style: italic;
 }
 
@@ -834,7 +834,7 @@
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 0.75rem;
-  color: #764ba2;
+  color: #5b21b6;
   font-weight: 500;
 }
 
@@ -863,7 +863,7 @@
 
 /* Etiquetas de UV en el mapa (solo en hover) */
 .uv-label {
-  background: rgba(102, 126, 234, 0.95);
+  background: rgba(55, 48, 163, 0.95);
   border: 2px solid white;
   border-radius: 6px;
   padding: 4px 10px;
@@ -877,7 +877,7 @@
 }
 
 .uv-label::before {
-  border-top-color: rgba(102, 126, 234, 0.95) !important;
+  border-top-color: rgba(55, 48, 163, 0.95) !important;
 }
 
 /* Selector de modo de búsqueda */
@@ -908,15 +908,15 @@
 
 .mode-btn:hover {
   background: #f8fafc;
-  border-color: #667eea;
+  border-color: #3730a3;
   transform: translateY(-1px);
 }
 
 .mode-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
-  border-color: #667eea !important;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+  border-color: #3730a3 !important;
+  box-shadow: 0 2px 8px rgba(55, 48, 163, 0.3) !important;
 }
 
 /* Botón de toggle vecindarios en el selector */
@@ -928,7 +928,7 @@
 .map-search-btn {
   position: absolute;
   right: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   border: none;
   border-radius: 50%;
   width: 36px;
@@ -944,9 +944,9 @@
 }
 
 .map-search-btn:hover:not(:disabled) {
-  background: #764ba2 !important;
+  background: #5b21b6 !important;
   transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 8px rgba(55, 48, 163, 0.3);
 }
 
 .map-search-btn:disabled {
@@ -963,7 +963,7 @@
 
 .address-popup h4 {
   margin: 0 0 10px 0;
-  color: #667eea;
+  color: #3730a3;
   font-size: 16px;
   font-weight: 600;
   border-bottom: 2px solid #fed7aa;
@@ -984,7 +984,7 @@
   background: #fff7ed;
   padding: 12px;
   border-radius: 8px;
-  border-left: 3px solid #667eea;
+  border-left: 3px solid #3730a3;
   margin-top: 8px;
 }
 
@@ -996,7 +996,7 @@
 }
 
 .uv-info strong {
-  color: #667eea;
+  color: #3730a3;
   font-weight: 600;
 }
 
@@ -1068,7 +1068,7 @@
 }
 
 .neighborhood-popup h4 .popup-icon {
-  fill: #667eea;
+  fill: #3730a3;
   width: 20px;
   height: 20px;
 }
@@ -1092,7 +1092,7 @@
 }
 
 .popup-info .popup-icon {
-  fill: #764ba2;
+  fill: #5b21b6;
   width: 16px;
   height: 16px;
 }
@@ -1104,7 +1104,7 @@
 }
 
 .popup-services span .popup-icon {
-  fill: #764ba2;
+  fill: #5b21b6;
   width: 14px;
   height: 14px;
 }
@@ -1125,7 +1125,7 @@
 .address-popup h4 svg {
   vertical-align: middle;
   margin-right: 6px;
-  color: #667eea;
+  color: #3730a3;
 }
 
 .uv-info p svg {
@@ -1137,24 +1137,24 @@
 /* Reglas super específicas para forzar colores en el mapa */
 .neighborhood-map-page .search-mode-selector .mode-btn.active,
 .search-mode-selector .mode-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
-  border-color: #667eea !important;
+  border-color: #3730a3 !important;
 }
 
 .neighborhood-map-page .map-search-wrapper .map-search-btn,
 .map-search-wrapper .map-search-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
 }
 
 .neighborhood-map-page .map-stats .stat-number,
 .map-stats .stat-number {
-  color: #667eea !important;
+  color: #3730a3 !important;
 }
 
 .neighborhood-map-page .map-search-results .search-result-code,
 .map-search-results .search-result-code {
-  background: #667eea !important;
+  background: #3730a3 !important;
   color: white !important;
 }

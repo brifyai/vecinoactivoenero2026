@@ -17,7 +17,7 @@
   position: relative;
   height: 200px;
   overflow: hidden;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
 }
 
 .page-image > img {
@@ -90,7 +90,7 @@
 .page-stat .stat-number {
   font-size: 20px;
   font-weight: 700;
-  color: #667eea;
+  color: #3730a3;
 }
 
 .page-stat .stat-label {
@@ -119,14 +119,14 @@
 }
 
 .btn-follow {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3);
 }
 
 .btn-follow:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 16px rgba(55, 48, 163, 0.4);
 }
 
 .btn-follow.followed {
@@ -141,8 +141,8 @@
 
 .btn-invite {
   background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: #3730a3;
+  border: 2px solid #3730a3;
 }
 
 .btn-invite:hover {

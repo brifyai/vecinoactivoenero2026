@@ -28,7 +28,7 @@
 
 .conversation-item.active {
   background: #eff6ff;
-  border-left: 3px solid #667eea;
+  border-left: 3px solid #3730a3;
   padding-left: 13px;
 }
 
@@ -81,7 +81,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #667eea;
+  background: #3730a3;
 }
 
 @media (max-width: 640px) {

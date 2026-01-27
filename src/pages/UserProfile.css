@@ -30,7 +30,7 @@
 }
 
 .user-not-found button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   padding: 12px 32px;
@@ -43,7 +43,7 @@
 
 .user-not-found button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.4);
 }
 
 .no-posts {
@@ -111,7 +111,7 @@
   border-radius: 10px;
   font-family: 'Courier New', monospace;
   font-size: 14px;
-  color: #667eea;
+  color: #3730a3;
   font-weight: 600;
   border: 2px solid #e8ebff;
   word-break: break-all;
@@ -151,8 +151,8 @@
 
 .friend-card-small:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
-  border-color: #667eea;
+  box-shadow: 0 8px 24px rgba(55, 48, 163, 0.2);
+  border-color: #3730a3;
 }
 
 .friend-card-small img {
@@ -166,7 +166,7 @@
 }
 
 .friend-card-small:hover img {
-  border-color: #667eea;
+  border-color: #3730a3;
   transform: scale(1.05);
 }
 
@@ -222,7 +222,7 @@
 
 .photo-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.25);
+  box-shadow: 0 8px 24px rgba(55, 48, 163, 0.25);
 }
 
 .photo-card img {
@@ -236,7 +236,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(102, 126, 234, 0.9), transparent);
+  background: linear-gradient(to top, rgba(55, 48, 163, 0.9), transparent);
   padding: 12px;
   color: white;
   font-size: 14px;

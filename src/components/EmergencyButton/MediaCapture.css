@@ -7,7 +7,7 @@
 }
 
 .media-capture:hover {
-  border-color: #667eea;
+  border-color: #3730a3;
 }
 
 .media-capture-header h4 {
@@ -39,7 +39,7 @@
 }
 
 .media-option-btn:hover:not(:disabled) {
-  border-color: #667eea;
+  border-color: #3730a3;
   background: #f8f9ff;
   transform: translateY(-2px);
 }
@@ -52,7 +52,7 @@
 
 .media-option-btn svg {
   font-size: 24px;
-  color: #667eea;
+  color: #3730a3;
 }
 
 .media-option-btn span {

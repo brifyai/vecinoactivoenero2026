@@ -80,7 +80,7 @@
 .stat-value {
   font-size: 20px;
   font-weight: 700;
-  color: #667eea;
+  color: #3730a3;
 }
 
 .stat-status {
@@ -111,7 +111,7 @@
   padding: 12px;
   background: #f9fafb;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #3730a3;
 }
 
 .recommendations h4 {
@@ -143,7 +143,7 @@
 }
 
 .recommendation-item.medium {
-  border-left-color: #667eea;
+  border-left-color: #3730a3;
   background: #fffbf0;
 }
 
@@ -171,7 +171,7 @@
 }
 
 .recommendation-item.medium .priority-badge {
-  background: #667eea;
+  background: #3730a3;
 }
 
 .recommendation-item.low .priority-badge {
@@ -189,7 +189,7 @@
   padding: 12px;
   background: #eff6ff;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #3730a3;
 }
 
 .info-text {

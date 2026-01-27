@@ -148,12 +148,12 @@
 }
 
 .filter-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #3730a3;
+  color: #3730a3;
 }
 
 .filter-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border-color: transparent;
 }
@@ -178,7 +178,7 @@
   width: 24px;
   height: 24px;
   border: 2px solid #e5e7eb;
-  border-top: 2px solid #667eea;
+  border-top: 2px solid #3730a3;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -205,7 +205,7 @@
 
 .notification-item.unread {
   background: #f0f9ff;
-  border-left: 3px solid #667eea;
+  border-left: 3px solid #3730a3;
 }
 
 .notification-item.unread:hover {
@@ -257,7 +257,7 @@
 .unread-indicator {
   width: 8px;
   height: 8px;
-  background: #667eea;
+  background: #3730a3;
   border-radius: 50%;
   position: absolute;
   top: 18px;

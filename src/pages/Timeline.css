@@ -68,9 +68,9 @@
 }
 
 .tab.active {
-  color: #667eea !important;
+  color: #3730a3 !important;
   background: #f5f3ff !important;
-  border-bottom-color: #667eea !important;
+  border-bottom-color: #3730a3 !important;
 }
 
 .tab-right {
@@ -91,13 +91,13 @@
 
 .tab-right input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #3730a3;
+  box-shadow: 0 0 0 3px rgba(55, 48, 163, 0.1);
 }
 
 .activity-feed-btn {
   padding: 10px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -108,12 +108,12 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3);
 }
 
 .activity-feed-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 16px rgba(55, 48, 163, 0.4);
 }
 
 .timeline-content {
@@ -194,7 +194,7 @@
   padding: 12px 16px;
   border-radius: 10px;
   font-size: 14px;
-  color: #667eea;
+  color: #3730a3;
   font-family: monospace;
   font-weight: 600;
   word-break: break-all;
@@ -237,7 +237,7 @@
   padding: 8px;
   border-radius: 50%;
   transition: all 0.3s;
-  color: #667eea;
+  color: #3730a3;
 }
 
 .feed-actions button:hover {
@@ -310,8 +310,8 @@
   width: 100%;
   padding: 16px;
   background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: #3730a3;
+  border: 2px solid #3730a3;
   border-radius: 12px;
   font-size: 15px;
   font-weight: 600;
@@ -321,10 +321,10 @@
 }
 
 .load-more-btn:hover {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 20px rgba(55, 48, 163, 0.4);
   border-color: transparent;
 }
 
@@ -358,7 +358,7 @@
   width: 100%;
   padding: 12px;
   background: linear-gradient(135deg, #f8f9ff 0%, #fef5f8 100%);
-  color: #667eea;
+  color: #3730a3;
   border: 2px solid #e8ebff;
   border-radius: 10px;
   font-size: 14px;
@@ -369,11 +369,11 @@
 }
 
 .load-more-feed-btn:hover {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border-color: transparent;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3);
 }
 /* Media queries para el grid de fotos responsive */
 @media (max-width: 1200px) {
@@ -451,9 +451,9 @@
 /* Reglas super específicas para forzar colores en Timeline tabs */
 .timeline .timeline-tabs .tab.active,
 .timeline-tabs .tab.active {
-  color: #667eea !important;
+  color: #3730a3 !important;
   background: #f5f3ff !important;
-  border-bottom-color: #667eea !important;
+  border-bottom-color: #3730a3 !important;
 }
 
 .timeline .timeline-tabs .tab:hover,
@@ -467,9 +467,9 @@
 .photos-tabs .tab.active,
 .about-tabs .tab.active,
 .friends-tabs .tab.active {
-  color: #667eea !important;
+  color: #3730a3 !important;
   background: #f5f3ff !important;
-  border-bottom-color: #667eea !important;
+  border-bottom-color: #3730a3 !important;
 }
 
 /* Mobile responsive styles for Timeline */
@@ -603,9 +603,9 @@
 
 .suggestion-item:hover {
   background: #e8ebff;
-  border-color: #667eea;
+  border-color: #3730a3;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.2);
 }
 
 .suggestion-item img {
@@ -630,7 +630,7 @@
 
 .suggestion-item span {
   font-size: 13px;
-  color: #667eea;
+  color: #3730a3;
   font-weight: 500;
 }
 
@@ -652,27 +652,27 @@
 }
 
 .action-buttons button:first-child {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border-color: transparent;
 }
 
 .action-buttons button:first-child:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 20px rgba(55, 48, 163, 0.4);
 }
 
 .action-buttons button:not(:first-child) {
   background: white;
-  color: #667eea;
-  border-color: #667eea;
+  color: #3730a3;
+  border-color: #3730a3;
 }
 
 .action-buttons button:not(:first-child):hover {
-  background: #667eea;
+  background: #3730a3;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3);
 }
 
 @media (max-width: 768px) {

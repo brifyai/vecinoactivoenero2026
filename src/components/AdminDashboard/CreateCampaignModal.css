@@ -84,8 +84,8 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #3730a3;
+  box-shadow: 0 0 0 3px rgba(55, 48, 163, 0.1);
 }
 
 .form-group input.error,
@@ -142,18 +142,18 @@
 }
 
 .type-option:hover {
-  border-color: #667eea;
+  border-color: #3730a3;
   background: #f9fafb;
 }
 
 .type-option.selected {
-  border-color: #667eea;
+  border-color: #3730a3;
   background: #eef2ff;
 }
 
 .type-option.selected svg,
 .type-option.selected span {
-  color: #667eea;
+  color: #3730a3;
 }
 
 /* Modal Footer */
@@ -212,7 +212,7 @@
 }
 
 .btn-primary {
-  background: #667eea;
+  background: #3730a3;
   color: white;
 }
 

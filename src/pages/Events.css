@@ -89,7 +89,7 @@
 
 .create-event-btn {
   padding: 16px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
   border: none;
   border-radius: 12px;
@@ -100,14 +100,14 @@
   align-items: center;
   gap: 8px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3) !important;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .create-event-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 16px rgba(55, 48, 163, 0.4);
 }
 
 .search-section {
@@ -140,8 +140,8 @@
 
 .search-input-wrapper input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  border-color: #3730a3;
+  box-shadow: 0 0 0 4px rgba(55, 48, 163, 0.1);
 }
 
 .events-tabs {
@@ -178,9 +178,9 @@
 }
 
 .tab-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3) !important;
 }
 
 .years-selector {
@@ -209,9 +209,9 @@
 }
 
 .year-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3);
 }
 
 .category-buttons {
@@ -241,9 +241,9 @@
 }
 
 .category-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3) !important;
 }
 
 .events-grid {
@@ -308,7 +308,7 @@
 }
 
 .event-status.interested {
-  background: #667eea;
+  background: #3730a3;
   color: white;
 }
 
@@ -339,7 +339,7 @@
 }
 
 .event-detail svg {
-  color: #667eea;
+  color: #3730a3;
 }
 
 .event-actions {
@@ -361,8 +361,8 @@
 
 .interested-btn {
   background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: #3730a3;
+  border: 2px solid #3730a3;
 }
 
 .interested-btn:hover {
@@ -371,14 +371,14 @@
 }
 
 .going-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3);
 }
 
 .going-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 16px rgba(55, 48, 163, 0.4);
 }
 
 .no-events {
@@ -423,7 +423,7 @@
   width: 48px;
   height: 48px;
   border-radius: 10px;
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(55, 48, 163, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -504,7 +504,7 @@
 }
 
 .detail-item svg {
-  color: #667eea;
+  color: #3730a3;
 }
 
 .attend-btn {
@@ -513,7 +513,7 @@
   justify-content: center;
   gap: 6px;
   padding: 10px;
-  background: #667eea;
+  background: #3730a3;
   color: white;
   border: none;
   border-radius: 8px;
@@ -525,7 +525,7 @@
 }
 
 .attend-btn:hover:not(:disabled) {
-  background: #764ba2;
+  background: #5b21b6;
 }
 
 .attend-btn.attending {
@@ -658,8 +658,8 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #3730a3;
+  box-shadow: 0 0 0 3px rgba(55, 48, 163, 0.1);
 }
 
 .form-row {
@@ -686,7 +686,7 @@
 
 .submit-btn {
   padding: 10px 20px;
-  background: #667eea;
+  background: #3730a3;
   color: white;
   border: none;
   border-radius: 8px;
@@ -697,7 +697,7 @@
 }
 
 .submit-btn:hover {
-  background: #764ba2;
+  background: #5b21b6;
 }
 
 @media (max-width: 1400px) {
@@ -999,28 +999,28 @@
 /* Reglas super específicas para forzar colores en Events */
 .events-page .search-with-button .create-event-btn,
 .search-with-button .create-event-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3) !important;
 }
 
 .events-page .events-tabs .tab-btn.active,
 .events-tabs .tab-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3) !important;
 }
 
 .events-page .category-buttons .category-btn.active,
 .category-buttons .category-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3) !important;
 }
 
 .events-page .community-header .create-event-btn,
 .community-header .create-event-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3) !important;
 }

@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   padding: 20px;
 }
 
@@ -59,7 +59,7 @@
 }
 
 .method-btn:hover:not(:disabled) {
-  border-color: #667eea;
+  border-color: #3730a3;
   background: #f3f4f6;
 }
 
@@ -101,12 +101,12 @@
 
 .verification-form input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #3730a3;
 }
 
 .verify-btn {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -118,7 +118,7 @@
 
 .verify-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.4);
 }
 
 .verify-btn:disabled {

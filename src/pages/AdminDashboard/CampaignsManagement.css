@@ -55,7 +55,7 @@
 .header-icon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -82,7 +82,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -94,7 +94,7 @@
 
 .create-campaign-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.4);
 }
 
 /* Métricas */
@@ -211,7 +211,7 @@
 }
 
 .search-form button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -250,8 +250,8 @@
 .filter-btn:hover,
 .filter-btn.active {
   background: #f8fafc;
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #3730a3;
+  color: #3730a3;
 }
 
 .view-modes {
@@ -275,7 +275,7 @@
 
 .view-btn:hover,
 .view-btn.active {
-  background: #667eea;
+  background: #3730a3;
   color: white;
 }
 
@@ -319,8 +319,8 @@
 
 .filter-group select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #3730a3;
+  box-shadow: 0 0 0 3px rgba(55, 48, 163, 0.1);
 }
 
 /* Contenido */
@@ -346,7 +346,7 @@
   width: 32px;
   height: 32px;
   border: 3px solid #e5e7eb;
-  border-top: 3px solid #667eea;
+  border-top: 3px solid #3730a3;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
@@ -355,7 +355,7 @@
 .campaigns-error button {
   margin-top: 16px;
   padding: 8px 16px;
-  background: #667eea;
+  background: #3730a3;
   color: white;
   border: none;
   border-radius: 6px;
@@ -374,7 +374,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -386,7 +386,7 @@
 
 .create-first-campaign:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.4);
 }
 
 /* Lista de campañas */

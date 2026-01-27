@@ -6,7 +6,7 @@
 }
 
 .firebase-test h2 {
-  color: #667eea;
+  color: #3730a3;
   text-align: center;
   margin-bottom: 30px;
   font-size: 28px;
@@ -25,7 +25,7 @@
   color: #333;
   margin-bottom: 15px;
   font-size: 18px;
-  border-bottom: 2px solid #667eea;
+  border-bottom: 2px solid #3730a3;
   padding-bottom: 8px;
 }
 
@@ -89,8 +89,8 @@
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #3730a3;
+  box-shadow: 0 0 0 3px rgba(55, 48, 163, 0.1);
 }
 
 /* Botones */
@@ -102,7 +102,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   padding: 12px 20px;
@@ -114,13 +114,13 @@
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3);
 }
 
 .btn-secondary {
   background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: #3730a3;
+  border: 2px solid #3730a3;
   padding: 10px 18px;
   border-radius: 8px;
   font-weight: 600;
@@ -129,13 +129,13 @@
 }
 
 .btn-secondary:hover {
-  background: #667eea;
+  background: #3730a3;
   color: white;
 }
 
 .btn-small {
   background: #f8f9fa;
-  color: #667eea;
+  color: #3730a3;
   border: 1px solid #dee2e6;
   padding: 6px 12px;
   border-radius: 6px;
@@ -145,7 +145,7 @@
 }
 
 .btn-small:hover {
-  background: #667eea;
+  background: #3730a3;
   color: white;
 }
 
@@ -155,7 +155,7 @@
   padding: 12px 16px;
   border-radius: 8px;
   margin-bottom: 15px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #3730a3;
 }
 
 /* Listas */
@@ -206,7 +206,7 @@
 
 .message-header strong,
 .notification-header strong {
-  color: #667eea;
+  color: #3730a3;
 }
 
 .message-header span,

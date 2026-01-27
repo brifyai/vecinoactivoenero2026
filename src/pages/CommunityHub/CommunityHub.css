@@ -102,9 +102,9 @@
 }
 
 .hub-tab.active {
-  color: #667eea;
+  color: #3730a3;
   background: #f5f3ff;
-  border-bottom-color: #667eea;
+  border-bottom-color: #3730a3;
 }
 
 .tab-icon {
@@ -119,10 +119,10 @@
 }
 
 .hub-tab.active .tab-icon {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3);
 }
 
 .hub-tab:hover .tab-icon {
@@ -164,7 +164,7 @@
   left: 0;
   width: calc(100% / 3);
   height: 3px;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, #3730a3 0%, #5b21b6 100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 3px 3px 0 0;
 }
@@ -273,7 +273,7 @@
 
   .hub-tab.active {
     border-bottom-color: #e5e7eb;
-    border-left-color: #667eea;
+    border-left-color: #3730a3;
     background: #f5f3ff;
   }
 
@@ -381,7 +381,7 @@
 }
 
 .dark-mode .hub-tab.active {
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(55, 48, 163, 0.1);
   color: #a5b4fc;
 }
 

@@ -37,7 +37,7 @@
 
 .neighborhood-info {
   font-size: 14px;
-  color: #667eea;
+  color: #3730a3;
   font-weight: 600;
   margin-top: 8px;
 }
@@ -80,16 +80,16 @@
 }
 
 .filter-buttons .filter-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #3730a3;
+  color: #3730a3;
   background: #f5f3ff;
 }
 
 .filter-buttons .filter-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
   color: white !important;
   border-color: transparent !important;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3) !important;
 }
 
 .neighbors-grid {
@@ -121,8 +121,8 @@
 }
 
 .neighbor-card:hover {
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
-  border-color: #667eea;
+  box-shadow: 0 8px 24px rgba(55, 48, 163, 0.2);
+  border-color: #3730a3;
   transform: translateY(-4px);
 }
 
@@ -152,7 +152,7 @@
 }
 
 .neighbor-card:hover .neighbor-avatar-large {
-  border-color: #667eea;
+  border-color: #3730a3;
   transform: scale(1.05);
 }
 
@@ -165,7 +165,7 @@
 
 .neighbor-username {
   font-size: 14px;
-  color: #667eea;
+  color: #3730a3;
   font-weight: 600;
   margin: 0;
 }
@@ -203,7 +203,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #e5e7eb;
-  border-top: 3px solid #667eea;
+  border-top: 3px solid #3730a3;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -233,7 +233,7 @@
 }
 
 .error-state button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -246,7 +246,7 @@
 
 .error-state button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3);
 }
 
 @media (max-width: 768px) {

@@ -31,7 +31,7 @@
 .header-icon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -69,7 +69,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -81,7 +81,7 @@
 
 .refresh-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.4);
 }
 
 .refresh-btn:disabled {
@@ -125,7 +125,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
 }
 
 .metric-card:hover {
@@ -271,7 +271,7 @@
 .widget-action {
   background: none;
   border: none;
-  color: #667eea;
+  color: #3730a3;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -303,7 +303,7 @@
   width: 20px;
   height: 20px;
   border: 2px solid #e5e7eb;
-  border-top: 2px solid #667eea;
+  border-top: 2px solid #3730a3;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -342,7 +342,7 @@
   padding: 16px;
   background: #f8fafc;
   border-radius: 12px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #3730a3;
   transition: all 0.2s ease;
 }
 
@@ -688,11 +688,11 @@
 }
 
 .quick-action-btn:hover {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-color: #667eea;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
+  border-color: #3730a3;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(55, 48, 163, 0.3);
 }
 
 .quick-action-btn svg {

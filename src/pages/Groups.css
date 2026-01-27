@@ -36,7 +36,7 @@
 
 .header-icon {
   font-size: 40px;
-  color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
 }
 
 .groups-header h1 {
@@ -54,7 +54,7 @@
 
 .create-group-btn {
   padding: 10px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -99,7 +99,7 @@
 
 .search-input-wrapper input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 0 0 2px linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
 }
 
 .groups-tabs {
@@ -132,7 +132,7 @@
 }
 
 .group-tab.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white !important;
 }
 
@@ -218,7 +218,7 @@
 }
 
 .join-group-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
 }
 
@@ -247,7 +247,7 @@
 .discover-btn {
   margin-top: 15px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   border-radius: 8px;

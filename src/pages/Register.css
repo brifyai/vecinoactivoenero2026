@@ -1,7 +1,7 @@
 /* Multi-Step Register Page - No Scroll Design */
 .register-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 50%, #f093fb 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,7 +29,7 @@
   border-radius: 32px;
   box-shadow: 
     0 40px 100px rgba(0, 0, 0, 0.15),
-    0 16px 64px rgba(102, 126, 234, 0.12);
+    0 16px 64px rgba(55, 48, 163, 0.12);
   overflow: hidden;
   width: 100%;
   max-width: 1200px;
@@ -44,7 +44,7 @@
 
 /* Lado izquierdo - Bienvenida */
 .register-left {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   padding: 60px 50px;
   display: flex;
   flex-direction: column;
@@ -242,9 +242,9 @@
 
 .input-field:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #3730a3;
   background: white;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 4px rgba(55, 48, 163, 0.1);
   transform: translateY(-1px);
 }
 
@@ -260,7 +260,7 @@
 }
 
 .input-field:focus + .input-icon {
-  color: #667eea;
+  color: #3730a3;
   transform: translateY(-50%) scale(1.1);
 }
 
@@ -280,8 +280,8 @@
 }
 
 .password-toggle:hover:not(:disabled) {
-  color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
+  color: #3730a3;
+  background: rgba(55, 48, 163, 0.1);
   transform: translateY(-50%) scale(1.1);
 }
 
@@ -304,7 +304,7 @@
 }
 
 .username-preview strong {
-  color: #667eea;
+  color: #3730a3;
   font-weight: 700;
 }
 
@@ -361,17 +361,17 @@
 }
 
 .distance-option:hover {
-  border-color: #667eea;
+  border-color: #3730a3;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+  box-shadow: 0 8px 24px rgba(55, 48, 163, 0.15);
 }
 
 .distance-option.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-color: #667eea;
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
+  border-color: #3730a3;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 24px rgba(55, 48, 163, 0.3);
 }
 
 .distance-help {
@@ -410,10 +410,10 @@
 }
 
 .btn-back:hover:not(:disabled) {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #3730a3;
+  color: #3730a3;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+  box-shadow: 0 8px 24px rgba(55, 48, 163, 0.15);
 }
 
 .btn-back:disabled {
@@ -422,7 +422,7 @@
 }
 
 .btn-next, .btn-register {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
   color: white;
   border: none;
   padding: 14px 28px;
@@ -437,7 +437,7 @@
   gap: 8px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 32px rgba(55, 48, 163, 0.3);
   letter-spacing: -0.01em;
   min-width: 140px;
 }
@@ -455,7 +455,7 @@
 
 .btn-next:hover:not(:disabled), .btn-register:hover:not(:disabled) {
   transform: translateY(-3px);
-  box-shadow: 0 16px 48px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 16px 48px rgba(55, 48, 163, 0.4);
 }
 
 .btn-next:hover:not(:disabled)::before, .btn-register:hover:not(:disabled)::before {
@@ -522,9 +522,9 @@
 }
 
 .social-button:hover:not(:disabled) {
-  border-color: #667eea;
+  border-color: #3730a3;
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(102, 126, 234, 0.15);
+  box-shadow: 0 12px 32px rgba(55, 48, 163, 0.15);
 }
 
 .social-button.google:hover:not(:disabled) {
@@ -555,7 +555,7 @@
 }
 
 .login-link a {
-  color: #667eea;
+  color: #3730a3;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s ease;
@@ -565,7 +565,7 @@
 
 .login-link a:hover {
   color: #5a67d8;
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(55, 48, 163, 0.1);
 }
 
 /* Divider */
