@@ -20,6 +20,7 @@ import ReduxInitializer from './components/ReduxInitializer/ReduxInitializer';
 import RealtimeProvider from './components/RealtimeProvider/RealtimeProvider';
 import HybridRealtimeProvider from './components/HybridRealtimeProvider/HybridRealtimeProvider';
 import Landing from './pages/Landing';
+import LandingVecinoActivo from './pages/LandingVecinoActivo';
 import Home from './pages/Home';
 import Timeline from './pages/Timeline';
 import About from './pages/About';
@@ -125,7 +126,7 @@ function App() {
               <AppInitializer />
               <Routes>
             {/* Rutas públicas */}
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<LandingVecinoActivo />} />
             <Route path="/iniciar-sesion" element={<UserTypeSelection />} />
             <Route path="/iniciar-sesion-vecinos" element={<VecinosLogin />} />
             <Route path="/iniciar-sesion-admin" element={<AdminLogin />} />

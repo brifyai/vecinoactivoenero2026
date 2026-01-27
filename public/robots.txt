@@ -1,0 +1,13 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /app/
+Disallow: /diagnostico
+Disallow: /websocket-test
+Disallow: /hybrid-test
+Disallow: /storage-test
+Disallow: /firebase-test
+
+# Sitemap
+Sitemap: https://vecinoactivo.cl/sitemap.xml
