@@ -18,6 +18,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SecurityIcon from '@mui/icons-material/Security';
 import WarningIcon from '@mui/icons-material/Warning';
+import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 
 import './AdminSidebar.css';
 
@@ -73,6 +74,13 @@ const AdminSidebar = ({ collapsed, onToggle, currentAdmin, adminRole }) => {
       icon: <PeopleIcon />,
       path: '/admin/dashboard/residents',
       description: 'Audiencia y verificación'
+    },
+    {
+      id: 'photos',
+      label: 'Galería de Fotos',
+      icon: <PhotoLibraryIcon />,
+      path: '/admin/dashboard/photos',
+      description: 'Gestión de fotos y álbumes'
     },
     {
       id: 'analytics',
