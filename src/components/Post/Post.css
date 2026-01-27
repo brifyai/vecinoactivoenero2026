@@ -1,9 +1,10 @@
 .post {
-  background: var(--surface);
+  background: transparent;
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
-  box-shadow: var(--elevation-2);
-  transition: box-shadow var(--transition-base);
+  border: 1px solid var(--outline-variant);
+  box-shadow: none;
+  transition: all var(--transition-base);
   animation: fadeIn var(--transition-base);
   width: 100%;
   max-width: 100%;
@@ -11,7 +12,8 @@
 }
 
 .post:hover {
-  box-shadow: var(--elevation-3);
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .post-header {
@@ -105,27 +107,152 @@
   background: var(--surface-container);
 }
 
+/* Contenedor de imágenes */
 .post-image {
   position: relative;
   margin: var(--spacing-md) calc(var(--spacing-lg) * -1);
   overflow: hidden;
   border-radius: var(--radius-md);
+  background: var(--surface-container);
 }
 
 .post-image img {
   width: 100%;
   height: auto;
+  min-height: 300px;
+  max-height: 500px;
+  object-fit: cover;
   display: block;
   transition: transform var(--transition-slow);
 }
 
 .post-image:hover img {
   transform: scale(1.02);
+  cursor: pointer;
 }
 
-.post-duration {
+/* Grid para 2 imágenes */
+.post-images-grid {
+  margin: var(--spacing-md) calc(var(--spacing-lg) * -1);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.post-images-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.post-images-two .post-image {
+  margin: 0;
+  border-radius: var(--radius-sm);
+}
+
+.post-images-two .post-image img {
+  height: 300px;
+  max-height: 300px;
+}
+
+/* Carrusel para 3+ imágenes */
+.post-carousel {
+  margin: var(--spacing-md) calc(var(--spacing-lg) * -1);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.post-carousel-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: var(--surface-container);
+}
+
+.post-carousel-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Botones de navegación del carrusel */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+
+.carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-btn-prev {
+  left: var(--spacing-md);
+}
+
+.carousel-btn-next {
+  right: var(--spacing-md);
+}
+
+.carousel-btn svg {
+  font-size: 28px;
+}
+
+/* Indicadores del carrusel */
+.carousel-indicators {
   position: absolute;
   bottom: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.carousel-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+}
+
+.carousel-indicator:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
+}
+
+.carousel-indicator.active {
+  background: white;
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* Contador de imágenes */
+.carousel-counter {
+  position: absolute;
+  top: var(--spacing-md);
   right: var(--spacing-md);
   background: rgba(0, 0, 0, 0.75);
   color: white;
@@ -134,6 +261,7 @@
   font-size: 12px;
   font-weight: 700;
   backdrop-filter: blur(8px);
+  z-index: 10;
 }
 
 .post-reactions {
@@ -141,24 +269,25 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 18px;
-  background: linear-gradient(135deg, #f8f9ff 0%, #fef5f8 100%);
+  background: transparent;
   border-radius: 12px;
   margin-top: 12px;
   margin-bottom: 8px;
-  border: 1px solid #e8ebff;
+  margin-left: -13px;
+  border: none;
   gap: 12px;
 }
 
 .reactions-left {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   cursor: pointer;
-  padding: 8px 14px;
+  padding: 6px 12px;
   border-radius: 20px;
   transition: all 0.3s ease;
-  background: white;
-  border: 2px solid #e8ebff;
+  background: transparent;
+  border: none;
   flex-shrink: 0;
 }
 
@@ -178,7 +307,7 @@
 }
 
 .reaction-emoji {
-  font-size: 20px;
+  font-size: 16px;
   transition: transform 0.3s ease;
 }
 
@@ -187,7 +316,7 @@
 }
 
 .reaction-count {
-  font-size: 16px;
+  font-size: 14px;
   color: #3730a3;
   font-weight: 700;
   transition: color 0.3s ease;
@@ -217,8 +346,8 @@
 .post-actions .action-btn {
   flex: 1;
   padding: 12px 8px;
-  background: white !important;
-  border: 2px solid #e8ebff;
+  background: transparent !important;
+  border: none;
   border-radius: 12px;
   font-size: 15px;
   font-weight: 700;
@@ -281,6 +410,21 @@
 
 .post-actions .action-btn:hover svg {
   transform: scale(1.15) rotate(5deg);
+}
+
+.post-actions .action-btn.reacted {
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%) !important;
+  color: white !important;
+  border-color: transparent !important;
+  font-weight: 800;
+}
+
+.post-actions .action-btn.reacted::before {
+  left: 0;
+}
+
+.post-actions .action-btn.reacted svg {
+  color: white;
 }
 
 .post-comments {
@@ -527,4 +671,25 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--on-surface);
+  margin-bottom: 2px;
+  transition: color var(--transition-fast);
+}
+
+.post-author-name {
+  transition: color var(--transition-fast);
+}
+
+.post-author-name:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }

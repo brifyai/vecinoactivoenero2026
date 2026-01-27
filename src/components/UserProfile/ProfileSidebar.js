@@ -1,5 +1,4 @@
 import EventsWidget from '../EventsWidget/EventsWidget';
-import ActivityNewsWidget from '../ActivityNewsWidget/ActivityNewsWidget';
 import ProfileInfoCard from './ProfileInfoCard';
 
 const ProfileSidebar = ({ 
@@ -18,10 +17,7 @@ const ProfileSidebar = ({
   return (
     <div className="widgets-sidebar">
       {isOwnProfile ? (
-        <>
-          <EventsWidget />
-          <ActivityNewsWidget />
-        </>
+        <EventsWidget />
       ) : (
         <ProfileInfoCard
           profileUser={profileUser}

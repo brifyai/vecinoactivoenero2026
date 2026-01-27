@@ -1,49 +1,86 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useReduxMessages } from '../../hooks/useReduxMessages';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendMessage, setMessagesFromRealtime } from '../../store/slices/messagesSlice';
+import firebaseMessagesService from '../../services/firebaseMessagesService';
 import storageService from '../../services/storageService';
 import SendIcon from '@mui/icons-material/Send';
 import './ChatWindow.css';
 
 const ChatWindow = ({ conversation, currentUserId }) => {
-  const { sendMessage, getConversation, markConversationAsRead } = useReduxMessages();
+  const dispatch = useDispatch();
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
+  const unsubscribeRef = useRef(null);
 
   const otherUserId = conversation.user1Id === currentUserId ? conversation.user2Id : conversation.user1Id;
   const otherUser = storageService.getUser(otherUserId);
 
+  // Suscribirse a mensajes en tiempo real con Firebase
   useEffect(() => {
-    loadMessages();
-    markConversationAsRead(currentUserId, otherUserId);
-  }, [conversation]);
+    if (!conversation?.id) return;
+
+    console.log('🔥 Suscribiéndose a mensajes en tiempo real para conversación:', conversation.id);
+    setLoading(true);
+
+    // Listener de Firebase para mensajes en tiempo real
+    unsubscribeRef.current = firebaseMessagesService.subscribeToMessages(
+      conversation.id,
+      (realtimeMessages) => {
+        console.log('💬 Mensajes actualizados en tiempo real:', realtimeMessages.length);
+        setMessages(realtimeMessages);
+        setLoading(false);
+        
+        // Actualizar Redux también
+        dispatch(setMessagesFromRealtime({
+          conversationId: conversation.id,
+          messages: realtimeMessages
+        }));
+      }
+    );
+
+    // Marcar mensajes como leídos
+    firebaseMessagesService.markAsRead(conversation.id, currentUserId);
+
+    // Cleanup: desuscribirse cuando el componente se desmonte o cambie la conversación
+    return () => {
+      if (unsubscribeRef.current) {
+        console.log('🔥 Desuscribiéndose de mensajes en tiempo real');
+        unsubscribeRef.current();
+      }
+    };
+  }, [conversation?.id, currentUserId, dispatch]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  const loadMessages = () => {
-    setLoading(true);
-    const conv = getConversation(currentUserId, otherUserId);
-    setMessages(conv);
-    setLoading(false);
-  };
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
 
     if (!messageInput.trim()) return;
 
-    const result = sendMessage(currentUserId, otherUserId, messageInput);
+    try {
+      // Enviar mensaje a Firebase (se actualizará automáticamente via listener)
+      await dispatch(sendMessage({
+        conversationId: conversation.id,
+        senderId: currentUserId,
+        recipientId: otherUserId,
+        content: messageInput.trim(),
+        type: 'text'
+      })).unwrap();
 
-    if (result.success) {
       setMessageInput('');
-      loadMessages();
+      console.log('✅ Mensaje enviado correctamente');
+    } catch (error) {
+      console.error('❌ Error enviando mensaje:', error);
+      alert('Error al enviar el mensaje. Por favor intenta de nuevo.');
     }
   };
 

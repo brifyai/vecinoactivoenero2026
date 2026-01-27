@@ -86,6 +86,24 @@
   color: var(--on-primary);
 }
 
+/* WhatsApp icon styling */
+.whatsapp-icon {
+  background: #25D366 !important;
+}
+
+.whatsapp-icon svg {
+  color: white !important;
+}
+
+.share-option:hover .whatsapp-icon {
+  background: #128C7E !important;
+  transform: scale(1.1);
+}
+
+.share-option:hover .whatsapp-icon svg {
+  color: white !important;
+}
+
 .share-text {
   display: flex;
   flex-direction: column;

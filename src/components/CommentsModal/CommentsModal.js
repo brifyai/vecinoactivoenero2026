@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useReduxVerification } from '../../hooks/useReduxVerification';
 import VerifiedBadge from '../VerifiedBadge/VerifiedBadge';
@@ -11,6 +12,7 @@ import './CommentsModal.css';
 
 const CommentsModal = ({ post, onClose }) => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { getVerificationStatus } = useReduxVerification();
   const [commentText, setCommentText] = useState('');
   const [showReactionPicker, setShowReactionPicker] = useState(null);
@@ -64,6 +66,32 @@ const CommentsModal = ({ post, onClose }) => {
   const [showReplies, setShowReplies] = useState({});
 
   const reactionEmojis = ['👍', '❤️', '😊', '😮', '😢', '😡'];
+
+  // Obtener el ID del autor de manera robusta
+  const getAuthorId = (item) => {
+    if (item.authorId) return item.authorId;
+    if (item.author?.id) return item.author.id;
+    if (item.author_id) return item.author_id;
+    if (item.userId) return item.userId;
+    if (item.user_id) return item.user_id;
+    return null;
+  };
+
+  const postAuthorId = getAuthorId(post);
+
+  // Función para navegar al perfil del usuario
+  const goToProfile = (userId) => {
+    console.log('🔍 CommentsModal - goToProfile llamado con userId:', userId);
+    
+    if (!userId) {
+      console.warn('⚠️ CommentsModal - userId es undefined o null');
+      return;
+    }
+    
+    console.log('✅ CommentsModal - Navegando a:', `/app/profile/${userId}`);
+    onClose(); // Cerrar el modal antes de navegar
+    navigate(`/app/profile/${userId}`);
+  };
 
   const handleAddComment = () => {
     if (!commentText.trim()) return;
@@ -134,7 +162,7 @@ const CommentsModal = ({ post, onClose }) => {
     <div className="comments-modal-overlay" onClick={onClose}>
       <div className="comments-modal" onClick={(e) => e.stopPropagation()}>
         <div className="comments-modal-header">
-          <h2>Publicación de {post.author?.name || post.author}</h2>
+          <h2>Publicación de {post.author?.name || (typeof post.author === 'string' ? post.author : 'Usuario')}</h2>
           <button className="close-modal-btn" onClick={onClose}>
             <CloseIcon />
           </button>
@@ -143,9 +171,20 @@ const CommentsModal = ({ post, onClose }) => {
         <div className="comments-modal-content">
           <div className="post-in-modal">
             <div className="post-header-modal">
-              <img src={post.author?.avatar || post.avatar} alt={post.author?.name || post.author} />
+              <img 
+                src={post.author?.avatar || post.avatar} 
+                alt={post.author?.name || 'Usuario'}
+                onClick={() => goToProfile(postAuthorId)}
+                style={{ cursor: 'pointer' }}
+              />
               <div className="post-author-info-modal">
-                <h4>{post.author?.name || post.author}</h4>
+                <h4 
+                  onClick={() => goToProfile(postAuthorId)}
+                  style={{ cursor: 'pointer' }}
+                  className="clickable-author-name"
+                >
+                  {post.author?.name || (typeof post.author === 'string' ? post.author : 'Usuario')}
+                </h4>
                 <span>{post.time}</span>
               </div>
             </div>
@@ -178,14 +217,27 @@ const CommentsModal = ({ post, onClose }) => {
           <div className="comments-list">
             {comments.map(comment => {
               const commentVerification = getVerificationStatus(comment.authorId);
+              const commentAuthorId = getAuthorId(comment);
               return (
                 <div key={comment.id}>
                   <div className="comment-item">
-                    <img src={comment.avatar} alt={comment.author} className="comment-avatar" />
+                    <img 
+                      src={comment.author?.avatar || comment.avatar} 
+                      alt={comment.author?.name || 'Usuario'} 
+                      className="comment-avatar"
+                      onClick={() => goToProfile(commentAuthorId)}
+                      style={{ cursor: 'pointer' }}
+                    />
                     <div className="comment-content">
                       <div className="comment-bubble">
                         <div className="comment-author-name">
-                          <strong>{comment.author}</strong>
+                          <strong 
+                            onClick={() => goToProfile(commentAuthorId)}
+                            style={{ cursor: 'pointer' }}
+                            className="clickable-author-name"
+                          >
+                            {comment.author?.name || (typeof comment.author === 'string' ? comment.author : 'Usuario')}
+                          </strong>
                           {commentVerification?.verified && <VerifiedBadge size="small" />}
                         </div>
                         <p>{comment.content}</p>
@@ -246,13 +298,26 @@ const CommentsModal = ({ post, onClose }) => {
                         <div className="comment-replies">
                           {comment.replies.map(reply => {
                             const replyVerification = getVerificationStatus(reply.authorId);
+                            const replyAuthorId = getAuthorId(reply);
                             return (
                               <div key={reply.id} className="comment-item">
-                                <img src={reply.avatar} alt={reply.author} className="comment-avatar" />
+                                <img 
+                                  src={reply.author?.avatar || reply.avatar} 
+                                  alt={reply.author?.name || 'Usuario'} 
+                                  className="comment-avatar"
+                                  onClick={() => goToProfile(replyAuthorId)}
+                                  style={{ cursor: 'pointer' }}
+                                />
                                 <div className="comment-content">
                                   <div className="comment-bubble">
                                     <div className="comment-author-name">
-                                      <strong>{reply.author}</strong>
+                                      <strong 
+                                        onClick={() => goToProfile(replyAuthorId)}
+                                        style={{ cursor: 'pointer' }}
+                                        className="clickable-author-name"
+                                      >
+                                        {reply.author?.name || (typeof reply.author === 'string' ? reply.author : 'Usuario')}
+                                      </strong>
                                       {replyVerification?.verified && <VerifiedBadge size="small" />}
                                     </div>
                                     <p>{reply.content}</p>

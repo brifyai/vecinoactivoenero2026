@@ -8,7 +8,7 @@ class SupabaseProjectsService {
         .from('projects')
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar_url),
           project_participants(user_id, role)
         `)
         .order('created_at', { ascending: false });
@@ -48,7 +48,7 @@ class SupabaseProjectsService {
         .insert([projectData])
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url)
+          created_by_user:created_by(id, username, name, avatar_url)
         `)
         .single();
 
@@ -114,7 +114,7 @@ class SupabaseProjectsService {
         .eq('created_by', userId)
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url)
+          created_by_user:created_by(id, username, name, avatar_url)
         `)
         .single();
 
@@ -150,7 +150,7 @@ class SupabaseProjectsService {
         .from('project_participants')
         .select(`
           *,
-          user:user_id(id, username, full_name, avatar_url)
+          user:user_id(id, username, name, avatar_url)
         `)
         .eq('project_id', projectId);
 
@@ -169,7 +169,7 @@ class SupabaseProjectsService {
         .from('projects')
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar_url),
           project_participants(user_id, role)
         `)
         .eq('id', projectId)
@@ -190,7 +190,7 @@ class SupabaseProjectsService {
         .from('projects')
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar_url),
           project_participants(user_id, role)
         `)
         .eq('slug', slug)
@@ -213,7 +213,7 @@ class SupabaseProjectsService {
           *,
           project:project_id(
             *,
-            created_by_user:created_by(id, username, full_name, avatar_url)
+            created_by_user:created_by(id, username, name, avatar_url)
           )
         `)
         .eq('user_id', userId);
@@ -252,7 +252,7 @@ class SupabaseProjectsService {
         .from('projects')
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar_url),
           project_participants(user_id, role)
         `)
         .eq('category', category)

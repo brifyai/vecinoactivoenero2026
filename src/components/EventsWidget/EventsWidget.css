@@ -5,6 +5,45 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
+.events-widget .widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.events-widget .widget-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.events-widget .widget-title h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1c1e21;
+}
+
+.events-widget .view-all-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  color: #0e8ce4;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.events-widget .view-all-btn:hover {
+  background: rgba(14, 140, 228, 0.1);
+}
+
 .events-list {
   display: flex;
   flex-direction: column;
@@ -13,10 +52,12 @@
 
 .event-item {
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid #e4e6eb;
   transition: transform 0.2s;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 
 .event-item:hover {
@@ -28,20 +69,70 @@
   width: 100%;
   height: 120px;
   object-fit: cover;
+  border-radius: 8px 8px 0 0;
 }
 
 .event-info {
   padding: 12px;
+  background: white;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .event-info h4 {
   font-size: 14px;
   font-weight: 600;
-  color: #1c1e21;
-  margin-bottom: 5px;
+  color: #1c1e21 !important;
+  margin: 0;
+  line-height: 1.4;
+  overflow: visible;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .event-info p {
   font-size: 12px;
+  color: #65676b !important;
+  margin: 0;
+  line-height: 1.4;
+  overflow: visible;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.event-attendees {
+  font-size: 11px;
+  color: #0e8ce4 !important;
+  font-weight: 500;
+  display: block;
+  margin-top: 4px;
+}
+
+.events-loading,
+.events-empty {
+  text-align: center;
+  padding: 30px 20px;
   color: #65676b;
+}
+
+.events-empty p {
+  margin-bottom: 15px;
+}
+
+.create-event-link {
+  background: #0e8ce4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.create-event-link:hover {
+  background: #0c7bc9;
 }

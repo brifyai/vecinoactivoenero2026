@@ -494,3 +494,38 @@
   gap: 6px;
   margin-bottom: 4px;
 }
+
+/* Estilos para nombres clicables */
+.clickable-author-name {
+  transition: color 0.2s ease;
+}
+
+.clickable-author-name:hover {
+  color: #1976d2;
+  text-decoration: underline;
+}
+
+.comment-avatar {
+  transition: opacity 0.2s ease;
+}
+
+.comment-avatar:hover {
+  opacity: 0.8;
+}
+
+.post-header-modal img {
+  transition: opacity 0.2s ease;
+}
+
+.post-header-modal img:hover {
+  opacity: 0.8;
+}
+
+.post-author-info-modal h4 {
+  transition: color 0.2s ease;
+}
+
+.post-author-info-modal h4:hover {
+  color: #1976d2;
+  text-decoration: underline;
+}

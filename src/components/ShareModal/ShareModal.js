@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import LinkIcon from '@mui/icons-material/Link';
 import FacebookIcon from '@mui/icons-material/Facebook';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import './ShareModal.css';
 
 const ShareModal = ({ post, onClose }) => {
@@ -27,6 +28,14 @@ const ShareModal = ({ post, onClose }) => {
 
   const handleSendMessenger = () => {
     showInfoToast('Función de enviar por Messenger próximamente!');
+  };
+
+  const handleShareWhatsApp = () => {
+    const authorName = post.author?.name || (typeof post.author === 'string' ? post.author : 'Usuario');
+    const postUrl = `https://vecinoactivo.cl/post/${post.id}`;
+    const text = `*${authorName}* compartió en Vecino Activo:\n\n${post.content}\n\n${postUrl}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   if (shareMode === 'feed') {
@@ -103,6 +112,16 @@ const ShareModal = ({ post, onClose }) => {
             <div className="share-text">
               <strong>Enviar por Messenger</strong>
               <span>Comparte en un mensaje privado</span>
+            </div>
+          </button>
+
+          <button className="share-option" onClick={handleShareWhatsApp}>
+            <div className="share-icon whatsapp-icon">
+              <WhatsAppIcon />
+            </div>
+            <div className="share-text">
+              <strong>Compartir por WhatsApp</strong>
+              <span>Envía esta publicación por WhatsApp</span>
             </div>
           </button>
 

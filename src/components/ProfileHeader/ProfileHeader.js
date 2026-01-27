@@ -137,7 +137,7 @@ const ProfileHeader = ({ user: propUser, isOwnProfile = true }) => {
       </div>
 
       {showEditModal && isOwnProfile && <EditProfileModal onClose={() => setShowEditModal(false)} />}
-      {showVerificationModal && isOwnProfile && <VerificationModal onClose={() => setShowVerificationModal(false)} />}
+      {showVerificationModal && isOwnProfile && <VerificationModal isOpen={showVerificationModal} onClose={() => setShowVerificationModal(false)} />}
     </>
   );
 };

@@ -25,23 +25,47 @@ import {
  * Carga datos una vez y permite operaciones CRUD
  */
 export const useReduxPosts = (options = {}) => {
+  console.log('🔵 useReduxPosts: Hook LLAMADO');
   const dispatch = useDispatch();
   
   const posts = useSelector(selectAllPosts);
   const loading = useSelector(selectPostsLoading);
   const error = useSelector(selectPostsError);
 
-  // Cargar posts iniciales si no hay datos
+  // Cargar posts iniciales - SIEMPRE cargar para asegurar datos frescos
   useEffect(() => {
-    if (posts.length === 0 && !loading) {
-      // Pasar parámetros por defecto para evitar el loop infinito
+    console.log('🔵 useReduxPosts: Verificando posts...', {
+      postsLength: posts.length,
+      loading,
+      error
+    });
+    
+    // SIEMPRE cargar si no está cargando (para obtener datos frescos con media)
+    if (!loading) {
+      console.log('🔵 useReduxPosts: Cargando posts frescos...');
       dispatch(loadPosts({ 
-        neighborhoodId: null, // null para obtener todos los posts
+        neighborhoodId: null,
         limit: 50, 
         offset: 0 
       }));
     }
-  }, [dispatch, posts.length, loading]);
+  }, [dispatch]); // Solo ejecutar una vez al montar
+  
+  // Log cuando cambien los posts
+  useEffect(() => {
+    if (posts.length > 0) {
+      console.log('🔵 useReduxPosts: Posts actualizados:', posts.length);
+      console.log('🔵 Primeros 2 posts:', posts.slice(0, 2).map(p => ({
+        id: p.id,
+        content: p.content?.substring(0, 30),
+        media: p.media,
+        mediaType: typeof p.media,
+        mediaIsArray: Array.isArray(p.media),
+        mediaLength: p.media?.length,
+        hasMedia: !!p.media && p.media?.length > 0
+      })));
+    }
+  }, [posts]);
 
   // Funciones de manejo de posts
   const handleCreatePost = async (postData) => {

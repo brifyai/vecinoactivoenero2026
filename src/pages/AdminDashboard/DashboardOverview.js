@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useReduxAdmin } from '../../hooks/useReduxAdmin';
 import { useReduxTickets } from '../../hooks/useReduxTickets';
 import { useReduxCampaigns } from '../../hooks/useReduxCampaigns';
+import { useReduxPosts } from '../../hooks/useReduxPosts';
 
 // Material UI Icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -23,11 +24,13 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import ImageIcon from '@mui/icons-material/Image';
 
 import './DashboardOverview.css';
 
 const DashboardOverview = () => {
-  console.log('🏠 DashboardOverview component loading');
+  console.log('🏠 DashboardOverview component MONTADO');
   
   const {
     currentNeighborhood,
@@ -58,6 +61,29 @@ const DashboardOverview = () => {
     fetchCampaigns,
     getCampaignMetrics
   } = useReduxCampaigns();
+
+  const {
+    posts,
+    loading: postsLoading,
+    refresh: refreshPosts
+  } = useReduxPosts();
+  
+  // DEBUG: Log posts data
+  useEffect(() => {
+    if (posts && posts.length > 0) {
+      console.log('🟢 DASHBOARD - Total posts:', posts.length);
+      console.log('🟢 DASHBOARD - Primeros 3 posts:', posts.slice(0, 3).map(p => ({
+        id: p.id,
+        content: p.content?.substring(0, 40),
+        media: p.media,
+        mediaType: typeof p.media,
+        mediaIsArray: Array.isArray(p.media),
+        mediaLength: p.media?.length,
+        hasMedia: !!p.media && p.media?.length > 0,
+        allKeys: Object.keys(p)
+      })));
+    }
+  }, [posts]);
 
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
@@ -94,6 +120,10 @@ const DashboardOverview = () => {
     const neighborhoodId = getCurrentNeighborhoodId();
     if (neighborhoodId) {
       await loadDashboardData(neighborhoodId);
+    }
+    // Forzar recarga de posts
+    if (refreshPosts) {
+      refreshPosts();
     }
     setRefreshing(false);
   };
@@ -398,6 +428,100 @@ const DashboardOverview = () => {
                   <span>Ver Reportes</span>
                 </button>
               </div>
+            </div>
+          </div>
+
+          {/* Línea de Tiempo - Posts Recientes */}
+          <div className="dashboard-widget">
+            <div className="widget-header">
+              <h3><AccessTimeIcon /> Línea de Tiempo</h3>
+              <button className="widget-action">Ver todos</button>
+            </div>
+            <div className="widget-content">
+              {postsLoading ? (
+                <div className="widget-loading">
+                  <div className="loading-spinner"></div>
+                  <span>Cargando posts...</span>
+                </div>
+              ) : posts.length > 0 ? (
+                <div className="timeline-posts">
+                  {(() => {
+                    console.log('🎯 DASHBOARD RENDER - Total posts:', posts.length);
+                    if (posts.length > 0) {
+                      console.log('🎯 DASHBOARD RENDER - Primer post:', {
+                        id: posts[0].id,
+                        content: posts[0].content?.substring(0, 40),
+                        media: posts[0].media,
+                        mediaType: typeof posts[0].media,
+                        mediaIsArray: Array.isArray(posts[0].media),
+                        mediaLength: posts[0].media?.length,
+                        allKeys: Object.keys(posts[0])
+                      });
+                    }
+                    return null;
+                  })()}
+                  {posts.slice(0, 5).map((post) => (
+                    <div key={post.id} className="timeline-post-item">
+                      <div className="post-author">
+                        <img 
+                          src={post.author?.avatar || '/default-avatar.png'} 
+                          alt={post.author?.name || 'Usuario'} 
+                          className="post-avatar"
+                        />
+                        <div className="post-author-info">
+                          <div className="post-author-name">{post.author?.name || 'Usuario'}</div>
+                          <div className="post-date">
+                            {new Date(post.created_at).toLocaleDateString('es-ES', {
+                              day: 'numeric',
+                              month: 'short',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="post-content-preview">
+                        {post.content?.substring(0, 150)}
+                        {post.content?.length > 150 && '...'}
+                      </div>
+                      {post.media && post.media.length > 0 && (
+                        <div className="post-media-preview">
+                          {post.media.length === 1 ? (
+                            <img src={post.media[0]} alt="Post" className="post-single-image" />
+                          ) : (
+                            <div className="post-media-grid">
+                              {post.media.slice(0, 3).map((imageUrl, index) => (
+                                <img 
+                                  key={index} 
+                                  src={imageUrl} 
+                                  alt={`Post imagen ${index + 1}`} 
+                                  className="post-grid-image"
+                                />
+                              ))}
+                              {post.media.length > 3 && (
+                                <div className="post-media-more">
+                                  <ImageIcon />
+                                  <span>+{post.media.length - 3}</span>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      <div className="post-stats">
+                        <span>{post.likes || 0} reacciones</span>
+                        <span>{post.comments || 0} comentarios</span>
+                        <span>{post.shares || 0} compartidos</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="widget-empty">
+                  <AccessTimeIcon />
+                  <span>No hay posts recientes</span>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -29,7 +29,7 @@ import './Events.css';
 const Events = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { events, upcomingEvents, rsvpEvent, createEvent: createSocialEvent } = useReduxEvents();
+  const { events, upcomingEvents, rsvpEvent, createEvent: createSocialEvent, loadEvents } = useReduxEvents();
   const {
     calendarEvents,
     createEvent: createCommunityEvent,
@@ -54,6 +54,11 @@ const Events = () => {
     location: '',
     maxAttendees: null
   });
+
+  // Cargar eventos al montar el componente
+  React.useEffect(() => {
+    loadEvents();
+  }, []);
 
   const years = [2026, 2025, 2024, 2023];
   const categories = ['Todos', 'Música', 'Tecnología', 'Comida', 'Arte', 'Deportes'];
@@ -128,6 +133,27 @@ const Events = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // Debug: ver eventos y filtros
+  console.log('📊 Debug Eventos:', {
+    totalEvents: events?.length || 0,
+    activeCategory,
+    filteredCount: filteredEvents.length,
+    categories: events?.map(e => e.category),
+    eventosCompletos: events?.map(e => ({ 
+      title: e.title, 
+      category: e.category,
+      categoryType: typeof e.category,
+      categoryNull: e.category === null,
+      categoryUndefined: e.category === undefined
+    })),
+    filteredEvents: filteredEvents.map(e => ({ title: e.title, category: e.category }))
+  });
+  
+  // Debug adicional: ver primer evento completo
+  if (events && events.length > 0) {
+    console.log('🔍 Primer evento completo:', events[0]);
+  }
+
   const upcomingCommunityEvents = getUpcomingEvents();
 
   return (
@@ -180,7 +206,10 @@ const Events = () => {
                 <button 
                   key={cat} 
                   className={`category-btn ${activeCategory === cat ? 'active' : ''}`}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => {
+                    console.log('🔘 Click en categoría:', cat);
+                    setActiveCategory(cat);
+                  }}
                 >
                   {cat}
                 </button>

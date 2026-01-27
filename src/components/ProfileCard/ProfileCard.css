@@ -100,13 +100,14 @@
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 6px 10px !important;
+  min-width: 75px !important;
+  height: 45px !important;
+  padding: 8px 16px !important;
   background: linear-gradient(145deg, #ffffff 0%, #f8faff 30%, #eef4ff 70%, #e6f0ff 100%) !important;
   border: 2px solid rgba(55, 48, 163, 0.2) !important;
-  border-radius: 12px !important;
+  border-radius: 14px !important;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
   cursor: pointer !important;
-  flex: 1 !important;
   position: relative !important;
   overflow: hidden !important;
   backdrop-filter: blur(15px) !important;
@@ -116,7 +117,6 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.9) !important,
     inset 0 -1px 0 rgba(55, 48, 163, 0.05) !important;
   transform: translateZ(0) !important;
-  min-height: 32px !important;
 }
 
 .stat-home:hover {
@@ -132,7 +132,7 @@
 }
 
 .stat-home strong {
-  font-size: 16px !important;
+  font-size: 20px !important;
   font-weight: 900 !important;
   background: linear-gradient(135deg, #3730a3 0%, #5b21b6 40%, #5b21b6 80%, #4c1d95 100%) !important;
   -webkit-background-clip: text !important;

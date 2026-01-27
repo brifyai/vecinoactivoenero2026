@@ -181,6 +181,13 @@ const postsSlice = createSlice({
         state.error = null;
       })
       .addCase(loadPosts.fulfilled, (state, action) => {
+        console.log('🔴 REDUX loadPosts.fulfilled - Primeros 2 posts:', action.payload.slice(0, 2).map(p => ({
+          id: p.id,
+          content: p.content?.substring(0, 30),
+          media: p.media,
+          mediaType: typeof p.media,
+          hasMedia: !!p.media && p.media?.length > 0
+        })));
         state.items = action.payload;
         state.hasMore = action.payload.length >= 50;
         state.loading = false;

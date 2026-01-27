@@ -478,21 +478,7 @@ const NeighborhoodMap = () => {
         </MapContainer>
       </div>
 
-      {/* Panel informativo */}
-      <div className="map-info-panel">
-        <h3>ℹ️ Información del Mapa</h3>
-        <ul>
-          <li>✅ <strong>Carga inteligente</strong> - Solo muestra unidades visibles</li>
-          <li>✅ <strong>Total disponible</strong> - {stats.total.toLocaleString()} unidades en Chile</li>
-          <li>✅ <strong>Actualmente visibles</strong> - {stats.visible.toLocaleString()} unidades</li>
-          <li>🔍 <strong>Zoom mínimo</strong> - Nivel {MIN_ZOOM_TO_LOAD} para ver unidades</li>
-          <li>🗺️ <strong>Performance</strong> - Carga bajo demanda al navegar</li>
-        </ul>
-        <p className="map-note">
-          Las unidades vecinales se cargan automáticamente cuando haces zoom o te mueves por el mapa.
-          Solo se muestran las que están en tu vista actual para mejor rendimiento.
-        </p>
-      </div>
+
     </div>
   );
 };

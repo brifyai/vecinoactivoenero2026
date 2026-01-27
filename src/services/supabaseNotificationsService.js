@@ -8,7 +8,7 @@ class SupabaseNotificationsService {
         .from('notifications')
         .select(`
           *,
-          from_user:from_user_id(id, username, full_name, avatar_url),
+          from_user:from_user_id(id, username, name, avatar_url),
           post:post_id(id, content)
         `)
         .eq('user_id', userId)

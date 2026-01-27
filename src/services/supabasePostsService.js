@@ -4,6 +4,24 @@ import { supabase } from '../config/supabase';
  * Servicio de Publicaciones con Supabase
  */
 
+// Helper para transformar datos de posts
+const transformPostData = (post) => {
+  // Extraer emojis únicos de las reacciones
+  const reactions = Array.isArray(post.reactions) ? post.reactions : [];
+  const uniqueEmojis = [...new Set(reactions.map(r => r.emoji))].filter(Boolean);
+  
+  return {
+    ...post,
+    author: Array.isArray(post.author) ? post.author[0] : post.author,
+    authorId: post.author_id,
+    comments: Array.isArray(post.comments) ? post.comments.length : (post.comments_count || 0),
+    shares: post.shares_count || 0,
+    likes: reactions.length || post.likes || 0,
+    reactions: reactions,
+    reactionEmojis: uniqueEmojis.slice(0, 3)
+  };
+};
+
 class SupabasePostsService {
   
   /**
@@ -11,6 +29,7 @@ class SupabasePostsService {
    */
   async getPosts(neighborhoodId = null, limit = 50, offset = 0) {
     try {
+      // Especificar la foreign key correcta para evitar ambigüedad
       let query = supabase
         .from('posts')
         .select(`
@@ -35,8 +54,39 @@ class SupabasePostsService {
 
       const { data, error } = await query;
 
-      if (error) throw error;
-      return data || [];
+      if (error) {
+        console.error('❌ Error detallado al obtener posts:', error);
+        console.error('❌ Error code:', error.code);
+        console.error('❌ Error message:', error.message);
+        console.error('❌ Error details:', error.details);
+        console.error('❌ Error hint:', error.hint);
+        throw error;
+      }
+      
+      // Debug: Verificar datos crudos
+      console.log('📊 Posts crudos (primeros 2):', data?.slice(0, 2).map(p => ({
+        id: p.id,
+        content: p.content?.substring(0, 30),
+        media: p.media,
+        mediaType: typeof p.media,
+        hasMedia: !!p.media && p.media?.length > 0
+      })));
+      
+      // Transformar los datos
+      const transformedData = (data || []).map(transformPostData);
+      
+      // Debug: Verificar posts transformados
+      console.log('📊 Posts transformados (primeros 2):', transformedData.slice(0, 2).map(p => ({
+        id: p.id,
+        content: p.content?.substring(0, 30),
+        media: p.media,
+        mediaType: typeof p.media,
+        hasMedia: !!p.media && p.media?.length > 0
+      })));
+      
+      console.log('🔍 PRIMER POST COMPLETO:', JSON.stringify(transformedData[0], null, 2));
+      
+      return transformedData;
     } catch (error) {
       console.error('Error al obtener posts:', error);
       throw error;
@@ -61,7 +111,11 @@ class SupabasePostsService {
         .limit(limit);
 
       if (error) throw error;
-      return data;
+      
+      // Transformar los datos
+      const transformedData = (data || []).map(transformPostData);
+      
+      return transformedData;
     } catch (error) {
       console.error('Error al obtener posts del usuario:', error);
       throw error;
@@ -94,6 +148,15 @@ class SupabasePostsService {
         .single();
 
       if (error) throw error;
+      
+      // Transformar author si es array
+      if (data && Array.isArray(data.author)) {
+        data.author = data.author[0];
+      }
+      if (data) {
+        data.authorId = data.author_id;
+      }
+      
       return data;
     } catch (error) {
       console.error('Error al crear post:', error);

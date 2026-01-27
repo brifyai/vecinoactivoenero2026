@@ -122,7 +122,11 @@ class SupabasePhotosService {
         album_id: photoData.albumId || null,
         tags: photoData.tags || []
       }])
-      .select(`*, uploader:users!photos_user_id_fkey(id, username, avatar)`)
+      .select(`
+        *,
+        uploader:users!photos_user_id_fkey(id, username, avatar),
+        album:photo_albums(id, name)
+      `)
       .single();
 
     if (error) throw error;

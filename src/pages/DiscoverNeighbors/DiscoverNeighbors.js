@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useReduxFriends } from '../../hooks/useReduxFriends';
 import { useSidebar } from '../../context/SidebarContext';
-import storageService from '../../services/storageService';
+import { supabase } from '../../config/supabase';
+import supabaseUsersService from '../../services/supabaseUsersService';
 import { performanceMonitor, loadWithRetry } from '../../utils/performanceUtils';
 import './DiscoverNeighbors.css';
 
@@ -13,62 +14,98 @@ const DiscoverNeighbors = () => {
   const { friends, loading: friendsLoading, loadFriends } = useReduxFriends();
   const { isRightSidebarCollapsed } = useSidebar();
   const [neighbors, setNeighbors] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
 
-  // Memoize expensive operations with performance monitoring
-  const allUsers = useMemo(() => {
-    performanceMonitor.start('load-users');
-    try {
-      const users = storageService.getUsers();
-      performanceMonitor.end('load-users');
-      return users;
-    } catch (err) {
-      console.error('Error loading users:', err);
-      performanceMonitor.end('load-users');
-      return [];
-    }
-  }, []);
+  // Cargar usuarios desde Supabase con suscripción en tiempo real
+  useEffect(() => {
+    if (!currentUser || authLoading) return;
 
-  // Memoize filtered neighbors based on current user and all users
-  const filteredNeighborsList = useMemo(() => {
-    if (!currentUser || !allUsers.length) return [];
+    let subscription = null;
 
-    performanceMonitor.start('filter-neighbors');
-    console.log('🔄 Filtering neighbors for user:', currentUser.username);
-    
-    try {
-      const neighborList = allUsers.filter(u => {
-        if (u.id === currentUser.id) return false;
-        
-        // Try multiple neighborhood matching strategies
-        if (currentUser.neighborhoodId && u.neighborhoodId) {
-          return u.neighborhoodId === currentUser.neighborhoodId;
-        }
-        
-        if (currentUser.neighborhoodName && u.neighborhoodName) {
-          return u.neighborhoodName === currentUser.neighborhoodName;
-        }
-        
-        if (currentUser.neighborhoodCode && u.neighborhoodCode) {
-          return u.neighborhoodCode === currentUser.neighborhoodCode;
-        }
-        
-        // If no neighborhood info, include all users except current
-        return true;
-      });
-
-      const sortedNeighbors = neighborList.sort((a, b) => a.name.localeCompare(b.name));
-      performanceMonitor.end('filter-neighbors');
+    const loadUsersFromDatabase = async () => {
+      performanceMonitor.start('load-users-supabase');
+      console.log('🔄 Cargando usuarios desde Supabase...');
       
-      return sortedNeighbors;
-    } catch (error) {
-      console.error('Error filtering neighbors:', error);
-      performanceMonitor.end('filter-neighbors');
-      return [];
-    }
-  }, [currentUser, allUsers]);
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Cargar usuarios por ubicación si el usuario tiene barrio
+        let users = [];
+        if (currentUser.neighborhood_id || currentUser.neighborhood_name || currentUser.neighborhood_code) {
+          users = await supabaseUsersService.getNeighborsByLocation(
+            currentUser.neighborhood_id,
+            currentUser.neighborhood_name,
+            currentUser.neighborhood_code
+          );
+        } else {
+          // Si no tiene barrio, cargar todos los usuarios
+          users = await supabaseUsersService.getAllUsers();
+        }
+
+        // Filtrar el usuario actual
+        const filteredUsers = users.filter(u => u.id !== currentUser.id);
+        
+        setAllUsers(filteredUsers);
+        setNeighbors(filteredUsers);
+        
+        console.log('✅ Usuarios cargados desde Supabase:', filteredUsers.length);
+        performanceMonitor.end('load-users-supabase');
+      } catch (err) {
+        console.error('❌ Error cargando usuarios desde Supabase:', err);
+        setError('Error cargando vecinos. Por favor, recarga la página.');
+        performanceMonitor.end('load-users-supabase');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const setupRealtimeSubscription = () => {
+      console.log('🔴 Configurando suscripción en tiempo real para usuarios...');
+      
+      // Suscribirse a cambios en la tabla users
+      subscription = supabase
+        .channel('users-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*', // INSERT, UPDATE, DELETE
+            schema: 'public',
+            table: 'users'
+          },
+          (payload) => {
+            console.log('🔴 Cambio detectado en usuarios:', payload);
+            
+            // Recargar usuarios cuando hay cambios
+            loadUsersFromDatabase();
+          }
+        )
+        .subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            console.log('✅ Suscripción en tiempo real activa para usuarios');
+          } else if (status === 'CHANNEL_ERROR') {
+            console.error('❌ Error en suscripción de usuarios');
+          }
+        });
+    };
+
+    // Cargar datos iniciales
+    loadUsersFromDatabase();
+    
+    // Configurar suscripción en tiempo real
+    setupRealtimeSubscription();
+
+    // Cleanup: desuscribirse al desmontar
+    return () => {
+      if (subscription) {
+        console.log('🔴 Desuscribiendo de cambios en usuarios...');
+        supabase.removeChannel(subscription);
+      }
+    };
+  }, [currentUser, authLoading]);
 
   // Memoize friends IDs for faster filtering
   const friendIds = useMemo(() => {
@@ -78,12 +115,12 @@ const DiscoverNeighbors = () => {
   // Memoize filtered neighbors based on current filter
   const displayedNeighbors = useMemo(() => {
     if (filter === 'friends') {
-      return filteredNeighborsList.filter(n => friendIds.has(n.id));
+      return neighbors.filter(n => friendIds.has(n.id));
     } else if (filter === 'non-friends') {
-      return filteredNeighborsList.filter(n => !friendIds.has(n.id));
+      return neighbors.filter(n => !friendIds.has(n.id));
     }
-    return filteredNeighborsList;
-  }, [filteredNeighborsList, friendIds, filter]);
+    return neighbors;
+  }, [neighbors, friendIds, filter]);
 
   // Load friends data when user is available with retry logic
   useEffect(() => {
@@ -106,60 +143,6 @@ const DiscoverNeighbors = () => {
       loadFriendsWithRetry();
     }
   }, [currentUser, loadFriends, friendsLoading]);
-
-  // Initialize component state with performance monitoring
-  useEffect(() => {
-    console.log('🔍 DiscoverNeighbors: Component mounted');
-    console.log('👤 Current user:', currentUser);
-    console.log('🔄 Auth loading:', authLoading);
-    
-    const initializeComponent = async () => {
-      performanceMonitor.start('initialize-component');
-      
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Wait for auth to complete
-        if (authLoading) {
-          console.log('⏳ Waiting for auth to complete...');
-          performanceMonitor.end('initialize-component');
-          return;
-        }
-
-        if (!currentUser) {
-          console.log('❌ No current user available');
-          setLoading(false);
-          performanceMonitor.end('initialize-component');
-          return;
-        }
-
-        // Use setTimeout to defer heavy operations and improve perceived performance
-        setTimeout(() => {
-          try {
-            // Set neighbors from memoized list
-            setNeighbors(filteredNeighborsList);
-            console.log('✅ Neighbors loaded:', filteredNeighborsList.length);
-            performanceMonitor.end('initialize-component');
-          } catch (err) {
-            console.error('❌ Error setting neighbors:', err);
-            setError('Error procesando vecinos. Por favor, recarga la página.');
-            performanceMonitor.end('initialize-component');
-          } finally {
-            setLoading(false);
-          }
-        }, 0);
-        
-      } catch (err) {
-        console.error('❌ Error initializing component:', err);
-        setError('Error cargando vecinos. Por favor, recarga la página.');
-        performanceMonitor.end('initialize-component');
-        setLoading(false);
-      }
-    };
-
-    initializeComponent();
-  }, [currentUser, authLoading, filteredNeighborsList]);
 
   const handleFilterClick = useCallback((filterValue) => {
     console.log('🔍 Filter clicked:', filterValue);
@@ -215,9 +198,13 @@ const DiscoverNeighbors = () => {
       <div className="discover-header">
         <h1>Descubre Vecinos</h1>
         <p>Conoce a los vecinos de tu comunidad</p>
-        {currentUser.neighborhoodName && (
-          <p className="neighborhood-info">📍 {currentUser.neighborhoodName}</p>
+        {currentUser.neighborhood_name && (
+          <p className="neighborhood-info">📍 {currentUser.neighborhood_name}</p>
         )}
+        <div className="realtime-indicator">
+          <span className="realtime-dot"></span>
+          <span className="realtime-text">Actualizaciones en tiempo real</span>
+        </div>
       </div>
 
       <div className="filter-buttons">
@@ -279,8 +266,8 @@ const DiscoverNeighbors = () => {
               {neighbor.bio && (
                 <p className="neighbor-bio">{neighbor.bio}</p>
               )}
-              {neighbor.neighborhoodName && (
-                <p className="neighbor-location">📍 {neighbor.neighborhoodName}</p>
+              {neighbor.neighborhood_name && (
+                <p className="neighbor-location">📍 {neighbor.neighborhood_name}</p>
               )}
             </div>
           ))

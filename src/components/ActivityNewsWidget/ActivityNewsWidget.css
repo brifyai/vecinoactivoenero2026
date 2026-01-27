@@ -5,10 +5,57 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
+.activity-news-widget .widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.activity-news-widget .widget-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.activity-news-widget .widget-title h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1c1e21;
+}
+
+.activity-news-widget .refresh-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #65676b;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  width: 36px;
+  height: 36px;
+}
+
+.activity-news-widget .refresh-btn:hover:not(:disabled) {
+  background: rgba(14, 140, 228, 0.1);
+  color: #0e8ce4;
+}
+
+.activity-news-widget .refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .news-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .news-item {
@@ -24,31 +71,73 @@
   background: #f0f2f5;
 }
 
-.news-item img {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
+.activity-avatar {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.activity-avatar img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   object-fit: cover;
+}
+
+.activity-icon {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .news-info {
   flex: 1;
+  min-width: 0;
 }
 
 .news-info h4 {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   color: #1c1e21;
   margin-bottom: 3px;
+  line-height: 1.4;
+}
+
+.news-info h4 strong {
+  font-weight: 600;
 }
 
 .news-info p {
   font-size: 13px;
   color: #65676b;
   margin-bottom: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.news-info span {
+.activity-time {
   font-size: 11px;
   color: #8a8d91;
+}
+
+.activity-loading,
+.activity-empty {
+  text-align: center;
+  padding: 30px 20px;
+  color: #65676b;
+}
+
+.activity-loading p,
+.activity-empty p {
+  margin: 0;
+  font-size: 14px;
 }

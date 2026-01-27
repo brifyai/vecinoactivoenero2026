@@ -87,3 +87,40 @@
   font-size: 14px;
   margin: 0;
 }
+
+.photos-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.photos-empty-state .empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+.photos-empty-state p {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 16px 0;
+}
+
+.photos-empty-state .add-photos-btn {
+  background: #0e8ce4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.photos-empty-state .add-photos-btn:hover {
+  background: #0c7ac9;
+}

@@ -8,8 +8,8 @@ class SupabaseFriendsService {
         .from('friendships')
         .select(`
           *,
-          friend:friend_id(id, username, full_name, avatar_url, location),
-          user:user_id(id, username, full_name, avatar_url, location)
+          friend:friend_id(id, username, name, avatar_url, location),
+          user:user_id(id, username, name, avatar_url, location)
         `)
         .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
         .eq('status', 'accepted');
@@ -35,7 +35,7 @@ class SupabaseFriendsService {
         .from('friendships')
         .select(`
           *,
-          requester:user_id(id, username, full_name, avatar_url, location)
+          requester:user_id(id, username, name, avatar_url, location)
         `)
         .eq('friend_id', userId)
         .eq('status', 'pending');
@@ -157,8 +157,8 @@ class SupabaseFriendsService {
     try {
       const { data, error } = await supabase
         .from('users')
-        .select('id, username, full_name, avatar_url, location')
-        .or(`username.ilike.%${query}%,full_name.ilike.%${query}%`)
+        .select('id, username, name, avatar_url, location')
+        .or(`username.ilike.%${query}%,name.ilike.%${query}%`)
         .neq('id', currentUserId)
         .limit(limit);
 
@@ -191,7 +191,7 @@ class SupabaseFriendsService {
       // Por ahora, obtener usuarios aleatorios que no sean amigos
       const { data, error } = await supabase
         .from('users')
-        .select('id, username, full_name, avatar_url, location')
+        .select('id, username, name, avatar_url, location')
         .neq('id', userId)
         .limit(limit * 2); // Obtener más para filtrar
 

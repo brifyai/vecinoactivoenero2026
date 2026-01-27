@@ -8,8 +8,8 @@ class SupabaseMessagesService {
         .from('conversations')
         .select(`
           *,
-          participant1:participant1_id(id, username, full_name, avatar_url),
-          participant2:participant2_id(id, username, full_name, avatar_url),
+          participant1:participant1_id(id, username, name, avatar_url),
+          participant2:participant2_id(id, username, name, avatar_url),
           last_message:messages(content, created_at, sender_id)
         `)
         .or(`participant1_id.eq.${userId},participant2_id.eq.${userId}`)
@@ -30,7 +30,7 @@ class SupabaseMessagesService {
         .from('messages')
         .select(`
           *,
-          sender:sender_id(id, username, full_name, avatar_url)
+          sender:sender_id(id, username, name, avatar_url)
         `)
         .eq('conversation_id', conversationId)
         .order('created_at', { ascending: false })
@@ -52,7 +52,7 @@ class SupabaseMessagesService {
         .insert([messageData])
         .select(`
           *,
-          sender:sender_id(id, username, full_name, avatar_url)
+          sender:sender_id(id, username, name, avatar_url)
         `)
         .single();
 

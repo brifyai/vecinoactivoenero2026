@@ -27,7 +27,7 @@ import CelebrationIcon from '@mui/icons-material/Celebration';
 import './Home.css';
 
 const Home = () => {
-  const { posts, createPost } = usePosts();
+  const { posts, createPost, loading: postsLoading } = usePosts();
   const { isRightSidebarCollapsed } = useSidebar();
   const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -122,13 +122,13 @@ const Home = () => {
         
         {hasMore && <div ref={loadMoreRef} style={{ height: '20px' }} />}
         
-        {posts.length === 0 && !isLoading && (
+        {posts.length === 0 && !isLoading && !postsLoading && (
           <div className="no-posts">
             <p>No hay publicaciones aún. ¡Sé el primero en publicar!</p>
           </div>
         )}
 
-        {filteredPosts.length === 0 && posts.length > 0 && !isLoading && (
+        {filteredPosts.length === 0 && posts.length > 0 && !isLoading && !postsLoading && (
           <div className="no-posts">
             <p>No hay publicaciones en esta categoría</p>
           </div>

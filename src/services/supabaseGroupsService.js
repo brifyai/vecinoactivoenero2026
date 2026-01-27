@@ -8,7 +8,7 @@ class SupabaseGroupsService {
         .from('groups')
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar_url),
           group_members(user_id, role)
         `)
         .order('created_at', { ascending: false });
@@ -44,7 +44,7 @@ class SupabaseGroupsService {
         .insert([groupData])
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url)
+          created_by_user:created_by(id, username, name, avatar_url)
         `)
         .single();
 
@@ -110,7 +110,7 @@ class SupabaseGroupsService {
         .eq('created_by', userId)
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url)
+          created_by_user:created_by(id, username, name, avatar_url)
         `)
         .single();
 
@@ -146,7 +146,7 @@ class SupabaseGroupsService {
         .from('group_members')
         .select(`
           *,
-          user:user_id(id, username, full_name, avatar_url)
+          user:user_id(id, username, name, avatar_url)
         `)
         .eq('group_id', groupId);
 
@@ -165,7 +165,7 @@ class SupabaseGroupsService {
         .from('groups')
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar_url),
           group_members(user_id, role)
         `)
         .eq('id', groupId)
@@ -186,7 +186,7 @@ class SupabaseGroupsService {
         .from('groups')
         .select(`
           *,
-          created_by_user:created_by(id, username, full_name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar_url),
           group_members(user_id, role)
         `)
         .eq('slug', slug)
@@ -209,7 +209,7 @@ class SupabaseGroupsService {
           *,
           group:group_id(
             *,
-            created_by_user:created_by(id, username, full_name, avatar_url)
+            created_by_user:created_by(id, username, name, avatar_url)
           )
         `)
         .eq('user_id', userId);

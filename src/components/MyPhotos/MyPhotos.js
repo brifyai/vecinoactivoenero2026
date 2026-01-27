@@ -12,20 +12,8 @@ const MyPhotos = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
 
-  // Mostrar solo las primeras 6 fotos
+  // Mostrar solo las primeras 6 fotos reales del usuario
   const displayPhotos = photos.slice(0, 6);
-
-  // Si no hay fotos, mostrar fotos de ejemplo
-  const placeholderPhotos = [
-    { id: 1, title: 'Foto 1', url: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=200&h=200&fit=crop', caption: 'Mi foto' },
-    { id: 2, title: 'Foto 2', url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop', caption: 'Mi foto' },
-    { id: 3, title: 'Foto 3', url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=200&h=200&fit=crop', caption: 'Mi foto' },
-    { id: 4, title: 'Foto 4', url: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&h=200&fit=crop', caption: 'Mi foto' },
-    { id: 5, title: 'Foto 5', url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop', caption: 'Mi foto' },
-    { id: 6, title: 'Foto 6', url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop', caption: 'Mi foto' },
-  ];
-
-  const photosToShow = displayPhotos.length > 0 ? displayPhotos : placeholderPhotos;
 
   const handlePhotoClick = (index) => {
     setSelectedPhotoIndex(index);
@@ -33,8 +21,13 @@ const MyPhotos = () => {
   };
 
   const handleViewAll = () => {
-    // Navegar a la página de fotos del panel de administración
-    navigate('/app/admin/dashboard/photos');
+    // Navegar al perfil del admin con el tab de fotos activo
+    navigate('/app/admin', { state: { activeTab: 'photos' } });
+  };
+
+  const handleAddPhotos = () => {
+    // Navegar al perfil para agregar fotos
+    navigate('/app/admin', { state: { activeTab: 'photos' } });
   };
 
   if (loading) {
@@ -56,30 +49,43 @@ const MyPhotos = () => {
       <div className="my-photos-widget">
         <div className="photos-header">
           <h3>Mis Fotos</h3>
-          <button onClick={handleViewAll} className="view-all-link">
-            Ver Todas {photos.length > 0 && `(${photos.length})`}
-          </button>
+          {photos.length > 0 && (
+            <button onClick={handleViewAll} className="view-all-link">
+              Ver Todas ({photos.length})
+            </button>
+          )}
         </div>
-        <div className="photos-grid-home">
-          {photosToShow.map((photo, index) => (
-            <div 
-              key={photo.id} 
-              className="photo-item-home"
-              onClick={() => handlePhotoClick(index)}
-              style={{ cursor: 'pointer' }}
-            >
-              <img src={photo.url} alt={photo.caption || photo.title || 'Foto'} />
-            </div>
-          ))}
-        </div>
+        
+        {displayPhotos.length > 0 ? (
+          <div className="photos-grid-home">
+            {displayPhotos.map((photo, index) => (
+              <div 
+                key={photo.id} 
+                className="photo-item-home"
+                onClick={() => handlePhotoClick(index)}
+                style={{ cursor: 'pointer' }}
+              >
+                <img src={photo.url} alt={photo.caption || 'Foto'} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="photos-empty-state">
+            <div className="empty-icon">📷</div>
+            <p>Aún no tienes fotos</p>
+            <button onClick={handleAddPhotos} className="add-photos-btn">
+              Agregar Fotos
+            </button>
+          </div>
+        )}
       </div>
 
-      {lightboxOpen && (
+      {lightboxOpen && displayPhotos.length > 0 && (
         <PhotoLightbox
-          photos={photosToShow.map(p => ({
+          photos={displayPhotos.map(p => ({
             id: p.id,
             image: p.url,
-            title: p.caption || p.title || 'Sin título',
+            title: p.caption || 'Sin título',
             description: p.caption || ''
           }))}
           initialIndex={selectedPhotoIndex}

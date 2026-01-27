@@ -1,0 +1,193 @@
+import { supabase } from '../config/supabase';
+
+class SupabaseActivityService {
+  // Obtener actividades recientes del barrio
+  async getRecentActivities(limit = 20) {
+    try {
+      const activities = [];
+
+      // 1. Obtener comentarios recientes en fotos
+      const { data: photoComments } = await supabase
+        .from('photo_comments')
+        .select(`
+          id,
+          comment,
+          created_at,
+          user:users!photo_comments_user_id_fkey(id, username, full_name, avatar_url),
+          photo:photos(id, image_url, caption)
+        `)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (photoComments) {
+        photoComments.forEach(comment => {
+          activities.push({
+            id: `comment-${comment.id}`,
+            type: 'photo_comment',
+            user: comment.user,
+            action: 'comentó en una foto',
+            target: comment.photo?.caption || 'una foto',
+            timestamp: comment.created_at,
+            image: comment.photo?.image_url
+          });
+        });
+      }
+
+      // 2. Obtener reacciones recientes a posts
+      const { data: postReactions } = await supabase
+        .from('post_reactions')
+        .select(`
+          id,
+          reaction_type,
+          created_at,
+          user:users!post_reactions_user_id_fkey(id, username, full_name, avatar_url),
+          post:posts(id, content)
+        `)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (postReactions) {
+        postReactions.forEach(reaction => {
+          activities.push({
+            id: `reaction-${reaction.id}`,
+            type: 'post_reaction',
+            user: reaction.user,
+            action: `reaccionó ${reaction.reaction_type} a un post`,
+            target: reaction.post?.content?.substring(0, 50) || 'un post',
+            timestamp: reaction.created_at
+          });
+        });
+      }
+
+      // 3. Obtener posts recientes
+      const { data: posts } = await supabase
+        .from('posts')
+        .select(`
+          id,
+          content,
+          created_at,
+          author:users!posts_user_id_fkey(id, username, full_name, avatar_url)
+        `)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (posts) {
+        posts.forEach(post => {
+          activities.push({
+            id: `post-${post.id}`,
+            type: 'new_post',
+            user: post.author?.name || 'Usuario',
+            action: 'publicó',
+            target: post.content?.substring(0, 50) || 'algo nuevo',
+            timestamp: post.created_at
+          });
+        });
+      }
+
+      // 4. Obtener eventos recientes
+      const { data: events } = await supabase
+        .from('events')
+        .select(`
+          id,
+          title,
+          created_at,
+          image,
+          created_by_user:created_by(id, username, full_name, avatar_url)
+        `)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (events) {
+        events.forEach(event => {
+          activities.push({
+            id: `event-${event.id}`,
+            type: 'new_event',
+            user: event.created_by_user,
+            action: 'creó el evento',
+            target: event.title,
+            timestamp: event.created_at,
+            image: event.image
+          });
+        });
+      }
+
+      // Ordenar todas las actividades por fecha
+      activities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      // Retornar solo el límite solicitado
+      return activities.slice(0, limit);
+    } catch (error) {
+      console.error('Error getting recent activities:', error);
+      throw error;
+    }
+  }
+
+  // Obtener actividades de un usuario específico
+  async getUserActivities(userId, limit = 20) {
+    try {
+      const activities = [];
+
+      // Comentarios del usuario
+      const { data: comments } = await supabase
+        .from('photo_comments')
+        .select(`
+          id,
+          comment,
+          created_at,
+          photo:photos(id, image_url, caption)
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (comments) {
+        comments.forEach(comment => {
+          activities.push({
+            id: `comment-${comment.id}`,
+            type: 'photo_comment',
+            action: 'comentaste en una foto',
+            target: comment.photo?.caption || 'una foto',
+            timestamp: comment.created_at,
+            image: comment.photo?.image_url
+          });
+        });
+      }
+
+      // Reacciones del usuario
+      const { data: reactions } = await supabase
+        .from('post_reactions')
+        .select(`
+          id,
+          reaction_type,
+          created_at,
+          post:posts(id, content)
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (reactions) {
+        reactions.forEach(reaction => {
+          activities.push({
+            id: `reaction-${reaction.id}`,
+            type: 'post_reaction',
+            action: `reaccionaste ${reaction.reaction_type}`,
+            target: reaction.post?.content?.substring(0, 50) || 'un post',
+            timestamp: reaction.created_at
+          });
+        });
+      }
+
+      // Ordenar por fecha
+      activities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      return activities.slice(0, limit);
+    } catch (error) {
+      console.error('Error getting user activities:', error);
+      throw error;
+    }
+  }
+}
+
+const supabaseActivityService = new SupabaseActivityService();
+export default supabaseActivityService;

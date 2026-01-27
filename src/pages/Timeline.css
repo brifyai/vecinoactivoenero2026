@@ -121,8 +121,8 @@
   margin: 0 auto;
   padding: 6px 32px 32px 32px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 6px;
+  grid-template-columns: 280px 1fr 300px;
+  gap: 20px;
   width: 100%;
   animation: fadeInUp 0.4s ease-out;
 }
@@ -146,6 +146,8 @@
 @media (max-width: 900px) {
   .timeline-content {
     grid-template-columns: 1fr;
+    padding: 6px 16px 32px 16px;
+    max-width: 680px;
   }
 }
 
@@ -209,6 +211,8 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   min-width: 0;
   width: 100%;
+  position: sticky;
+  top: 140px;
 }
 
 .feed-header {
@@ -281,6 +285,8 @@
   gap: 6px;
   min-width: 0;
   width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 /* Permitir que el grid de fotos funcione correctamente */
@@ -304,6 +310,9 @@
   min-width: 0;
   width: 100%;
   margin-top: 0;
+  position: sticky;
+  top: 140px;
+  height: fit-content;
 }
 
 .load-more-btn {
@@ -329,14 +338,29 @@
 }
 
 @media (max-width: 1400px) {
+  .timeline-content {
+    grid-template-columns: 280px 1fr;
+    max-width: 1100px;
+  }
+  
   .widgets-sidebar {
     display: none;
   }
 }
 
 @media (max-width: 968px) {
+  .timeline-content {
+    grid-template-columns: 1fr;
+    padding: 6px 16px 32px 16px;
+    max-width: 680px;
+  }
+  
   .activity-feed {
     display: none;
+  }
+  
+  .posts-container {
+    max-width: 100%;
   }
 }
 

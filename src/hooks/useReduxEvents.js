@@ -28,10 +28,8 @@ export const useReduxEvents = () => {
   const upcomingEvents = useSelector(selectUpcomingEvents);
   const pastEvents = useSelector(selectPastEvents);
 
-  const loadUserEvents = () => {
-    if (user) {
-      dispatch(loadEvents(user.id));
-    }
+  const loadUserEvents = (neighborhoodId = null, filters = {}) => {
+    dispatch(loadEvents({ neighborhoodId, filters }));
   };
 
   const createNewEvent = async (eventData) => {
