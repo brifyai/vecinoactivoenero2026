@@ -33,15 +33,15 @@ const ImageUploader = ({ onImageSelect, currentImage, type = 'profile', buttonTe
         return;
       }
 
-      // Procesar imagen
-      const processedImage = await imageService.processImage(file);
+      // Procesar imagen con compresión según tipo
+      const processedImage = await imageService.processImage(file, type);
       setPreview(processedImage);
       
       if (onImageSelect) {
         onImageSelect(processedImage);
       }
 
-      showSuccessToast('¡Imagen cargada exitosamente!');
+      showSuccessToast('¡Imagen cargada y optimizada exitosamente!');
     } catch (error) {
       showErrorToast(error.message || 'Error al cargar la imagen');
     } finally {
@@ -104,14 +104,14 @@ const ImageUploader = ({ onImageSelect, currentImage, type = 'profile', buttonTe
           return;
         }
 
-        const processedImage = await imageService.processImage(file);
+        const processedImage = await imageService.processImage(file, type);
         setPreview(processedImage);
         
         if (onImageSelect) {
           onImageSelect(processedImage);
         }
 
-        showSuccessToast('¡Imagen cargada exitosamente!');
+        showSuccessToast('¡Imagen cargada y optimizada exitosamente!');
       } catch (error) {
         showErrorToast(error.message || 'Error al cargar la imagen');
       } finally {

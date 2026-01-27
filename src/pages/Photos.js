@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSidebar } from '../context/SidebarContext';
+import { useReduxPhotos } from '../hooks/useReduxPhotos';
 import ProfileHeader from '../components/ProfileHeader/ProfileHeader';
 import PhotoLightbox from '../components/PhotoLightbox/PhotoLightbox';
-import { showInputDialog, showSuccessToast } from '../utils/sweetalert';
+import { showInputDialog, showConfirmDialog } from '../utils/sweetalert';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import InfoIcon from '@mui/icons-material/Info';
 import GroupIcon from '@mui/icons-material/Group';
@@ -12,57 +13,82 @@ import FeedIcon from '@mui/icons-material/Feed';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import './Photos.css';
 
 const Photos = () => {
   const navigate = useNavigate();
   const { isRightSidebarCollapsed } = useSidebar();
+  const fileInputRef = useRef(null);
   const [activeTab, setActiveTab] = useState('albums');
   const [searchQuery, setSearchQuery] = useState('');
   const [showLightbox, setShowLightbox] = useState(false);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
-  const [albums, setAlbums] = useState([
-    { id: 1, title: 'Fotos de Portada', count: 5, image: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=400&h=300&fit=crop' },
-    { id: 2, title: 'Fotos de Perfil', count: 8, image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=300&fit=crop' },
-    { id: 3, title: 'Viaje Familiar', count: 12, image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&h=300&fit=crop' },
-    { id: 4, title: 'Reunión de Amigos', count: 9, image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&h=300&fit=crop' },
-    { id: 5, title: 'Vacaciones en la Playa', count: 15, image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop' },
-    { id: 6, title: 'Mi Viaje', count: 7, image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400&h=300&fit=crop' },
-  ]);
+  const [selectedAlbumId, setSelectedAlbumId] = useState(null);
 
-  const allPhotos = [
-    { id: 1, title: 'Atardecer en la playa', image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop', description: 'Hermoso atardecer en la costa' },
-    { id: 2, title: 'Montañas nevadas', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop', description: 'Vista panorámica de las montañas' },
-    { id: 3, title: 'Ciudad nocturna', image: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&h=600&fit=crop', description: 'Luces de la ciudad por la noche' },
-    { id: 4, title: 'Bosque otoñal', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop', description: 'Colores del otoño en el bosque' },
-    { id: 5, title: 'Playa tropical', image: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=800&h=600&fit=crop', description: 'Paraíso tropical' },
-    { id: 6, title: 'Arquitectura moderna', image: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=800&h=600&fit=crop', description: 'Diseño arquitectónico contemporáneo' },
-  ];
+  const {
+    photos,
+    albums,
+    loading,
+    createAlbum,
+    deleteAlbum,
+    updateAlbum,
+    uploadPhoto,
+    deletePhoto,
+    getAlbumPhotos
+  } = useReduxPhotos();
 
   const handleCreateAlbum = async () => {
     const result = await showInputDialog('Crear Álbum', 'Nombre del álbum', 'text');
     if (result.isConfirmed && result.value) {
-      const newAlbum = {
-        id: Date.now(),
-        title: result.value,
-        count: 0,
-        image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop'
-      };
-      setAlbums([...albums, newAlbum]);
-      showSuccessToast('¡Álbum creado exitosamente!');
+      await createAlbum({
+        name: result.value,
+        description: ''
+      });
     }
   };
 
-  const handleAddPhotos = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*,video/*';
-    input.multiple = true;
-    input.onchange = (e) => {
-      const files = Array.from(e.target.files);
-      showSuccessToast(`${files.length} archivo(s) agregado(s)`);
-    };
-    input.click();
+  const handleEditAlbum = async (album) => {
+    const result = await showInputDialog('Editar Álbum', 'Nombre del álbum', 'text', album.name);
+    if (result.isConfirmed && result.value) {
+      await updateAlbum(album.id, { name: result.value });
+    }
+  };
+
+  const handleDeleteAlbum = async (albumId) => {
+    const result = await showConfirmDialog(
+      '¿Eliminar álbum?',
+      'Esta acción no se puede deshacer',
+      'warning'
+    );
+    if (result.isConfirmed) {
+      await deleteAlbum(albumId);
+    }
+  };
+
+  const handleAddPhotos = (albumId = null) => {
+    setSelectedAlbumId(albumId);
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    for (const file of files) {
+      if (file.type.startsWith('image/')) {
+        await uploadPhoto(file, {
+          albumId: selectedAlbumId,
+          caption: ''
+        });
+      }
+    }
+
+    // Reset input
+    e.target.value = '';
+    setSelectedAlbumId(null);
   };
 
   const handlePhotoClick = (index) => {
@@ -70,12 +96,23 @@ const Photos = () => {
     setShowLightbox(true);
   };
 
+  const handleDeletePhoto = async (photoId) => {
+    const result = await showConfirmDialog(
+      '¿Eliminar foto?',
+      'Esta acción no se puede deshacer',
+      'warning'
+    );
+    if (result.isConfirmed) {
+      await deletePhoto(photoId);
+    }
+  };
+
   const filteredAlbums = albums.filter(album =>
-    album.title.toLowerCase().includes(searchQuery.toLowerCase())
+    album.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredPhotos = allPhotos.filter(photo =>
-    photo.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPhotos = photos.filter(photo =>
+    (photo.caption || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -83,95 +120,189 @@ const Photos = () => {
       <ProfileHeader />
       <div className={`photos-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
         <div className="photos-tabs">
-        <button className="tab" onClick={() => navigate('/linea-tiempo')}><AccessTimeIcon fontSize="small" /> Línea de Tiempo</button>
-        <button className="tab" onClick={() => navigate('/acerca-de')}><InfoIcon fontSize="small" /> Acerca de</button>
-        <button className="tab" onClick={() => navigate('/descubrir-vecinos')}><GroupIcon fontSize="small" /> Vecinos</button>
-        <button className="tab active"><PhotoLibraryIcon fontSize="small" /> Fotos</button>
-        <div className="tab-right">
-          <input 
-            type="text" 
-            placeholder="Buscar aquí..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button className="activity-feed-btn"><FeedIcon fontSize="small" /> Feed de Actividad</button>
-        </div>
-      </div>
-
-      <div className="gallery-header">
-        <h2>Galería</h2>
-        <div className="gallery-actions">
-          <button className="create-album-btn" onClick={handleCreateAlbum}>
-            <CreateNewFolderIcon fontSize="small" /> Crear Álbum
+          <button className="tab" onClick={() => navigate('/app/linea-tiempo')}>
+            <AccessTimeIcon fontSize="small" /> Línea de Tiempo
           </button>
-          <button className="add-photo-btn" onClick={handleAddPhotos}>
-            <AddPhotoAlternateIcon fontSize="small" /> Agregar Fotos/Video
+          <button className="tab" onClick={() => navigate('/app/acerca-de')}>
+            <InfoIcon fontSize="small" /> Acerca de
+          </button>
+          <button className="tab" onClick={() => navigate('/app/descubrir-vecinos')}>
+            <GroupIcon fontSize="small" /> Vecinos
+          </button>
+          <button className="tab active">
+            <PhotoLibraryIcon fontSize="small" /> Fotos
+          </button>
+          <div className="tab-right">
+            <input 
+              type="text" 
+              placeholder="Buscar aquí..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button className="activity-feed-btn">
+              <FeedIcon fontSize="small" /> Feed de Actividad
+            </button>
+          </div>
+        </div>
+
+        <div className="gallery-header">
+          <h2>Galería</h2>
+          <div className="gallery-actions">
+            <button className="create-album-btn" onClick={handleCreateAlbum} disabled={loading}>
+              <CreateNewFolderIcon fontSize="small" /> Crear Álbum
+            </button>
+            <button className="add-photo-btn" onClick={() => handleAddPhotos()} disabled={loading}>
+              <AddPhotoAlternateIcon fontSize="small" /> Agregar Fotos
+            </button>
+          </div>
+        </div>
+
+        <div className="gallery-tabs">
+          <button 
+            className={`gallery-tab ${activeTab === 'albums' ? 'active' : ''}`}
+            onClick={() => setActiveTab('albums')}
+          >
+            Álbumes ({albums.length})
+          </button>
+          <button 
+            className={`gallery-tab ${activeTab === 'photos' ? 'active' : ''}`}
+            onClick={() => setActiveTab('photos')}
+          >
+            Fotos ({photos.length})
           </button>
         </div>
-      </div>
 
-      <div className="gallery-tabs">
-        <button 
-          className={`gallery-tab ${activeTab === 'albums' ? 'active' : ''}`}
-          onClick={() => setActiveTab('albums')}
-        >
-          Álbumes
-        </button>
-        <button 
-          className={`gallery-tab ${activeTab === 'photos' ? 'active' : ''}`}
-          onClick={() => setActiveTab('photos')}
-        >
-          Fotos
-        </button>
-      </div>
-
-      <div className="albums-grid">
-        {activeTab === 'albums' ? (
-          <>
-            <div className="create-album-card" onClick={handleCreateAlbum}>
-              <div className="create-icon"><AddCircleOutlineIcon style={{ fontSize: 60 }} /></div>
-              <h3>Crear Álbum</h3>
-              <p>crea un álbum para ordenar las imágenes</p>
-            </div>
-            
-            {filteredAlbums.map((album) => (
-              <div key={album.id} className="album-card">
-                <div className="album-image">
-                  <img src={album.image} alt={album.title} />
-                  <div className="album-overlay">
-                    <h3>{album.title}</h3>
-                    <p>{album.count} Fotos</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </>
-        ) : (
-          <>
-            {filteredPhotos.map((photo, index) => (
-              <div 
-                key={photo.id} 
-                className="photo-card" 
-                onClick={() => handlePhotoClick(index)}
-                style={{ cursor: 'pointer' }}
-              >
-                <img src={photo.image} alt={photo.title} />
-                <div className="photo-overlay">
-                  <h4>{photo.title}</h4>
-                </div>
-              </div>
-            ))}
-          </>
+        {loading && (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Cargando...</p>
+          </div>
         )}
-      </div>
 
-      {showLightbox && (
-        <PhotoLightbox
-          photos={allPhotos}
-          initialIndex={selectedPhotoIndex}
-          onClose={() => setShowLightbox(false)}
+        <div className="albums-grid">
+          {activeTab === 'albums' ? (
+            <>
+              <div className="create-album-card" onClick={handleCreateAlbum}>
+                <div className="create-icon">
+                  <AddCircleOutlineIcon style={{ fontSize: 60 }} />
+                </div>
+                <h3>Crear Álbum</h3>
+                <p>crea un álbum para ordenar las imágenes</p>
+              </div>
+              
+              {filteredAlbums.map((album) => {
+                const albumPhotos = getAlbumPhotos(album.id);
+                const coverPhoto = album.cover_photo || albumPhotos[0]?.url || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop';
+                
+                return (
+                  <div key={album.id} className="album-card">
+                    <div className="album-image">
+                      <img src={coverPhoto} alt={album.name} />
+                      <div className="album-overlay">
+                        <h3>{album.name}</h3>
+                        <p>{album.photo_count || albumPhotos.length} Fotos</p>
+                      </div>
+                      <div className="album-actions">
+                        <button 
+                          className="album-action-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddPhotos(album.id);
+                          }}
+                          title="Agregar fotos"
+                        >
+                          <AddPhotoAlternateIcon />
+                        </button>
+                        <button 
+                          className="album-action-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditAlbum(album);
+                          }}
+                          title="Editar álbum"
+                        >
+                          <EditIcon />
+                        </button>
+                        <button 
+                          className="album-action-btn delete"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteAlbum(album.id);
+                          }}
+                          title="Eliminar álbum"
+                        >
+                          <DeleteIcon />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              {filteredPhotos.length === 0 && !loading && (
+                <div className="empty-state">
+                  <PhotoLibraryIcon style={{ fontSize: 80, color: '#ccc' }} />
+                  <h3>No hay fotos</h3>
+                  <p>Comienza subiendo tus primeras fotos</p>
+                  <button className="add-photo-btn" onClick={() => handleAddPhotos()}>
+                    <AddPhotoAlternateIcon fontSize="small" /> Agregar Fotos
+                  </button>
+                </div>
+              )}
+              
+              {filteredPhotos.map((photo, index) => (
+                <div 
+                  key={photo.id} 
+                  className="photo-card" 
+                  onClick={() => handlePhotoClick(index)}
+                >
+                  <img src={photo.url} alt={photo.caption || 'Foto'} />
+                  <div className="photo-overlay">
+                    <h4>{photo.caption || 'Sin título'}</h4>
+                    <div className="photo-stats">
+                      <span><FavoriteIcon fontSize="small" /> {photo.likes || 0}</span>
+                    </div>
+                  </div>
+                  <button 
+                    className="photo-delete-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeletePhoto(photo.id);
+                    }}
+                    title="Eliminar foto"
+                  >
+                    <DeleteIcon />
+                  </button>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+
+        {/* Input oculto para subir archivos */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
         />
-      )}
+
+        {showLightbox && filteredPhotos.length > 0 && (
+          <PhotoLightbox
+            photos={filteredPhotos.map(p => ({
+              id: p.id,
+              image: p.url,
+              title: p.caption || 'Sin título',
+              description: p.caption || ''
+            }))}
+            initialIndex={selectedPhotoIndex}
+            onClose={() => setShowLightbox(false)}
+          />
+        )}
       </div>
     </>
   );

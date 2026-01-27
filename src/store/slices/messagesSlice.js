@@ -127,7 +127,6 @@ const messagesSlice = createSlice({
     typingStatus: {},
     loading: false,
     error: null,
-    subscriptions: {},
     unreadCount: 0
   },
   reducers: {
@@ -205,16 +204,6 @@ const messagesSlice = createSlice({
     setTypingStatus: (state, action) => {
       const { conversationId, typingStatus } = action.payload;
       state.typingStatus[conversationId] = typingStatus;
-    },
-    
-    setSubscription: (state, action) => {
-      const { conversationId, subscription } = action.payload;
-      state.subscriptions[conversationId] = subscription;
-    },
-    
-    removeSubscription: (state, action) => {
-      const conversationId = action.payload;
-      delete state.subscriptions[conversationId];
     },
     
     updateUnreadCount: (state, action) => {
@@ -319,8 +308,6 @@ export const {
   addConversationFromRealtime,
   updateConversationFromRealtime,
   setTypingStatus,
-  setSubscription,
-  removeSubscription,
   updateUnreadCount
 } = messagesSlice.actions;
 

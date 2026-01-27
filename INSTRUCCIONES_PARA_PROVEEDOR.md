@@ -16,9 +16,14 @@ Reemplazar los archivos actuales del sitio web con el nuevo build que soluciona 
 
 ## 📦 ARCHIVO A DESPLEGAR
 
-**Nombre**: `vecino-activo-build-20260127-104730.tar.gz`  
+**Nombre**: `vecino-activo-mapa-corregido-20260127-132043.tar.gz`  
 **Tamaño**: 36 MB  
 **Ubicación**: Se enviará por email/WeTransfer/Google Drive
+
+**Cambios en esta versión**:
+- ✅ Corregido el mapa de unidades vecinales para mostrar información completa
+- ✅ Popups ahora muestran: código UV, nombre, comuna, región y datos demográficos
+- ✅ Todas las correcciones anteriores incluidas
 
 ---
 

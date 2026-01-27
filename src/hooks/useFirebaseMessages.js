@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import firebaseMessagesService from '../services/firebaseMessagesService';
 import {
@@ -10,14 +10,15 @@ import {
   addConversationFromRealtime,
   updateConversationFromRealtime,
   setTypingStatus,
-  setSubscription,
-  removeSubscription,
   updateUnreadCount
 } from '../store/slices/messagesSlice';
 
 export const useFirebaseMessages = (userId) => {
   const dispatch = useDispatch();
-  const { conversations, messagesByConversation, subscriptions, typingStatus } = useSelector(state => state.messages);
+  const { conversations, messagesByConversation, typingStatus } = useSelector(state => state.messages);
+  
+  // Usar useRef para guardar las funciones de unsubscribe (no serializables)
+  const subscriptionsRef = useRef({});
 
   // Suscribirse a conversaciones del usuario
   const subscribeToConversations = useCallback(() => {
@@ -52,8 +53,8 @@ export const useFirebaseMessages = (userId) => {
       dispatch(setMessagesFromRealtime({ conversationId, messages }));
     });
 
-    // Guardar suscripción en el store
-    dispatch(setSubscription({ conversationId, subscription: unsubscribe }));
+    // Guardar suscripción en ref en lugar de Redux
+    subscriptionsRef.current[conversationId] = unsubscribe;
 
     return unsubscribe;
   }, [dispatch]);
@@ -74,13 +75,13 @@ export const useFirebaseMessages = (userId) => {
 
   // Cancelar suscripción a mensajes
   const unsubscribeFromMessages = useCallback((conversationId) => {
-    const subscription = subscriptions[conversationId];
+    const subscription = subscriptionsRef.current[conversationId];
     if (subscription) {
       subscription();
-      dispatch(removeSubscription(conversationId));
+      delete subscriptionsRef.current[conversationId];
       console.log('Suscripción cancelada para conversación:', conversationId);
     }
-  }, [subscriptions, dispatch]);
+  }, []);
 
   // Enviar mensaje
   const sendMessage = useCallback(async (conversationId, senderId, recipientId, content, type = 'text') => {
@@ -157,10 +158,10 @@ export const useFirebaseMessages = (userId) => {
 
   // Limpiar todas las suscripciones
   const cleanup = useCallback(() => {
-    Object.keys(subscriptions).forEach(conversationId => {
+    Object.keys(subscriptionsRef.current).forEach(conversationId => {
       unsubscribeFromMessages(conversationId);
     });
-  }, [subscriptions, unsubscribeFromMessages]);
+  }, [unsubscribeFromMessages]);
 
   // Efecto para limpiar suscripciones al desmontar
   useEffect(() => {

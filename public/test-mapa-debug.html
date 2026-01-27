@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Mapa - Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        .info { background: #d1ecf1; border-color: #bee5eb; }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background: #007bff;
+            color: white;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🗺️ Test de Diagnóstico del Mapa</h1>
+    
+    <div class="test-section info">
+        <h2>Instrucciones</h2>
+        <p>Este test verificará que el archivo GeoJSON se carga correctamente y que las propiedades están disponibles.</p>
+        <button onclick="runAllTests()">▶️ Ejecutar Todos los Tests</button>
+    </div>
+
+    <div id="test-results"></div>
+
+    <script>
+        const resultsDiv = document.getElementById('test-results');
+
+        function addResult(title, content, type = 'info') {
+            const section = document.createElement('div');
+            section.className = `test-section ${type}`;
+            section.innerHTML = `<h3>${title}</h3>${content}`;
+            resultsDiv.appendChild(section);
+        }
+
+        async function testFileExists() {
+            try {
+                const response = await fetch('/data/geo/unidades_vecinales_simple.geojson', {
+                    method: 'HEAD'
+                });
+                
+                if (response.ok) {
+                    const size = response.headers.get('content-length');
+                    addResult(
+                        '✅ Test 1: Archivo Existe',
+                        `<p>El archivo GeoJSON existe y es accesible.</p>
+                         <p>Tamaño: ${(size / 1024 / 1024).toFixed(2)} MB</p>`,
+                        'success'
+                    );
+                    return true;
+                } else {
+                    addResult(
+                        '❌ Test 1: Archivo No Encontrado',
+                        `<p>Error HTTP: ${response.status} ${response.statusText}</p>`,
+                        'error'
+                    );
+                    return false;
+                }
+            } catch (error) {
+                addResult(
+                    '❌ Test 1: Error de Conexión',
+                    `<p>${error.message}</p>`,
+                    'error'
+                );
+                return false;
+            }
+        }
+
+        async function testLoadGeoJSON() {
+            try {
+                addResult(
+                    '⏳ Test 2: Cargando GeoJSON...',
+                    '<p>Esto puede tardar unos segundos...</p>',
+                    'info'
+                );
+
+                const startTime = Date.now();
+                const response = await fetch('/data/geo/unidades_vecinales_simple.geojson');
+                const data = await response.json();
+                const loadTime = Date.now() - startTime;
+
+                if (data && data.features && Array.isArray(data.features)) {
+                    addResult(
+                        '✅ Test 2: GeoJSON Cargado',
+                        `<p>Total de features: ${data.features.length}</p>
+                         <p>Tiempo de carga: ${(loadTime / 1000).toFixed(2)} segundos</p>`,
+                        'success'
+                    );
+                    return data;
+                } else {
+                    addResult(
+                        '❌ Test 2: GeoJSON Inválido',
+                        '<p>El archivo no tiene la estructura esperada</p>',
+                        'error'
+                    );
+                    return null;
+                }
+            } catch (error) {
+                addResult(
+                    '❌ Test 2: Error al Cargar',
+                    `<p>${error.message}</p>`,
+                    'error'
+                );
+                return null;
+            }
+        }
+
+        function testProperties(data) {
+            if (!data || !data.features || data.features.length === 0) {
+                addResult(
+                    '❌ Test 3: Sin Datos',
+                    '<p>No hay features para analizar</p>',
+                    'error'
+                );
+                return;
+            }
+
+            // Analizar las primeras 10 features
+            const samplesToCheck = Math.min(10, data.features.length);
+            const samples = data.features.slice(0, samplesToCheck);
+            
+            let missingProps = {
+                uv_carto: 0,
+                t_uv_nom: 0,
+                t_com_nom: 0,
+                t_reg_nom: 0,
+                PERSONAS: 0
+            };
+
+            let sampleHTML = '<table border="1" cellpadding="5" style="width:100%; border-collapse: collapse;">';
+            sampleHTML += '<tr><th>UV</th><th>Nombre</th><th>Comuna</th><th>Región</th><th>Personas</th></tr>';
+
+            samples.forEach((feature, index) => {
+                const props = feature.properties || {};
+                
+                // Contar propiedades faltantes
+                Object.keys(missingProps).forEach(key => {
+                    if (!props[key]) missingProps[key]++;
+                });
+
+                // Agregar fila a la tabla
+                sampleHTML += `<tr>
+                    <td>${props.uv_carto || '<span style="color:red">FALTA</span>'}</td>
+                    <td>${props.t_uv_nom || '<span style="color:red">FALTA</span>'}</td>
+                    <td>${props.t_com_nom || '<span style="color:red">FALTA</span>'}</td>
+                    <td>${props.t_reg_nom || '<span style="color:red">FALTA</span>'}</td>
+                    <td>${props.PERSONAS || '<span style="color:red">FALTA</span>'}</td>
+                </tr>`;
+            });
+
+            sampleHTML += '</table>';
+
+            // Verificar si hay propiedades faltantes
+            const hasMissing = Object.values(missingProps).some(count => count > 0);
+
+            if (hasMissing) {
+                let missingHTML = '<p><strong>Propiedades faltantes en las primeras 10 features:</strong></p><ul>';
+                Object.entries(missingProps).forEach(([key, count]) => {
+                    if (count > 0) {
+                        missingHTML += `<li>${key}: ${count} de ${samplesToCheck}</li>`;
+                    }
+                });
+                missingHTML += '</ul>';
+
+                addResult(
+                    '⚠️ Test 3: Propiedades Incompletas',
+                    missingHTML + sampleHTML,
+                    'error'
+                );
+            } else {
+                addResult(
+                    '✅ Test 3: Propiedades Completas',
+                    `<p>Todas las propiedades necesarias están presentes en las primeras ${samplesToCheck} features.</p>` + sampleHTML,
+                    'success'
+                );
+            }
+        }
+
+        function testCodeLogic(data) {
+            if (!data || !data.features || data.features.length === 0) {
+                return;
+            }
+
+            const feature = data.features[0];
+            const props = feature.properties;
+
+            // Simular el código del componente
+            const codigoUV = props.uv_carto || 'S/N';
+            const nombre = props.t_uv_nom || 'Sin nombre';
+            const comuna = props.t_com_nom || 'Sin comuna';
+            const region = props.t_reg_nom || 'Sin región';
+
+            const personas = props.PERSONAS ? parseInt(props.PERSONAS).toLocaleString('es-CL') : null;
+            const hogares = props.HOGARES ? parseInt(props.HOGARES).toLocaleString('es-CL') : null;
+            const hombres = props.HOMBRE ? parseInt(props.HOMBRE).toLocaleString('es-CL') : null;
+            const mujeres = props.MUJER ? parseInt(props.MUJER).toLocaleString('es-CL') : null;
+
+            const resultHTML = `
+                <p><strong>Propiedades originales:</strong></p>
+                <pre>${JSON.stringify(props, null, 2)}</pre>
+                
+                <p><strong>Valores procesados:</strong></p>
+                <ul>
+                    <li><strong>Código UV:</strong> ${codigoUV}</li>
+                    <li><strong>Nombre:</strong> ${nombre}</li>
+                    <li><strong>Comuna:</strong> ${comuna}</li>
+                    <li><strong>Región:</strong> ${region}</li>
+                    <li><strong>Personas:</strong> ${personas || 'null'}</li>
+                    <li><strong>Hogares:</strong> ${hogares || 'null'}</li>
+                    <li><strong>Hombres:</strong> ${hombres || 'null'}</li>
+                    <li><strong>Mujeres:</strong> ${mujeres || 'null'}</li>
+                </ul>
+
+                <p><strong>Popup que se generaría:</strong></p>
+                <div style="border: 1px solid #ddd; padding: 12px; border-radius: 8px; background: white;">
+                    <h4 style="margin: 0 0 8px 0; color: #3730a3;">UV ${codigoUV}</h4>
+                    <p style="margin: 5px 0; font-size: 14px;"><strong>${nombre}</strong></p>
+                    <p style="font-size: 12px; color: #666;">📍 ${comuna}, ${region}</p>
+                    ${personas ? `
+                        <div style="background: #f8faff; padding: 10px; border-radius: 8px; margin: 8px 0;">
+                            <p><strong>👥 ${personas}</strong> personas</p>
+                            ${hombres && mujeres ? `<p style="font-size: 13px; color: #666;">${hombres} hombres • ${mujeres} mujeres</p>` : ''}
+                            ${hogares ? `<p>🏠 ${hogares} hogares</p>` : ''}
+                            <p style="font-size: 10px; color: #666; font-style: italic;">📊 Censo 2017</p>
+                        </div>
+                    ` : `
+                        <div style="background: #fff3e0; padding: 8px; border-radius: 6px;">
+                            <p>ℹ️ Datos demográficos no disponibles</p>
+                        </div>
+                    `}
+                </div>
+            `;
+
+            const hasAllData = codigoUV !== 'S/N' && 
+                              nombre !== 'Sin nombre' && 
+                              comuna !== 'Sin comuna' && 
+                              region !== 'Sin región';
+
+            addResult(
+                hasAllData ? '✅ Test 4: Lógica del Código' : '⚠️ Test 4: Lógica del Código',
+                resultHTML,
+                hasAllData ? 'success' : 'error'
+            );
+        }
+
+        async function runAllTests() {
+            resultsDiv.innerHTML = '';
+            
+            const fileExists = await testFileExists();
+            if (!fileExists) return;
+
+            const data = await testLoadGeoJSON();
+            if (!data) return;
+
+            testProperties(data);
+            testCodeLogic(data);
+
+            addResult(
+                '🎉 Tests Completados',
+                '<p>Todos los tests han sido ejecutados. Revisa los resultados arriba.</p>',
+                'info'
+            );
+        }
+
+        // Ejecutar automáticamente al cargar
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 500);
+        });
+    </script>
+</body>
+</html>

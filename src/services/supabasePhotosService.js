@@ -1,41 +1,46 @@
 import { supabase } from '../config/supabase';
 
 class SupabasePhotosService {
-  async getAlbums(userId = null, neighborhoodId = null) {
+  async getAlbums(userId = null) {
     let query = supabase
       .from('photo_albums')
       .select(`
         *,
-        owner:users!photo_albums_owner_id_fkey(id, name, avatar),
-        photos:photos(count)
+        owner:users!photo_albums_user_id_fkey(id, username, avatar)
       `)
       .order('created_at', { ascending: false });
 
     if (userId) {
-      query = query.eq('owner_id', userId);
-    }
-
-    if (neighborhoodId) {
-      query = query.eq('neighborhood_id', neighborhoodId);
+      query = query.eq('user_id', userId);
     }
 
     const { data, error } = await query;
     if (error) throw error;
-    return data;
+    
+    // Contar fotos por álbum
+    const albumsWithCount = await Promise.all(
+      (data || []).map(async (album) => {
+        const { count } = await supabase
+          .from('photos')
+          .select('*', { count: 'exact', head: true })
+          .eq('album_id', album.id);
+        return { ...album, photo_count: count || 0 };
+      })
+    );
+    
+    return albumsWithCount;
   }
 
   async createAlbum(albumData) {
     const { data, error } = await supabase
       .from('photo_albums')
       .insert([{
-        title: albumData.title,
+        name: albumData.name,
         description: albumData.description || null,
-        owner_id: albumData.ownerId,
-        neighborhood_id: albumData.neighborhoodId,
-        privacy: albumData.privacy || 'publico',
+        user_id: albumData.userId,
         cover_photo: albumData.coverPhoto || null
       }])
-      .select(`*, owner:users!photo_albums_owner_id_fkey(id, name, avatar)`)
+      .select(`*, owner:users!photo_albums_user_id_fkey(id, username, avatar)`)
       .single();
 
     if (error) throw error;
@@ -45,11 +50,11 @@ class SupabasePhotosService {
   async updateAlbum(albumId, updates, userId) {
     const { data: album } = await supabase
       .from('photo_albums')
-      .select('owner_id')
+      .select('user_id')
       .eq('id', albumId)
       .single();
 
-    if (!album || album.owner_id !== userId) {
+    if (!album || album.user_id !== userId) {
       throw new Error('No autorizado');
     }
 
@@ -67,11 +72,11 @@ class SupabasePhotosService {
   async deleteAlbum(albumId, userId) {
     const { data: album } = await supabase
       .from('photo_albums')
-      .select('owner_id')
+      .select('user_id')
       .eq('id', albumId)
       .single();
 
-    if (!album || album.owner_id !== userId) {
+    if (!album || album.user_id !== userId) {
       throw new Error('No autorizado');
     }
 
@@ -89,17 +94,17 @@ class SupabasePhotosService {
       .from('photos')
       .select(`
         *,
-        uploader:users!photos_uploader_id_fkey(id, name, avatar),
-        album:photo_albums(id, title)
+        uploader:users!photos_user_id_fkey(id, username, avatar),
+        album:photo_albums(id, name)
       `)
-      .order('created_at', { ascending: false });
+      .order('uploaded_at', { ascending: false });
 
     if (albumId) {
       query = query.eq('album_id', albumId);
     }
 
     if (userId) {
-      query = query.eq('uploader_id', userId);
+      query = query.eq('user_id', userId);
     }
 
     const { data, error } = await query;
@@ -113,12 +118,11 @@ class SupabasePhotosService {
       .insert([{
         url: photoData.url,
         caption: photoData.caption || null,
-        uploader_id: photoData.uploaderId,
+        user_id: photoData.userId,
         album_id: photoData.albumId || null,
-        neighborhood_id: photoData.neighborhoodId,
         tags: photoData.tags || []
       }])
-      .select(`*, uploader:users!photos_uploader_id_fkey(id, name, avatar)`)
+      .select(`*, uploader:users!photos_user_id_fkey(id, username, avatar)`)
       .single();
 
     if (error) throw error;
@@ -128,11 +132,11 @@ class SupabasePhotosService {
   async updatePhoto(photoId, updates, userId) {
     const { data: photo } = await supabase
       .from('photos')
-      .select('uploader_id')
+      .select('user_id')
       .eq('id', photoId)
       .single();
 
-    if (!photo || photo.uploader_id !== userId) {
+    if (!photo || photo.user_id !== userId) {
       throw new Error('No autorizado');
     }
 
@@ -150,11 +154,11 @@ class SupabasePhotosService {
   async deletePhoto(photoId, userId) {
     const { data: photo } = await supabase
       .from('photos')
-      .select('uploader_id')
+      .select('user_id')
       .eq('id', photoId)
       .single();
 
-    if (!photo || photo.uploader_id !== userId) {
+    if (!photo || photo.user_id !== userId) {
       throw new Error('No autorizado');
     }
 
@@ -165,6 +169,29 @@ class SupabasePhotosService {
 
     if (error) throw error;
     return true;
+  }
+
+  // Subir archivo a Supabase Storage
+  async uploadFile(file, userId) {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${userId}/${Date.now()}.${fileExt}`;
+    const filePath = `photos/${fileName}`;
+
+    const { data, error } = await supabase.storage
+      .from('photos')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (error) throw error;
+
+    // Obtener URL pública
+    const { data: { publicUrl } } = supabase.storage
+      .from('photos')
+      .getPublicUrl(filePath);
+
+    return publicUrl;
   }
 }
 

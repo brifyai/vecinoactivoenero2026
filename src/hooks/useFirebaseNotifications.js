@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import firebaseNotificationsService from '../services/firebaseNotificationsService';
 import {
@@ -12,7 +12,6 @@ import {
   addNotificationFromRealtime,
   updateNotificationFromRealtime,
   removeNotificationFromRealtime,
-  setSubscription,
   setFCMToken,
   handleForegroundNotification
 } from '../store/slices/notificationsSlice';
@@ -25,9 +24,11 @@ export const useFirebaseNotifications = (userId) => {
     fcmToken, 
     initialized, 
     loading, 
-    error,
-    subscription 
+    error
   } = useSelector(state => state.notifications);
+  
+  // Usar useRef para guardar la función de unsubscribe (no serializable)
+  const subscriptionRef = useRef(null);
 
   // Inicializar servicio de notificaciones
   const initialize = useCallback(async () => {
@@ -53,7 +54,8 @@ export const useFirebaseNotifications = (userId) => {
       dispatch(setNotificationsFromRealtime(notifications));
     });
 
-    dispatch(setSubscription(unsubscribe));
+    // Guardar en ref en lugar de Redux
+    subscriptionRef.current = unsubscribe;
     return unsubscribe;
   }, [userId, dispatch]);
 
@@ -183,14 +185,14 @@ export const useFirebaseNotifications = (userId) => {
 
   // Limpiar suscripciones
   const cleanup = useCallback(() => {
-    if (subscription) {
-      subscription();
-      dispatch(setSubscription(null));
+    if (subscriptionRef.current) {
+      subscriptionRef.current();
+      subscriptionRef.current = null;
     }
     
     // Limpiar servicio Firebase
     firebaseNotificationsService.cleanup();
-  }, [subscription, dispatch]);
+  }, []);
 
   // Efectos
   useEffect(() => {

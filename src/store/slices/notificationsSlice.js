@@ -95,7 +95,6 @@ const notificationsSlice = createSlice({
     loading: false,
     error: null,
     unreadCount: 0,
-    subscription: null,
     fcmToken: null,
     initialized: false
   },
@@ -147,10 +146,6 @@ const notificationsSlice = createSlice({
         state.unreadCount = Math.max(0, state.unreadCount - 1);
       }
       state.items = state.items.filter(n => n.id !== notificationId);
-    },
-    
-    setSubscription: (state, action) => {
-      state.subscription = action.payload;
     },
     
     setFCMToken: (state, action) => {
@@ -244,7 +239,6 @@ export const {
   addNotificationFromRealtime,
   updateNotificationFromRealtime,
   removeNotificationFromRealtime,
-  setSubscription,
   setFCMToken,
   setInitialized,
   updateUnreadCount,

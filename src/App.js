@@ -202,7 +202,6 @@ function App() {
                                                                       <Route path="/descubrir-vecinos" element={<DiscoverNeighbors />} />
                                                                       <Route path="/feed" element={<Feed />} />
                                                                       <Route path="/mensajes-directos" element={<DirectMessages />} />
-                                                                      <Route path="/fotos" element={<Photos />} />
                                                                       <Route path="/mapa" element={<NeighborhoodMap />} />
                                                                       <Route path="/vecindario/:id" element={<NeighborhoodProfile />} />
                                                                       <Route path="/hub-comunitario" element={<CommunityHub />} />

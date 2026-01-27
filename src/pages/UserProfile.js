@@ -125,8 +125,7 @@ const UserProfile = () => {
 
       <PhotosSection
         activeTab={activeTab}
-        userPhotos={userPhotos}
-        handlePhotoClick={handlePhotoClick}
+        isOwnProfile={isOwnProfile}
       />
 
       {lightboxOpen && (

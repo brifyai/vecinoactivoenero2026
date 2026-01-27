@@ -1,0 +1,422 @@
+.photos-section-container {
+  width: 100%;
+  padding: 20px;
+  background: #f8f9fa;
+}
+
+.photos-section-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.photos-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.photos-section-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.photos-section-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.create-album-btn,
+.add-photo-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.create-album-btn {
+  background: #eff6ff;
+  color: #3730a3;
+  border: 1px solid #bfdbfe;
+}
+
+.create-album-btn:hover:not(:disabled) {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+}
+
+.add-photo-btn {
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
+  color: white;
+}
+
+.add-photo-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(55, 48, 163, 0.3);
+}
+
+.create-album-btn:disabled,
+.add-photo-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.photos-view-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.photos-view-tab {
+  padding: 12px 24px;
+  border: none;
+  background: transparent;
+  color: #65676b;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.3s;
+}
+
+.photos-view-tab:hover {
+  color: #3730a3;
+}
+
+.photos-view-tab.active {
+  color: #3730a3;
+  border-bottom-color: #3730a3;
+}
+
+.photos-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f4f6;
+  border-top: 4px solid #3730a3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.albums-grid-profile {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.create-album-card-profile {
+  background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(55, 48, 163, 0.2);
+  transition: all 0.3s ease;
+  color: white;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.create-album-card-profile:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(55, 48, 163, 0.3);
+}
+
+.create-album-card-profile .create-icon {
+  color: white;
+  margin-bottom: 15px;
+}
+
+.create-album-card-profile h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.create-album-card-profile p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.album-card-profile {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  height: 250px;
+}
+
+.album-card-profile:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(55, 48, 163, 0.15);
+}
+
+.album-card-profile:hover .album-actions-profile {
+  opacity: 1;
+}
+
+.album-image-profile {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.album-image-profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.album-card-profile:hover .album-image-profile img {
+  transform: scale(1.08);
+}
+
+.album-overlay-profile {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.4) 50%, transparent);
+  padding: 24px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.album-overlay-profile h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: white;
+}
+
+.album-overlay-profile p {
+  font-size: 14px;
+  opacity: 0.95;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.album-actions-profile {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 10;
+}
+
+.album-action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.album-action-btn:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.album-action-btn.delete {
+  background: rgba(239, 68, 68, 0.95);
+  color: white;
+}
+
+.album-action-btn.delete:hover {
+  background: #dc2626;
+}
+
+.photos-grid-profile {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.photo-card-profile {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  height: 200px;
+}
+
+.photo-card-profile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.photo-card-profile:hover .photo-delete-btn-profile {
+  opacity: 1;
+}
+
+.photo-card-profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.photo-card-profile:hover img {
+  transform: scale(1.05);
+}
+
+.photo-overlay-profile {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  padding: 12px;
+  color: white;
+}
+
+.photo-overlay-profile h4 {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0 6px 0;
+  color: white;
+}
+
+.photo-stats-profile {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.photo-stats-profile span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.photo-delete-btn-profile {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(239, 68, 68, 0.95);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.photo-delete-btn-profile:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+.empty-state-profile {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.empty-state-profile h3 {
+  margin: 20px 0 10px 0;
+  color: #333;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.empty-state-profile p {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .photos-section-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .photos-section-actions {
+    flex-direction: column;
+  }
+
+  .albums-grid-profile {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .photos-grid-profile {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+  }
+
+  .album-card-profile,
+  .photo-card-profile {
+    height: 150px;
+  }
+}

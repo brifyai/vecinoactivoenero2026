@@ -1158,3 +1158,152 @@
   background: #3730a3 !important;
   color: white !important;
 }
+
+
+/* Estilos para carga lazy/bajo demanda */
+.map-loading-overlay {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.loading-spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #e3f2fd;
+  border-top: 3px solid #3730a3;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.map-zoom-hint {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(55, 48, 163, 0.95);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  pointer-events: none;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-50%) scale(1.02);
+  }
+}
+
+.map-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.map-error p {
+  margin: 0 0 16px 0;
+  color: #dc2626;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.map-error button {
+  padding: 10px 24px;
+  background: #3730a3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.map-error button:hover {
+  background: #5b21b6;
+  transform: translateY(-1px);
+}
+
+/* Responsive para hints y overlays */
+@media (max-width: 768px) {
+  .map-loading-overlay {
+    top: 12px;
+    right: 12px;
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+
+  .loading-spinner-small {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+  }
+
+  .map-zoom-hint {
+    bottom: 60px;
+    padding: 10px 20px;
+    font-size: 13px;
+    max-width: 90%;
+  }
+
+  .map-error {
+    padding: 24px 32px;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-loading-overlay {
+    top: 8px;
+    right: 8px;
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  .map-zoom-hint {
+    bottom: 50px;
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  .map-error {
+    padding: 20px 24px;
+  }
+
+  .map-error p {
+    font-size: 13px;
+  }
+
+  .map-error button {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+}
