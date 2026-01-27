@@ -53,28 +53,55 @@ server {
     root /usr/share/nginx/html;
     index index.html;
 
-    # Archivos estáticos
+    # HTML sin caché (siempre la última versión)
+    location = /index.html {
+        add_header Cache-Control "no-cache, no-store, must-revalidate";
+        add_header Pragma "no-cache";
+        add_header Expires "0";
+        try_files $uri =404;
+    }
+
+    # Archivos estáticos con caché largo
     location /static/ {
         expires 1y;
         add_header Cache-Control "public, immutable";
         try_files $uri =404;
     }
 
-    # Assets
+    # Assets con caché largo
     location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
         expires 1y;
         add_header Cache-Control "public, immutable";
         try_files $uri =404;
     }
 
-    # SPA routing
+    # Manifest sin caché
+    location = /manifest.json {
+        add_header Cache-Control "no-cache";
+        add_header Content-Type application/json;
+        try_files $uri =404;
+    }
+
+    # SPA routing - todas las rutas van a index.html
     location / {
         try_files $uri $uri/ /index.html;
-        add_header Cache-Control "no-cache";
+        add_header Cache-Control "no-cache, no-store, must-revalidate";
+        add_header Pragma "no-cache";
+        add_header Expires "0";
     }
+
+    # Headers de seguridad
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
+    add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline' 'unsafe-eval'" always;
 
     # Compresión
     gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied any;
     gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
 }
 EOF
