@@ -62,6 +62,7 @@ import LocalNeeds from './pages/LocalNeeds/LocalNeeds';
 import CommunityActions from './pages/CommunityActions/CommunityActions';
 import Feed from './pages/Feed/Feed';
 import DirectMessages from './pages/DirectMessages/DirectMessages';
+import Photos from './pages/Photos';
 import './App.css';
 
 // Test components - only imported in development
@@ -201,6 +202,7 @@ function App() {
                                                                       <Route path="/descubrir-vecinos" element={<DiscoverNeighbors />} />
                                                                       <Route path="/feed" element={<Feed />} />
                                                                       <Route path="/mensajes-directos" element={<DirectMessages />} />
+                                                                      <Route path="/fotos" element={<Photos />} />
                                                                       <Route path="/mapa" element={<NeighborhoodMap />} />
                                                                       <Route path="/vecindario/:id" element={<NeighborhoodProfile />} />
                                                                       <Route path="/hub-comunitario" element={<CommunityHub />} />
