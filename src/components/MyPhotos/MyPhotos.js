@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useReduxAuth as useAuth } from '../../hooks/useReduxAuth';
 import { useReduxPhotos } from '../../hooks/useReduxPhotos';
 import { useNavigate } from 'react-router-dom';
-import { showSuccessToast } from '../../utils/sweetalert';
 import PhotoLightbox from '../PhotoLightbox/PhotoLightbox';
 import './MyPhotos.css';
 
@@ -34,8 +33,8 @@ const MyPhotos = () => {
   };
 
   const handleViewAll = () => {
-    // No navegar a ninguna parte, las fotos se ven en el perfil
-    showSuccessToast('Ver todas las fotos en tu perfil');
+    // Navegar a la página de fotos del panel de administración
+    navigate('/app/admin/dashboard/photos');
   };
 
   if (loading) {
