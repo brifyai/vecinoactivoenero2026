@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple PostMessage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        button {
+            background: white;
+            color: #667eea;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px;
+            font-size: 18px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .info {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px auto;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+        }
+        .log {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 600px;
+            text-align: left;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 { margin-top: 0; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Simple PostMessage</h1>
+    
+    <div class="info">
+        <p><strong>Este es un test básico de comunicación postMessage</strong></p>
+        <p>Haz clic en los botones para enviar mensajes al padre</p>
+    </div>
+
+    <div>
+        <button onclick="sendLoginMessage()">📨 Enviar LOGIN</button>
+        <button onclick="sendRegisterMessage()">📨 Enviar REGISTER</button>
+        <button onclick="testWindowParent()">🔍 Test window.parent</button>
+    </div>
+
+    <div class="log" id="log"></div>
+
+    <script>
+        function log(message, color = 'white') {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.style.color = color;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+
+        function sendLoginMessage() {
+            log('📤 Enviando mensaje LOGIN...', '#4ade80');
+            try {
+                const message = { type: 'OPEN_LOGIN_MODAL' };
+                window.parent.postMessage(message, '*');
+                log('✅ Mensaje LOGIN enviado: ' + JSON.stringify(message), '#4ade80');
+            } catch (err) {
+                log('❌ Error: ' + err.message, '#ef4444');
+            }
+        }
+
+        function sendRegisterMessage() {
+            log('📤 Enviando mensaje REGISTER...', '#4ade80');
+            try {
+                const message = { type: 'OPEN_REGISTER_MODAL' };
+                window.parent.postMessage(message, '*');
+                log('✅ Mensaje REGISTER enviado: ' + JSON.stringify(message), '#4ade80');
+            } catch (err) {
+                log('❌ Error: ' + err.message, '#ef4444');
+            }
+        }
+
+        function testWindowParent() {
+            log('🔍 Verificando window.parent...', '#fbbf24');
+            log('window.parent existe: ' + (window.parent ? 'SÍ' : 'NO'), '#fbbf24');
+            log('window.parent === window: ' + (window.parent === window ? 'SÍ (no hay iframe)' : 'NO (hay iframe)'), '#fbbf24');
+            log('window.top === window: ' + (window.top === window ? 'SÍ (ventana principal)' : 'NO (en iframe)'), '#fbbf24');
+        }
+
+        // Escuchar respuestas
+        window.addEventListener('message', (event) => {
+            log('📬 Mensaje recibido del padre: ' + JSON.stringify(event.data), '#a78bfa');
+        });
+
+        // Log inicial
+        log('🚀 Test iniciado', '#60a5fa');
+        log('Contexto: ' + (window.parent === window ? 'Ventana principal' : 'Dentro de iframe'), '#60a5fa');
+    </script>
+</body>
+</html>

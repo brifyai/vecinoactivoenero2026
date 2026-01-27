@@ -110,7 +110,7 @@ const AdminLogin = () => {
         <div className="admin-welcome">
           <button 
             className="back-button"
-            onClick={() => navigate('/iniciar-sesion')}
+            onClick={() => navigate('/')}
           >
             <ArrowBackIcon />
             Volver

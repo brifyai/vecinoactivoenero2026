@@ -1,350 +1,22 @@
-/* ========================================= */
-/* DISEÑO MODERNO DE LOGIN - ESTILO IMAGEN */
-/* Actualizado: Formulario más compacto */
-/* ========================================= */
-
-.modern-login-container {
-  display: flex;
+/* Página principal de selección */
+.user-type-selection-page {
   min-height: 100vh;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-/* Lado izquierdo - Hero Section con imagen */
-.login-hero-section {
-  flex: 1;
-  background: linear-gradient(
-    135deg,
-    rgba(222, 142, 107, 0.9) 0%,
-    rgba(198, 123, 91, 0.9) 100%
-  ),
-  url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600"><rect width="400" height="600" fill="%23de8e6b"/><g opacity="0.3"><rect x="20" y="50" width="360" height="500" rx="20" fill="none" stroke="white" stroke-width="2"/><circle cx="50" cy="100" r="3" fill="white"/><circle cx="80" cy="100" r="3" fill="white"/><circle cx="110" cy="100" r="3" fill="white"/><circle cx="140" cy="100" r="3" fill="white"/><circle cx="170" cy="100" r="3" fill="white"/><circle cx="200" cy="100" r="3" fill="white"/><circle cx="230" cy="100" r="3" fill="white"/><circle cx="260" cy="100" r="3" fill="white"/><circle cx="290" cy="100" r="3" fill="white"/><circle cx="320" cy="100" r="3" fill="white"/><circle cx="350" cy="100" r="3" fill="white"/><rect x="40" y="120" width="20" height="80" rx="10" fill="white" opacity="0.6"/><rect x="70" y="140" width="20" height="60" rx="10" fill="white" opacity="0.4"/><rect x="100" y="130" width="20" height="70" rx="10" fill="white" opacity="0.5"/><rect x="130" y="150" width="20" height="50" rx="10" fill="white" opacity="0.3"/><rect x="160" y="125" width="20" height="75" rx="10" fill="white" opacity="0.6"/><rect x="190" y="145" width="20" height="55" rx="10" fill="white" opacity="0.4"/><rect x="220" y="135" width="20" height="65" rx="10" fill="white" opacity="0.5"/><rect x="250" y="155" width="20" height="45" rx="10" fill="white" opacity="0.3"/><rect x="280" y="140" width="20" height="60" rx="10" fill="white" opacity="0.4"/><rect x="310" y="130" width="20" height="70" rx="10" fill="white" opacity="0.5"/><rect x="340" y="150" width="20" height="50" rx="10" fill="white" opacity="0.3"/></g></svg>');
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px;
-  position: relative;
+  padding: 20px;
 }
 
-.hero-content {
-  max-width: 400px;
-  text-align: left;
-  z-index: 2;
-}
-
-.hero-title {
-  font-size: 2.5rem;
-  font-weight: 300;
-  line-height: 1.2;
-  color: white;
-  margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Lado derecho - Formulario */
-.login-form-container {
-  flex: 1;
-  background: #f8f9fa;
-  display: flex;
-  align-items: flex-start !important;
-  justify-content: center;
-  padding: 320px 40px 40px 40px !important;
-  min-width: 500px;
-  overflow-y: auto;
-}
-
-.form-wrapper {
+.selection-container {
+  max-width: 1000px;
   width: 100%;
-  max-width: 400px;
-  padding-top: 0 !important;
-  margin-top: 0 !important;
-}
-
-/* Header con logo */
-.login-header {
-  text-align: center;
-  margin-bottom: 20px !important;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 15px !important;
-}
-
-.logo-icon {
-  font-size: 32px !important;
-  color: #667eea;
-}
-
-.logo-text {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2d3748;
-}
-
-/* Pestañas de tipo de usuario */
-.user-type-tabs {
-  display: flex;
-  background: white;
-  border-radius: 12px;
-  padding: 4px;
-  margin-bottom: 20px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.type-tab {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 16px;
-  border: none;
-  background: transparent;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #6b7280;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.type-tab:hover {
-  background: #f3f4f6;
-  color: #374151;
-}
-
-.type-tab.active {
-  background: #667eea;
-  color: white;
-  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
-}
-
-.type-tab svg {
-  font-size: 18px !important;
-}
-
-/* Sección del formulario */
-.login-form-section {
-  background: white;
-  padding: 20px !important;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.form-title {
-  font-size: 1.4rem !important;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0 0 16px 0 !important;
-  text-align: center;
-}
-
-/* Grupos de formulario */
-.form-group {
-  margin-bottom: 14px !important;
-}
-
-.form-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 6px;
-}
-
-.input-wrapper {
-  position: relative;
-}
-
-.form-input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #f9fafb;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #667eea;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.form-input::placeholder {
-  color: #9ca3af;
-}
-
-.input-icon {
-  display: none !important;
-}
-
-.password-toggle {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #9ca3af;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: color 0.2s ease;
-}
-
-.password-toggle:hover {
-  color: #667eea;
-}
-
-/* Opciones del formulario */
-.form-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-  color: #6b7280;
-  cursor: pointer;
-}
-
-.checkbox-label input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: #667eea;
-}
-
-.forgot-password {
-  font-size: 0.875rem;
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.forgot-password:hover {
-  text-decoration: underline;
-}
-
-/* Botón de inicio de sesión */
-.signin-button {
-  width: 100%;
-  padding: 12px;
-  background: #2d3748;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-bottom: 14px;
-}
-
-.signin-button:hover:not(:disabled) {
-  background: #1a202c;
-  transform: translateY(-1px);
-}
-
-.signin-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Enlace de registro */
-.signup-link {
-  text-align: center;
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.signup-link a {
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.signup-link a:hover {
-  text-decoration: underline;
-}
-
-/* Alerta de error */
-.error-alert {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #dc2626;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  margin-bottom: 14px;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .modern-login-container {
-    flex-direction: column;
-  }
-  
-  .login-hero-section {
-    min-height: 40vh;
-    padding: 40px 20px;
-  }
-  
-  .hero-title {
-    font-size: 2rem;
-    text-align: center;
-  }
-  
-  .login-form-container {
-    min-width: auto;
-    padding: 20px;
-  }
-  
-  .login-form-section {
-    padding: 30px 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .login-hero-section {
-    min-height: 30vh;
-    padding: 30px 20px;
-  }
-  
-  .hero-title {
-    font-size: 1.75rem;
-  }
-  
-  .form-wrapper {
-    max-width: 100%;
-  }
-  
-  .user-type-tabs {
-    margin-bottom: 20px;
-  }
-  
-  .type-tab {
-    padding: 10px 12px;
-    font-size: 0.85rem;
-  }
-  
-  .login-form-section {
-    padding: 25px 15px;
-  }
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
 }
 
 @keyframes slideUp {
@@ -358,4 +30,239 @@
   }
 }
 
-/* ========================================= */
+/* Header de selección */
+.selection-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.main-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Grid de tipos de usuario */
+.user-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 40px;
+}
+
+/* Tarjetas de tipo de usuario */
+.user-type-card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+}
+
+.user-type-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.user-type-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border-color: #667eea;
+}
+
+.user-type-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Iconos de las tarjetas */
+.card-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.vecinos-card .card-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.admin-card .card-icon {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.business-card .card-icon {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+}
+
+.emergency-card .card-icon {
+  background: linear-gradient(135deg, #ff9f43 0%, #f0932b 100%);
+}
+
+.user-type-card:hover .card-icon {
+  transform: scale(1.1);
+}
+
+/* Contenido de las tarjetas */
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: #2d3748;
+}
+
+.card-description {
+  font-size: 1rem;
+  color: #4a5568;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  flex-grow: 1;
+}
+
+.card-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.feature-tag {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.admin-card .feature-tag {
+  background: rgba(26, 26, 46, 0.1);
+  color: #1a1a2e;
+}
+
+.business-card .feature-tag {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+}
+
+.emergency-card .feature-tag {
+  background: rgba(255, 159, 67, 0.1);
+  color: #ff9f43;
+}
+
+/* Efectos hover específicos por tipo */
+.vecinos-card:hover {
+  background: linear-gradient(135deg, #f8faff 0%, #e8f2ff 100%);
+}
+
+.admin-card:hover {
+  background: linear-gradient(135deg, #f8f8fa 0%, #e8e8f0 100%);
+}
+
+.business-card:hover {
+  background: linear-gradient(135deg, #fff8f8 0%, #ffe8e8 100%);
+}
+
+.emergency-card:hover {
+  background: linear-gradient(135deg, #fffaf8 0%, #ffede8 100%);
+}
+
+/* Footer de selección */
+.selection-footer {
+  background: #f7fafc;
+  padding: 30px 40px;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.info-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.info-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #2d3748;
+}
+
+.info-content p {
+  font-size: 0.95rem;
+  color: #4a5568;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Responsive para grid */
+@media (max-width: 768px) {
+  .user-type-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 30px 20px;
+  }
+  
+  .user-type-card {
+    padding: 24px 20px;
+    min-height: 240px;
+  }
+  
+  .card-icon {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .card-title {
+    font-size: 1.3rem;
+  }
+  
+  .card-description {
+    font-size: 0.95rem;
+  }
+  
+  .selection-header {
+    padding: 30px 20px;
+  }
+  
+  .main-title {
+    font-size: 2rem;
+  }
+  
+  .main-subtitle {
+    font-size: 1.1rem;
+  }
+}

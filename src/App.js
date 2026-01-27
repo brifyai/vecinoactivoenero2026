@@ -104,10 +104,10 @@ const ProtectedRoute = ({ children }) => {
     );
   }
   
-  // Si no está autenticado, redirigir a login
+  // Si no está autenticado, redirigir a la landing
   if (!isAuthenticated) {
-    console.log('❌ No autenticado, redirigiendo a login');
-    return <Navigate to="/iniciar-sesion" replace />;
+    console.log('❌ No autenticado, redirigiendo a landing');
+    return <Navigate to="/" replace />;
   }
   
   // Si está autenticado, mostrar el contenido
@@ -127,7 +127,6 @@ function App() {
               <Routes>
             {/* Rutas públicas */}
             <Route path="/" element={<LandingVecinoActivo />} />
-            <Route path="/iniciar-sesion" element={<UserTypeSelection />} />
             <Route path="/iniciar-sesion-vecinos" element={<VecinosLogin />} />
             <Route path="/iniciar-sesion-admin" element={<AdminLogin />} />
           <Route path="/registrarse" element={

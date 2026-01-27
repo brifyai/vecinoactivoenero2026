@@ -63,7 +63,7 @@ const ForgotPassword = () => {
 
         {/* Lado derecho - Formulario */}
         <div className="forgot-right">
-          <button className="back-btn" onClick={() => navigate('/iniciar-sesion')}>
+          <button className="back-btn" onClick={() => navigate('/')}>
             <ArrowBackIcon />
             Volver al inicio de sesión
           </button>
@@ -119,7 +119,7 @@ const ForgotPassword = () => {
                   <button className="resend-btn" onClick={() => setSent(false)}>
                     Reenviar enlace
                   </button>
-                  <button className="login-btn" onClick={() => navigate('/iniciar-sesion')}>
+                  <button className="login-btn" onClick={() => navigate('/')}>
                     Volver al inicio de sesión
                   </button>
                 </div>

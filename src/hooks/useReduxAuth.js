@@ -56,7 +56,7 @@ export const useReduxAuth = () => {
     console.log('🔵 Logout dispatch completado');
     
     // Redirigir inmediatamente
-    window.location.href = '/iniciar-sesion';
+    window.location.href = '/';
   };
 
   const handleUpdateUser = (updates) => {

@@ -50,7 +50,7 @@ const Sidebar = () => {
     if (result.isConfirmed) {
       logout();
       showSuccessToast('¡Sesión cerrada exitosamente!');
-      navigate('/iniciar-sesion', { replace: true });
+      navigate('/', { replace: true });
     }
   };
 

@@ -29,7 +29,7 @@ const Onboarding = () => {
   // Redirigir si no está autenticado
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/iniciar-sesion');
+      navigate('/');
     }
   }, [isAuthenticated, navigate]);
 

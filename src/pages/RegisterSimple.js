@@ -35,7 +35,7 @@ const RegisterSimple = () => {
       
       if (result.success) {
         alert('¡Registro exitoso! Redirigiendo...');
-        navigate('/iniciar-sesion');
+        navigate('/');
       } else {
         setError(result.error || 'Error al registrar');
       }
@@ -118,7 +118,7 @@ const RegisterSimple = () => {
           </form>
 
           <div style={{ marginTop: '20px', textAlign: 'center' }}>
-            <a href="/iniciar-sesion">¿Ya tienes cuenta? Inicia sesión</a>
+            <a href="/">¿Ya tienes cuenta? Inicia sesión</a>
           </div>
         </div>
       </div>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Button Click</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            background: black;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #333;
+        }
+        .log {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+        h1 { margin-top: 0; }
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        .status.success {
+            background: #dcfce7;
+            border: 1px solid #22c55e;
+            color: #166534;
+        }
+        .status.error {
+            background: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test de Botones Landing</h1>
+        <p>Este test verifica que los botones del landing puedan comunicarse con React usando postMessage.</p>
+        
+        <div id="status" class="status" style="display: none;"></div>
+
+        <div>
+            <button onclick="testLoginButton()">🔐 Test Botón Login</button>
+            <button onclick="testRegisterButton()">📝 Test Botón Registro</button>
+            <button onclick="testDirectPostMessage()">📨 Test PostMessage Directo</button>
+            <button onclick="clearLog()">🗑️ Limpiar Log</button>
+        </div>
+
+        <div class="log" id="log"></div>
+    </div>
+
+    <script>
+        let logCount = 0;
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.innerHTML = `<strong>[${timestamp}]</strong> ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            logCount++;
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+            logCount = 0;
+            log('Log limpiado', 'info');
+        }
+
+        function testLoginButton() {
+            log('🔍 Iniciando test de botón Login...', 'info');
+            
+            // Verificar si la función existe
+            if (typeof toggleLoginForm === 'function') {
+                log('✅ Función toggleLoginForm encontrada', 'success');
+                try {
+                    toggleLoginForm();
+                    log('✅ toggleLoginForm() ejecutado correctamente', 'success');
+                    showStatus('✅ Test Login exitoso', 'success');
+                } catch (err) {
+                    log('❌ Error al ejecutar toggleLoginForm(): ' + err.message, 'error');
+                    showStatus('❌ Error en test Login', 'error');
+                }
+            } else {
+                log('❌ Función toggleLoginForm NO encontrada', 'error');
+                log('ℹ️ Intentando postMessage directo...', 'info');
+                testDirectPostMessage('LOGIN');
+            }
+        }
+
+        function testRegisterButton() {
+            log('🔍 Iniciando test de botón Registro...', 'info');
+            
+            // Verificar si la función existe
+            if (typeof toggleRegisterForm === 'function') {
+                log('✅ Función toggleRegisterForm encontrada', 'success');
+                try {
+                    toggleRegisterForm();
+                    log('✅ toggleRegisterForm() ejecutado correctamente', 'success');
+                    showStatus('✅ Test Registro exitoso', 'success');
+                } catch (err) {
+                    log('❌ Error al ejecutar toggleRegisterForm(): ' + err.message, 'error');
+                    showStatus('❌ Error en test Registro', 'error');
+                }
+            } else {
+                log('❌ Función toggleRegisterForm NO encontrada', 'error');
+                log('ℹ️ Intentando postMessage directo...', 'info');
+                testDirectPostMessage('REGISTER');
+            }
+        }
+
+        function testDirectPostMessage(type = 'LOGIN') {
+            const messageType = type === 'LOGIN' ? 'OPEN_LOGIN_MODAL' : 'OPEN_REGISTER_MODAL';
+            log(`📨 Enviando postMessage: ${messageType}`, 'info');
+            
+            try {
+                window.parent.postMessage({ type: messageType }, '*');
+                log('✅ PostMessage enviado correctamente', 'success');
+                showStatus('✅ PostMessage enviado', 'success');
+            } catch (err) {
+                log('❌ Error al enviar postMessage: ' + err.message, 'error');
+                showStatus('❌ Error al enviar mensaje', 'error');
+            }
+        }
+
+        // Definir las funciones como en el landing real
+        function toggleLoginForm() {
+            log('📞 toggleLoginForm() llamado', 'info');
+            log('📨 Enviando postMessage: OPEN_LOGIN_MODAL', 'info');
+            window.parent.postMessage({ type: 'OPEN_LOGIN_MODAL' }, '*');
+        }
+
+        function toggleRegisterForm() {
+            log('📞 toggleRegisterForm() llamado', 'info');
+            log('📨 Enviando postMessage: OPEN_REGISTER_MODAL', 'info');
+            window.parent.postMessage({ type: 'OPEN_REGISTER_MODAL' }, '*');
+        }
+
+        // Escuchar respuestas del padre
+        window.addEventListener('message', (event) => {
+            log(`📬 Mensaje recibido del padre: ${JSON.stringify(event.data)}`, 'success');
+        });
+
+        // Log inicial
+        log('🚀 Test iniciado', 'info');
+        log(`ℹ️ toggleLoginForm: ${typeof toggleLoginForm}`, 'info');
+        log(`ℹ️ toggleRegisterForm: ${typeof toggleRegisterForm}`, 'info');
+        log(`ℹ️ window.parent: ${window.parent ? 'disponible' : 'no disponible'}`, 'info');
+    </script>
+</body>
+</html>

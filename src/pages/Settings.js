@@ -113,7 +113,7 @@ const Settings = () => {
     );
     if (result.isConfirmed) {
       logout();
-      navigate('/iniciar-sesion', { replace: true });
+      navigate('/', { replace: true });
     }
   };
 

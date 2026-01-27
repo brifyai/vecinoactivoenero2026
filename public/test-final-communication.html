@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Final - Comunicación Completa</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+        }
+        .split-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100vh;
+        }
+        .parent-side {
+            background: #1e293b;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 2px solid #334155;
+        }
+        .iframe-side {
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+        }
+        iframe {
+            width: 100%;
+            flex: 1;
+            border: none;
+        }
+        h2 {
+            color: #60a5fa;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .log {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        .log-entry {
+            padding: 6px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+        .success { color: #4ade80; }
+        .error { color: #ef4444; }
+        .info { color: #60a5fa; }
+        .warning { color: #fbbf24; }
+        .status-bar {
+            background: #334155;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button.success {
+            background: #22c55e;
+        }
+        button.success:hover {
+            background: #16a34a;
+        }
+    </style>
+</head>
+<body>
+    <div class="split-view">
+        <!-- Lado del Padre (React) -->
+        <div class="parent-side">
+            <h2>🎯 COMPONENTE PADRE (React)</h2>
+            <p style="color: #94a3b8; font-size: 13px; margin-bottom: 15px;">
+                Este lado simula el componente LandingVecinoActivo.js
+            </p>
+            
+            <div class="status-indicator">
+                <div class="dot"></div>
+                <span style="font-size: 13px;">Escuchando mensajes postMessage</span>
+            </div>
+
+            <div class="test-buttons">
+                <button class="success" onclick="testDirectModal('login')">
+                    ✅ Test Modal Login Directo
+                </button>
+                <button class="success" onclick="testDirectModal('register')">
+                    ✅ Test Modal Register Directo
+                </button>
+            </div>
+
+            <div class="log" id="parentLog"></div>
+        </div>
+
+        <!-- Lado del Iframe (HTML) -->
+        <div class="iframe-side">
+            <div class="status-bar">
+                <div class="status-indicator">
+                    <div class="dot"></div>
+                    <span style="font-size: 13px;">Iframe Activo</span>
+                </div>
+                <span style="font-size: 12px; color: #94a3b8;">
+                    Simula: index-landing-vecino-activo.html
+                </span>
+            </div>
+            <iframe src="/test-simple-postmessage.html" id="testIframe"></iframe>
+        </div>
+    </div>
+
+    <!-- Modal simulado -->
+    <div id="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center;">
+        <div style="background: white; color: black; padding: 40px; border-radius: 24px; max-width: 400px; text-align: center;">
+            <h2 id="modalTitle" style="color: #1e293b; margin-bottom: 20px;"></h2>
+            <p style="color: #64748b; margin-bottom: 30px;">El modal se abrió correctamente!</p>
+            <button onclick="closeModal()" style="background: black; color: white; padding: 12px 30px; border-radius: 12px;">
+                Cerrar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let messageCount = 0;
+
+        function logParent(message, type = 'info') {
+            const logDiv = document.getElementById('parentLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            messageCount++;
+            entry.innerHTML = `<strong>[${messageCount}] [${timestamp}]</strong> ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log('[PARENT]', message);
+        }
+
+        function showModal(type) {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modalTitle');
+            title.textContent = type === 'login' ? '🔐 Modal de Login' : '📝 Modal de Registro';
+            modal.style.display = 'flex';
+            logParent(`✅ Modal de ${type.toUpperCase()} mostrado`, 'success');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            logParent('Modal cerrado', 'info');
+        }
+
+        function testDirectModal(type) {
+            logParent(`🧪 Test directo de modal ${type}`, 'warning');
+            showModal(type);
+        }
+
+        // Listener principal - simula el useEffect de React
+        window.addEventListener('message', (event) => {
+            logParent(`📬 Mensaje recibido: ${JSON.stringify(event.data)}`, 'info');
+            
+            if (event.data && event.data.type === 'OPEN_LOGIN_MODAL') {
+                logParent('🔐 Procesando: OPEN_LOGIN_MODAL', 'success');
+                showModal('login');
+            } else if (event.data && event.data.type === 'OPEN_REGISTER_MODAL') {
+                logParent('📝 Procesando: OPEN_REGISTER_MODAL', 'success');
+                showModal('register');
+            } else {
+                logParent('⚠️ Mensaje no reconocido', 'warning');
+            }
+        });
+
+        // Logs iniciales
+        logParent('🚀 Sistema iniciado', 'info');
+        logParent('👂 Listener de mensajes activo', 'success');
+        logParent('⏳ Esperando carga del iframe...', 'info');
+
+        // Detectar carga del iframe
+        document.getElementById('testIframe').addEventListener('load', () => {
+            logParent('✅ Iframe cargado completamente', 'success');
+            logParent('💡 Haz clic en los botones del iframe para probar', 'info');
+        });
+
+        // Cerrar modal con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

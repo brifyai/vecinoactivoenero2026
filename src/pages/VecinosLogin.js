@@ -31,7 +31,7 @@ const Login = () => {
 
   // Si el usuario ya está autenticado y está en la página de login, redirigir a app
   useEffect(() => {
-    if (isAuthenticated && location.pathname === '/iniciar-sesion') {
+    if (isAuthenticated && location.pathname === '/iniciar-sesion-vecinos') {
       navigate('/app');
     }
   }, [isAuthenticated, navigate, location.pathname]);
