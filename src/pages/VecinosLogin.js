@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useReduxAuth as useAuth } from '../hooks/useReduxAuth';
 import { showErrorToast, showSuccessToast, showInfoToast } from '../utils/sweetalert';
+import ForgotPasswordModal from '../components/ForgotPasswordModal/ForgotPasswordModal';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -28,6 +29,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
 
   // Si el usuario ya está autenticado y está en la página de login, redirigir a app
   useEffect(() => {
@@ -200,9 +202,13 @@ const Login = () => {
                 />
                 <span>Recuérdame</span>
               </label>
-              <a href="/recuperar-contrasena" className="forgot-link">
+              <button 
+                type="button"
+                className="forgot-link"
+                onClick={() => setShowForgotPasswordModal(true)}
+              >
                 ¿Olvidaste tu contraseña?
-              </a>
+              </button>
             </div>
 
             <button type="submit" className="login-button" disabled={loading}>
@@ -247,6 +253,12 @@ const Login = () => {
           </form>
         </div>
       </div>
+
+      {/* Modal de recuperación de contraseña */}
+      <ForgotPasswordModal 
+        isOpen={showForgotPasswordModal}
+        onClose={() => setShowForgotPasswordModal(false)}
+      />
     </div>
   );
 };

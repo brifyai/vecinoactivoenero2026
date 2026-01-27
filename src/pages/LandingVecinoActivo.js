@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser } from '../store/slices/authSlice';
 import { selectAuthLoading, selectAuthError } from '../store/selectors/authSelectors';
+import ForgotPasswordModal from '../components/ForgotPasswordModal/ForgotPasswordModal';
 
 const LandingVecinoActivo = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const LandingVecinoActivo = () => {
 
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
   const [loginType, setLoginType] = useState('vecino'); // 'vecino' o 'admin'
   const [registerType, setRegisterType] = useState('vecino');
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -265,9 +267,28 @@ const LandingVecinoActivo = () => {
                   />
                   <span style={{ color: '#6b7280' }}>Recordarme</span>
                 </label>
-                <a href="/recuperar-contrasena" style={{ color: '#000', fontWeight: '600', textDecoration: 'none' }}>
+                <button 
+                  type="button"
+                  onClick={() => {
+                    setShowLoginModal(false);
+                    setShowForgotPasswordModal(true);
+                  }}
+                  style={{ 
+                    color: '#000', 
+                    fontWeight: '600', 
+                    textDecoration: 'none',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '4px 8px',
+                    borderRadius: '6px',
+                    transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.target.style.background = 'rgba(0,0,0,0.05)'}
+                  onMouseLeave={(e) => e.target.style.background = 'transparent'}
+                >
                   ¿Olvidaste tu contraseña?
-                </a>
+                </button>
               </div>
 
               <button 
@@ -543,6 +564,12 @@ const LandingVecinoActivo = () => {
           animation: fade-in 0.2s ease-out;
         }
       `}</style>
+
+      {/* Modal de recuperación de contraseña */}
+      <ForgotPasswordModal 
+        isOpen={showForgotPasswordModal}
+        onClose={() => setShowForgotPasswordModal(false)}
+      />
     </div>
   );
 };
