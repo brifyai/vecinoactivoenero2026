@@ -1864,6 +1864,7 @@
     grid-template-columns: 1fr;
     gap: 40px;
     text-align: center;
+    padding: 0 20px;
   }
 
   /* En móvil: mantener orden original (contenido arriba, mapa abajo) */
@@ -1895,7 +1896,10 @@
   }
 
   .hero-title {
-    font-size: 36px;
+    font-size: 32px;
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .hero-subtitle {
@@ -2345,10 +2349,15 @@
 
   .hero-title {
     font-size: 28px;
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .hero-subtitle {
     font-size: 16px;
+    line-height: 1.5;
   }
 
   .hero-stats {

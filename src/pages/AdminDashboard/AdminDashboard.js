@@ -19,7 +19,6 @@ import CampaignsManagement from './CampaignsManagement';
 import UsersManagement from './UsersManagement';
 import Analytics from './Analytics';
 import EmergencyManagement from './EmergencyManagement';
-import PhotosManagement from './PhotosManagement';
 import SettingsPage from './SettingsPage';
 
 // Material UI
@@ -298,7 +297,6 @@ const AdminDashboard = () => {
               <Route path="/tickets/*" element={<TicketsManagement />} />
               <Route path="/campaigns/*" element={<CampaignsManagement />} />
               <Route path="/users/*" element={<UsersManagement />} />
-              <Route path="/photos" element={<PhotosManagement />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="*" element={<Navigate to="/admin/dashboard/overview" replace />} />

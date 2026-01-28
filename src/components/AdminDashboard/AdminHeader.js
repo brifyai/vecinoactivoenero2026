@@ -82,11 +82,7 @@ const AdminHeader = ({ currentAdmin, onSidebarToggle, sidebarCollapsed }) => {
           <MenuIcon />
         </button>
 
-        {/* Breadcrumb */}
-        <div className="admin-breadcrumb">
-          <DashboardIcon className="breadcrumb-icon" />
-          <span className="breadcrumb-text">Panel Administrativo</span>
-        </div>
+        {/* Breadcrumb eliminado */}
       </div>
 
       <div className="admin-header-center">
@@ -156,75 +152,10 @@ const AdminHeader = ({ currentAdmin, onSidebarToggle, sidebarCollapsed }) => {
             <SettingsIcon />
           </button>
         </div>
-
-        {/* Perfil del administrador */}
-        <div className="header-item profile-wrapper">
-          <button 
-            className="profile-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowProfileMenu(!showProfileMenu);
-              setShowNotifications(false);
-            }}
-            type="button"
-          >
-            {currentAdmin?.avatar ? (
-              <img 
-                src={currentAdmin.avatar} 
-                alt={currentAdmin.name}
-                className="profile-avatar"
-              />
-            ) : (
-              <div className="profile-avatar-placeholder">
-                {currentAdmin?.name?.charAt(0)?.toUpperCase() || 'A'}
-              </div>
-            )}
-            <div className="profile-info">
-              <span className="profile-name">{currentAdmin?.name || 'Administrador'}</span>
-              <span className="profile-role">Admin UV</span>
-            </div>
-          </button>
-
-          {showProfileMenu && (
-            <div className="profile-dropdown">
-              <div className="profile-dropdown-header">
-                <div className="profile-dropdown-avatar">
-                  {currentAdmin?.avatar ? (
-                    <img src={currentAdmin.avatar} alt={currentAdmin.name} />
-                  ) : (
-                    <AccountCircleIcon />
-                  )}
-                </div>
-                <div className="profile-dropdown-info">
-                  <h4>{currentAdmin?.name}</h4>
-                  <p>{currentAdmin?.email}</p>
-                  <span className="profile-uv">{currentAdmin?.neighborhoodName}</span>
-                </div>
-              </div>
-              
-              <div className="profile-dropdown-menu">
-                <button 
-                  className="profile-menu-item"
-                  onClick={() => navigate('/admin/dashboard/settings')}
-                >
-                  <SettingsIcon />
-                  <span>Configuración</span>
-                </button>
-                <button 
-                  className="profile-menu-item logout-item"
-                  onClick={handleLogout}
-                >
-                  <LogoutIcon />
-                  <span>Cerrar Sesión</span>
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
 
       {/* Overlay para cerrar dropdowns */}
-      {(showProfileMenu || showNotifications) && (
+      {showNotifications && (
         <div 
           className="header-overlay"
           onClick={() => {

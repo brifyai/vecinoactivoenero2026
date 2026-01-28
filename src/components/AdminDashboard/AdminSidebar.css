@@ -1,4 +1,4 @@
-/* Admin Sidebar */
+/* Admin Sidebar - FIXED VERSION */
 .admin-sidebar {
   position: fixed;
   left: 0;
@@ -26,6 +26,7 @@
   align-items: center;
   gap: 12px;
   min-height: 60px;
+  flex-shrink: 0;
 }
 
 .sidebar-toggle-btn {
@@ -91,6 +92,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .admin-avatar {
@@ -182,11 +184,13 @@
   }
 }
 
-/* Navigation */
+/* Navigation - FIXED */
 .admin-nav {
-  flex: 1;
+  flex: 1 1 auto;
   padding: 12px 0;
   overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
 
 .nav-list {
@@ -284,11 +288,53 @@
   flex-shrink: 0;
 }
 
-/* System Info */
+/* Priority menu items */
+.nav-item.priority {
+  position: relative;
+}
+
+.nav-item.priority::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #ff4444 0%, #ff6b6b 100%);
+  border-radius: 0 4px 4px 0;
+}
+
+.nav-link.priority-link {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid rgba(255, 68, 68, 0.2);
+}
+
+.nav-link.priority-link:hover {
+  background: rgba(255, 68, 68, 0.15);
+  border-color: rgba(255, 68, 68, 0.3);
+}
+
+.nav-link.priority-link.active {
+  background: rgba(255, 68, 68, 0.2);
+  border-color: rgba(255, 68, 68, 0.4);
+}
+
+.nav-link.priority-link .nav-icon {
+  color: #ff6b6b;
+}
+
+.nav-link.priority-link .nav-label {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+/* System Info - FIXED */
 .system-info {
   padding: 12px 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 .info-item {
@@ -337,10 +383,11 @@
   text-overflow: ellipsis;
 }
 
-/* Sidebar Footer */
+/* Sidebar Footer - FIXED */
 .admin-sidebar-footer {
   padding: 12px 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .logout-btn {
@@ -386,6 +433,32 @@
   display: none;
 }
 
+.admin-sidebar.collapsed .nav-item.priority .nav-link {
+  background: rgba(255, 68, 68, 0.15);
+}
+
+.admin-sidebar.collapsed .nav-item.priority .nav-link:hover {
+  background: rgba(255, 68, 68, 0.25);
+}
+
+/* Scrollbar personalizado */
+.admin-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.admin-nav::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.admin-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.admin-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .admin-sidebar {
@@ -405,69 +478,4 @@
   .admin-sidebar.collapsed.mobile-open {
     transform: translateX(0);
   }
-}
-
-/* Scrollbar personalizado para la navegación */
-.admin-nav::-webkit-scrollbar {
-  width: 4px;
-}
-
-.admin-nav::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.admin-nav::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-}
-
-.admin-nav::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
-}
-/* Priority menu items (like Emergency) */
-.nav-item.priority {
-  position: relative;
-}
-
-.nav-item.priority::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: linear-gradient(180deg, #ff4444 0%, #ff6b6b 100%);
-  border-radius: 0 4px 4px 0;
-}
-
-.nav-link.priority-link {
-  background: rgba(255, 68, 68, 0.1);
-  border: 1px solid rgba(255, 68, 68, 0.2);
-}
-
-.nav-link.priority-link:hover {
-  background: rgba(255, 68, 68, 0.15);
-  border-color: rgba(255, 68, 68, 0.3);
-}
-
-.nav-link.priority-link.active {
-  background: rgba(255, 68, 68, 0.2);
-  border-color: rgba(255, 68, 68, 0.4);
-}
-
-.nav-link.priority-link .nav-icon {
-  color: #ff6b6b;
-}
-
-.nav-link.priority-link .nav-label {
-  color: #ff6b6b;
-  font-weight: 600;
-}
-
-.admin-sidebar.collapsed .nav-item.priority .nav-link {
-  background: rgba(255, 68, 68, 0.15);
-}
-
-.admin-sidebar.collapsed .nav-item.priority .nav-link:hover {
-  background: rgba(255, 68, 68, 0.25);
 }

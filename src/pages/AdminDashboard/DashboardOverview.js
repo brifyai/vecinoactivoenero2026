@@ -85,9 +85,6 @@ const DashboardOverview = () => {
     }
   }, [posts]);
 
-  const [refreshing, setRefreshing] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState(new Date());
-
   // Cargar datos iniciales
   useEffect(() => {
     const neighborhoodId = getCurrentNeighborhoodId();
@@ -108,24 +105,9 @@ const DashboardOverview = () => {
       
       // Cargar campañas recientes
       await fetchCampaigns({ neighborhood_id: neighborhoodId, limit: 10 });
-      
-      setLastUpdated(new Date());
     } catch (error) {
       console.error('❌ Error cargando datos del dashboard:', error);
     }
-  };
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    const neighborhoodId = getCurrentNeighborhoodId();
-    if (neighborhoodId) {
-      await loadDashboardData(neighborhoodId);
-    }
-    // Forzar recarga de posts
-    if (refreshPosts) {
-      refreshPosts();
-    }
-    setRefreshing(false);
   };
 
   // Calcular métricas locales
@@ -182,21 +164,7 @@ const DashboardOverview = () => {
             <DashboardIcon className="header-icon" />
             <div>
               <h1>Dashboard Administrativo</h1>
-              <p>Unidad Vecinal: {getCurrentNeighborhoodName()}</p>
             </div>
-          </div>
-          <div className="header-actions">
-            <div className="last-updated">
-              Actualizado: {lastUpdated.toLocaleTimeString()}
-            </div>
-            <button 
-              className={`refresh-btn ${refreshing ? 'refreshing' : ''}`}
-              onClick={handleRefresh}
-              disabled={refreshing}
-            >
-              <RefreshIcon />
-              {refreshing ? 'Actualizando...' : 'Actualizar'}
-            </button>
           </div>
         </div>
       </div>

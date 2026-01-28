@@ -18,7 +18,6 @@ import BusinessIcon from '@mui/icons-material/Business';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SecurityIcon from '@mui/icons-material/Security';
 import WarningIcon from '@mui/icons-material/Warning';
-import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 
 import './AdminSidebar.css';
 
@@ -69,18 +68,11 @@ const AdminSidebar = ({ collapsed, onToggle, currentAdmin, adminRole }) => {
       description: 'Push, Email y WhatsApp'
     },
     {
-      id: 'residents',
+      id: 'users',
       label: 'Gestión de Vecinos',
       icon: <PeopleIcon />,
-      path: '/admin/dashboard/residents',
+      path: '/admin/dashboard/users',
       description: 'Audiencia y verificación'
-    },
-    {
-      id: 'photos',
-      label: 'Galería de Fotos',
-      icon: <PhotoLibraryIcon />,
-      path: '/admin/dashboard/photos',
-      description: 'Gestión de fotos y álbumes'
     },
     {
       id: 'analytics',
@@ -123,33 +115,6 @@ const AdminSidebar = ({ collapsed, onToggle, currentAdmin, adminRole }) => {
         )}
       </div>
 
-      {/* Información del Admin */}
-      {!collapsed && currentAdmin && (
-        <div className="admin-info">
-          <div className="admin-avatar">
-            {currentAdmin.avatar ? (
-              <img src={currentAdmin.avatar} alt={currentAdmin.name} />
-            ) : (
-              <div className="avatar-placeholder">
-                {currentAdmin.name?.charAt(0)?.toUpperCase() || 'A'}
-              </div>
-            )}
-          </div>
-          <div className="admin-details">
-            <h4 className="admin-name">{currentAdmin.name}</h4>
-            <p className="admin-role">
-              {adminRole === 'super_admin' ? 'Super Administrador' : 
-               adminRole === 'uv_admin' ? 'Admin UV' : 
-               adminRole === 'delegate' ? 'Delegado' : 'Moderador'}
-            </p>
-            <p className="admin-neighborhood">{currentAdmin.neighborhoodName}</p>
-          </div>
-          <div className="admin-status">
-            <div className="status-indicator online"></div>
-          </div>
-        </div>
-      )}
-
       {/* Navegación */}
       <nav className="admin-nav">
         <ul className="nav-list">
@@ -183,33 +148,6 @@ const AdminSidebar = ({ collapsed, onToggle, currentAdmin, adminRole }) => {
           ))}
         </ul>
       </nav>
-
-      {/* Información del Sistema */}
-      {!collapsed && (
-        <div className="system-info">
-          <div className="info-item">
-            <BusinessIcon className="info-icon" />
-            <div className="info-content">
-              <span className="info-label">Sistema</span>
-              <span className="info-value">Vecino Activo v2.0</span>
-            </div>
-          </div>
-          <div className="info-item">
-            <SecurityIcon className="info-icon" />
-            <div className="info-content">
-              <span className="info-label">Seguridad</span>
-              <span className="info-value">SSL Activo</span>
-            </div>
-          </div>
-          <div className="info-item">
-            <NotificationsIcon className="info-icon" />
-            <div className="info-content">
-              <span className="info-label">Notificaciones</span>
-              <span className="info-value">Habilitadas</span>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Footer del Sidebar */}
       <div className="admin-sidebar-footer">
