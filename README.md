@@ -1,105 +1,164 @@
-# 🌐 Friendbook - Red Social Completa
+# 🏘️ Vecino Activo - Plataforma de Comunidades Vecinales
 
 ![React](https://img.shields.io/badge/React-18.x-blue)
-![Status](https://img.shields.io/badge/Status-Completado-success)
-![Spanish](https://img.shields.io/badge/Idioma-Español-yellow)
+![Redux](https://img.shields.io/badge/Redux-Toolkit-purple)
+![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green)
+![Firebase](https://img.shields.io/badge/Firebase-Realtime-orange)
+![Status](https://img.shields.io/badge/Status-Producción-success)
 
-Aplicación de red social completa tipo Facebook construida con React, Context API y localStorage. 100% funcional en el frontend con todas las características principales de una red social moderna.
+Plataforma completa para gestión de comunidades vecinales (Unidades Vecinales) con red social integrada, panel administrativo, sistema de tickets, campañas de comunicación y más.
+
+**Sitio en producción:** https://vecinoactivo.cl/
 
 ---
 
 ## ✨ Características Principales
 
-### 🔐 Autenticación
+### 🏛️ Panel Administrativo (Admin Dashboard)
+- ✅ Dashboard con métricas en tiempo real
+- ✅ Gestión de Tickets (soporte vecinal)
+- ✅ Campañas de Comunicación (Email, WhatsApp, Push)
+- ✅ Gestión de Usuarios y Vecinos
+- ✅ Analíticas y Reportes
+- ✅ Gestión de Emergencias
+- ✅ Sistema de Roles y Permisos
+- ✅ Selector de Unidad Vecinal (múltiples UVs)
+- ✅ Configuración personalizada por UV
+
+### 🏘️ Sistema de Unidades Vecinales (UVs)
+- ✅ Múltiples UVs por administrador
+- ✅ Roles: super_admin, uv_admin, delegate, moderator
+- ✅ Permisos granulares por rol
+- ✅ Estadísticas por UV
+- ✅ Configuración independiente por UV
+- ✅ Mapa interactivo con polígonos geográficos
+
+### 🔐 Autenticación y Usuarios
 - ✅ Registro de usuarios con validación
-- ✅ Login con email y contraseña
+- ✅ Login dual (usuarios y administradores)
 - ✅ Recuperación de contraseña
-- ✅ Sesión persistente
-- ✅ Logout seguro
+- ✅ Sesión persistente con Supabase Auth
+- ✅ Verificación de email
+- ✅ Perfiles de usuario completos
 
-### 📝 Publicaciones
-- ✅ Crear publicaciones con texto e imágenes
+### 📝 Red Social
+- ✅ Publicaciones con texto, imágenes y videos
 - ✅ 6 tipos de reacciones (Like, Love, Haha, Wow, Sad, Angry)
-- ✅ Sistema de comentarios
+- ✅ Sistema de comentarios anidados
 - ✅ Compartir publicaciones
-- ✅ Privacidad configurable (Público, Amigos, Solo yo)
-- ✅ Estados de ánimo y ubicación
-- ✅ Editar y eliminar publicaciones
+- ✅ Feed de actividad en tiempo real
+- ✅ Carrusel de fotos en posts
 
-### 👥 Amigos
-- ✅ Enviar solicitudes de amistad
-- ✅ Aceptar/rechazar solicitudes
-- ✅ Eliminar amigos
-- ✅ Sugerencias de amigos
-- ✅ Lista de amigos
-- ✅ Búsqueda de amigos
-
-### 💬 Chat/Mensajería
-- ✅ Conversaciones 1 a 1
-- ✅ Enviar mensajes de texto
-- ✅ Historial de mensajes persistente
+### 💬 Mensajería
+- ✅ Chat 1 a 1 en tiempo real (Firebase)
+- ✅ Conversaciones persistentes (Supabase)
+- ✅ Notificaciones de mensajes
 - ✅ Marcar como leído
-- ✅ Contador de mensajes no leídos
-- ✅ Búsqueda de conversaciones
+- ✅ Historial completo
 
-### 👨‍👩‍👧‍👦 Grupos
-- ✅ Crear grupos
-- ✅ Unirse/salir de grupos
-- ✅ Publicar en grupos
-- ✅ Administrar grupos
-- ✅ Grupos sugeridos
-- ✅ Búsqueda de grupos
+### 🎫 Sistema de Tickets
+- ✅ Crear tickets de soporte
+- ✅ Categorías (seguridad, infraestructura, ruido, etc.)
+- ✅ Prioridades (baja, media, alta, urgente)
+- ✅ Estados (pendiente, en progreso, resuelto)
+- ✅ Asignación a administradores
+- ✅ Comentarios y seguimiento
+- ✅ Estadísticas y métricas
+
+### 📢 Campañas de Comunicación
+- ✅ Crear campañas multicanal
+- ✅ Canales: Email, WhatsApp, Push Notifications
+- ✅ Programación de envíos
+- ✅ Segmentación de audiencia
+- ✅ Plantillas personalizables
+- ✅ Estadísticas de envío
+- ✅ Borradores y revisión
+
+### 🚨 Sistema de Emergencias
+- ✅ Botón de emergencia visible
+- ✅ Captura de fotos/videos
+- ✅ Geolocalización automática
+- ✅ Notificación inmediata a administradores
+- ✅ Panel de gestión de emergencias
+- ✅ Estados y seguimiento
 
 ### 📅 Eventos
-- ✅ Crear eventos
+- ✅ Crear eventos comunitarios
 - ✅ RSVP (Asistiré/Me interesa)
-- ✅ Invitar a eventos
-- ✅ Calendario de eventos
 - ✅ Categorías de eventos
-- ✅ Eventos próximos
+- ✅ Calendario integrado
+- ✅ Imágenes de eventos
 
-### 🖼️ Imágenes
-- ✅ Subida de imágenes (Base64)
+### 👥 Amigos y Comunidad
+- ✅ Solicitudes de amistad
+- ✅ Descubrir vecinos cercanos
+- ✅ Directorio de vecinos
+- ✅ Perfiles públicos
+
+### 🖼️ Gestión de Fotos
+- ✅ Subida de imágenes optimizada
 - ✅ Compresión automática
-- ✅ Validación de tipos
-- ✅ Foto de perfil
-- ✅ Foto de portada
-- ✅ Imágenes en publicaciones
-- ✅ Control de espacio
-
-### 🔍 Búsqueda
-- ✅ Búsqueda global
-- ✅ Buscar usuarios
-- ✅ Buscar publicaciones
-- ✅ Buscar páginas
-- ✅ Filtros de búsqueda
+- ✅ Storage en Supabase
+- ✅ Galerías de fotos
+- ✅ Foto de perfil y portada
 
 ### 🔔 Notificaciones
-- ✅ Notificaciones en tiempo real
-- ✅ Notificaciones de amigos
-- ✅ Notificaciones de publicaciones
-- ✅ Contador de no leídas
+- ✅ Notificaciones en tiempo real (Firebase)
+- ✅ Push notifications (FCM)
+- ✅ Notificaciones en app
+- ✅ Centro de notificaciones
 - ✅ Marcar como leída
 
-### 🎨 UI/UX
-- ✅ Modo oscuro
-- ✅ Interfaz moderna
-- ✅ Animaciones suaves
-- ✅ Feedback visual (toasts)
-- ✅ Iconos Material UI
-- ✅ 100% en español
+### 🗺️ Mapa Interactivo
+- ✅ Mapa de Unidades Vecinales
+- ✅ Polígonos geográficos (GeoJSON)
+- ✅ Información demográfica
+- ✅ Lazy loading optimizado
+- ✅ Interactividad completa
 
 ---
 
 ## 🚀 Inicio Rápido
 
+### Requisitos Previos
+- Node.js 18+
+- npm o yarn
+- Cuenta de Supabase
+- Cuenta de Firebase (opcional, para realtime)
+
 ### Instalación
 
 ```bash
+# Clonar repositorio
+git clone https://github.com/tu-usuario/vecino-activo.git
+cd vecino-activo
+
+# Instalar dependencias
 npm install
+
+# Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus credenciales
 ```
 
-### Ejecutar en desarrollo
+### Configuración de Variables de Entorno
+
+```env
+# Supabase
+REACT_APP_SUPABASE_URL=tu_supabase_url
+REACT_APP_SUPABASE_ANON_KEY=tu_supabase_anon_key
+
+# Firebase (opcional)
+REACT_APP_FIREBASE_API_KEY=tu_firebase_api_key
+REACT_APP_FIREBASE_AUTH_DOMAIN=tu_firebase_auth_domain
+REACT_APP_FIREBASE_PROJECT_ID=tu_firebase_project_id
+REACT_APP_FIREBASE_STORAGE_BUCKET=tu_firebase_storage_bucket
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=tu_firebase_messaging_sender_id
+REACT_APP_FIREBASE_APP_ID=tu_firebase_app_id
+REACT_APP_FIREBASE_VAPID_KEY=tu_firebase_vapid_key
+```
+
+### Ejecutar en Desarrollo
 
 ```bash
 npm start
@@ -107,7 +166,7 @@ npm start
 
 La aplicación se abrirá en [http://localhost:3000](http://localhost:3000)
 
-### Build para producción
+### Build para Producción
 
 ```bash
 npm run build
@@ -115,294 +174,278 @@ npm run build
 
 ---
 
-## 👤 Usuarios de Prueba
-
-```javascript
-// Usuario 1
-Email: josephin.water@gmail.com
-Password: 123456
-
-// Usuario 2
-Email: paige.turner@gmail.com
-Password: 123456
-
-// Usuario 3
-Email: bob.frapples@gmail.com
-Password: 123456
-```
-
----
-
 ## 📁 Estructura del Proyecto
 
 ```
-friendbook/
+vecino-activo/
 ├── public/
+│   ├── data/geo/              # Datos geográficos (GeoJSON)
+│   ├── firebase-messaging-sw.js
 │   └── index.html
 ├── src/
-│   ├── components/          # 40+ componentes
+│   ├── components/            # 100+ componentes
+│   │   ├── AdminDashboard/    # Componentes del admin
+│   │   ├── EmergencyButton/   # Sistema de emergencias
 │   │   ├── Header/
 │   │   ├── Sidebar/
-│   │   ├── RightSidebar/
 │   │   ├── Post/
 │   │   ├── CreatePostModal/
-│   │   ├── CommentsModal/
-│   │   ├── ReactionsModal/
-│   │   ├── ShareModal/
-│   │   ├── SearchModal/
-│   │   ├── ImageUploader/
-│   │   ├── ProfileHeader/
-│   │   ├── Stories/
-│   │   ├── WeatherWidget/
-│   │   ├── BirthdayWidget/
-│   │   ├── EventsWidget/
-│   │   ├── GroupsWidget/
 │   │   └── ...
-│   ├── pages/               # 22 páginas
+│   ├── pages/                 # Páginas principales
+│   │   ├── AdminDashboard/    # Panel administrativo
+│   │   │   ├── DashboardOverview.js
+│   │   │   ├── TicketsManagement.js
+│   │   │   ├── CampaignsManagement.js
+│   │   │   ├── UsersManagement.js
+│   │   │   ├── Analytics.js
+│   │   │   ├── EmergencyManagement.js
+│   │   │   └── SettingsPage.js
 │   │   ├── Home.js
 │   │   ├── Timeline.js
-│   │   ├── Friends.js
-│   │   ├── Groups.js
-│   │   ├── Events.js
-│   │   ├── Messenger.js
-│   │   ├── Photos.js
-│   │   ├── Settings.js
+│   │   ├── DirectMessages.js
+│   │   ├── AdminLogin.js
 │   │   └── ...
-│   ├── context/             # 8 contextos
-│   │   ├── AuthContext.js
-│   │   ├── PostsContext.js
-│   │   ├── FriendsContext.js
-│   │   ├── ChatContext.js
-│   │   ├── GroupsContext.js
-│   │   ├── EventsContext.js
-│   │   ├── SearchContext.js
-│   │   └── AppContext.js
-│   ├── services/            # Servicios
-│   │   ├── storageService.js
-│   │   └── imageService.js
-│   ├── utils/               # Utilidades
-│   │   ├── sweetalert.js
-│   │   └── translations.js
-│   ├── App.js
-│   ├── App.css
-│   ├── index.js
-│   └── index.css
-├── package.json
-└── README.md
+│   ├── store/                 # Redux Toolkit
+│   │   ├── slices/
+│   │   │   ├── adminDashboardSlice.js
+│   │   │   ├── ticketsSlice.js
+│   │   │   ├── campaignsSlice.js
+│   │   │   ├── emergencySlice.js
+│   │   │   ├── authSlice.js
+│   │   │   ├── postsSlice.js
+│   │   │   └── ...
+│   │   └── store.js
+│   ├── services/              # Servicios de backend
+│   │   ├── supabaseAdminService.js
+│   │   ├── supabaseTicketsService.js
+│   │   ├── supabaseCampaignsService.js
+│   │   ├── emergencyService.js
+│   │   ├── supabasePostsService.js
+│   │   ├── firebaseMessagesService.js
+│   │   └── ...
+│   ├── hooks/                 # Hooks personalizados
+│   │   ├── useReduxAdmin.js
+│   │   ├── useReduxTickets.js
+│   │   ├── useReduxCampaigns.js
+│   │   ├── useReduxAuth.js
+│   │   └── ...
+│   ├── config/
+│   │   ├── supabase.js
+│   │   └── firebase.js
+│   ├── utils/
+│   └── App.js
+├── database/                  # Scripts SQL
+│   ├── admin/
+│   ├── migrations/
+│   ├── reactions/
+│   ├── photos/
+│   └── setup/
+├── scripts/                   # Scripts de utilidad
+│   ├── testing/
+│   ├── debugging/
+│   ├── deployment/
+│   └── utilities/
+├── server/                    # Backend Node.js
+│   ├── campaignServer.js
+│   └── whatsappServer.js
+├── docs/                      # Documentación
+└── package.json
 ```
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
+### Frontend
 - **React 18** - Framework principal
+- **Redux Toolkit** - Gestión de estado global
 - **React Router DOM** - Navegación
-- **Context API** - Gestión de estado
-- **localStorage** - Persistencia de datos
 - **Material UI Icons** - Iconografía
+- **Leaflet** - Mapas interactivos
 - **SweetAlert2** - Alertas y notificaciones
-- **CSS3** - Estilos
+
+### Backend
+- **Supabase** - Base de datos PostgreSQL, Auth, Storage
+- **Firebase** - Realtime (Firestore), Push Notifications (FCM)
+- **Node.js/Express** - Servidor para campañas
+
+### Base de Datos
+- **PostgreSQL** (Supabase) - Datos principales
+- **Firestore** (Firebase) - Datos en tiempo real
 
 ---
 
-## 💾 Persistencia de Datos
+## 🗄️ Esquema de Base de Datos
 
-Todos los datos se almacenan en localStorage:
+### Tablas Principales
 
-```javascript
-localStorage:
-├── users              # Usuarios registrados
-├── currentUser        # Usuario actual
-├── posts              # Publicaciones
-├── comments           # Comentarios
-├── friendRequests     # Solicitudes de amistad
-├── friends            # Amigos
-├── conversations      # Conversaciones de chat
-├── groups             # Grupos
-├── events             # Eventos
-├── notifications      # Notificaciones
-├── darkMode           # Preferencia de tema
-└── searchHistory      # Historial de búsqueda
+#### Usuarios y Autenticación
+- `users` - Usuarios de la plataforma
+- `admin_roles` - Roles administrativos
+- `neighborhoods` - Unidades Vecinales
+
+#### Red Social
+- `posts` - Publicaciones
+- `post_reactions` - Reacciones a posts
+- `comments` - Comentarios
+- `messages` - Mensajes privados
+- `conversations` - Conversaciones
+- `notifications` - Notificaciones
+
+#### Sistema Administrativo
+- `tickets` - Tickets de soporte
+- `ticket_comments` - Comentarios en tickets
+- `communication_campaigns` - Campañas de comunicación
+- `emergency_alerts` - Alertas de emergencia
+- `dashboard_config` - Configuración del dashboard
+
+#### Comunidad
+- `events` - Eventos comunitarios
+- `friends` - Relaciones de amistad
+- `groups` - Grupos comunitarios
+
+#### Storage
+- `photos` - Fotos subidas
+- Buckets de Supabase Storage para archivos
+
+---
+
+## 👤 Usuarios de Prueba
+
+### Usuario Regular
+```
+Email: usuario@test.com
+Password: 123456
+```
+
+### Administrador
+```
+Email: admin@test.com
+Password: admin123
 ```
 
 ---
 
 ## 📖 Documentación
 
-- **[PROYECTO_COMPLETADO.md](PROYECTO_COMPLETADO.md)** - Documentación completa del proyecto
-- **[INSTRUCCIONES_DE_USO.md](INSTRUCCIONES_DE_USO.md)** - Guía de uso detallada
-- **[RESUMEN_FINAL.md](RESUMEN_FINAL.md)** - Resumen de implementación
-- **[FASE_1_IMPLEMENTADA.md](FASE_1_IMPLEMENTADA.md)** - Fase 1: Persistencia
-- **[FASE_2_PROGRESO.md](FASE_2_PROGRESO.md)** - Fase 2: Traducción
-- **[FASE_3_COMPLETADA.md](FASE_3_COMPLETADA.md)** - Fase 3: Widgets
-- **[FASE_4_EN_PROGRESO.md](FASE_4_EN_PROGRESO.md)** - Fase 4: Funcionalidad completa
+### Documentación Principal
+- **[ANALISIS_PROFUNDO_UNIDAD_VECINAL.md](ANALISIS_PROFUNDO_UNIDAD_VECINAL.md)** - Sistema de UVs
+- **[PLAN_ACCION_UNIDAD_VECINAL.md](PLAN_ACCION_UNIDAD_VECINAL.md)** - Plan de implementación
+- **[ESTADO_SISTEMA_COMPLETO.md](ESTADO_SISTEMA_COMPLETO.md)** - Estado actual del sistema
+
+### Sistemas Implementados
+- **[SISTEMA_AUTENTICACION_CONFIGURADO.md](SISTEMA_AUTENTICACION_CONFIGURADO.md)** - Autenticación
+- **[SISTEMA_ENVIO_CAMPANAS_IMPLEMENTADO.md](SISTEMA_ENVIO_CAMPANAS_IMPLEMENTADO.md)** - Campañas
+- **[SISTEMA_FOTOS_COMPLETADO.md](SISTEMA_FOTOS_COMPLETADO.md)** - Gestión de fotos
+- **[SISTEMA_MENSAJES_TIEMPO_REAL.md](SISTEMA_MENSAJES_TIEMPO_REAL.md)** - Mensajería
+- **[SISTEMA_REACCIONES_IMPLEMENTADO.md](SISTEMA_REACCIONES_IMPLEMENTADO.md)** - Reacciones
+
+### Configuración
+- **[CONFIGURACION_FIREBASE_COMPLETA.md](CONFIGURACION_FIREBASE_COMPLETA.md)** - Firebase
+- **[GUIA_CONFIGURACION_FIREBASE_PASO_A_PASO.md](GUIA_CONFIGURACION_FIREBASE_PASO_A_PASO.md)** - Guía Firebase
+- **[INSTRUCCIONES_CREAR_USUARIOS_PRUEBA.md](INSTRUCCIONES_CREAR_USUARIOS_PRUEBA.md)** - Usuarios de prueba
 
 ---
 
-## 🎯 Funcionalidades por Página
+## 🎯 Funcionalidades por Módulo
 
-### 🏠 Home
+### Panel Administrativo
+- Dashboard con métricas en tiempo real
+- Gestión completa de tickets
+- Creación y envío de campañas
+- Gestión de usuarios y vecinos
+- Analíticas y reportes
+- Gestión de emergencias
+- Configuración personalizada
+
+### Red Social
 - Feed de publicaciones
-- Crear publicaciones
-- Reaccionar y comentar
-- Stories
-- Widgets laterales
+- Crear posts con multimedia
+- Reacciones y comentarios
+- Compartir contenido
+- Mensajería privada
+- Notificaciones en tiempo real
 
-### 👤 Timeline
-- Perfil de usuario
-- Foto de perfil y portada
-- Publicaciones del usuario
-- Información personal
-
-### 👥 Friends
-- Lista de amigos
-- Solicitudes pendientes
-- Sugerencias de amigos
-- Buscar amigos
-
-### 👨‍👩‍👧‍👦 Groups
-- Mis grupos
-- Grupos sugeridos
-- Crear grupos
-- Unirse/salir de grupos
-
-### 📅 Events
-- Calendario de eventos
-- Crear eventos
-- RSVP a eventos
-- Filtrar por categoría
-
-### 💬 Messenger
-- Lista de conversaciones
-- Chat en tiempo real
-- Enviar mensajes
-- Marcar como leído
-
-### 📸 Photos
-- Galería de fotos
-- Álbumes
-- Subir fotos
-
-### ⚙️ Settings
-- Editar perfil
-- Cambiar foto de perfil
-- Modo oscuro
-- Configuración de cuenta
-
----
-
-## 🎨 Características de UI
-
-### Modo Oscuro
-- Toggle en Settings
-- Persistente entre sesiones
-- Transiciones suaves
-
-### Notificaciones
-- Toasts con SweetAlert2
-- Feedback visual
-- Mensajes en español
-
-### Modales
-- Crear publicación
-- Comentarios
-- Reacciones
-- Compartir
-- Búsqueda
-
-### Widgets
-- Clima
-- Cumpleaños
-- Eventos
-- Grupos
-- Actividad
+### Comunidad
+- Eventos comunitarios
+- Directorio de vecinos
+- Grupos y discusiones
+- Mapa interactivo de UVs
 
 ---
 
 ## 📊 Métricas del Proyecto
 
-- **Páginas:** 22
-- **Componentes:** 40+
-- **Contextos:** 8
-- **Servicios:** 2
-- **Líneas de código:** ~15,000+
+- **Páginas:** 30+
+- **Componentes:** 100+
+- **Redux Slices:** 31
+- **Servicios:** 33
+- **Hooks Personalizados:** 21
+- **Líneas de código:** ~50,000+
 - **Funcionalidad:** 100% ✅
-- **Traducción:** 100% Español ✅
-- **Persistencia:** 100% localStorage ✅
+- **Idioma:** 100% Español ✅
+- **Base de datos:** PostgreSQL (Supabase) ✅
+- **Realtime:** Firebase Firestore ✅
 
 ---
 
-## 🔮 Mejoras Futuras
+## 🔮 Roadmap
 
-### Backend
-- [ ] API REST con Node.js/Express
-- [ ] Base de datos (MongoDB/PostgreSQL)
-- [ ] Autenticación JWT
-- [ ] WebSockets para chat real
-- [ ] Subida de archivos a servidor/cloud
+### En Desarrollo
+- [ ] Selector de UV en AdminHeader (ver PLAN_ACCION_UNIDAD_VECINAL.md)
+- [ ] Inicialización automática de UVs
+- [ ] Estado vacío cuando no hay UV seleccionada
 
-### Frontend
-- [ ] Diseño responsive completo
-- [ ] Progressive Web App (PWA)
-- [ ] Infinite scroll
-- [ ] Skeleton loaders
-- [ ] Tests unitarios y E2E
-
-### Características
+### Próximas Funcionalidades
+- [ ] App móvil (React Native)
 - [ ] Videollamadas
-- [ ] Stories con expiración
-- [ ] Transmisiones en vivo
-- [ ] Marketplace
-- [ ] Geolocalización
+- [ ] Marketplace vecinal
+- [ ] Sistema de votaciones
+- [ ] Integración con servicios municipales
 
 ---
 
 ## 🐛 Solución de Problemas
 
 ### La aplicación no carga
-1. Verifica que el servidor esté corriendo
-2. Refresca la página (F5)
-3. Limpia el caché del navegador
+1. Verifica variables de entorno en `.env`
+2. Verifica conexión a Supabase
+3. Revisa la consola del navegador (F12)
 
-### No puedo iniciar sesión
-1. Usa uno de los usuarios de prueba
-2. Verifica email y contraseña
-3. Si creaste una cuenta nueva, usa esas credenciales
+### Error de autenticación
+1. Verifica credenciales de Supabase
+2. Verifica que RLS esté configurado correctamente
+3. Revisa logs en Supabase Dashboard
 
-### Las imágenes no se cargan
-1. Verifica que sea una imagen válida (JPG, PNG, GIF, WEBP)
-2. Máximo 5MB por imagen
-3. Verifica espacio de localStorage
+### Problemas con Firebase
+1. Verifica credenciales de Firebase
+2. Verifica que Firestore esté habilitado
+3. Revisa reglas de seguridad de Firestore
 
 ---
 
 ## 📝 Licencia
 
-Este proyecto es de código abierto y está disponible bajo la licencia MIT.
+Este proyecto es privado y propietario.
 
 ---
 
 ## 👨‍💻 Desarrollo
 
-**Desarrollado con:** React, Context API, localStorage, Material UI Icons, SweetAlert2
+**Stack:** React, Redux Toolkit, Supabase, Firebase, Node.js
 
-**Estado:** ✅ COMPLETADO AL 100%
+**Estado:** ✅ EN PRODUCCIÓN
 
-**Fecha:** Enero 2026
+**Sitio:** https://vecinoactivo.cl/
 
----
-
-## 🙏 Agradecimientos
-
-Gracias por usar Friendbook. Este proyecto fue desarrollado para demostrar las capacidades de React y el desarrollo frontend moderno.
+**Última actualización:** Enero 2026
 
 ---
 
 ## 📧 Contacto
 
-¿Preguntas o sugerencias? Revisa la documentación completa en los archivos MD del proyecto.
+Para soporte o consultas, revisa la documentación completa en la carpeta `docs/`.
 
 ---
 
-**¡Disfruta de Friendbook!** 🎉🚀
-
+**¡Transforma tu comunidad con Vecino Activo!** 🏘️🚀

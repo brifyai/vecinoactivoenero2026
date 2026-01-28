@@ -44,25 +44,42 @@ export const getFCMToken = async () => {
   }
 
   try {
-    const vapidKey = process.env.REACT_APP_FIREBASE_VAPID_KEY;
-    
-    if (!vapidKey) {
-      console.error('❌ VAPID key no configurada');
+    // Verificar si el navegador soporta notificaciones
+    if (!('Notification' in window)) {
+      console.log('ℹ️ Este navegador no soporta notificaciones');
       return null;
     }
 
-    const token = await getToken(messaging, { vapidKey });
-    
-    if (token) {
-      console.log('✅ FCM Token obtenido');
-      return token;
-    } else {
-      console.log('⚠️ No se pudo obtener el token FCM. Verifica los permisos de notificaciones.');
+    // Verificar permisos actuales
+    if (Notification.permission === 'denied') {
+      console.log('ℹ️ Permisos de notificaciones denegados por el usuario');
       return null;
     }
-  } catch (error) {
-    console.error('❌ Error obteniendo FCM token:', error);
+
+    const vapidKey = process.env.REACT_APP_FIREBASE_VAPID_KEY;
+    
+    if (!vapidKey) {
+      console.log('ℹ️ VAPID key no configurada');
+      return null;
+    }
+
+    // Solo intentar obtener token si hay permisos o están por defecto
+    if (Notification.permission === 'granted' || Notification.permission === 'default') {
+      const token = await getToken(messaging, { vapidKey });
+      
+      if (token) {
+        console.log('✅ FCM Token obtenido');
+        return token;
+      } else {
+        console.log('ℹ️ No se pudo obtener el token FCM. Verifica los permisos de notificaciones.');
+        return null;
+      }
+    }
+
     return null;
+  } catch (error) {
+    console.log('ℹ️ No se pudo obtener FCM token (no crítico):', error.message);
+    return null; // ✅ Retornar null en lugar de throw
   }
 };
 

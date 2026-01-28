@@ -1,0 +1,78 @@
+═══════════════════════════════════════════════════════════════════════════
+                    ARCHIVOS PARA ENVIAR AL PROVEEDOR
+                         Vecino Activo - 28 Enero 2026
+═══════════════════════════════════════════════════════════════════════════
+
+📦 ARCHIVOS OBLIGATORIOS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. vecino-activo-fix-produccion-20260128-113447.tar.gz (36 MB)
+   Ubicación: ./vecino-activo-fix-produccion-20260128-113447.tar.gz
+   Descripción: Build completo de producción con todos los fixes
+
+2. nginx.conf (2.2 KB)
+   Ubicación: ./nginx.conf
+   Descripción: Configuración actualizada de Nginx con soporte GeoJSON
+
+📄 ARCHIVOS RECOMENDADOS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3. INSTRUCCIONES_DEPLOYMENT_PROVEEDOR.md (7.4 KB)
+   Ubicación: ./INSTRUCCIONES_DEPLOYMENT_PROVEEDOR.md
+   Descripción: Guía paso a paso para el deployment
+
+4. CHECKLIST_ENVIO_PROVEEDOR.md (9.2 KB)
+   Ubicación: ./CHECKLIST_ENVIO_PROVEEDOR.md
+   Descripción: Checklist de verificación y envío
+
+🔧 ARCHIVOS OPCIONALES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5. scripts/debugging/verify-production-fixes.sh (4.7 KB)
+   Ubicación: ./scripts/debugging/verify-production-fixes.sh
+   Descripción: Script de verificación post-deployment
+
+6. FIXES_PRODUCCION_APLICADOS.md (7.2 KB)
+   Ubicación: ./FIXES_PRODUCCION_APLICADOS.md
+   Descripción: Resumen técnico de los fixes aplicados
+
+7. RESUMEN_SESION_28_ENE_2026.md (7.5 KB)
+   Ubicación: ./RESUMEN_SESION_28_ENE_2026.md
+   Descripción: Resumen ejecutivo de la sesión
+
+═══════════════════════════════════════════════════════════════════════════
+
+📧 MÉTODO DE ENVÍO RECOMENDADO:
+
+Opción 1: Email con adjuntos
+- Adjuntar archivos 1, 2, 3, 4
+- Archivos 5, 6, 7 son opcionales
+
+Opción 2: Compartir por Google Drive / Dropbox
+- Subir todos los archivos a una carpeta compartida
+- Enviar link al proveedor
+
+Opción 3: FTP / SFTP
+- Subir archivos directamente al servidor del proveedor
+- Notificar al proveedor
+
+═══════════════════════════════════════════════════════════════════════════
+
+✅ VERIFICACIÓN ANTES DE ENVIAR:
+
+□ Archivo .tar.gz se puede extraer sin errores
+□ nginx.conf tiene sintaxis correcta
+□ Documentación está completa y clara
+□ Email preparado con instrucciones
+□ Prioridad y urgencia especificadas
+
+═══════════════════════════════════════════════════════════════════════════
+
+🎯 RESUMEN:
+
+Errores corregidos: 3 (manifest.json 404, FCM errors, mapa no funciona)
+Archivos a enviar: 7 (2 obligatorios, 2 recomendados, 3 opcionales)
+Tiempo estimado deployment: 40 minutos
+Prioridad: ALTA
+
+═══════════════════════════════════════════════════════════════════════════
