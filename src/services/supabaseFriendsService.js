@@ -4,47 +4,70 @@ class SupabaseFriendsService {
   // Obtener amigos del usuario
   async getFriends(userId) {
     try {
-      const { data, error } = await supabase
+      // Primero obtener las relaciones de amistad
+      const { data: friendships, error: friendshipsError } = await supabase
         .from('friends')
-        .select(`
-          *,
-          friend:friend_id(id, username, name, avatar_url, location),
-          user:user_id(id, username, name, avatar_url, location)
-        `)
+        .select('*')
         .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
         .eq('status', 'accepted');
 
-      if (error) throw error;
+      if (friendshipsError) throw friendshipsError;
+      if (!friendships || friendships.length === 0) return [];
 
-      // Mapear para obtener el amigo correcto
-      const friends = data?.map(friendship => {
-        return friendship.user_id === userId ? friendship.friend : friendship.user;
-      }) || [];
+      // Obtener los IDs de los amigos
+      const friendIds = friendships.map(friendship => 
+        friendship.user_id === userId ? friendship.friend_id : friendship.user_id
+      );
 
-      return friends;
+      // Buscar los datos de los usuarios
+      const { data: users, error: usersError } = await supabase
+        .from('users')
+        .select('id, username, name, avatar_url, location')
+        .in('id', friendIds);
+
+      if (usersError) throw usersError;
+      return users || [];
     } catch (error) {
       console.error('Error getting friends:', error);
-      throw error;
+      // Retornar array vacío en lugar de lanzar error para no romper la UI
+      return [];
     }
   }
 
   // Obtener solicitudes de amistad pendientes
   async getFriendRequests(userId) {
     try {
-      const { data, error } = await supabase
+      // Primero obtener las solicitudes pendientes
+      const { data: requests, error: requestsError } = await supabase
         .from('friends')
-        .select(`
-          *,
-          requester:user_id(id, username, name, avatar_url, location)
-        `)
+        .select('*')
         .eq('friend_id', userId)
         .eq('status', 'pending');
 
-      if (error) throw error;
-      return data || [];
+      if (requestsError) throw requestsError;
+      if (!requests || requests.length === 0) return [];
+
+      // Obtener los IDs de los solicitantes
+      const requesterIds = requests.map(req => req.user_id);
+
+      // Buscar los datos de los usuarios solicitantes
+      const { data: users, error: usersError } = await supabase
+        .from('users')
+        .select('id, username, name, avatar_url, location')
+        .in('id', requesterIds);
+
+      if (usersError) throw usersError;
+
+      // Combinar los datos
+      const requestsWithUsers = requests.map(req => ({
+        ...req,
+        requester: users.find(u => u.id === req.user_id)
+      }));
+
+      return requestsWithUsers || [];
     } catch (error) {
       console.error('Error getting friend requests:', error);
-      throw error;
+      return [];
     }
   }
 
