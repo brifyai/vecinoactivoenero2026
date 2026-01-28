@@ -1,0 +1,117 @@
+╔═══════════════════════════════════════════════════════════════╗
+║  🚨 DEPLOYMENT URGENTE - FIX BUCLE INFINITO                  ║
+║  Fecha: 28 Enero 2026 - 15:10                                ║
+╚═══════════════════════════════════════════════════════════════╝
+
+✅ COMMIT Y PUSH COMPLETADOS
+El fix ya está en GitHub: commit 7e85bef
+
+═══════════════════════════════════════════════════════════════
+
+📋 OPCIÓN A - DEPLOYMENT AUTOMÁTICO (RECOMENDADO)
+═══════════════════════════════════════════════════════════════
+
+Conectar al servidor y ejecutar:
+
+ssh usuario@tu-servidor.com
+cd /var/www/vecino-activo
+bash scripts/deployment/deploy-from-git.sh
+
+Este script hará automáticamente:
+✓ Backup del sitio actual
+✓ Git pull del código actualizado
+✓ npm install y build
+✓ Copiar archivos a Nginx
+✓ Recargar Nginx
+
+Tiempo estimado: 3-5 minutos
+
+═══════════════════════════════════════════════════════════════
+
+📋 OPCIÓN B - DEPLOYMENT MANUAL CON TAR.GZ
+═══════════════════════════════════════════════════════════════
+
+Si prefieres usar el archivo tar.gz ya generado:
+
+1. Subir al servidor:
+   scp vecino-activo-fix-bucle-infinito-20260128-150705.tar.gz usuario@servidor:/tmp/
+
+2. En el servidor:
+   cd /usr/share/nginx/html
+   sudo tar -xzf /tmp/vecino-activo-fix-bucle-infinito-20260128-150705.tar.gz
+   sudo systemctl reload nginx
+
+═══════════════════════════════════════════════════════════════
+
+🔥 DESPUÉS DEL DEPLOYMENT (IMPORTANTE)
+═══════════════════════════════════════════════════════════════
+
+1. PURGAR CACHÉ DE CLOUDFLARE:
+   - Ir a: https://dash.cloudflare.com
+   - Seleccionar dominio: vecinoactivo.cl
+   - Caching → Purge Cache → Purge Everything
+   - Confirmar
+
+2. VERIFICAR EL FIX:
+   - Abrir: https://vecinoactivo.cl/app/descubrir-vecinos
+   - Abrir DevTools (F12) → Console
+   - Verificar que NO hay requests infinitos
+   - Verificar que NO hay errores de "friendships"
+   - Probar búsqueda de vecinos
+
+═══════════════════════════════════════════════════════════════
+
+📊 RESUMEN DEL FIX
+═══════════════════════════════════════════════════════════════
+
+Problema:
+- Bucle infinito de requests en página Descubrir Vecinos
+- Error: tabla 'friendships' no existe en base de datos
+- Tabla correcta: 'friends'
+
+Solución:
+- Archivo: src/services/supabaseFriendsService.js
+- Cambios: 11 referencias de 'friendships' → 'friends'
+- Build: Completado exitosamente (0 errores)
+
+Impacto:
+- Página Descubrir Vecinos volverá a funcionar
+- Se detendrán los requests infinitos
+- Mejorará rendimiento del servidor
+
+═══════════════════════════════════════════════════════════════
+
+❓ TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+Si después del deployment aún hay problemas:
+
+1. Verificar que el código se actualizó:
+   cd /var/www/vecino-activo
+   git log -1
+   # Debe mostrar commit 7e85bef
+
+2. Verificar que el build se copió:
+   ls -lh /usr/share/nginx/html/static/js/main.*.js
+   # Debe tener fecha/hora reciente
+
+3. Limpiar caché del navegador:
+   - Chrome: Ctrl+Shift+Delete
+   - Seleccionar "Cached images and files"
+   - Confirmar
+
+4. Verificar logs de Nginx:
+   sudo tail -f /var/log/nginx/error.log
+
+═══════════════════════════════════════════════════════════════
+
+📞 CONTACTO
+═══════════════════════════════════════════════════════════════
+
+Si necesitas ayuda con el deployment, contacta al equipo técnico.
+
+Documentación completa en:
+- FIX_BUCLE_INFINITO_DESCUBRIR_VECINOS.md
+- RESUMEN_SESION_28_ENE_2026_PARTE3.md
+
+═══════════════════════════════════════════════════════════════
