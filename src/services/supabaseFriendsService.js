@@ -5,7 +5,7 @@ class SupabaseFriendsService {
   async getFriends(userId) {
     try {
       const { data, error } = await supabase
-        .from('friendships')
+        .from('friends')
         .select(`
           *,
           friend:friend_id(id, username, name, avatar_url, location),
@@ -32,7 +32,7 @@ class SupabaseFriendsService {
   async getFriendRequests(userId) {
     try {
       const { data, error } = await supabase
-        .from('friendships')
+        .from('friends')
         .select(`
           *,
           requester:user_id(id, username, name, avatar_url, location)
@@ -53,7 +53,7 @@ class SupabaseFriendsService {
     try {
       // Verificar si ya existe una relación
       const { data: existing } = await supabase
-        .from('friendships')
+        .from('friends')
         .select('*')
         .or(`and(user_id.eq.${userId},friend_id.eq.${friendId}),and(user_id.eq.${friendId},friend_id.eq.${userId})`)
         .single();
@@ -63,7 +63,7 @@ class SupabaseFriendsService {
       }
 
       const { data, error } = await supabase
-        .from('friendships')
+        .from('friends')
         .insert([
           {
             user_id: userId,
@@ -86,7 +86,7 @@ class SupabaseFriendsService {
   async acceptFriendRequest(requestId, userId) {
     try {
       const { data, error } = await supabase
-        .from('friendships')
+        .from('friends')
         .update({ status: 'accepted' })
         .eq('id', requestId)
         .eq('friend_id', userId)
@@ -105,7 +105,7 @@ class SupabaseFriendsService {
   async rejectFriendRequest(requestId, userId) {
     try {
       const { error } = await supabase
-        .from('friendships')
+        .from('friends')
         .delete()
         .eq('id', requestId)
         .eq('friend_id', userId);
@@ -122,7 +122,7 @@ class SupabaseFriendsService {
   async removeFriend(userId, friendId) {
     try {
       const { error } = await supabase
-        .from('friendships')
+        .from('friends')
         .delete()
         .or(`and(user_id.eq.${userId},friend_id.eq.${friendId}),and(user_id.eq.${friendId},friend_id.eq.${userId})`);
 
@@ -138,7 +138,7 @@ class SupabaseFriendsService {
   async areFriends(userId, friendId) {
     try {
       const { data, error } = await supabase
-        .from('friendships')
+        .from('friends')
         .select('*')
         .or(`and(user_id.eq.${userId},friend_id.eq.${friendId}),and(user_id.eq.${friendId},friend_id.eq.${userId})`)
         .eq('status', 'accepted')
@@ -168,7 +168,7 @@ class SupabaseFriendsService {
       const users = [];
       for (const user of data || []) {
         const { data: friendship } = await supabase
-          .from('friendships')
+          .from('friends')
           .select('*')
           .or(`and(user_id.eq.${currentUserId},friend_id.eq.${user.id}),and(user_id.eq.${user.id},friend_id.eq.${currentUserId})`)
           .single();
@@ -203,7 +203,7 @@ class SupabaseFriendsService {
         if (suggestions.length >= limit) break;
 
         const { data: friendship } = await supabase
-          .from('friendships')
+          .from('friends')
           .select('*')
           .or(`and(user_id.eq.${userId},friend_id.eq.${user.id}),and(user_id.eq.${user.id},friend_id.eq.${userId})`)
           .single();
@@ -224,7 +224,7 @@ class SupabaseFriendsService {
   async getPendingRequestsCount(userId) {
     try {
       const { count, error } = await supabase
-        .from('friendships')
+        .from('friends')
         .select('*', { count: 'exact', head: true })
         .eq('friend_id', userId)
         .eq('status', 'pending');
