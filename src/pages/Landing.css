@@ -1824,14 +1824,14 @@
   }
 
   .logo {
-    font-size: 24px;
-    display: flex; /* Asegurar que el logo sea visible en móvil */
+    font-size: 28px; /* Mantener tamaño desktop en tablets */
+    display: flex;
     align-items: center;
     gap: 12px;
   }
 
   .logo-icon {
-    font-size: 28px;
+    font-size: 36px; /* Mantener tamaño desktop en tablets */
   }
 
   .logo-text {
@@ -2232,6 +2232,16 @@
     padding: 0 16px;
   }
 
+  /* Reducir logo solo en móviles pequeños */
+  .logo {
+    font-size: 22px;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    font-size: 28px;
+  }
+
   .what-is-title {
     font-size: 28px;
   }
@@ -2348,8 +2358,8 @@
   }
 
   .hero-title {
-    font-size: 28px;
-    line-height: 1.2;
+    font-size: 24px;
+    line-height: 1.15;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
