@@ -19,14 +19,21 @@ class SupabaseFriendsService {
         friendship.user_id === userId ? friendship.friend_id : friendship.user_id
       );
 
-      // Buscar los datos de los usuarios
+      // Buscar los datos de los usuarios (avatar NO avatar_url)
       const { data: users, error: usersError } = await supabase
         .from('users')
-        .select('id, username, name, avatar_url, location')
+        .select('id, username, name, avatar, location')
         .in('id', friendIds);
 
       if (usersError) throw usersError;
-      return users || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const usersWithAvatarUrl = users?.map(user => ({
+        ...user,
+        avatar_url: user.avatar
+      })) || [];
+      
+      return usersWithAvatarUrl;
     } catch (error) {
       console.error('Error getting friends:', error);
       // Retornar array vacío en lugar de lanzar error para no romper la UI
@@ -50,18 +57,21 @@ class SupabaseFriendsService {
       // Obtener los IDs de los solicitantes
       const requesterIds = requests.map(req => req.user_id);
 
-      // Buscar los datos de los usuarios solicitantes
+      // Buscar los datos de los usuarios solicitantes (avatar NO avatar_url)
       const { data: users, error: usersError } = await supabase
         .from('users')
-        .select('id, username, name, avatar_url, location')
+        .select('id, username, name, avatar, location')
         .in('id', requesterIds);
 
       if (usersError) throw usersError;
 
-      // Combinar los datos
+      // Combinar los datos y mapear avatar a avatar_url
       const requestsWithUsers = requests.map(req => ({
         ...req,
-        requester: users.find(u => u.id === req.user_id)
+        requester: {
+          ...users.find(u => u.id === req.user_id),
+          avatar_url: users.find(u => u.id === req.user_id)?.avatar
+        }
       }));
 
       return requestsWithUsers || [];
@@ -180,7 +190,7 @@ class SupabaseFriendsService {
     try {
       const { data, error } = await supabase
         .from('users')
-        .select('id, username, name, avatar_url, location')
+        .select('id, username, name, avatar, location')
         .or(`username.ilike.%${query}%,name.ilike.%${query}%`)
         .neq('id', currentUserId)
         .limit(limit);
@@ -197,7 +207,10 @@ class SupabaseFriendsService {
           .single();
 
         if (!friendship) {
-          users.push(user);
+          users.push({
+            ...user,
+            avatar_url: user.avatar
+          });
         }
       }
 
@@ -214,7 +227,7 @@ class SupabaseFriendsService {
       // Por ahora, obtener usuarios aleatorios que no sean amigos
       const { data, error } = await supabase
         .from('users')
-        .select('id, username, name, avatar_url, location')
+        .select('id, username, name, avatar, location')
         .neq('id', userId)
         .limit(limit * 2); // Obtener más para filtrar
 
@@ -232,7 +245,10 @@ class SupabaseFriendsService {
           .single();
 
         if (!friendship) {
-          suggestions.push(user);
+          suggestions.push({
+            ...user,
+            avatar_url: user.avatar
+          });
         }
       }
 
