@@ -50,7 +50,7 @@ Lee `INSTRUCCIONES_DEPLOYMENT_MANIFEST_FIX.md` para hacer el deployment.
 
 ---
 
-## 2. ⚠️ WebSocket Connection Failed (NO CRÍTICO)
+## 2. ⚠️ WebSocket Connection Failed (NO CRÍTICO - ESPERADO)
 
 ### Error:
 ```
@@ -58,35 +58,50 @@ WebSocket connection to 'wss://supabase.vecinoactivo.cl/realtime/v1/websocket?ap
 ```
 
 ### ¿Qué es?
-Supabase Realtime es un módulo que permite actualizaciones en tiempo real (como cuando alguien publica algo nuevo, te llega al instante sin recargar).
+Este error aparece porque el código intenta conectarse al WebSocket de Supabase Realtime, pero tu instalación self-hosted **no tiene este módulo habilitado**.
 
 ### ¿Por qué falla?
-Tu Supabase es **self-hosted** (instalado en tu propio servidor) y el módulo Realtime **no está habilitado** o no está disponible en tu instalación.
+Tu Supabase es **self-hosted** y el módulo Realtime **no está configurado**. Esto es **normal y esperado** en instalaciones básicas.
 
 ### ¿Afecta la funcionalidad?
-**NO.** La app tiene un **fallback automático** a polling:
-- En lugar de actualizaciones instantáneas, la app consulta cada X segundos
-- Los usuarios ven las actualizaciones con un pequeño delay (5-10 segundos)
-- Todo funciona normal, solo un poco más lento
+**NO. El realtime SÍ funciona correctamente** porque usas un **sistema híbrido**:
+
+**Tu arquitectura:**
+- **Supabase** = Base de datos + Autenticación + Storage
+- **Firebase** = Realtime (actualizaciones instantáneas)
 
 ### ¿Qué funciona?
-- ✅ Posts nuevos se cargan (con delay)
-- ✅ Mensajes se reciben (con delay)
-- ✅ Notificaciones llegan (con delay)
-- ✅ Todo funciona, solo no es "instantáneo"
+- ✅ Posts nuevos aparecen **instantáneamente** (vía Firebase)
+- ✅ Mensajes se reciben **en tiempo real** (vía Firebase)
+- ✅ Notificaciones llegan **al instante** (vía Firebase FCM)
+- ✅ Todo funciona con **actualizaciones en tiempo real**
 
 ### Estado:
-- ✅ Funcional con fallback
-- ⚠️ No crítico
-- 💡 Opcional: Habilitar Realtime en Supabase self-hosted
+- ✅ **Realtime funcionando correctamente vía Firebase**
+- ⚠️ Error cosmético (no afecta funcionalidad)
+- 💡 Firebase maneja el realtime en lugar de Supabase
 
-### Solución (opcional):
-Si quieres habilitar Realtime en tu Supabase self-hosted:
-1. Verifica que el módulo `realtime` esté instalado
-2. Configura el puerto WebSocket (por defecto 4000)
-3. Actualiza la URL de Realtime en tu configuración
+### Soluciones:
 
-**Recomendación:** Déjalo así, funciona bien con polling.
+**OPCIÓN 1: Ignorar el error (RECOMENDADO)**
+- El error es solo cosmético
+- Firebase está manejando el realtime perfectamente
+- No hacer nada
+
+**OPCIÓN 2: Deshabilitar intentos de WebSocket**
+Modificar `src/config/supabase.js`:
+```javascript
+realtime: {
+  enabled: false  // Deshabilitar intentos de conexión
+}
+```
+
+**OPCIÓN 3: Habilitar Supabase Realtime (AVANZADO)**
+Requiere configuración en el servidor (Docker, Nginx, etc.)
+
+**Recomendación:** Usa OPCIÓN 1 o 2. Firebase es más robusto para realtime que Supabase self-hosted.
+
+**Más información:** Lee `SISTEMA_REALTIME_HIBRIDO_EXPLICADO.md`
 
 ---
 
