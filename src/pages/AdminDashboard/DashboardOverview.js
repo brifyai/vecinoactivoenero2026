@@ -85,14 +85,6 @@ const DashboardOverview = () => {
     }
   }, [posts]);
 
-  // Cargar datos iniciales
-  useEffect(() => {
-    const neighborhoodId = getCurrentNeighborhoodId();
-    if (neighborhoodId) {
-      loadDashboardData(neighborhoodId);
-    }
-  }, [currentNeighborhood]);
-
   const loadDashboardData = async (neighborhoodId) => {
     console.log('📊 Cargando datos del dashboard para:', neighborhoodId);
     
@@ -110,9 +102,33 @@ const DashboardOverview = () => {
     }
   };
 
+  // Cargar datos iniciales
+  useEffect(() => {
+    const neighborhoodId = getCurrentNeighborhoodId();
+    if (neighborhoodId) {
+      loadDashboardData(neighborhoodId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentNeighborhood]);
+
   // Calcular métricas locales
   const ticketStats = getTicketStats();
   const campaignMetrics = getCampaignMetrics();
+
+  // Verificar si hay UV seleccionada
+  if (!currentNeighborhood) {
+    return (
+      <div className="dashboard-overview">
+        <div className="dashboard-empty-state">
+          <div className="empty-state-icon">
+            <DashboardIcon style={{ fontSize: 80, color: '#cbd5e0' }} />
+          </div>
+          <h2>No hay Unidad Vecinal seleccionada</h2>
+          <p>Por favor selecciona una Unidad Vecinal del menú superior para ver las estadísticas</p>
+        </div>
+      </div>
+    );
+  }
 
   // Datos para las tarjetas de métricas
   const metricsCards = [

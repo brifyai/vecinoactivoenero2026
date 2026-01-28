@@ -451,6 +451,36 @@
   background: transparent;
 }
 
+/* Selector de Unidad Vecinal */
+.neighborhood-selector {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.neighborhood-select {
+  padding: 8px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a202c;
+  cursor: pointer;
+  min-width: 250px;
+  transition: all 0.2s;
+}
+
+.neighborhood-select:hover {
+  border-color: #cbd5e0;
+}
+
+.neighborhood-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .mobile-sidebar-toggle {
@@ -463,6 +493,18 @@
   
   .admin-header-center {
     margin: 0 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .neighborhood-selector {
+    margin-left: 10px;
+  }
+  
+  .neighborhood-select {
+    min-width: 180px;
+    font-size: 13px;
+    padding: 6px 12px;
   }
 }
 

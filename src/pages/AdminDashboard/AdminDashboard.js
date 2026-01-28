@@ -6,7 +6,9 @@ import {
   selectAdminRole, 
   selectIsUVAdmin,
   setCurrentAdmin,
-  fetchDashboardStats 
+  fetchDashboardStats,
+  fetchUserNeighborhoods,
+  checkUserPermissions
 } from '../../store/slices/adminDashboardSlice';
 import { useReduxAuth } from '../../hooks/useReduxAuth';
 
@@ -149,38 +151,61 @@ const AdminDashboard = () => {
           return;
         }
 
-        // Verificar si el usuario tiene permisos de administrador
-        // Aquí se haría la consulta a la base de datos para verificar admin_roles
-        const adminData = await checkUserAdminRole(user.id);
+        console.log('🔐 Inicializando dashboard para usuario:', user.id);
+
+        // ✅ NUEVO: Cargar vecindarios reales del usuario
+        const neighborhoodsResult = await dispatch(fetchUserNeighborhoods(user.id));
         
-        if (!adminData) {
+        if (fetchUserNeighborhoods.rejected.match(neighborhoodsResult)) {
+          console.error('❌ Error cargando vecindarios:', neighborhoodsResult.payload);
+          setError('No tienes vecindarios asignados');
+          setLoading(false);
+          return;
+        }
+
+        const neighborhoods = neighborhoodsResult.payload;
+        
+        if (!neighborhoods || neighborhoods.length === 0) {
+          setError('No tienes vecindarios asignados');
+          setLoading(false);
+          return;
+        }
+
+        console.log('✅ Vecindarios cargados:', neighborhoods.length);
+        console.log('🏘️ Primer vecindario:', neighborhoods[0]);
+
+        // ✅ NUEVO: Verificar permisos en el primer vecindario
+        const firstNeighborhood = neighborhoods[0];
+        const permissionsResult = await dispatch(
+          checkUserPermissions({
+            userId: user.id,
+            neighborhoodId: firstNeighborhood.neighborhood.id
+          })
+        );
+
+        if (checkUserPermissions.rejected.match(permissionsResult)) {
+          console.error('❌ Error verificando permisos:', permissionsResult.payload);
           setError('No tienes permisos de administrador');
           setLoading(false);
           return;
         }
 
-        // Configurar datos del administrador
+        console.log('✅ Permisos verificados:', permissionsResult.payload);
+
+        // ✅ Configurar datos del administrador
         dispatch(setCurrentAdmin({
-          admin: {
-            id: user.id,
-            email: user.email,
-            name: user.user_metadata?.full_name || user.email,
-            avatar: user.user_metadata?.avatar_url,
-            neighborhoodId: adminData.neighborhood_id,
-            neighborhoodName: adminData.neighborhood_name
-          },
-          role: adminData.role_type,
-          permissions: adminData.permissions || []
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata?.full_name || user.email,
+          avatar: user.user_metadata?.avatar_url
         }));
 
-        // Cargar estadísticas iniciales
-        if (adminData.neighborhood_id) {
-          dispatch(fetchDashboardStats(adminData.neighborhood_id));
-        }
+        // ✅ Cargar estadísticas del primer vecindario
+        dispatch(fetchDashboardStats(firstNeighborhood.neighborhood.id));
 
         setLoading(false);
       } catch (err) {
-        console.error('Error checking admin access:', err);
+        console.error('❌ Error checking admin access:', err);
         setError('Error al verificar permisos de administrador');
         setLoading(false);
       }
@@ -188,18 +213,6 @@ const AdminDashboard = () => {
 
     checkAdminAccess();
   }, [isAuthenticated, user, dispatch, navigate]);
-
-  // Función temporal para verificar rol de admin (se reemplazará con servicio real)
-  const checkUserAdminRole = async (userId) => {
-    // TODO: Implementar consulta real a admin_roles
-    // Por ahora, simulamos que el usuario es admin
-    return {
-      neighborhood_id: 'uv-001',
-      neighborhood_name: 'Unidad Vecinal Las Condes Centro',
-      role_type: 'uv_admin',
-      permissions: ['manage_tickets', 'send_campaigns', 'view_analytics', 'manage_residents']
-    };
-  };
 
   // Manejar toggle del sidebar
   const handleSidebarToggle = () => {

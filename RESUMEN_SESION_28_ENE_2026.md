@@ -473,3 +473,82 @@ Enviar paquete al proveedor y esperar deployment
 **Fecha:** 28 de enero de 2026  
 **Duración de sesión:** ~110 minutos  
 **Estado:** ✅ Completado exitosamente
+
+
+---
+
+## TASK 3: Implementación Selector de Unidad Vecinal
+- **STATUS**: done
+- **USER QUERIES**: Context transfer (continuación)
+- **DETAILS**:
+  * **Problema identificado:**
+    - Sistema de UV usaba datos hardcodeados
+    - No cargaba UVs reales desde base de datos
+    - Usuarios no podían cambiar entre sus UVs asignadas
+  
+  * **Solución implementada:**
+    1. **Selector en AdminHeader.js:**
+       - Agregado dropdown de selección de UV
+       - Muestra nombre y rol del usuario
+       - Permite cambiar entre UVs
+       - Responsive en móvil
+    
+    2. **Carga real en AdminDashboard.js:**
+       - Eliminada función temporal `checkUserAdminRole`
+       - Implementado `fetchUserNeighborhoods` (carga UVs reales)
+       - Implementado `checkUserPermissions` (verifica permisos)
+       - Auto-selección del primer vecindario
+       - Logs de debugging para troubleshooting
+    
+    3. **Estado vacío en DashboardOverview.js:**
+       - Muestra mensaje cuando no hay UV seleccionada
+       - Diseño limpio y centrado
+       - Instrucciones claras al usuario
+    
+    4. **Estilos CSS:**
+       - `AdminHeader.css` - Estilos del selector
+       - `DashboardOverview.css` - Estilos estado vacío
+       - Responsive design
+  
+  * **Integración con Redux:**
+    - Usa `useReduxAdmin` hook existente
+    - `userNeighborhoods` - Lista de UVs
+    - `currentNeighborhood` - UV seleccionada
+    - `setCurrentNeighborhood` - Cambiar UV
+    - `fetchDashboardStats` - Cargar estadísticas
+  
+  * **Resultado final:**
+    - ✅ Selector visible en header
+    - ✅ Carga UVs reales desde DB
+    - ✅ Auto-selección inteligente
+    - ✅ Cambio de UV recarga datos
+    - ✅ Estado vacío informativo
+    - ✅ 0 errores críticos
+    - ⚠️ 12 warnings (no críticos)
+
+- **FILEPATHS**:
+  * `src/components/AdminDashboard/AdminHeader.js`
+  * `src/components/AdminDashboard/AdminHeader.css`
+  * `src/pages/AdminDashboard/AdminDashboard.js`
+  * `src/pages/AdminDashboard/DashboardOverview.js`
+  * `src/pages/AdminDashboard/DashboardOverview.css`
+  * `RESUMEN_SESION_28_ENE_2026_PARTE2.md`
+
+---
+
+## TAREAS PENDIENTES
+
+### Testing del Selector UV (Próximo):
+- [ ] Testing en desarrollo con datos reales
+- [ ] Verificar casos edge (sin UVs, sin permisos)
+- [ ] Testing responsive en móvil
+- [ ] Verificar cambio de UV recarga datos
+- [ ] Testing con múltiples UVs
+
+### Deployment:
+- [ ] Build de producción
+- [ ] Testing en staging
+- [ ] Deployment a producción
+- [ ] Verificación post-deployment
+
+---

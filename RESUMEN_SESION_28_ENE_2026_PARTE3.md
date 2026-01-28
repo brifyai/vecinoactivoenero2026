@@ -1,156 +1,180 @@
-# RESUMEN DE CONVERSACIÓN - Sesión 28 Enero 2026 (Parte 3)
+# RESUMEN DE SESIÓN - 28 Enero 2026 (Parte 3 - Final)
+
+**Fecha:** 28 Enero 2026  
+**Duración:** Continuación de Parte 2  
+**Estado:** ✅ Fix crítico aplicado, ⚠️ Fix secundario en progreso
 
 ---
 
-## TASK 1: Context Transfer - Continuación de sesión anterior
-- **STATUS**: ✅ done
-- **USER QUERIES**: Context transfer inicial
-- **DETAILS**: 
-  * Recibido resumen de trabajo previo: selector de Unidad Vecinal implementado en Admin Dashboard
-  * Tareas completadas en sesión anterior:
-    - Selector de UV en AdminHeader.js con dropdown funcional
-    - Carga real de vecindarios desde base de datos
-    - Estado vacío en DashboardOverview.js
-    - Estilos CSS responsive agregados
-  * Estado: 0 errores críticos, 12 warnings menores
-- **FILEPATHS**: 
-  * `RESUMEN_SESION_28_ENE_2026_PARTE2.md`
-  * `PLAN_ACCION_UNIDAD_VECINAL.md`
+## 🎯 TAREAS COMPLETADAS
+
+### 1. ✅ FIX CRÍTICO: Bucle infinito en Descubrir Vecinos
+**Prioridad:** 🔥 CRÍTICA  
+**Status:** RESUELTO Y DEPLOYADO
+
+**Problema:**
+- URL afectada: https://vecinoactivo.cl/app/descubrir-vecinos
+- Bucle infinito causando cientos de requests fallidos
+- Error: Query buscaba tabla `friendships` que NO existe
+- Tabla correcta: `friends`
+
+**Solución aplicada:**
+- ✅ Reemplazadas 11 referencias de `.from('friendships')` a `.from('friends')`
+- ✅ Archivo corregido: `src/services/supabaseFriendsService.js`
+- ✅ Verificado que no quedan referencias a `friendships` en el código
+- ✅ Build de producción completado (0 errores)
+- ✅ Commit 7e85bef subido a GitHub
+- ✅ Usuario deployó desde EasyPanel exitosamente
+- ✅ Usuario purgó caché de Cloudflare
+
+**Resultado:** Bucle infinito eliminado en producción ✅
 
 ---
 
-## TASK 2: Fix bucle infinito en página Descubrir Vecinos (CRÍTICO) ✅ COMPLETADO
-- **STATUS**: ✅ done
-- **USER QUERIES**: 1 (reporte de bucle infinito en https://vecinoactivo.cl/app/descubrir-vecinos)
-- **DETAILS**:
-  * **Problema identificado:** Bucle infinito causando cientos de requests fallidos
-  * **Error específico:** 
-    - Query busca tabla `friendships` que NO existe en la base de datos
-    - Base de datos tiene tabla `friends` pero código usa `friendships`
-    - Error: "Could not find the table 'public.friendships' in the schema cache"
-    - Hint de Supabase: "Perhaps you meant the table 'public.friends'"
-  * **Impacto:** 
-    - Requests infinitos cada pocos segundos
-    - 404 errors constantes
-    - WebSocket errors también presentes
-    - Página inutilizable
-  * **Archivo problemático:** `src/services/supabaseFriendsService.js`
-  * **Solución aplicada:**
-    - ✅ Reemplazadas 11 referencias de `.from('friendships')` a `.from('friends')`
-    - ✅ Verificado que no quedan referencias a `friendships` en el código
-    - ✅ Build de producción completado exitosamente (0 errores)
-    - ✅ Package de deployment creado: `vecino-activo-fix-bucle-infinito-20260128-150705.tar.gz` (100 MB)
-  
-- **NEXT STEPS**:
-  * ⏳ Subir package al servidor de producción
-  * ⏳ Ejecutar deployment (docker-compose down/build/up)
-  * ⏳ Purgar caché de Cloudflare
-  * ⏳ Verificar que el bucle se detenga en https://vecinoactivo.cl/app/descubrir-vecinos
-  * ⏳ Confirmar funcionalidad de búsqueda de vecinos
+### 2. ⚠️ FIX SECUNDARIO: manifest.json 404
+**Prioridad:** ⚠️ Media (no crítico)  
+**Status:** EN PROGRESO
 
-- **FILEPATHS**:
-  * `src/services/supabaseFriendsService.js` ✅ CORREGIDO (11 cambios)
-  * `FIX_BUCLE_INFINITO_DESCUBRIR_VECINOS.md` ✅ CREADO (documentación completa)
-  * `vecino-activo-fix-bucle-infinito-20260128-150705.tar.gz` ✅ GENERADO (package deployment)
+**Problema:**
+- Error: `GET https://vecinoactivo.cl/manifest.json 404 (Not Found)`
+- Afecta: Instalación como PWA, agregar a pantalla de inicio
+- NO afecta: Funcionalidad principal del sitio
 
----
+**Diagnóstico realizado:**
+- ✅ Archivo existe en `public/manifest.json`
+- ✅ Archivo se copia a `build/manifest.json` localmente
+- ✅ Otros archivos estáticos (favicon.ico, logo192.png) SÍ funcionan en producción
+- ❌ Solo `manifest.json` falta en producción
 
-## USER CORRECTIONS AND INSTRUCTIONS:
-- Usuario reportó bucle infinito en producción en URL específica: https://vecinoactivo.cl/app/descubrir-vecinos
-- Error se repite constantemente generando cientos de requests
-- Prioridad CRÍTICA - sitio en producción afectado
-- Fix aplicado exitosamente, listo para deployment urgente
+**Causa raíz:**
+- `react-scripts build` no copia `manifest.json` en contexto Docker de EasyPanel
+- Posible problema de configuración de archivos estáticos en EasyPanel
+
+**Solución implementada:**
+1. Creado script `scripts/postbuild.js` para verificar y copiar archivos críticos
+2. Actualizado `package.json` para ejecutar postbuild después del build
+3. Script modificado para NO fallar el build (warnings informativos)
+4. Commit a3d0c17 subido a GitHub
+5. **NUEVO:** Script corregido para eliminar variable `allOk` no utilizada
+
+**Deployment:**
+- ❌ Primer intento falló (script causaba error en build)
+- ✅ Script corregido para no fallar el build
+- ⏳ Pendiente: Usuario debe redeploy desde EasyPanel
+
+**Próximos pasos:**
+1. Enviar última versión del script a Git
+2. Usuario hace redeploy desde EasyPanel
+3. Verificar si manifest.json se copia correctamente
+4. Si persiste, considerar soluciones alternativas (ver `FIX_MANIFEST_JSON_404.md`)
 
 ---
 
-## ESTADO DEL SISTEMA:
+## 📝 ARCHIVOS MODIFICADOS
 
-### Problemas Resueltos:
-1. ✅ **CRÍTICO RESUELTO:** Bucle infinito en Descubrir Vecinos (tabla `friendships` → `friends`)
+### Archivos corregidos:
+1. `src/services/supabaseFriendsService.js` - Fix bucle infinito (11 cambios)
+2. `scripts/postbuild.js` - Script post-build mejorado
+3. `package.json` - Agregado script postbuild
+4. `src/components/AdminDashboard/AdminHeader.js` - Selector UV (sesión anterior)
+5. `src/components/AdminDashboard/AdminHeader.css` - Estilos selector UV
+6. `src/pages/AdminDashboard/AdminDashboard.js` - Integración selector UV
+7. `src/pages/AdminDashboard/DashboardOverview.js` - Estado vacío UV
+8. `src/pages/AdminDashboard/DashboardOverview.css` - Estilos estado vacío
 
-### Problemas Activos:
-1. ⚠️ WebSocket errors (secundario, puede ser consecuencia del bucle - verificar después del deployment)
-2. ⚠️ manifest.json 404 (conocido, no crítico, solo PWA)
+### Archivos de documentación creados:
+1. `FIX_BUCLE_INFINITO_DESCUBRIR_VECINOS.md` - Análisis técnico del fix
+2. `FIX_MANIFEST_JSON_404.md` - Análisis profundo del problema manifest
+3. `DEPLOYMENT_EASYPANEL_INSTRUCCIONES.md` - Instrucciones específicas EasyPanel
+4. `DEPLOYMENT_URGENTE_INSTRUCCIONES.txt` - Instrucciones generales
+5. `RESUMEN_SESION_28_ENE_2026_PARTE3.md` - Este archivo
 
-### Funcionando:
-- ✅ Mapa interactivo (corregido en sesión anterior)
-- ✅ Selector de UV en Admin Dashboard (implementado en sesión anterior)
-- ✅ GeoJSON cargando correctamente (75 MB)
-- ✅ Build de producción sin errores
-
----
-
-## CAMBIOS REALIZADOS EN CÓDIGO:
-
-### src/services/supabaseFriendsService.js
-**11 cambios de `.from('friendships')` a `.from('friends')`:**
-
-1. `getFriends()` - línea 8
-2. `getFriendRequests()` - línea 35
-3. `sendFriendRequest()` - línea 56 (verificación)
-4. `sendFriendRequest()` - línea 66 (insert)
-5. `acceptFriendRequest()` - línea 89
-6. `rejectFriendRequest()` - línea 108
-7. `removeFriend()` - línea 125
-8. `areFriends()` - línea 141
-9. `searchUsers()` - línea 171
-10. `getFriendSuggestions()` - línea 206
-11. `getPendingRequestsCount()` - línea 227
+### Scripts de deployment:
+1. `scripts/deployment/deploy-git-pull.sh` - Script para deployment desde Git
 
 ---
 
-## DEPLOYMENT INSTRUCTIONS:
+## 🔄 COMMITS REALIZADOS
 
-### 1. Subir al servidor
+1. **7e85bef** - 🔥 FIX CRÍTICO: Bucle infinito corregido (friendships → friends)
+2. **548dc09** - 📝 Instrucciones de deployment urgente
+3. **ecc7694** - 📝 Instrucciones para EasyPanel
+4. **a3d0c17** - 🔧 FIX: Script post-build para manifest.json
+5. **Pendiente** - 🔧 FIX: Script postbuild.js corregido (eliminar variable allOk)
+
+---
+
+## 📊 ESTADO DEL SISTEMA
+
+### ✅ Funcionando correctamente:
+- Mapa interactivo con GeoJSON
+- Selector de Unidad Vecinal en Admin Dashboard
+- Página Descubrir Vecinos (bucle infinito eliminado)
+- Todos los archivos estáticos excepto manifest.json
+- Build de producción (0 errores, 12 warnings menores)
+
+### ⚠️ Problemas menores:
+- manifest.json 404 (no crítico, solo afecta PWA)
+- WebSocket errors (secundario, no crítico)
+
+### 🎯 Próximos pasos:
+1. Enviar última versión de postbuild.js a Git
+2. Usuario redeploy desde EasyPanel
+3. Verificar manifest.json en producción
+4. Si persiste, evaluar soluciones alternativas
+
+---
+
+## 💡 LECCIONES APRENDIDAS
+
+1. **Nombres de tablas:** Siempre verificar nombres exactos en base de datos
+2. **Búsqueda global:** Usar grep para encontrar todas las referencias
+3. **Testing en producción:** Verificar URLs específicas reportadas por usuarios
+4. **Scripts post-build:** Deben ser robustos y no fallar el build
+5. **Docker context:** Archivos pueden comportarse diferente en contexto Docker
+
+---
+
+## 📞 INSTRUCCIONES PARA EL USUARIO
+
+### Para completar el fix del manifest.json:
+
+1. **Espera el commit a Git** (lo haré ahora)
+2. **Ve a EasyPanel**
+3. **Haz redeploy del proyecto**
+4. **Espera que termine el build**
+5. **Verifica:** https://vecinoactivo.cl/manifest.json
+6. **Si funciona:** ✅ Problema resuelto
+7. **Si persiste:** Lee `FIX_MANIFEST_JSON_404.md` para soluciones alternativas
+
+### Verificación rápida:
 ```bash
-scp vecino-activo-fix-bucle-infinito-20260128-150705.tar.gz usuario@servidor:/ruta/
+# Verificar que manifest.json existe
+curl -I https://vecinoactivo.cl/manifest.json
+
+# Debería retornar 200 OK en lugar de 404
 ```
 
-### 2. En el servidor
-```bash
-# Extraer
-tar -xzf vecino-activo-fix-bucle-infinito-20260128-150705.tar.gz
+---
 
-# Rebuild y restart
-docker-compose -f docker-compose.prod.yml down
-docker-compose -f docker-compose.prod.yml build --no-cache
-docker-compose -f docker-compose.prod.yml up -d
-```
+## 🎉 RESUMEN EJECUTIVO
 
-### 3. Purgar caché Cloudflare
-- Dashboard Cloudflare → vecinoactivo.cl
-- Caching → Purge Everything
+**Trabajo completado:**
+- ✅ Fix crítico de bucle infinito aplicado y deployado
+- ✅ Script post-build mejorado para manifest.json
+- ✅ Documentación completa de ambos problemas
+- ✅ Instrucciones claras para deployment
 
-### 4. Verificar
-- Abrir https://vecinoactivo.cl/app/descubrir-vecinos
-- Verificar NO hay requests infinitos en consola
-- Probar funcionalidad de búsqueda
+**Pendiente:**
+- ⏳ Enviar última versión a Git (en progreso)
+- ⏳ Usuario redeploy desde EasyPanel
+- ⏳ Verificar manifest.json en producción
+
+**Impacto:**
+- 🔥 Problema crítico resuelto (bucle infinito)
+- ⚠️ Problema menor en progreso (manifest.json)
+- ✅ Sitio funcionando normalmente en producción
 
 ---
 
-## ARCHIVOS CREADOS/MODIFICADOS:
-
-### Modificados:
-- `src/services/supabaseFriendsService.js` - Fix crítico bucle infinito
-
-### Creados:
-- `FIX_BUCLE_INFINITO_DESCUBRIR_VECINOS.md` - Documentación completa del fix
-- `vecino-activo-fix-bucle-infinito-20260128-150705.tar.gz` - Package deployment
-- `RESUMEN_SESION_28_ENE_2026_PARTE3.md` - Este archivo
-
----
-
-## MÉTRICAS:
-
-- **Errores críticos resueltos:** 1 (bucle infinito)
-- **Archivos modificados:** 1
-- **Líneas de código cambiadas:** 11
-- **Build status:** ✅ Success (0 errors, warnings only)
-- **Package size:** 100 MB
-- **Tiempo de fix:** ~5 minutos
-- **Prioridad:** 🔴 CRÍTICA
-- **Impacto:** Alto (página completamente rota → funcional)
-
----
-
-**FIN DEL RESUMEN - PARTE 3**
+**Última actualización:** 28 Enero 2026

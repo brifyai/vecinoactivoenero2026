@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCurrentAdmin, clearCurrentNeighborhood } from '../../store/slices/adminDashboardSlice';
 import { logout } from '../../store/slices/authSlice';
+import { useReduxAdmin } from '../../hooks/useReduxAdmin';
 
 // Material UI Icons
 import SearchIcon from '@mui/icons-material/Search';
@@ -21,6 +22,13 @@ const AdminHeader = ({ currentAdmin, onSidebarToggle, sidebarCollapsed }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  
+  // Hooks para selector de UV
+  const { 
+    userNeighborhoods, 
+    currentNeighborhood,
+    setCurrentNeighborhood 
+  } = useReduxAdmin();
 
   const handleLogout = async () => {
     try {
@@ -82,7 +90,30 @@ const AdminHeader = ({ currentAdmin, onSidebarToggle, sidebarCollapsed }) => {
           <MenuIcon />
         </button>
 
-        {/* Breadcrumb eliminado */}
+        {/* Selector de Unidad Vecinal */}
+        {userNeighborhoods.length > 0 && (
+          <div className="neighborhood-selector">
+            <select 
+              value={currentNeighborhood?.id || ''} 
+              onChange={(e) => {
+                const selected = userNeighborhoods.find(
+                  uv => uv.neighborhood.id === e.target.value
+                );
+                if (selected) {
+                  setCurrentNeighborhood(selected.neighborhood);
+                }
+              }}
+              className="neighborhood-select"
+            >
+              <option value="">Seleccionar UV</option>
+              {userNeighborhoods.map(uv => (
+                <option key={uv.neighborhood.id} value={uv.neighborhood.id}>
+                  {uv.neighborhood.nombre} ({uv.role_type})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       <div className="admin-header-center">
