@@ -8,7 +8,7 @@ class SupabaseNotificationsService {
         .from('notifications')
         .select(`
           *,
-          from_user:from_user_id(id, username, name, avatar_url),
+          from_user:from_user_id(id, username, name, avatar),
           post:post_id(id, content)
         `)
         .eq('user_id', userId)
@@ -16,7 +16,17 @@ class SupabaseNotificationsService {
         .range(offset, offset + limit - 1);
 
       if (error) throw error;
-      return data || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const notificationsWithAvatarUrl = data?.map(notification => ({
+        ...notification,
+        from_user: notification.from_user ? {
+          ...notification.from_user,
+          avatar_url: notification.from_user.avatar
+        } : null
+      })) || [];
+      
+      return notificationsWithAvatarUrl;
     } catch (error) {
       console.error('Error getting notifications:', error);
       throw error;

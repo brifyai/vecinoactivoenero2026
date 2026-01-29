@@ -8,7 +8,7 @@ class SupabaseProjectsService {
         .from('projects')
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar),
           project_participants(user_id, role)
         `)
         .order('created_at', { ascending: false });
@@ -33,7 +33,17 @@ class SupabaseProjectsService {
       const { data, error } = await query;
 
       if (error) throw error;
-      return data || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const projectsWithAvatarUrl = data?.map(project => ({
+        ...project,
+        created_by_user: project.created_by_user ? {
+          ...project.created_by_user,
+          avatar_url: project.created_by_user.avatar
+        } : null
+      })) || [];
+      
+      return projectsWithAvatarUrl;
     } catch (error) {
       console.error('Error getting projects:', error);
       throw error;
@@ -48,7 +58,7 @@ class SupabaseProjectsService {
         .insert([projectData])
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url)
+          created_by_user:created_by(id, username, name, avatar)
         `)
         .single();
 
@@ -57,6 +67,11 @@ class SupabaseProjectsService {
       // Agregar al creador como líder del proyecto
       if (data) {
         await this.joinProject(data.id, projectData.created_by, 'leader');
+      }
+
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      if (data && data.created_by_user) {
+        data.created_by_user.avatar_url = data.created_by_user.avatar;
       }
 
       return data;
@@ -114,11 +129,17 @@ class SupabaseProjectsService {
         .eq('created_by', userId)
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url)
+          created_by_user:created_by(id, username, name, avatar)
         `)
         .single();
 
       if (error) throw error;
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      if (data && data.created_by_user) {
+        data.created_by_user.avatar_url = data.created_by_user.avatar;
+      }
+      
       return data;
     } catch (error) {
       console.error('Error updating project:', error);
@@ -150,12 +171,22 @@ class SupabaseProjectsService {
         .from('project_participants')
         .select(`
           *,
-          user:user_id(id, username, name, avatar_url)
+          user:user_id(id, username, name, avatar)
         `)
         .eq('project_id', projectId);
 
       if (error) throw error;
-      return data || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const participantsWithAvatarUrl = data?.map(participant => ({
+        ...participant,
+        user: participant.user ? {
+          ...participant.user,
+          avatar_url: participant.user.avatar
+        } : null
+      })) || [];
+      
+      return participantsWithAvatarUrl;
     } catch (error) {
       console.error('Error getting project participants:', error);
       throw error;
@@ -169,13 +200,19 @@ class SupabaseProjectsService {
         .from('projects')
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar),
           project_participants(user_id, role)
         `)
         .eq('id', projectId)
         .single();
 
       if (error) throw error;
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      if (data && data.created_by_user) {
+        data.created_by_user.avatar_url = data.created_by_user.avatar;
+      }
+      
       return data;
     } catch (error) {
       console.error('Error getting project by ID:', error);
@@ -190,13 +227,19 @@ class SupabaseProjectsService {
         .from('projects')
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar),
           project_participants(user_id, role)
         `)
         .eq('slug', slug)
         .single();
 
       if (error) throw error;
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      if (data && data.created_by_user) {
+        data.created_by_user.avatar_url = data.created_by_user.avatar;
+      }
+      
       return data;
     } catch (error) {
       console.error('Error getting project by slug:', error);
@@ -213,13 +256,23 @@ class SupabaseProjectsService {
           *,
           project:project_id(
             *,
-            created_by_user:created_by(id, username, name, avatar_url)
+            created_by_user:created_by(id, username, name, avatar)
           )
         `)
         .eq('user_id', userId);
 
       if (error) throw error;
-      return data?.map(item => item.project) || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const projects = data?.map(item => {
+        const project = item.project;
+        if (project && project.created_by_user) {
+          project.created_by_user.avatar_url = project.created_by_user.avatar;
+        }
+        return project;
+      }) || [];
+      
+      return projects;
     } catch (error) {
       console.error('Error getting user projects:', error);
       throw error;
@@ -252,7 +305,7 @@ class SupabaseProjectsService {
         .from('projects')
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar),
           project_participants(user_id, role)
         `)
         .eq('category', category)
@@ -261,7 +314,17 @@ class SupabaseProjectsService {
         .limit(limit);
 
       if (error) throw error;
-      return data || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const projectsWithAvatarUrl = data?.map(project => ({
+        ...project,
+        created_by_user: project.created_by_user ? {
+          ...project.created_by_user,
+          avatar_url: project.created_by_user.avatar
+        } : null
+      })) || [];
+      
+      return projectsWithAvatarUrl;
     } catch (error) {
       console.error('Error getting projects by category:', error);
       throw error;

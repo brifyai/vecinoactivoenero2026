@@ -8,7 +8,7 @@ class SupabaseGroupsService {
         .from('groups')
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar),
           group_members(user_id, role)
         `)
         .order('created_at', { ascending: false });
@@ -29,7 +29,17 @@ class SupabaseGroupsService {
       const { data, error } = await query;
 
       if (error) throw error;
-      return data || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const groupsWithAvatarUrl = data?.map(group => ({
+        ...group,
+        created_by_user: group.created_by_user ? {
+          ...group.created_by_user,
+          avatar_url: group.created_by_user.avatar
+        } : null
+      })) || [];
+      
+      return groupsWithAvatarUrl;
     } catch (error) {
       console.error('Error getting groups:', error);
       throw error;
@@ -44,7 +54,7 @@ class SupabaseGroupsService {
         .insert([groupData])
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url)
+          created_by_user:created_by(id, username, name, avatar)
         `)
         .single();
 
@@ -53,6 +63,11 @@ class SupabaseGroupsService {
       // Agregar al creador como admin del grupo
       if (data) {
         await this.joinGroup(data.id, groupData.created_by, 'admin');
+      }
+
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      if (data && data.created_by_user) {
+        data.created_by_user.avatar_url = data.created_by_user.avatar;
       }
 
       return data;
@@ -110,11 +125,17 @@ class SupabaseGroupsService {
         .eq('created_by', userId)
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url)
+          created_by_user:created_by(id, username, name, avatar)
         `)
         .single();
 
       if (error) throw error;
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      if (data && data.created_by_user) {
+        data.created_by_user.avatar_url = data.created_by_user.avatar;
+      }
+      
       return data;
     } catch (error) {
       console.error('Error updating group:', error);
@@ -146,12 +167,22 @@ class SupabaseGroupsService {
         .from('group_members')
         .select(`
           *,
-          user:user_id(id, username, name, avatar_url)
+          user:user_id(id, username, name, avatar)
         `)
         .eq('group_id', groupId);
 
       if (error) throw error;
-      return data || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const membersWithAvatarUrl = data?.map(member => ({
+        ...member,
+        user: member.user ? {
+          ...member.user,
+          avatar_url: member.user.avatar
+        } : null
+      })) || [];
+      
+      return membersWithAvatarUrl;
     } catch (error) {
       console.error('Error getting group members:', error);
       throw error;
@@ -165,13 +196,19 @@ class SupabaseGroupsService {
         .from('groups')
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar),
           group_members(user_id, role)
         `)
         .eq('id', groupId)
         .single();
 
       if (error) throw error;
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      if (data && data.created_by_user) {
+        data.created_by_user.avatar_url = data.created_by_user.avatar;
+      }
+      
       return data;
     } catch (error) {
       console.error('Error getting group by ID:', error);
@@ -186,13 +223,19 @@ class SupabaseGroupsService {
         .from('groups')
         .select(`
           *,
-          created_by_user:created_by(id, username, name, avatar_url),
+          created_by_user:created_by(id, username, name, avatar),
           group_members(user_id, role)
         `)
         .eq('slug', slug)
         .single();
 
       if (error) throw error;
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      if (data && data.created_by_user) {
+        data.created_by_user.avatar_url = data.created_by_user.avatar;
+      }
+      
       return data;
     } catch (error) {
       console.error('Error getting group by slug:', error);
@@ -209,13 +252,23 @@ class SupabaseGroupsService {
           *,
           group:group_id(
             *,
-            created_by_user:created_by(id, username, name, avatar_url)
+            created_by_user:created_by(id, username, name, avatar)
           )
         `)
         .eq('user_id', userId);
 
       if (error) throw error;
-      return data?.map(item => item.group) || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const groups = data?.map(item => {
+        const group = item.group;
+        if (group && group.created_by_user) {
+          group.created_by_user.avatar_url = group.created_by_user.avatar;
+        }
+        return group;
+      }) || [];
+      
+      return groups;
     } catch (error) {
       console.error('Error getting user groups:', error);
       throw error;

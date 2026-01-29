@@ -8,15 +8,29 @@ class SupabaseMessagesService {
         .from('conversations')
         .select(`
           *,
-          participant1:participant1_id(id, username, name, avatar_url),
-          participant2:participant2_id(id, username, name, avatar_url),
+          participant1:participant1_id(id, username, name, avatar),
+          participant2:participant2_id(id, username, name, avatar),
           last_message:messages(content, created_at, sender_id)
         `)
         .or(`participant1_id.eq.${userId},participant2_id.eq.${userId}`)
         .order('updated_at', { ascending: false });
 
       if (error) throw error;
-      return data || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const conversationsWithAvatarUrl = data?.map(conversation => ({
+        ...conversation,
+        participant1: conversation.participant1 ? {
+          ...conversation.participant1,
+          avatar_url: conversation.participant1.avatar
+        } : null,
+        participant2: conversation.participant2 ? {
+          ...conversation.participant2,
+          avatar_url: conversation.participant2.avatar
+        } : null
+      })) || [];
+      
+      return conversationsWithAvatarUrl;
     } catch (error) {
       console.error('Error getting conversations:', error);
       throw error;
@@ -30,14 +44,24 @@ class SupabaseMessagesService {
         .from('messages')
         .select(`
           *,
-          sender:sender_id(id, username, name, avatar_url)
+          sender:sender_id(id, username, name, avatar)
         `)
         .eq('conversation_id', conversationId)
         .order('created_at', { ascending: false })
         .range(offset, offset + limit - 1);
 
       if (error) throw error;
-      return data?.reverse() || [];
+      
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      const messagesWithAvatarUrl = data?.map(message => ({
+        ...message,
+        sender: message.sender ? {
+          ...message.sender,
+          avatar_url: message.sender.avatar
+        } : null
+      })) || [];
+      
+      return messagesWithAvatarUrl.reverse();
     } catch (error) {
       console.error('Error getting messages:', error);
       throw error;
@@ -52,7 +76,7 @@ class SupabaseMessagesService {
         .insert([messageData])
         .select(`
           *,
-          sender:sender_id(id, username, name, avatar_url)
+          sender:sender_id(id, username, name, avatar)
         `)
         .single();
 
@@ -64,6 +88,11 @@ class SupabaseMessagesService {
           .from('conversations')
           .update({ updated_at: new Date().toISOString() })
           .eq('id', messageData.conversation_id);
+      }
+
+      // Mapear avatar a avatar_url para compatibilidad con el frontend
+      if (data && data.sender) {
+        data.sender.avatar_url = data.sender.avatar;
       }
 
       return data;
