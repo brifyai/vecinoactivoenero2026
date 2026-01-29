@@ -22,7 +22,7 @@ class SupabaseFriendsService {
       // Buscar los datos de los usuarios (avatar NO avatar_url)
       const { data: users, error: usersError } = await supabase
         .from('users')
-        .select('id, username, name, avatar, location')
+        .select('id, username, name, avatar, neighborhood_name')
         .in('id', friendIds);
 
       if (usersError) throw usersError;
@@ -60,7 +60,7 @@ class SupabaseFriendsService {
       // Buscar los datos de los usuarios solicitantes (avatar NO avatar_url)
       const { data: users, error: usersError } = await supabase
         .from('users')
-        .select('id, username, name, avatar, location')
+        .select('id, username, name, avatar, neighborhood_name')
         .in('id', requesterIds);
 
       if (usersError) throw usersError;
@@ -190,7 +190,7 @@ class SupabaseFriendsService {
     try {
       const { data, error } = await supabase
         .from('users')
-        .select('id, username, name, avatar, location')
+        .select('id, username, name, avatar, neighborhood_name')
         .or(`username.ilike.%${query}%,name.ilike.%${query}%`)
         .neq('id', currentUserId)
         .limit(limit);
@@ -227,7 +227,7 @@ class SupabaseFriendsService {
       // Por ahora, obtener usuarios aleatorios que no sean amigos
       const { data, error } = await supabase
         .from('users')
-        .select('id, username, name, avatar, location')
+        .select('id, username, name, avatar, neighborhood_name')
         .neq('id', userId)
         .limit(limit * 2); // Obtener más para filtrar
 
