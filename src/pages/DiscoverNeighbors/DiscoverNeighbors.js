@@ -67,43 +67,20 @@ const DiscoverNeighbors = () => {
       console.log('🔴 Configurando suscripción en tiempo real para usuarios...');
       
       // Suscribirse a cambios en la tabla users
-      subscription = supabase
-        .channel('users-changes')
-        .on(
-          'postgres_changes',
-          {
-            event: '*', // INSERT, UPDATE, DELETE
-            schema: 'public',
-            table: 'users'
-          },
-          (payload) => {
-            console.log('🔴 Cambio detectado en usuarios:', payload);
-            
-            // Recargar usuarios cuando hay cambios
-            loadUsersFromDatabase();
-          }
-        )
-        .subscribe((status) => {
-          if (status === 'SUBSCRIBED') {
-            console.log('✅ Suscripción en tiempo real activa para usuarios');
-          } else if (status === 'CHANNEL_ERROR') {
-            console.error('❌ Error en suscripción de usuarios');
-          }
-        });
+      // ❌ DESHABILITADO - Supabase Realtime no configurado
+      // Usar polling o Firebase si se necesita realtime
+      console.log('ℹ️ Realtime deshabilitado - usando carga manual');
     };
 
     // Cargar datos iniciales
     loadUsersFromDatabase();
     
-    // Configurar suscripción en tiempo real
-    setupRealtimeSubscription();
+    // ❌ DESHABILITADO - No configurar suscripción Supabase Realtime
+    // setupRealtimeSubscription();
 
-    // Cleanup: desuscribirse al desmontar
+    // Cleanup: ya no hay suscripción que limpiar
     return () => {
-      if (subscription) {
-        console.log('🔴 Desuscribiendo de cambios en usuarios...');
-        supabase.removeChannel(subscription);
-      }
+      console.log('🔴 Componente desmontado');
     };
   }, [currentUser, authLoading]);
 
