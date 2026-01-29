@@ -174,6 +174,7 @@ const DiscoverNeighbors = () => {
     <div className={`discover-neighbors-page ${isRightSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
       <div className="discover-header">
         <h1>Descubre Vecinos</h1>
+        <p>Conoce a los vecinos de tu comunidad</p>
         {currentUser.neighborhood_name && (
           <p className="neighborhood-info">📍 {currentUser.neighborhood_name}</p>
         )}
