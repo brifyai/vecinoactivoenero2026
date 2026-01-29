@@ -337,18 +337,12 @@ class SupabasePostsService {
   }
 
   /**
+   * ❌ DESHABILITADO - Usar Firebase para realtime
    * Suscribirse a cambios en un post específico
    */
   subscribeToPost(postId, callback) {
-    return supabase
-      .channel(`post:${postId}`)
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'posts',
-        filter: `id=eq.${postId}`
-      }, callback)
-      .subscribe();
+    console.warn('⚠️ Supabase Realtime deshabilitado - Usar Firebase');
+    return null;
   }
 }
 

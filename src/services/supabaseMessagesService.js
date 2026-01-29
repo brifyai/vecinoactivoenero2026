@@ -194,49 +194,22 @@ class SupabaseMessagesService {
     }
   }
 
+  // ❌ DESHABILITADO - Usar Firebase para realtime
   // Suscribirse a mensajes en tiempo real
   subscribeToMessages(conversationId, callback) {
-    const subscription = supabase
-      .channel(`messages:${conversationId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'messages',
-          filter: `conversation_id=eq.${conversationId}`
-        },
-        callback
-      )
-      .subscribe();
-
-    return subscription;
+    console.warn('⚠️ Supabase Realtime deshabilitado - Usar Firebase');
+    return null;
   }
 
   // Suscribirse a conversaciones en tiempo real
   subscribeToConversations(userId, callback) {
-    const subscription = supabase
-      .channel(`conversations:${userId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'conversations',
-          filter: `or(participant1_id.eq.${userId},participant2_id.eq.${userId})`
-        },
-        callback
-      )
-      .subscribe();
-
-    return subscription;
+    console.warn('⚠️ Supabase Realtime deshabilitado - Usar Firebase');
+    return null;
   }
 
   // Cancelar suscripción
   unsubscribe(subscription) {
-    if (subscription) {
-      supabase.removeChannel(subscription);
-    }
+    // No-op: Firebase maneja las suscripciones
   }
 }
 

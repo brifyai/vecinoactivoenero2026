@@ -489,7 +489,8 @@ class SupabaseCampaignsService {
       )
       .subscribe();
     
-    return subscription;
+    console.warn('⚠️ Supabase Realtime deshabilitado - Usar Firebase');
+    return null;
   }
 }
 

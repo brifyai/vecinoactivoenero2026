@@ -418,39 +418,13 @@ class SupabaseTicketsService {
   subscribeToTickets(neighborhoodId, callback) {
     console.log('🔔 Suscribiéndose a tickets en tiempo real');
     
-    const subscription = supabase
-      .channel('tickets-changes')
-      .on('postgres_changes', 
-        { 
-          event: '*', 
-          schema: 'public', 
-          table: 'tickets',
-          filter: `neighborhood_id=eq.${neighborhoodId}`
-        }, 
-        callback
-      )
-      .subscribe();
-    
-    return subscription;
+    console.warn('⚠️ Supabase Realtime deshabilitado - Usar Firebase');
+    return null;
   }
   
   subscribeToComments(ticketId, callback) {
-    console.log('🔔 Suscribiéndose a comentarios en tiempo real');
-    
-    const subscription = supabase
-      .channel('comments-changes')
-      .on('postgres_changes', 
-        { 
-          event: '*', 
-          schema: 'public', 
-          table: 'ticket_comments',
-          filter: `ticket_id=eq.${ticketId}`
-        }, 
-        callback
-      )
-      .subscribe();
-    
-    return subscription;
+    console.warn('⚠️ Supabase Realtime deshabilitado - Usar Firebase');
+    return null;
   }
 }
 

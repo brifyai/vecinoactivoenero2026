@@ -134,30 +134,16 @@ class SupabaseNotificationsService {
     }
   }
 
+  // ❌ DESHABILITADO - Usar Firebase para realtime
   // Suscribirse a cambios en tiempo real
   subscribeToNotifications(userId, callback) {
-    const subscription = supabase
-      .channel(`notifications:${userId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${userId}`
-        },
-        callback
-      )
-      .subscribe();
-
-    return subscription;
+    console.warn('⚠️ Supabase Realtime deshabilitado - Usar Firebase');
+    return null;
   }
 
   // Cancelar suscripción
   unsubscribeFromNotifications(subscription) {
-    if (subscription) {
-      supabase.removeChannel(subscription);
-    }
+    // No-op: Firebase maneja las suscripciones
   }
 
   // Crear notificación de solicitud de amistad
