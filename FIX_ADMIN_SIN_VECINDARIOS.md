@@ -3,7 +3,7 @@
 **Fecha**: 29 Enero 2026  
 **Usuario**: admin@vecinoactivo.cl  
 **Problema**: "No tienes vecindarios asignados"  
-**Estado**: ⏳ PENDIENTE EJECUCIÓN SQL
+**Estado**: ✅ SCRIPT CORREGIDO - Listo para ejecutar
 
 ---
 
@@ -16,8 +16,41 @@ No tienes vecindarios asignados
 Volver al login
 ```
 
-### Causa
-El usuario `admin@vecinoactivo.cl` existe en la tabla `users` pero NO tiene registros en la tabla `neighborhood_admins`, por lo tanto el sistema no le permite acceder al dashboard.
+### Causa Raíz
+1. El usuario `admin@vecinoactivo.cl` existe en la tabla `users` pero NO tiene registros en `neighborhood_admins`
+2. **ERROR EN SCRIPT ORIGINAL**: Intentaba consultar columna `name` que NO existe en tabla `neighborhoods`
+3. **Columna correcta**: `nombre` (no `name`)
+
+---
+
+## ✅ SOLUCIÓN
+
+### Correcciones Aplicadas al Script SQL
+
+**Archivo**: `database/admin/ASIGNAR_VECINDARIOS_ADMIN.sql`
+
+**Cambios realizados**:
+1. ✅ `SELECT id, name FROM neighborhoods` → `SELECT id, nombre FROM neighborhoods`
+2. ✅ `neighborhood_record.name` → `neighborhood_record.nombre`
+3. ✅ `n.name as neighborhood_name` → `n.nombre as neighborhood_name`
+4. ✅ `ORDER BY n.name` → `ORDER BY n.nombre`
+5. ✅ Delimitador `DO $` → `DO $$` (sintaxis correcta)
+
+**Esquema real de tabla `neighborhoods`**:
+```sql
+CREATE TABLE neighborhoods (
+  id VARCHAR(100) PRIMARY KEY,
+  codigo VARCHAR(50) UNIQUE NOT NULL,
+  nombre VARCHAR(255) NOT NULL,        -- ← Columna correcta
+  comuna VARCHAR(100),
+  region VARCHAR(100),
+  personas INTEGER DEFAULT 0,
+  hogares INTEGER DEFAULT 0,
+  geometry GEOMETRY(MultiPolygon, 4326),
+  properties JSONB,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
 
 ---
 

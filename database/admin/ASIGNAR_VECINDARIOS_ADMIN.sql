@@ -24,7 +24,7 @@ BEGIN
     
     -- Asignar TODOS los vecindarios al admin con rol 'admin'
     FOR neighborhood_record IN 
-        SELECT id, name FROM neighborhoods
+        SELECT id, nombre FROM neighborhoods
     LOOP
         -- Insertar o actualizar la asignación
         INSERT INTO neighborhood_admins (neighborhood_id, user_id, role, permissions)
@@ -40,7 +40,7 @@ BEGIN
             permissions = ARRAY['manage_users', 'manage_tickets', 'manage_campaigns', 'manage_settings', 'view_analytics'],
             updated_at = NOW();
         
-        RAISE NOTICE 'Asignado vecindario: % (ID: %)', neighborhood_record.name, neighborhood_record.id;
+        RAISE NOTICE 'Asignado vecindario: % (ID: %)', neighborhood_record.nombre, neighborhood_record.id;
     END LOOP;
     
     RAISE NOTICE 'Vecindarios asignados exitosamente';
@@ -51,14 +51,14 @@ SELECT
     na.id,
     na.role,
     na.permissions,
-    n.name as neighborhood_name,
+    n.nombre as neighborhood_name,
     n.id as neighborhood_id,
     u.email as admin_email
 FROM neighborhood_admins na
 JOIN neighborhoods n ON na.neighborhood_id = n.id
 JOIN users u ON na.user_id = u.id
 WHERE u.email = 'admin@vecinoactivo.cl'
-ORDER BY n.name;
+ORDER BY n.nombre;
 
 -- 4. Contar vecindarios asignados
 SELECT COUNT(*) as total_vecindarios_asignados
