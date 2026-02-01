@@ -1,0 +1,206 @@
+# Dockerfile con Proxy CORS integrado
+# Soluciona problemas CORS sin necesidad de acceso al servidor de Supabase
+
+# ============================================
+# STAGE 1: Build React App
+# ============================================
+FROM node:20-alpine AS build-frontend
+
+WORKDIR /app
+
+# Instalar git
+RUN apk add --no-cache git
+
+# Copiar package files
+COPY package*.json ./
+
+# Instalar dependencias
+RUN npm ci --legacy-peer-deps
+
+# Copiar código fuente
+COPY . .
+
+# Variables de entorno para build
+ARG REACT_APP_SUPABASE_URL=https://vecinoactivo.cl/api/supabase
+ARG REACT_APP_SUPABASE_ANON_KEY
+ARG REACT_APP_ENVIRONMENT=production
+ARG REACT_APP_GOOGLE_CLIENT_ID
+ARG REACT_APP_GEMINI_API_KEY
+ARG REACT_APP_FIREBASE_API_KEY
+ARG REACT_APP_FIREBASE_AUTH_DOMAIN
+ARG REACT_APP_FIREBASE_DATABASE_URL
+ARG REACT_APP_FIREBASE_PROJECT_ID
+ARG REACT_APP_FIREBASE_STORAGE_BUCKET
+ARG REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+ARG REACT_APP_FIREBASE_APP_ID
+ARG REACT_APP_FIREBASE_VAPID_KEY
+
+ENV NODE_ENV=production
+ENV REACT_APP_SUPABASE_URL=$REACT_APP_SUPABASE_URL
+ENV REACT_APP_SUPABASE_ANON_KEY=$REACT_APP_SUPABASE_ANON_KEY
+ENV REACT_APP_ENVIRONMENT=$REACT_APP_ENVIRONMENT
+ENV REACT_APP_GOOGLE_CLIENT_ID=$REACT_APP_GOOGLE_CLIENT_ID
+ENV REACT_APP_GEMINI_API_KEY=$REACT_APP_GEMINI_API_KEY
+ENV REACT_APP_FIREBASE_API_KEY=$REACT_APP_FIREBASE_API_KEY
+ENV REACT_APP_FIREBASE_AUTH_DOMAIN=$REACT_APP_FIREBASE_AUTH_DOMAIN
+ENV REACT_APP_FIREBASE_DATABASE_URL=$REACT_APP_FIREBASE_DATABASE_URL
+ENV REACT_APP_FIREBASE_PROJECT_ID=$REACT_APP_FIREBASE_PROJECT_ID
+ENV REACT_APP_FIREBASE_STORAGE_BUCKET=$REACT_APP_FIREBASE_STORAGE_BUCKET
+ENV REACT_APP_FIREBASE_MESSAGING_SENDER_ID=$REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+ENV REACT_APP_FIREBASE_APP_ID=$REACT_APP_FIREBASE_APP_ID
+ENV REACT_APP_FIREBASE_VAPID_KEY=$REACT_APP_FIREBASE_VAPID_KEY
+ENV GENERATE_SOURCEMAP=false
+
+# Build
+RUN npm run build
+
+# Verificar build
+RUN ls -la build/ && ls -la build/static/
+
+# ============================================
+# STAGE 2: Setup Node.js Proxy
+# ============================================
+FROM node:20-alpine AS build-proxy
+
+WORKDIR /proxy
+
+# Copiar package files del servidor
+COPY server/package*.json ./
+
+# Instalar solo dependencias de producción
+RUN npm ci --only=production
+
+# Copiar código del proxy
+COPY server/supabaseProxy.js ./
+
+# ============================================
+# STAGE 3: Production with Nginx + Node Proxy
+# ============================================
+FROM nginx:1.25-alpine
+
+# Instalar Node.js y herramientas
+RUN apk add --no-cache nodejs npm curl supervisor
+
+# Copiar build de React
+COPY --from=build-frontend /app/build /usr/share/nginx/html
+
+# Copiar proxy de Node.js
+COPY --from=build-proxy /proxy /app/proxy
+
+# Configuración de Nginx con proxy
+RUN cat > /etc/nginx/conf.d/default.conf << 'EOF'
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # HTML sin caché
+    location = /index.html {
+        add_header Cache-Control "no-cache, no-store, must-revalidate";
+        add_header Pragma "no-cache";
+        add_header Expires "0";
+        try_files $uri =404;
+    }
+
+    # Archivos estáticos con caché
+    location /static/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        try_files $uri =404;
+    }
+
+    location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        try_files $uri =404;
+    }
+
+    # Manifest
+    location = /manifest.json {
+        add_header Cache-Control "no-cache";
+        add_header Content-Type application/json;
+        try_files $uri =404;
+    }
+
+    # Proxy para Supabase (solución CORS)
+    location /api/supabase/ {
+        proxy_pass http://localhost:3001/supabase/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        
+        # Timeout largo para requests
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+    }
+
+    # SPA routing
+    location / {
+        try_files $uri $uri/ /index.html;
+        add_header Cache-Control "no-cache, no-store, must-revalidate";
+        add_header Pragma "no-cache";
+        add_header Expires "0";
+    }
+
+    # Headers de seguridad
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
+    add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline' 'unsafe-eval'" always;
+
+    # Compresión
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied any;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+}
+EOF
+
+# Configuración de Supervisor para ejecutar Nginx + Node Proxy
+RUN cat > /etc/supervisord.conf << 'EOF'
+[supervisord]
+nodaemon=true
+user=root
+logfile=/var/log/supervisord.log
+pidfile=/var/run/supervisord.pid
+
+[program:nginx]
+command=nginx -g 'daemon off;'
+autostart=true
+autorestart=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+
+[program:proxy]
+command=node /app/proxy/supabaseProxy.js
+directory=/app/proxy
+autostart=true
+autorestart=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+environment=PROXY_PORT=3001
+EOF
+
+# Test nginx
+RUN nginx -t
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost/ && curl -f http://localhost:3001/health || exit 1
+
+EXPOSE 80
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]

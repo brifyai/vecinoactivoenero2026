@@ -9,7 +9,9 @@
     "campaigns": "node campaignServer.js",
     "campaigns:dev": "nodemon campaignServer.js",
     "whatsapp": "node whatsappServer.js",
-    "whatsapp:dev": "nodemon whatsappServer.js"
+    "whatsapp:dev": "nodemon whatsappServer.js",
+    "proxy": "node supabaseProxy.js",
+    "proxy:dev": "nodemon supabaseProxy.js"
   },
   "keywords": [
     "vecino-activo",
@@ -20,11 +22,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "twilio": "^5.3.5",
     "@sendinblue/client": "^3.3.1",
-    "dotenv": "^16.0.3"
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.9",
+    "twilio": "^5.3.5"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
