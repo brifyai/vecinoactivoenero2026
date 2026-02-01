@@ -138,5 +138,53 @@ if (geometry.type === 'Polygon') {
 
 ---
 
+## PROBLEMA ADICIONAL: Error CORS en Producción
+
+### Síntoma
+```
+Access to fetch at 'https://supabase.vecinoactivo.cl/rest/v1/users...' 
+from origin 'https://vecinoactivo.cl' has been blocked by CORS policy
+```
+
+### Diagnóstico Realizado
+Ejecutado `./scripts/debugging/diagnose-cors.sh`:
+
+**Resultados**:
+- ✅ CORS está configurado en el servidor
+- ✅ Allow-Origin: * (permite todos los orígenes)
+- ✅ Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+- ✅ Allow-Headers: apikey, authorization, content-type
+- ❌ **Allow-Credentials: NO configurado** ← PROBLEMA
+- ✅ Request GET funciona (HTTP 200)
+
+### Causa Raíz
+Falta el header `Access-Control-Allow-Credentials: true` en la configuración de Kong (API Gateway de Supabase).
+
+### Solución
+Necesitas acceder al servidor de Supabase y agregar en la configuración de Kong:
+
+```yaml
+plugins:
+  - name: cors
+    config:
+      credentials: true  # ← AGREGAR ESTA LÍNEA
+```
+
+**Documentación creada**:
+- `FIX_CORS_SUPABASE.md` - Soluciones completas (4 opciones)
+- `FIX_CORS_CREDENTIALS.md` - Fix específico para credentials
+- `scripts/debugging/diagnose-cors.sh` - Script de diagnóstico
+
+**Alternativas**:
+1. Configurar credentials en Kong (recomendado)
+2. Limpiar caché del navegador
+3. Usar Supabase Cloud temporalmente
+4. Contactar al proveedor de hosting
+
+---
+
 **Fecha**: 29 Enero 2026  
-**Status**: ✅ Vecindarios cargados - Pendiente asignar al admin
+**Status**: 
+- ✅ Vecindarios cargados (6891)
+- ⏳ Pendiente asignar al admin (ejecutar SQL)
+- ⏳ Pendiente configurar CORS credentials en servidor
