@@ -33,6 +33,11 @@ Thumbs.db
 public/data/geo/*.geojson
 !public/data/geo/unidades_vecinales_simple.geojson
 
+# Censo 2024 files (too large for Git)
+public/data/geo/*.parquet
+public/data/geo/*.xlsx
+public/data/geo/censo2024_*.json
+
 # Shapefiles (too large)
 public/data/geo/*.shp
 public/data/geo/*.dbf
