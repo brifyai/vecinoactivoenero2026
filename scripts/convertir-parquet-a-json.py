@@ -43,9 +43,24 @@ try:
     # Convertir a JSON
     print(f"💾 Guardando en {json_path.name}...")
     
-    # Convertir geometrías a string si existen
+    # Eliminar columna geometry (no la necesitamos, ya tenemos geometrías en la BD)
     if 'geometry' in df.columns:
-        df['geometry'] = df['geometry'].astype(str)
+        print("   ⚠️  Eliminando columna 'geometry' (no necesaria, ya tenemos geometrías)")
+        df = df.drop(columns=['geometry'])
+    
+    # Eliminar otras columnas binarias problemáticas
+    binary_cols = []
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            try:
+                # Intentar convertir a string
+                df[col] = df[col].astype(str)
+            except:
+                binary_cols.append(col)
+    
+    if binary_cols:
+        print(f"   ⚠️  Eliminando columnas binarias: {', '.join(binary_cols)}")
+        df = df.drop(columns=binary_cols)
     
     # Guardar como JSON
     df.to_json(json_path, orient='records', force_ascii=False, indent=2)
