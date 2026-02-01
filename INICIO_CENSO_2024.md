@@ -16,8 +16,23 @@ Este comando ejecuta todo el proceso automáticamente:
 
 ## 📋 Requisitos Previos
 
+**El script automático maneja todo por ti** (crea entorno virtual en macOS):
 ```bash
-# Instalar Python y pandas (solo la primera vez)
+bash scripts/integrar-censo-2024-completo.sh
+```
+
+**O instala manualmente** (si prefieres):
+
+**En macOS**:
+```bash
+# Crear entorno virtual
+python3 -m venv .venv-censo
+source .venv-censo/bin/activate
+pip install pandas pyarrow openpyxl
+```
+
+**En Linux/Windows**:
+```bash
 pip3 install pandas pyarrow openpyxl
 ```
 

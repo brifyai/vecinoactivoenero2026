@@ -28,6 +28,25 @@ El campo que conecta ambos datasets es:
 
 ### Paso 1: Instalar dependencias Python
 
+**En macOS** (usa entorno virtual para evitar conflictos):
+```bash
+# El script automático crea el entorno virtual por ti
+bash scripts/integrar-censo-2024-completo.sh
+```
+
+**O manualmente**:
+```bash
+# Crear entorno virtual
+python3 -m venv .venv-censo
+
+# Activar entorno virtual
+source .venv-censo/bin/activate
+
+# Instalar dependencias
+pip install pandas pyarrow openpyxl
+```
+
+**En Linux/Windows**:
 ```bash
 # Instalar pandas y pyarrow
 pip3 install pandas pyarrow openpyxl

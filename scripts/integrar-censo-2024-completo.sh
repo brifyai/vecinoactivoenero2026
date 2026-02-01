@@ -26,17 +26,33 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-# Verificar pandas
-if ! python3 -c "import pandas" 2>/dev/null; then
-    echo -e "${YELLOW}⚠️  pandas no está instalado. Instalando...${NC}"
-    pip3 install pandas pyarrow openpyxl
+# Crear entorno virtual si no existe
+VENV_DIR=".venv-censo"
+if [ ! -d "$VENV_DIR" ]; then
+    echo -e "${YELLOW}⚠️  Creando entorno virtual Python...${NC}"
+    python3 -m venv "$VENV_DIR"
     if [ $? -ne 0 ]; then
-        echo -e "${RED}❌ Error al instalar pandas${NC}"
+        echo -e "${RED}❌ Error al crear entorno virtual${NC}"
         exit 1
     fi
 fi
 
-echo -e "${GREEN}✅ Dependencias Python OK${NC}"
+# Activar entorno virtual
+source "$VENV_DIR/bin/activate"
+
+# Verificar pandas
+if ! python3 -c "import pandas" 2>/dev/null; then
+    echo -e "${YELLOW}⚠️  pandas no está instalado. Instalando en entorno virtual...${NC}"
+    pip install --upgrade pip
+    pip install pandas pyarrow openpyxl
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}❌ Error al instalar pandas${NC}"
+        deactivate
+        exit 1
+    fi
+fi
+
+echo -e "${GREEN}✅ Dependencias Python OK (usando entorno virtual)${NC}"
 echo ""
 
 # Paso 2: Explorar estructura del Censo
@@ -101,3 +117,6 @@ echo "  • JSON generado en public/data/geo/censo2024_comunal.json"
 echo "  • Base de datos actualizada con datos del Censo 2024"
 echo ""
 echo "🎉 ¡Listo! Los datos del Censo 2024 están integrados"
+
+# Desactivar entorno virtual
+deactivate

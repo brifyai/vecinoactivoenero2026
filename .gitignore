@@ -2,6 +2,12 @@
 node_modules/
 server/node_modules/
 
+# Python virtual environments
+.venv-censo/
+venv/
+env/
+.venv/
+
 # Build
 build/
 dist/
